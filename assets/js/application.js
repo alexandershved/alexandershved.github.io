@@ -436,7 +436,7 @@ webpackJsonp([0],[
 
 	  var stat = document.querySelector('.js-stat');
 
-	  var url = 'http://148.251.195.78:94/clicks/grid';
+	  var url = 'https://148.251.195.78/clicks/grid';
 	  var headers = new Headers();
 	  headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
