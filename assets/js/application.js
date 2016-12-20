@@ -6,68 +6,40 @@ webpackJsonp([0],[
 
 	__webpack_require__(1);
 
-	var _stat = __webpack_require__(13);
+	var _reset = __webpack_require__(13);
 
-	var _stat2 = _interopRequireDefault(_stat);
+	var _reset2 = _interopRequireDefault(_reset);
+
+	var _time = __webpack_require__(14);
+
+	var _time2 = _interopRequireDefault(_time);
+
+	var _list = __webpack_require__(15);
+
+	var _list2 = _interopRequireDefault(_list);
+
+	var _calendar = __webpack_require__(17);
+
+	var _calendar2 = _interopRequireDefault(_calendar);
+
+	var _postback = __webpack_require__(19);
+
+	var _postback2 = _interopRequireDefault(_postback);
+
+	var _index = __webpack_require__(20);
+
+	var _index2 = _interopRequireDefault(_index);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	(function (proto) {
-	  proto.matches || (proto.matches = proto.matchesSelector || function (selector) {
-	    var matches = document.querySelectorAll(selector);
-	    var _self = this;
+	(0, _reset2.default)();
 
-	    return Array.prototype.some.call(matches, function (e) {
-	      return e === _self;
-	    });
-	  });
+	(0, _time2.default)();
+	(0, _list2.default)();
+	(0, _calendar2.default)();
+	(0, _postback2.default)();
 
-	  proto.closest = proto.closest || function closest(selector) {
-	    var a = this.matches(selector) ? this : closest.call(this.parentNode, selector);
-	    return this.parentNode ? a : null;
-	  };
-
-	  proto.triggerEvent = function (eventName) {
-	    var ev = document.createEvent('HTMLEvents');
-	    ev.initEvent(eventName, false, true);
-	    this.dispatchEvent(ev);
-	  };
-	})(Element.prototype);
-
-	if (!Object.assign) {
-	  Object.defineProperty(Object, 'assign', {
-	    enumerable: false,
-	    configurable: true,
-	    writable: true,
-	    value: function value(target, firstSource) {
-	      'use strict';
-
-	      if (target === undefined || target === null) {
-	        throw new TypeError('Cannot convert first argument to object');
-	      }
-
-	      var to = Object(target);
-	      for (var i = 1; i < arguments.length; i++) {
-	        var nextSource = arguments[i];
-	        if (nextSource === undefined || nextSource === null) {
-	          continue;
-	        }
-
-	        var keysArray = Object.keys(Object(nextSource));
-	        for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
-	          var nextKey = keysArray[nextIndex];
-	          var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
-	          if (desc !== undefined && desc.enumerable) {
-	            to[nextKey] = nextSource[nextKey];
-	          }
-	        }
-	      }
-	      return to;
-	    }
-	  });
-	}
-
-	(0, _stat2.default)();
+	(0, _index2.default)();
 
 /***/ },
 /* 1 */
@@ -88,6 +60,1162 @@ webpackJsonp([0],[
 /* 11 */,
 /* 12 */,
 /* 13 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  (function (proto) {
+	    proto.matches || (proto.matches = proto.matchesSelector || function (selector) {
+	      var matches = document.querySelectorAll(selector);
+	      var _self = this;
+
+	      return Array.prototype.some.call(matches, function (e) {
+	        return e === _self;
+	      });
+	    });
+
+	    proto.closest = proto.closest || function closest(selector) {
+	      var a = this.matches(selector) ? this : closest.call(this.parentNode, selector);
+	      return this.parentNode ? a : null;
+	    };
+
+	    proto.triggerEvent = function (eventName) {
+	      var ev = document.createEvent('HTMLEvents');
+	      ev.initEvent(eventName, false, true);
+	      this.dispatchEvent(ev);
+	    };
+	  })(Element.prototype);
+
+	  if (!Object.assign) {
+	    Object.defineProperty(Object, 'assign', {
+	      enumerable: false,
+	      configurable: true,
+	      writable: true,
+	      value: function value(target, firstSource) {
+	        'use strict';
+
+	        if (target === undefined || target === null) {
+	          throw new TypeError('Cannot convert first argument to object');
+	        }
+
+	        var to = Object(target);
+	        for (var i = 1; i < arguments.length; i++) {
+	          var nextSource = arguments[i];
+	          if (nextSource === undefined || nextSource === null) {
+	            continue;
+	          }
+
+	          var keysArray = Object.keys(Object(nextSource));
+	          for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
+	            var nextKey = keysArray[nextIndex];
+	            var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
+	            if (desc !== undefined && desc.enumerable) {
+	              to[nextKey] = nextSource[nextKey];
+	            }
+	          }
+	        }
+	        return to;
+	      }
+	    });
+	  }
+	};
+
+/***/ },
+/* 14 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  [].concat(_toConsumableArray(document.querySelectorAll('.js-input-time'))).forEach(function (input) {
+	    var range = 1;
+
+	    var selectRange = function selectRange() {
+	      if (range === 1) {
+	        input.selectionStart = 0;
+	        input.selectionEnd = 2;
+	      } else {
+	        input.selectionStart = 3;
+	        input.selectionEnd = 5;
+	      }
+	      input.focus();
+	    };
+
+	    var keyDown = function keyDown(event) {
+	      var char = String.fromCharCode(event.keyCode);
+	      var key = '0123456789'.indexOf(char);
+
+	      if (!/\s/.test(char)) {
+	        event.preventDefault();
+	      }
+
+	      if (key !== -1) {
+	        var value = event.target.value;
+	        var chunks = value.split(':');
+	        var newChunk = void 0;
+
+	        if (range === 1) {
+	          newChunk = value[1] + '' + key;
+
+	          if (parseInt(newChunk, 10) < 24) {
+	            chunks[0] = newChunk;
+	          } else {
+	            chunks[0] = '0' + key;
+	          }
+
+	          if (parseInt(chunks[0], 10) > 2) {
+	            range = 2;
+	          }
+	        } else {
+	          newChunk = value[4] + '' + key;
+
+	          if (parseInt(newChunk, 10) < 60) {
+	            chunks[1] = newChunk;
+	          } else {
+	            chunks[1] = '0' + key;
+	          }
+	        }
+
+	        input.value = chunks.join(':');
+	        input.triggerEvent('chage');
+
+	        selectRange();
+	      }
+	    };
+
+	    input.addEventListener('focus', function () {
+	      setTimeout(function () {
+	        range = 1;
+	        selectRange();
+	      }, 0);
+	    });
+
+	    input.addEventListener('paste', function (event) {
+	      event.preventDefault();
+	    });
+
+	    input.addEventListener('cut', function (event) {
+	      event.preventDefault();
+	    });
+
+	    input.addEventListener('keydown', function (event) {
+	      var code = event.keyCode;
+
+	      switch (code) {
+	        case 9:
+	          if (event.shiftKey && range === 2) {
+	            range = 1;
+	            selectRange();
+	            event.preventDefault();
+	          } else if (!event.shiftKey && range === 1) {
+	            range = 2;
+	            selectRange();
+	            event.preventDefault();
+	          }
+	          break;
+	        case 37:
+	          event.preventDefault();
+	          range = 1;
+	          selectRange();
+	          break;
+	        case 38:
+	        case 32:
+	        case 40:
+	          event.preventDefault();
+	          break;
+	        case 39:
+	          event.preventDefault();
+	          range = 2;
+	          selectRange();
+	          break;
+	        default:
+	          keyDown(event);
+	      }
+	    });
+	  });
+	};
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  [].concat(_toConsumableArray(document.querySelectorAll('.js-list'))).forEach(_listEvent2.default);
+	};
+
+	var _listEvent = __webpack_require__(16);
+
+	var _listEvent2 = _interopRequireDefault(_listEvent);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
+/* 16 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	exports.default = function (list) {
+	  var body = document.body;
+	  var listValue = list.querySelector('.js-list-value');
+	  var search = list.querySelector('.js-list-search');
+	  var items = list.querySelectorAll('.js-list-item');
+	  var placeholder = list.dataset.placeholder;
+
+	  var clickWindow = void 0;
+	  var open = void 0;
+	  var close = void 0;
+	  var getItemByValue = void 0;
+	  var updateValue = void 0;
+	  var setValue = void 0;
+	  var setDisabled = void 0;
+	  var unsetDisabled = void 0;
+
+	  clickWindow = function clickWindow(event) {
+	    var closest = event.target.closest('.js-list');
+
+	    if (!closest || closest !== list) {
+	      close();
+	    }
+	  };
+
+	  open = function open() {
+	    list.classList.add('is-open');
+	    window.addEventListener('click', clickWindow);
+	  };
+
+	  close = function close() {
+	    if (search) {
+	      search.value = '';
+
+	      [].concat(_toConsumableArray(items)).forEach(function (item) {
+	        item.style.display = '';
+	      });
+	    }
+
+	    list.classList.remove('is-open');
+	    window.removeEventListener('click', clickWindow);
+	  };
+
+	  getItemByValue = function getItemByValue(val) {
+	    var sel = -1;
+	    var value = String(val);
+
+	    [].concat(_toConsumableArray(items)).forEach(function (item, i) {
+	      if (value === (item.dataset.value || item.innerText)) {
+	        sel = i;
+	        return false;
+	      }
+	      return true;
+	    });
+
+	    return sel;
+	  };
+
+	  updateValue = function updateValue(param) {
+	    var obj = {
+	      item: -1,
+	      value: null,
+	      is_clear: false,
+	      label: null
+	    };
+
+	    var clearBtn = void 0;
+
+	    if (typeof param === 'string' || typeof param === 'number') {
+	      obj.item = getItemByValue(param);
+	      obj.value = param;
+	      obj.is_clear = false;
+	      obj.label = false;
+	    } else if ((typeof param === 'undefined' ? 'undefined' : _typeof(param)) === 'object' && !Array.isArray(param)) {
+	      if (!param.hasOwnProperty('item') && param.hasOwnProperty('value')) {
+	        obj.item = getItemByValue(param.value);
+	        obj.value = param.value;
+	      } else if (items[parseInt(param.item, 10)]) {
+	        obj.item = parseInt(param.item, 10);
+	        obj.value = items[obj.item].dataset.value || items[obj.item].innerHTML;
+	      }
+
+	      obj.is_clear = !!param.is_clear;
+	      obj.label = param.label;
+	    }
+
+	    var item = items[obj.item];
+	    var text = void 0;
+	    var value = void 0;
+
+	    if (obj.value) {
+	      text = item ? item.innerHTML : obj.value;
+	      value = obj.value;
+	    } else {
+	      text = placeholder || items[0].innerHTML;
+	      value = null;
+
+	      clearBtn = list.querySelector('.list__clear');
+
+	      if (clearBtn) {
+	        clearBtn.parentNode.removeChild(clearBtn);
+	      }
+	    }
+
+	    if (list.value === value) {
+	      return false;
+	    }
+
+	    listValue.innerText = text;
+	    list.oldValue = list.value;
+	    list.value = value;
+
+	    [].concat(_toConsumableArray(items)).forEach(function (el) {
+	      return el.classList.remove('is-select');
+	    });
+
+	    if (item) {
+	      item.classList.add('is-select');
+	    }
+
+	    if (obj.is_clear && list.value) {
+	      (function () {
+	        clearBtn = document.createElement('div');
+	        clearBtn.classList.add('list__clear');
+	        list.appendChild(clearBtn);
+
+	        var clear = function clear() {
+	          setValue({ is_clear: true });
+	          clearBtn.removeEventListener('click', clear);
+	        };
+
+	        clearBtn.addEventListener('click', clear);
+	      })();
+	    }
+
+	    if (obj.label) {
+	      var label = list.querySelector('.list-label');
+
+	      if (label) {
+	        label.parentNode.removeChild(label);
+
+	        label = document.createElement('div');
+	        label.classList.add('list-label');
+	        label.innerText = obj.label;
+	        list.insertBefore(label, list.firstChild);
+	      }
+	    }
+
+	    return true;
+	  };
+
+	  setValue = function setValue(param) {
+	    if (updateValue(param)) {
+	      list.triggerEvent('change');
+	    }
+	  };
+
+	  setDisabled = function setDisabled(arr) {
+	    var setDis = function setDis() {
+	      var item = getItemByValue(arr);
+
+	      if (item !== -1) {
+	        items[item].classList.add('is-disabled');
+	      }
+	    };
+
+	    if (typeof arr === 'string' || typeof arr === 'number') {
+	      setDis(arr);
+	    } else if (Array.isArray(arr)) {
+	      arr.forEach(setDis);
+	    }
+	  };
+
+	  unsetDisabled = function unsetDisabled(arr) {
+	    var setDis = function setDis() {
+	      var item = getItemByValue(arr);
+
+	      if (item !== -1) {
+	        items[item].classList.remove('is-disabled');
+	      }
+	    };
+
+	    if (typeof arr === 'string' || typeof arr === 'number') {
+	      setDis(arr);
+	    } else if (Array.isArray(arr)) {
+	      arr.forEach(setDis);
+	    } else {
+	      [].concat(_toConsumableArray(items)).forEach(function (item) {
+	        return item.classList.remove('is-disabled');
+	      });
+	    }
+	  };
+
+	  list.updateValue = updateValue;
+	  list.setValue = setValue;
+	  list.setDisabled = setDisabled;
+	  list.unsetDisabled = unsetDisabled;
+
+	  listValue.addEventListener('click', function () {
+	    if (list.classList.contains('is-open')) {
+	      close();
+	    } else {
+	      open();
+	    }
+	  });
+
+	  if (search) {
+	    var filterSearch = function filterSearch(event) {
+	      var reg = new RegExp(event.target.value, 'i');
+
+	      [].concat(_toConsumableArray(items)).forEach(function (item) {
+	        if (item.innerText.search(reg) === -1) {
+	          item.style.display = 'none';
+	        } else {
+	          item.style.display = '';
+	        }
+	      });
+	    };
+
+	    search.addEventListener('select', filterSearch);
+	    search.addEventListener('change', filterSearch);
+	    search.addEventListener('keyup', filterSearch);
+	  }
+
+	  [].concat(_toConsumableArray(items)).forEach(function (item, i) {
+	    item.addEventListener('click', function (event) {
+	      if (event.target.classList.contains('is-disabled')) {
+	        return;
+	      }
+
+	      setValue({ item: i });
+	      close();
+	    });
+
+	    if (item.classList.contains('.is-select')) {
+	      updateValue({ item: i });
+	    }
+	  });
+
+	  if (!listValue.innerText) {
+	    if (placeholder) {
+	      listValue.innerText = placeholder;
+	    } else {
+	      updateValue({ item: 0 });
+	    }
+	  }
+	};
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	exports.default = function () {
+	  [].concat(_toConsumableArray(document.querySelectorAll('.js-calendar'))).forEach(function (control) {
+	    var calendar = control.querySelector('.js-calendar-popup');
+
+	    if (!calendar) {
+	      return;
+	    }
+
+	    var currentDatetime = window.might.current_datetime;
+
+	    var today = {
+	      year: currentDatetime.getFullYear(),
+	      month: currentDatetime.getMonth(),
+	      date: currentDatetime.getDate()
+	    };
+
+	    var period = void 0;
+
+	    var labelControl = control.querySelector('.js-calendar-value');
+
+	    var boxes = {
+	      from: calendar.querySelectorAll('.js-calendar-box')[0],
+	      to: calendar.querySelectorAll('.js-calendar-box')[1]
+	    };
+
+	    var ranges = {
+	      today: calendar.querySelector('.js-calendar-range-today'),
+	      yesterday: calendar.querySelector('.js-calendar-range-yesterday'),
+	      lastweek: calendar.querySelector('.js-calendar-range-lastweek'),
+	      lastdays: calendar.querySelector('.js-calendar-range-lastdays'),
+	      thismonth: calendar.querySelector('.js-calendar-range-thismonth'),
+	      lastmonth: calendar.querySelector('.js-calendar-range-lastmonth'),
+	      custom: calendar.querySelector('.js-calendar-range-custom')
+	    };
+
+	    var inputTimeStart = calendar.querySelector('.js-calendar-time-start');
+	    var inputTimeEnd = calendar.querySelector('.js-calendar-time-end');
+	    var timezone = calendar.querySelector('.js-calendar-timezone');
+	    var applyBtn = calendar.querySelector('.js-calendar-apply');
+	    var closeBtn = calendar.querySelector('.js-calendar-close');
+
+	    var clickWindow = void 0;
+	    var _open = void 0;
+	    var close = void 0;
+	    var resetPeriod = void 0;
+	    var renderDefault = void 0;
+	    var renderDays = void 0;
+	    var renderRanges = void 0;
+	    var renderInputs = void 0;
+	    var updateSelects = void 0;
+	    var clickDay = void 0;
+	    var clickRange = void 0;
+	    var eventBoxes = void 0;
+	    var setLabelControl = void 0;
+	    var updateValue = void 0;
+	    var setValue = void 0;
+
+	    clickWindow = function clickWindow(event) {
+	      var closest = event.target.closest('.js-calendar');
+
+	      if (!closest || closest !== control) {
+	        resetPeriod();
+	        close(event);
+	      }
+	    };
+
+	    _open = function open(event) {
+	      event.stopPropagation();
+
+	      resetPeriod();
+	      renderDefault();
+
+	      calendar.classList.add('is-open');
+	      control.removeEventListener('click', _open);
+	      window.addEventListener('click', clickWindow);
+	    };
+
+	    close = function close(event) {
+	      event.stopPropagation();
+	      calendar.classList.remove('is-open');
+	      control.addEventListener('click', _open);
+	      window.removeEventListener('click', clickWindow);
+	    };
+
+	    resetPeriod = function resetPeriod() {
+	      var value = control.value;
+
+	      period = {
+	        from: {
+	          year: value.from.year,
+	          month: value.from.month,
+	          date: value.from.date
+	        },
+	        to: {
+	          year: value.to.year,
+	          month: value.to.month,
+	          date: value.to.date
+	        },
+	        start_time: value.start_time,
+	        end_time: value.end_time,
+	        timezone: value.timezone
+	      };
+	    };
+
+	    renderDefault = function renderDefault() {
+	      var curFrom = boxes.from.current;
+	      var curTo = boxes.to.current;
+
+	      curFrom.year = period.from.year;
+	      curFrom.month = period.from.month;
+
+	      curTo.year = period.to.year;
+	      curTo.month = period.to.month;
+
+	      if (curFrom.year === curTo.year && curFrom.month === curTo.month) {
+	        curFrom.month--;
+
+	        if (curFrom.month < 0) {
+	          curFrom.month = 11;
+	          curFrom.year--;
+	        }
+	      }
+
+	      updateSelects('from');
+	      updateSelects('to');
+
+	      renderDays('from');
+	      renderDays('to');
+	      renderRanges();
+
+	      renderInputs();
+
+	      timezone.setValue(period.timezone);
+	    };
+
+	    renderDays = function renderDays(b) {
+	      var days = boxes[b].querySelector('.js-calendar-days');
+
+	      var month = boxes[b].current.month;
+	      var year = boxes[b].current.year;
+	      var count = new Date(year, month + 1, 0).getDate();
+	      var first = new Date(year, month, 1).getDay() - 1;
+
+	      if (first === -1) {
+	        first = 6;
+	      }
+
+	      var tsFrom = +new Date(period.from.year, period.from.month, period.from.date);
+	      var tsTo = +new Date(period.to.year, period.to.month, period.to.date);
+	      var tsToday = +new Date(today.year, today.month, today.date);
+
+	      days.innerHTML = '';
+
+	      for (var i = 1 - first; i <= count; i++) {
+	        var span = document.createElement('span');
+	        var day = void 0;
+
+	        if (i > 0) {
+	          span.innerText = i;
+	          day = +new Date(year, month, i);
+
+	          if (tsFrom === day) {
+	            span.classList.add('is-start');
+	          }
+
+	          if (tsFrom < day && tsTo > day) {
+	            span.classList.add('is-between');
+	          }
+
+	          if (tsTo === day) {
+	            span.classList.add('is-end');
+	          }
+
+	          if (tsToday < day) {
+	            span.classList.add('is-future');
+	          } else {
+	            span.dataset.value = day;
+	            span.addEventListener('click', clickDay);
+	          }
+	        } else {
+	          span.classList.add('is-empty');
+	        }
+
+	        days.appendChild(span);
+	      }
+	    };
+
+	    renderRanges = function renderRanges() {
+	      for (var i in ranges) {
+	        if (ranges.hasOwnProperty(i)) {
+	          ranges[i].parentNode.classList.remove('is-select');
+	        }
+	      }
+
+	      var tsFrom = +new Date(period.from.year, period.from.month, period.from.date);
+	      var tsTo = +new Date(period.to.year, period.to.month, period.to.date);
+
+	      var tsToday = +new Date(today.year, today.month, today.date);
+	      var tsYesterday = +new Date(today.year, today.month, today.date - 1);
+	      var ts7 = +new Date(today.year, today.month, today.date - 6);
+	      var ts30 = +new Date(today.year, today.month, today.date - 29);
+
+	      var tsMonthFrom = +new Date(today.year, today.month, 1);
+
+	      var tsLastMonthFrom = +new Date(today.year, today.month - 1, 1);
+	      var tsLastMonthTo = +new Date(today.year, today.month, 0);
+
+	      if (tsFrom === tsToday && tsTo === tsToday) {
+	        ranges.today.parentNode.classList.add('is-select');
+	      } else if (tsFrom === tsYesterday && tsTo === tsYesterday) {
+	        ranges.yesterday.parentNode.classList.add('is-select');
+	      } else if (tsFrom === ts7 && tsTo === tsToday) {
+	        ranges.lastweek.parentNode.classList.add('is-select');
+	      } else if (tsFrom === ts30 && tsTo === tsToday) {
+	        ranges.lastdays.parentNode.classList.add('is-select');
+	      } else if (tsFrom === tsMonthFrom && tsTo === tsToday) {
+	        ranges.thismonth.parentNode.classList.add('is-select');
+	      } else if (tsFrom === tsLastMonthFrom && tsTo === tsLastMonthTo) {
+	        ranges.lastmonth.parentNode.classList.add('is-select');
+	      } else {
+	        ranges.custom.parentNode.classList.add('is-select');
+	      }
+	    };
+
+	    renderInputs = function renderInputs() {
+	      inputTimeStart.value = period.start_time;
+	      inputTimeEnd.value = period.end_time;
+	    };
+
+	    updateSelects = function updateSelects(b) {
+	      var monthSelect = boxes[b].querySelector('.js-calendar-month');
+	      var yearSelect = boxes[b].querySelector('.js-calendar-year');
+
+	      try {
+	        monthSelect.updateValue(boxes[b].current.month);
+	        yearSelect.updateValue(boxes[b].current.year);
+	      } catch (err) {
+	        throw new Error(err);
+	      }
+	    };
+
+	    clickDay = function clickDay(event) {
+	      event.stopPropagation();
+
+	      var tsFrom = +new Date(period.from.year, period.from.month, period.from.date);
+	      var tsTo = +new Date(period.to.year, period.to.month, period.to.date);
+
+	      var valueDate = new Date(parseInt(this.dataset.value, 10));
+
+	      var year = valueDate.getFullYear();
+	      var month = valueDate.getMonth();
+	      var date = valueDate.getDate();
+
+	      period.to.year = year;
+	      period.to.month = month;
+	      period.to.date = date;
+
+	      if (tsFrom !== tsTo) {
+	        period.from.year = year;
+	        period.from.month = month;
+	        period.from.date = date;
+	      } else {
+	        tsTo = valueDate.getTime();
+
+	        if (tsFrom > tsTo) {
+	          var y = period.from.year;
+	          var m = period.from.month;
+	          var d = period.from.date;
+
+	          period.from.year = period.to.year;
+	          period.from.month = period.to.month;
+	          period.from.date = period.to.date;
+
+	          period.to.year = y;
+	          period.to.month = m;
+	          period.to.date = d;
+	        }
+	      }
+
+	      renderDays('from');
+	      renderDays('to');
+	      renderRanges();
+	    };
+
+	    clickRange = function clickRange(f, t) {
+	      var from = f;
+	      var to = t || from;
+
+	      period = {
+	        from: {
+	          year: from.getFullYear(),
+	          month: from.getMonth(),
+	          date: from.getDate()
+	        },
+	        to: {
+	          year: to.getFullYear(),
+	          month: to.getMonth(),
+	          date: to.getDate()
+	        },
+	        start_time: '00:00',
+	        end_time: '23:59'
+	      };
+
+	      renderDefault();
+	    };
+
+	    eventBoxes = function eventBoxes(b) {
+	      var box = boxes[b];
+
+	      var next = box.querySelector('.js-calendar-next');
+	      var prev = box.querySelector('.js-calendar-prev');
+	      var monthSelect = box.querySelector('.js-calendar-month');
+	      var yearSelect = box.querySelector('.js-calendar-year');
+
+	      box.current = {};
+
+	      prev.addEventListener('click', function () {
+	        box.current.month--;
+
+	        if (box.current.month < 0) {
+	          box.current.month = 11;
+	          box.current.year--;
+	        }
+
+	        updateSelects(b);
+	        renderDays(b);
+	      });
+
+	      next.addEventListener('click', function () {
+	        box.current.month++;
+
+	        if (box.current.month > 11) {
+	          box.current.month = 0;
+	          box.current.year++;
+	        }
+
+	        updateSelects(b);
+	        renderDays(b);
+	      });
+
+	      monthSelect.addEventListener('change', function () {
+	        try {
+	          box.current.month = parseInt(monthSelect.value, 10);
+	          renderDays(b);
+	        } catch (err) {
+	          throw new Error(err);
+	        }
+	      });
+
+	      yearSelect.addEventListener('change', function () {
+	        try {
+	          box.current.year = parseInt(yearSelect.value, 10);
+	          renderDays(b);
+	        } catch (err) {
+	          throw new Error(err);
+	        }
+	      });
+	    };
+
+	    setLabelControl = function setLabelControl() {
+	      if (labelControl) {
+	        var value = control.value;
+	        var from = new Date(value.from.year, value.from.month, value.from.date);
+	        var to = new Date(value.to.year, value.to.month, value.to.date);
+
+	        from = (0, _dateformat2.default)(from, 'mmmm dd, yyyy');
+	        to = (0, _dateformat2.default)(to, 'mmmm dd, yyyy');
+
+	        if (from === to) {
+	          labelControl.textContent = from;
+	        } else {
+	          labelControl.textContent = from + ' — ' + to;
+	        }
+	      }
+	    };
+
+	    updateValue = function updateValue(obj) {
+	      var value = control.value;
+	      var newValue = obj || period;
+	      var isUpdate = false;
+
+	      for (var i in value) {
+	        if (value.hasOwnProperty(i) && newValue.hasOwnProperty(i)) {
+	          if (_typeof(value[i]) === 'object') {
+	            for (var j in value[i]) {
+	              if (value[i].hasOwnProperty(j) && newValue[i].hasOwnProperty(j)) {
+	                if (value[i][j] !== newValue[i][j]) {
+	                  value[i][j] = newValue[i][j];
+	                  isUpdate = true;
+	                }
+	              }
+	            }
+	          } else {
+	            if (value[i] !== newValue[i]) {
+	              value[i] = newValue[i];
+	              isUpdate = true;
+	            }
+	          }
+	        }
+	      }
+
+	      setLabelControl();
+
+	      return isUpdate;
+	    };
+
+	    setValue = function setValue(obj) {
+	      if (updateValue(obj)) {
+	        control.triggerEvent('change');
+	      }
+	    };
+
+	    ranges.today.addEventListener('click', function () {
+	      var tsToday = new Date(today.year, today.month, today.date);
+	      clickRange(tsToday);
+	    });
+
+	    ranges.yesterday.addEventListener('click', function () {
+	      var tsYesterday = new Date(today.year, today.month, today.date - 1);
+	      clickRange(tsYesterday);
+	    });
+
+	    ranges.lastweek.addEventListener('click', function () {
+	      var ts7 = new Date(today.year, today.month, today.date - 6);
+	      var tsToday = new Date(today.year, today.month, today.date);
+	      clickRange(ts7, tsToday);
+	    });
+
+	    ranges.lastdays.addEventListener('click', function () {
+	      var ts30 = new Date(today.year, today.month, today.date - 29);
+	      var tsToday = new Date(today.year, today.month, today.date);
+	      clickRange(ts30, tsToday);
+	    });
+
+	    ranges.thismonth.addEventListener('click', function () {
+	      var tsMonthFrom = new Date(today.year, today.month, 1);
+	      var tsToday = new Date(today.year, today.month, today.date);
+	      clickRange(tsMonthFrom, tsToday);
+	    });
+
+	    ranges.lastmonth.addEventListener('click', function () {
+	      var tsLastMonthFrom = new Date(today.year, today.month - 1, 1);
+	      var tsLastMonthTo = new Date(today.year, today.month, 0);
+	      clickRange(tsLastMonthFrom, tsLastMonthTo);
+	    });
+
+	    inputTimeStart.addEventListener('change', function () {
+	      period.start_time = inputTimeStart.value;
+	    });
+
+	    inputTimeEnd.addEventListener('change', function () {
+	      period.end_time = inputTimeEnd.value;
+	    });
+
+	    timezone.addEventListener('change', function () {
+	      period.timezone = timezone.value;
+	    });
+
+	    applyBtn.addEventListener('click', function (event) {
+	      setValue();
+	      close(event);
+	    });
+
+	    closeBtn.addEventListener('click', function (event) {
+	      close(event);
+	    });
+
+	    control.addEventListener('click', _open);
+
+	    control.value = {
+	      from: {
+	        year: today.year,
+	        month: today.month,
+	        date: today.date
+	      },
+	      to: {
+	        year: today.year,
+	        month: today.month,
+	        date: today.date
+	      },
+	      start_time: '00:00',
+	      end_time: '23:59',
+	      timezone: '+03:00|Europe/Moscow'
+	    };
+
+	    eventBoxes('from');
+	    eventBoxes('to');
+
+	    setLabelControl();
+
+	    control.updateValue = updateValue;
+	    control.setValue = setValue;
+	  });
+	};
+
+	var _dateformat = __webpack_require__(18);
+
+	var _dateformat2 = _interopRequireDefault(_dateformat);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
+/* 18 */,
+/* 19 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  [].concat(_toConsumableArray(document.querySelectorAll('.js-postback'))).forEach(function (control) {
+	    var postback = control.querySelector('.js-postback-popup');
+
+	    if (!postback) {
+	      return;
+	    }
+
+	    var trigger = postback.querySelector('.js-postback-trigger');
+	    var usd = postback.querySelector('.js-postback-usd');
+	    var eur = postback.querySelector('.js-postback-eur');
+	    var rub = postback.querySelector('.js-postback-rub');
+	    var applyBtn = postback.querySelector('.js-postback-apply');
+	    var closeBtn = postback.querySelector('.js-postback-close');
+
+	    var clickWindow = void 0;
+	    var resetBtns = void 0;
+	    var _open = void 0;
+	    var close = void 0;
+	    var updateValue = void 0;
+	    var setValue = void 0;
+	    var tempValue = {};
+
+	    clickWindow = function clickWindow(event) {
+	      var closest = event.target.closest('.js-postback');
+
+	      if (!closest || closest !== control) {
+	        close(event);
+	      }
+	    };
+
+	    resetBtns = function resetBtns(obj) {
+	      if (obj.postback_date) {
+	        trigger.classList.add('is-active');
+	      } else {
+	        trigger.classList.remove('is-active');
+	      }
+
+	      switch (obj.currency) {
+	        case 'usd':
+	          usd.classList.add('is-active');
+	          eur.classList.remove('is-active');
+	          rub.classList.remove('is-active');
+	          break;
+	        case 'eur':
+	          usd.classList.remove('is-active');
+	          eur.classList.add('is-active');
+	          rub.classList.remove('is-active');
+	          break;
+	        case 'rub':
+	          usd.classList.remove('is-active');
+	          eur.classList.remove('is-active');
+	          rub.classList.add('is-active');
+	          break;
+	        default:
+	          break;
+	      }
+	    };
+
+	    _open = function open(event) {
+	      event.stopPropagation();
+
+	      tempValue.postback_date = control.value.postback_date;
+	      tempValue.currency = control.value.currency;
+
+	      control.removeEventListener('click', _open);
+	      control.classList.add('is-open');
+	      window.addEventListener('click', clickWindow);
+	    };
+
+	    close = function close(event) {
+	      event.stopPropagation();
+
+	      resetBtns(control.value);
+
+	      window.removeEventListener('click', clickWindow);
+	      control.addEventListener('click', _open);
+	      control.classList.remove('is-open');
+	    };
+
+	    updateValue = function updateValue(obj) {
+	      var isUpdate = false;
+
+	      if (obj.hasOwnProperty('postback_date')) {
+	        if (control.value.postback_date !== !!obj.postback_date) {
+	          control.value.postback_date = !!obj.postback_date;
+	          isUpdate = true;
+	        }
+	      }
+
+	      if (obj.hasOwnProperty('currency')) {
+	        if (control.value.currency !== obj.currency.toUpperCase()) {
+	          control.value.currency = obj.currency.toUpperCase();
+	          isUpdate = true;
+	        }
+	      }
+
+	      resetBtns(obj);
+
+	      return isUpdate;
+	    };
+
+	    setValue = function setValue(obj) {
+	      if (updateValue(obj)) {
+	        control.triggerEvent('change');
+	      }
+	    };
+
+	    trigger.addEventListener('click', function () {
+	      if (trigger.classList.contains('is-active')) {
+	        trigger.classList.remove('is-active');
+	        tempValue.postback_date = false;
+	      } else {
+	        trigger.classList.add('is-active');
+	        tempValue.postback_date = true;
+	      }
+	    });
+
+	    usd.addEventListener('click', function () {
+	      usd.classList.add('is-active');
+	      eur.classList.remove('is-active');
+	      rub.classList.remove('is-active');
+	      tempValue.currency = 'usd';
+	    });
+
+	    eur.addEventListener('click', function () {
+	      usd.classList.remove('is-active');
+	      eur.classList.add('is-active');
+	      rub.classList.remove('is-active');
+	      tempValue.currency = 'eur';
+	    });
+
+	    rub.addEventListener('click', function () {
+	      usd.classList.remove('is-active');
+	      eur.classList.remove('is-active');
+	      rub.classList.add('is-active');
+	      tempValue.currency = 'rub';
+	    });
+
+	    applyBtn.addEventListener('click', function (event) {
+	      setValue(tempValue);
+	      close(event);
+	    });
+
+	    closeBtn.addEventListener('click', function (event) {
+	      close(event);
+	    });
+
+	    control.value = {};
+
+	    control.addEventListener('click', _open);
+
+	    control.updateValue = updateValue;
+	    control.setValue = setValue;
+	  });
+	};
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103,30 +1231,81 @@ webpackJsonp([0],[
 	    return;
 	  }
 
-	  var setList = (0, _list2.default)();
-
-	  (0, _table2.default)();
-	  // graph();
-	  (0, _time2.default)();
-	  (0, _calendar2.default)();
-	  (0, _postback2.default)();
 	  (0, _nav2.default)();
+	  (0, _table2.default)();
+	  (0, _graph2.default)();
+	  (0, _init2.default)();
 
-	  (0, _statStart2.default)();
-
-	  var statEvent = (0, _statEvent2.default)();
-	  var statParams = might.stat.params;
-	  var statConfig = might.stat.config;
-
-	  /* datetime */
-
+	  var statParams = window.might.stat.params;
 	  var datetime = stat.querySelector('.js-stat-datetime');
+	  var segmentBtns = stat.querySelectorAll('.js-stat-main-segment');
+	  var segmentAdd = stat.querySelector('.js-stat-addsegment');
+	  var segmentList = [];
+	  var graphBtn = stat.querySelector('.js-stat-show-graph');
+	  var treeBtn = stat.querySelector('.js-stat-is-tree');
+	  var postbackControl = stat.querySelector('.js-stat-postback');
+	  var navControl = stat.querySelector('.js-stat-nav');
+
+	  var segmentChange = function segmentChange(event) {
+	    var segment = event.target;
+	    var value = segment.value;
+	    var oldValue = segment.oldValue;
+	    var level = segmentList.indexOf(segment);
+
+	    segmentAdd.unsetDisabled(oldValue);
+	    segmentList.forEach(function (el) {
+	      return el.unsetDisabled(oldValue);
+	    });
+
+	    if (value || value === 0) {
+	      segmentAdd.setDisabled(value);
+	      segmentList.forEach(function (el, l) {
+	        if (l !== level) {
+	          el.setDisabled(value);
+	        }
+	      });
+	      (0, _update2.default)({ segment: { value: value, level: level + 1 } });
+	    } else {
+	      if (statParams.segments.length) {
+	        segmentAdd.style.display = '';
+	      } else {
+	        segmentAdd.style.display = 'none';
+	      }
+
+	      segment.removeEventListener('change', segmentChange);
+	      (0, _update2.default)({ segment: { level: level } });
+	      segmentList.splice(level, 1);
+	      segment.parentNode.removeChild(segment);
+	    }
+	  };
+
+	  var segmentClone = function segmentClone(value) {
+	    segmentAdd.updateValue();
+	    segmentAdd.setDisabled(value);
+	    segmentList.forEach(function (el) {
+	      return el.setDisabled(value);
+	    });
+
+	    var segment = segmentAdd.cloneNode(true);
+	    segment.classList.remove('is-open', 'is-add', 'js-stat-addsegment');
+	    segmentAdd.parentNode.insertBefore(segment, segmentAdd);
+	    (0, _listEvent2.default)(segment);
+	    segment.updateValue({ value: value, is_clear: true });
+	    segment.addEventListener('change', segmentChange);
+	    segmentList.push(segment);
+
+	    if (statParams.segments.length && segmentList.length < 3) {
+	      segmentAdd.style.display = '';
+	    } else {
+	      segmentAdd.style.display = 'none';
+	    }
+	  };
 
 	  if (datetime) {
 	    datetime.addEventListener('change', function (event) {
 	      var value = datetime.value;
 
-	      statEvent.setTable({
+	      (0, _update2.default)({
 	        date_from: {
 	          year: value.from.year,
 	          month: value.from.month,
@@ -138,106 +1317,25 @@ webpackJsonp([0],[
 	          date: value.to.date
 	        },
 	        start_time: value.start_time,
-	        end_time: value.end_time
+	        end_time: value.end_time,
+	        timezone: value.timezone
 	      });
 	    });
 	  }
 
-	  /* segments */
-
-	  var mainSegmentBtns = stat.querySelectorAll('.js-stat-main-segment');
-	  var segmentAdd = stat.querySelector('.js-stat-addsegment');
-	  var segmentList = [];
-
-	  var segmentChange = function segmentChange(event) {
-	    var segment = event.target;
-	    var value = segment.value;
-	    var oldValue = segment.oldValue;
-	    var level = segmentList.indexOf(segment);
-
-	    segmentList.forEach(function (el) {
-	      return el.unsetDisabled(oldValue);
-	    });
-	    segmentAdd.unsetDisabled(oldValue);
-
-	    if (value || value === 0) {
-	      segmentList.forEach(function (el, l) {
-	        if (l !== level) {
-	          el.setDisabled(value);
-	        }
-	      });
-	      segmentAdd.setDisabled(value);
-	      statEvent.setTable({ segment: { value: value, level: level } });
-	    } else {
-	      if (statConfig.main_segment) {
-	        segmentAdd.style.display = '';
-	      } else {
-	        segmentAdd.style.display = 'none';
-	      }
-
-	      segment.removeEventListener('change', segmentChange);
-	      statEvent.setTable({ segment: { level: level } });
-	      segmentList.splice(level, 1);
-	      segment.parentNode.removeChild(segment);
-	    }
-	  };
-
-	  var segmentClone = function segmentClone(value) {
-	    var segment = segmentAdd.cloneNode(true);
-
-	    segment.classList.remove('is-open', 'is-add', 'js-stat-addsegment');
-	    segment.value = null;
-	    segmentAdd.parentNode.insertBefore(segment, segmentAdd);
-	    setList(segment);
-	    segmentList.forEach(function (el) {
-	      return el.setDisabled(value);
-	    });
-	    segmentAdd.setDisabled(value);
-	    segmentList.push(segment);
-	    segment.updateValue({ value: value, is_clear: true });
-	    segment.addEventListener('change', segmentChange);
-
-	    if (statConfig.main_segment && segmentList.length < 3) {
-	      segmentAdd.style.display = '';
-	    } else {
-	      segmentAdd.style.display = 'none';
-	    }
-	  };
-
-	  [].concat(_toConsumableArray(mainSegmentBtns)).forEach(function (mainSegmentBtn) {
-	    mainSegmentBtn.addEventListener('click', function () {
-	      var value = mainSegmentBtn.dataset.value;
+	  [].concat(_toConsumableArray(segmentBtns)).forEach(function (btn) {
+	    btn.addEventListener('click', function () {
+	      var value = btn.dataset.value;
 
 	      if (value) {
-	        var _iteratorNormalCompletion = true;
-	        var _didIteratorError = false;
-	        var _iteratorError = undefined;
+	        [].concat(_toConsumableArray(segmentBtns)).forEach(function (el) {
+	          el.classList.remove('is-active');
+	        });
 
-	        try {
-	          for (var _iterator = mainSegmentBtns[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	            var el = _step.value;
+	        (0, _update2.default)({ segment: { value: value, level: 0 } });
+	        btn.classList.add('is-active');
 
-	            el.classList.remove('is-active');
-	          }
-	        } catch (err) {
-	          _didIteratorError = true;
-	          _iteratorError = err;
-	        } finally {
-	          try {
-	            if (!_iteratorNormalCompletion && _iterator.return) {
-	              _iterator.return();
-	            }
-	          } finally {
-	            if (_didIteratorError) {
-	              throw _iteratorError;
-	            }
-	          }
-	        }
-
-	        statEvent.setTable({ main_segment: value });
-	        mainSegmentBtn.classList.add('is-active');
-
-	        if (segmentList.length < 3) {
+	        if (statParams.segments.length && segmentList.length < 3) {
 	          segmentAdd.style.display = '';
 	        } else {
 	          segmentAdd.style.display = 'none';
@@ -251,67 +1349,61 @@ webpackJsonp([0],[
 	      var value = segmentAdd.value;
 
 	      segmentClone(segmentAdd.value);
-	      segmentAdd.updateValue();
-	      statEvent.setTable({ segment: { value: value, level: segmentList.length - 1 } });
+	      (0, _update2.default)({ segment: { value: value, level: segmentList.length } });
 	    });
 	  }
-
-	  /* graph */
-
-	  var graphBtn = stat.querySelector('.js-stat-show-graph');
 
 	  if (graphBtn) {
 	    graphBtn.addEventListener('click', function () {
-	      if (statConfig.show_graph) {
+	      if (statParams.show_graph) {
 	        graphBtn.classList.remove('is-active');
-	        statEvent.setTable({ show_graph: false });
+	        (0, _update2.default)({ show_graph: false });
 	      } else {
 	        graphBtn.classList.add('is-active');
-	        statEvent.setTable({ show_graph: true });
+	        (0, _update2.default)({ show_graph: true });
 	      }
 	    });
 	  }
-
-	  /* tree */
-
-	  var treeBtn = stat.querySelector('.js-stat-is-tree');
 
 	  if (treeBtn) {
 	    treeBtn.addEventListener('click', function () {
-	      if (statConfig.is_tree) {
+	      if (statParams.is_tree) {
 	        treeBtn.classList.remove('is-active');
-	        statEvent.setTable({ is_tree: false });
+	        (0, _update2.default)({ is_tree: false });
 	      } else {
 	        treeBtn.classList.add('is-active');
-	        statEvent.setTable({ is_tree: true });
+	        (0, _update2.default)({ is_tree: true });
 	      }
 	    });
 	  }
 
-	  /* postback */
-
-	  var postbackControl = stat.querySelector('.js-stat-postback');
-
 	  if (postbackControl) {
 	    postbackControl.addEventListener('change', function () {
-	      statEvent.setTable(postbackControl.value);
+	      (0, _update2.default)(postbackControl.value);
 	    });
 	  }
 
-	  /* set all controls */
+	  if (navControl) {
+	    navControl.addEventListener('change', function () {
+	      (0, _update2.default)({
+	        page: navControl.value.page,
+	        length: navControl.value.length
+	      });
+	    });
+	  }
 
-	  var setAllControls = function setAllControls() {
-	    [].concat(_toConsumableArray(mainSegmentBtns)).forEach(function (mainSegmentBtn) {
-	      if (statConfig.main_segment === mainSegmentBtn.dataset.value) {
-	        mainSegmentBtn.classList.add('is-active');
+	  var resetControls = function resetControls() {
+	    [].concat(_toConsumableArray(segmentBtns)).forEach(function (btn) {
+	      if (statParams.segments[0] === btn.dataset.value) {
+	        btn.classList.add('is-active');
 	      } else {
-	        mainSegmentBtn.classList.remove('is-active');
+	        btn.classList.remove('is-active');
 	      }
 	    });
 
 	    if (datetime) {
-	      var datetimeFrom = statConfig.date_from;
-	      var datetimeTo = statConfig.date_to;
+	      var datetimeFrom = statParams.date_from;
+	      var datetimeTo = statParams.date_to;
 
 	      datetime.updateValue({
 	        from: {
@@ -325,7 +1417,8 @@ webpackJsonp([0],[
 	          date: datetimeTo.date
 	        },
 	        start_time: statParams.start_time,
-	        end_time: statParams.end_time
+	        end_time: statParams.end_time,
+	        timezone: statParams.timezone
 	      });
 	    }
 
@@ -337,10 +1430,12 @@ webpackJsonp([0],[
 	        segment.parentNode.removeChild(segment);
 	      });
 	      segmentList = [];
-	      statConfig.segments.forEach(function (value, i) {
-	        return segmentClone(value);
+	      statParams.segments.forEach(function (value, i) {
+	        if (i) {
+	          segmentClone(value);
+	        }
 	      });
-	      if (statConfig.main_segment && segmentList.length < 3) {
+	      if (statParams.segments.length && segmentList.length < 3) {
 	        segmentAdd.style.display = '';
 	      } else {
 	        segmentAdd.style.display = 'none';
@@ -348,7 +1443,7 @@ webpackJsonp([0],[
 	    }
 
 	    if (graphBtn) {
-	      if (statConfig.show_graph) {
+	      if (statParams.show_graph) {
 	        graphBtn.classList.add('is-active');
 	      } else {
 	        graphBtn.classList.remove('is-active');
@@ -356,7 +1451,7 @@ webpackJsonp([0],[
 	    }
 
 	    if (treeBtn) {
-	      if (statConfig.is_tree) {
+	      if (statParams.is_tree) {
 	        treeBtn.classList.add('is-active');
 	      } else {
 	        treeBtn.classList.remove('is-active');
@@ -369,59 +1464,258 @@ webpackJsonp([0],[
 	        currency: statParams.currency
 	      });
 	    }
+
+	    if (navControl) {
+	      navControl.updateValue({
+	        page: statParams.page,
+	        length: statParams.length
+	      });
+	    }
 	  };
 
-	  setAllControls();
-	  stat.addEventListener('backurl', setAllControls);
+	  resetControls();
+	  stat.addEventListener('backurl', resetControls);
 	};
 
-	var _dateformat = __webpack_require__(14);
+	var _listEvent = __webpack_require__(16);
 
-	var _dateformat2 = _interopRequireDefault(_dateformat);
+	var _listEvent2 = _interopRequireDefault(_listEvent);
 
-	var _table = __webpack_require__(15);
-
-	var _table2 = _interopRequireDefault(_table);
-
-	var _graph = __webpack_require__(40);
-
-	var _graph2 = _interopRequireDefault(_graph);
-
-	var _time = __webpack_require__(42);
-
-	var _time2 = _interopRequireDefault(_time);
-
-	var _calendar = __webpack_require__(43);
-
-	var _calendar2 = _interopRequireDefault(_calendar);
-
-	var _postback = __webpack_require__(45);
-
-	var _postback2 = _interopRequireDefault(_postback);
-
-	var _nav = __webpack_require__(47);
+	var _nav = __webpack_require__(21);
 
 	var _nav2 = _interopRequireDefault(_nav);
 
-	var _list = __webpack_require__(48);
+	var _table = __webpack_require__(22);
 
-	var _list2 = _interopRequireDefault(_list);
+	var _table2 = _interopRequireDefault(_table);
 
-	var _statStart = __webpack_require__(49);
+	var _graph = __webpack_require__(36);
 
-	var _statStart2 = _interopRequireDefault(_statStart);
+	var _graph2 = _interopRequireDefault(_graph);
 
-	var _statEvent = __webpack_require__(27);
+	var _init = __webpack_require__(39);
 
-	var _statEvent2 = _interopRequireDefault(_statEvent);
+	var _init2 = _interopRequireDefault(_init);
+
+	var _update = __webpack_require__(48);
+
+	var _update2 = _interopRequireDefault(_update);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 14 */,
-/* 15 */
+/* 21 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  [].concat(_toConsumableArray(document.querySelectorAll('.js-nav'))).forEach(function (nav) {
+	    var page = nav.querySelector('.js-nav-page');
+	    var count = nav.querySelector('.js-nav-count');
+	    var labelCount = nav.querySelector('.js-nav-count-label');
+	    var itemsCount = nav.querySelectorAll('.js-nav-count-item');
+
+	    var controls = nav.querySelector('.js-nav-controls');
+	    var label = nav.querySelector('.js-nav-label');
+	    var tostart = nav.querySelector('.js-nav-tostart');
+	    var prev = nav.querySelector('.js-nav-prev');
+	    var next = nav.querySelector('.js-nav-next');
+	    var toend = nav.querySelector('.js-nav-toend');
+
+	    var updateValue = void 0;
+	    var setValue = void 0;
+
+	    page.addEventListener('paste', function (event) {
+	      event.preventDefault();
+	    });
+
+	    page.addEventListener('keydown', function (event) {
+	      var char = String.fromCharCode(event.keyCode);
+	      var key = '0123456789'.indexOf(char);
+
+	      if ([13, 27, 9].indexOf(event.keyCode) === -1 && key === -1) {
+	        event.preventDefault();
+	      } else {
+	        if ([13, 27, 9].indexOf(event.keyCode) !== -1) {
+	          event.target.blur();
+	        }
+	      }
+	    });
+
+	    page.addEventListener('change', function (event) {
+	      var value = parseInt(event.target.value, 10);
+
+	      if (!value || value < 1) {
+	        value = 1;
+	      }
+
+	      if (value > nav.value.max_pages) {
+	        value = nav.value.max_pages;
+	        event.target.value = nav.value.max_pages;
+	      }
+
+	      setValue({ page: value });
+	    });
+
+	    var clickWindow = function clickWindow(event) {
+	      var closest = event.target.closest('.js-nav-count');
+	      if (!closest || closest !== count) {
+	        close();
+	      }
+	    };
+
+	    var open = function open() {
+	      count.classList.add('is-open');
+	      window.addEventListener('click', clickWindow);
+	    };
+
+	    var close = function close() {
+	      count.classList.remove('is-open');
+	      window.removeEventListener('click', clickWindow);
+	    };
+
+	    labelCount.addEventListener('click', function () {
+	      if (count.classList.contains('is-open')) {
+	        close();
+	      } else {
+	        open();
+	      }
+	    });
+
+	    [].concat(_toConsumableArray(itemsCount)).forEach(function (item) {
+	      item.addEventListener('click', function () {
+	        var value = parseInt(item.innerText, 10);
+	        [].concat(_toConsumableArray(itemsCount)).forEach(function (el) {
+	          return el.classList.remove('is-select');
+	        });
+	        item.classList.add('is-select');
+	        close();
+	        labelCount.innerText = value;
+	        setValue({ length: value });
+	      });
+	    });
+
+	    tostart.addEventListener('click', function () {
+	      setValue({ page: 1 });
+	    });
+
+	    prev.addEventListener('click', function () {
+	      var p = nav.value.page - 1;
+	      if (p < 1) {
+	        p = 1;
+	      }
+	      setValue({ page: p });
+	    });
+
+	    next.addEventListener('click', function () {
+	      var p = nav.value.page + 1;
+	      if (p > Math.ceil(nav.value.total / nav.value.length)) {
+	        p = Math.ceil(nav.value.total / nav.value.length);
+	      }
+	      setValue({ page: p });
+	    });
+
+	    toend.addEventListener('click', function () {
+	      setValue({ page: Math.ceil(nav.value.total / nav.value.length) });
+	    });
+
+	    updateValue = function updateValue(obj) {
+	      var isUpdate = false;
+
+	      if (obj.hasOwnProperty('total') && nav.value.total !== parseInt(obj.total, 10)) {
+	        nav.value.total = parseInt(obj.total, 10);
+	      }
+
+	      if (obj.hasOwnProperty('length') && nav.value.length !== parseInt(obj.length, 10)) {
+	        nav.value.length = parseInt(obj.length, 10);
+	        isUpdate = true;
+	      }
+
+	      if (obj.hasOwnProperty('page') && nav.value.page !== parseInt(obj.page, 10)) {
+	        nav.value.page = parseInt(obj.page, 10);
+	        isUpdate = true;
+	      }
+
+	      if (nav.value.total) {
+	        nav.style.display = '';
+
+	        if (nav.value.page > Math.ceil(nav.value.total / nav.value.length)) {
+	          nav.value.page = Math.ceil(nav.value.total / nav.value.length);
+	          isUpdate = true;
+	        }
+
+	        var start = (nav.value.page - 1) * nav.value.length + 1;
+	        var end = start + nav.value.length - 1;
+
+	        if (end > nav.value.total) {
+	          end = nav.value.total;
+	        }
+
+	        label.innerText = start + '-' + end + ' of ' + nav.value.total;
+
+	        if (nav.value.total > nav.value.length) {
+	          controls.style.display = '';
+	        } else {
+	          controls.style.display = 'none';
+	        }
+	      }
+
+	      if (nav.value.page === 1) {
+	        tostart.classList.add('is-disabled');
+	        prev.classList.add('is-disabled');
+	      } else {
+	        tostart.classList.remove('is-disabled');
+	        prev.classList.remove('is-disabled');
+	      }
+
+	      if (nav.value.page === Math.ceil(nav.value.total / nav.value.length)) {
+	        next.classList.add('is-disabled');
+	        toend.classList.add('is-disabled');
+	      } else {
+	        next.classList.remove('is-disabled');
+	        toend.classList.remove('is-disabled');
+	      }
+
+	      if (isUpdate) {
+	        page.value = nav.value.page;
+	        labelCount.innerText = nav.value.length;
+
+	        [].concat(_toConsumableArray(itemsCount)).forEach(function (item) {
+	          if (String(nav.value.length) === item.innerText) {
+	            item.classList.add('is-select');
+	          } else {
+	            item.classList.remove('is-select');
+	          }
+	        });
+	      }
+
+	      return isUpdate;
+	    };
+
+	    setValue = function setValue(obj) {
+	      if (updateValue(obj)) {
+	        nav.triggerEvent('change');
+	      }
+	    };
+
+	    nav.value = {};
+
+	    nav.updateValue = updateValue;
+	    nav.setValue = setValue;
+	  });
+	};
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -431,14 +1725,74 @@ webpackJsonp([0],[
 	});
 
 	exports.default = function () {
-	  var tableRender = (0, _tableRender2.default)();
-	  var statEvent = (0, _statEvent2.default)();
+	  var authKey = 'mkj-l123k-kFWSdl90d';
+	  var allFields = 0;
 
 	  var stat = document.querySelector('.js-stat');
-
-	  var url = 'https://148.251.195.78/clicks/grid';
+	  var navControl = document.querySelector('.js-stat-nav');
+	  var url = window.might.url + '/clicks/grid';
 	  var headers = new Headers();
 	  headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+	  var dateToString = function dateToString(y, m, d) {
+	    var date = new Date(y, m, d);
+	    return (0, _dateformat2.default)(date, 'yyyy-mm-dd');
+	  };
+
+	  var getFormData = function getFormData() {
+	    var params = window.might.stat.params;
+
+	    if (params.level > params.segments.length || params.level > 1 && !params.current) {
+	      return null;
+	    }
+
+	    var data = {};
+	    data.auth_key = authKey;
+	    data.all_fields = allFields;
+	    data.draw = params.draw;
+	    if (params.level === 1 || !params.is_tree) {
+	      data.start = (params.page - 1) * params.length;
+	      data.length = params.length;
+	    } else {
+	      data.start = 0;
+	      data.length = 50;
+	    }
+	    data.search = params.search;
+	    data.order = params.order;
+	    data.currency = params.currency.toUpperCase();
+	    data.currency_type = params.currency_type;
+	    data.currency_date = params.currency_date;
+	    var from = dateToString(params.date_from.year, params.date_from.month, params.date_from.date);
+	    var to = dateToString(params.date_to.year, params.date_to.month, params.date_to.date);
+	    data.date_filter = from + ' - ' + to;
+	    data.start_time = params.start_time;
+	    data.end_time = params.end_time;
+	    data.timezone = params.timezone;
+	    if (params.postback_date) {
+	      data.postback_date = true;
+	    }
+	    if (params.is_tree) {
+	      data.group = params.segments[params.level - 1];
+	    } else {
+	      data.group = params.segments.join(',');
+	    }
+	    data.filter = JSON.stringify(params.filter);
+
+	    var obj = {
+	      field: data.group,
+	      level: params.level,
+	      is_bottom: params.is_tree ? params.segments.length <= params.level : true,
+	      form_data: data,
+	      is_tree: params.is_tree
+	    };
+
+	    if (params.current) {
+	      obj.current = params.current;
+	      obj.filter = params.filter;
+	    }
+
+	    return obj;
+	  };
 
 	  var options = {
 	    method: 'post',
@@ -447,48 +1801,62 @@ webpackJsonp([0],[
 	  };
 
 	  stat.addEventListener('drawtable', function () {
-	    var obj = statEvent.getTableRequest();
+	    var obj = getFormData();
+	    var params = window.might.stat.params;
 
 	    if (obj) {
-	      options.body = _qs2.default.stringify(obj.body);
+	      options.body = _qs2.default.stringify(obj.form_data);
 
 	      fetch(url, options).then(function (response) {
 	        return response.json();
-	      }).then(function (res) {
-	        obj.result = res;
+	      }).then(function (result) {
+	        if (result.draw !== params.draw + 1) {
+	          return;
+	        }
+
+	        params.draw = result.draw;
+	        obj.result = result;
 
 	        if (obj.level === 1) {
-	          var table = tableRender.render(obj);
+	          var table = _tableRender2.default.render(obj);
 	          (0, _tableEvent2.default)(table);
+
+	          if (params.total !== parseInt(result.recordsTotal, 10)) {
+	            params.total = parseInt(result.recordsTotal, 10);
+
+	            navControl.setValue({
+	              total: params.total
+	            });
+	          }
 	        } else {
-	          tableRender.renderRow(obj);
+	          _tableRender2.default.renderRow(obj);
 	        }
 	      });
 	    }
 	  });
 	};
 
-	var _qs = __webpack_require__(22);
+	var _qs = __webpack_require__(29);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _statEvent = __webpack_require__(27);
+	var _dateformat = __webpack_require__(18);
 
-	var _statEvent2 = _interopRequireDefault(_statEvent);
+	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _tableRender = __webpack_require__(37);
+	var _tableRender = __webpack_require__(34);
 
 	var _tableRender2 = _interopRequireDefault(_tableRender);
 
-	var _tableEvent = __webpack_require__(39);
+	var _tableEvent = __webpack_require__(35);
 
 	var _tableEvent2 = _interopRequireDefault(_tableEvent);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(23)))
 
 /***/ },
-/* 16 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Promise, global) {/*** IMPORTS FROM imports-loader ***/
@@ -932,10 +2300,10 @@ webpackJsonp([0],[
 	/*** EXPORTS FROM exports-loader ***/
 	module.exports = global.fetch;
 	}.call(global));
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24), (function() { return this; }())))
 
 /***/ },
-/* 17 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*** IMPORTS FROM imports-loader ***/
@@ -1071,7 +2439,7 @@ webpackJsonp([0],[
 	    function lib$es6$promise$asap$$attemptVertx() {
 	      try {
 	        var r = require;
-	        var vertx = __webpack_require__(20);
+	        var vertx = __webpack_require__(27);
 	        lib$es6$promise$asap$$vertxNext = vertx.runOnLoop || vertx.runOnContext;
 	        return lib$es6$promise$asap$$useVertxTimer();
 	      } catch(e) {
@@ -1889,7 +3257,7 @@ webpackJsonp([0],[
 	    };
 
 	    /* global define:true module:true window: true */
-	    if ("function" === 'function' && __webpack_require__(21)['amd']) {
+	    if ("function" === 'function' && __webpack_require__(28)['amd']) {
 	      !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return lib$es6$promise$umd$$ES6Promise; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	    } else if (typeof module !== 'undefined' && module['exports']) {
 	      module['exports'] = lib$es6$promise$umd$$ES6Promise;
@@ -1905,11 +3273,11 @@ webpackJsonp([0],[
 	/*** EXPORTS FROM exports-loader ***/
 	module.exports = global.Promise;
 	}.call(global));
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18), (function() { return this; }()), __webpack_require__(19)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(25), (function() { return this; }()), __webpack_require__(26)(module)))
 
 /***/ },
-/* 18 */,
-/* 19 */
+/* 25 */,
+/* 26 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -1925,268 +3293,26 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 20 */
+/* 27 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 21 */
+/* 28 */
 /***/ function(module, exports) {
 
 	module.exports = function() { throw new Error("define cannot be used indirect"); };
 
 
 /***/ },
-/* 22 */,
-/* 23 */,
-/* 24 */,
-/* 25 */,
-/* 26 */,
-/* 27 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function () {
-	  var stat = document.querySelector('.js-stat');
-
-	  var regTime = new RegExp(/^([0,1][0-9]|2[0-3]):[0-5][0-9]$/);
-	  var regDate = new RegExp(/\d{4}-(0[1-9]|1[0-2])-([0-1][0-9]|3[0-1])/, 'g');
-
-	  var setDateFilter = function setDateFilter() {
-	    var config = window.might.stat.config;
-	    var from = new Date(config.date_from.year, config.date_from.month, config.date_from.date);
-	    var to = new Date(config.date_to.year, config.date_to.month, config.date_to.date);
-	    statParams.date_filter = (0, _dateformat2.default)(from, 'yyyy-mm-dd') + ' - ' + (0, _dateformat2.default)(to, 'yyyy-mm-dd');
-	  };
-
-	  return {
-	    setTable: function setTable(obj) {
-	      var params = window.might.stat.params;
-	      var config = window.might.stat.config;
-
-	      var isUpdate = false;
-	      var isUpdateTable = false;
-	      var isUpdateGraph = false;
-
-	      for (var param in obj) {
-	        if (obj.hasOwnProperty(param)) {
-	          switch (param) {
-	            case 'postback_date':
-	              if (!!params.postback_date !== !!obj.postback_date) {
-	                if (obj.postback_date) {
-	                  params.postback_date = true;
-	                } else {
-	                  delete params.postback_date;
-	                }
-	                isUpdate = true;
-	              }
-	              break;
-
-	            case 'currency':
-	              if (params.currency !== obj.currency.toLowerCase()) {
-	                params.currency = obj.currency.toLowerCase();
-	                isUpdate = true;
-	              }
-	              break;
-
-	            case 'main_segment':
-	              if (config.main_segment !== obj.main_segment) {
-	                config.main_segment = obj.main_segment;
-	                isUpdate = true;
-	              }
-	              break;
-
-	            case 'segment':
-	              if (obj.segment.hasOwnProperty('level')) {
-	                if (obj.segment.hasOwnProperty('value')) {
-	                  if (config.segments[obj.segment.level] !== obj.segment.value) {
-	                    config.segments[obj.segment.level] = obj.segment.value;
-	                    isUpdate = true;
-	                  }
-	                } else {
-	                  if (config.segments.splice(obj.segment.level, 1).length === 1) {
-	                    isUpdate = true;
-	                  }
-	                }
-	              }
-	              break;
-
-	            case 'date_from':
-	              var from = config.date_from;
-	              var newFrom = obj.date_from;
-	              if (from.year !== newFrom.year || from.month !== newFrom.month || from.date !== newFrom.date) {
-	                from.year = newFrom.year;
-	                from.month = newFrom.month;
-	                from.date = newFrom.date;
-	                setDateFilter();
-	                isUpdate = true;
-	              }
-	              break;
-
-	            case 'date_to':
-	              var to = config.date_to;
-	              var newTo = obj.date_to;
-	              if (to.year !== newTo.year || to.month !== newTo.month || to.date !== newTo.date) {
-	                to.year = newTo.year;
-	                to.month = newTo.month;
-	                to.date = newTo.date;
-	                setDateFilter();
-	                isUpdate = true;
-	              }
-	              break;
-
-	            case 'start_time':
-	              if (regTime.test(obj.start_time) && params.start_time !== obj.start_time) {
-	                params.start_time = obj.start_time;
-	                isUpdate = true;
-	              }
-	              break;
-
-	            case 'end_time':
-	              if (regTime.test(obj.end_time) && params.end_time !== obj.end_time) {
-	                params.end_time = obj.end_time;
-	                isUpdate = true;
-	              }
-	              break;
-
-	            case 'show_graph':
-	              if (config.show_graph !== !!obj.show_graph) {
-	                config.show_graph = !!obj.show_graph;
-	                isUpdateGraph = true;
-	              }
-	              break;
-
-	            case 'is_tree':
-	              if (config.is_tree !== !!obj.is_tree) {
-	                config.is_tree = !!obj.is_tree;
-	                isUpdateTable = true;
-	              }
-	              break;
-
-	            default:
-	              break;
-	          }
-	        }
-	      }
-
-	      if (isUpdate) {
-	        params.draw++;
-	        params.filter = [];
-	        config.level = 1;
-	        config.current = null;
-
-	        stat.triggerEvent('drawtable');
-	        stat.triggerEvent('drawgraph');
-	        might.stat.pushHistory();
-	      } else if (isUpdateGraph) {
-	        stat.triggerEvent('drawgraph');
-	        might.stat.pushHistory();
-	      } else if (isUpdateTable) {
-	        params.draw++;
-	        params.filter = [];
-	        config.level = 1;
-	        config.current = null;
-
-	        stat.triggerEvent('drawtable');
-	        might.stat.pushHistory();
-	      }
-	    },
-
-	    getTableRequest: function getTableRequest() {
-	      var params = window.might.stat.params;
-	      var config = window.might.stat.config;
-
-	      if (!config.main_segment || config.level > 1 && !config.current) {
-	        return null;
-	      }
-
-	      if (config.level === 1) {
-	        params.group = config.main_segment;
-	      } else {
-	        params.group = config.segments[config.level - 2];
-	      }
-
-	      var obj = {
-	        field: params.group,
-	        level: config.level,
-	        is_parent: config.segments.length >= config.level,
-	        body: Object.assign({}, params)
-	      };
-
-	      if (config.level > 1) {
-	        obj.filter = params.filter;
-	        obj.current = config.current;
-	      }
-
-	      return obj;
-	    },
-
-	    setChildsTable: function setChildsTable(obj) {
-	      var params = window.might.stat.params;
-	      var config = window.might.stat.config;
-
-	      if (obj.level && obj.current && obj.filter.length) {
-	        params.draw++;
-	        params.filter = obj.filter;
-	        config.level = parseInt(obj.level, 10) + 1;
-	        config.current = obj.current;
-	        stat.triggerEvent('drawtable');
-	      }
-	    }
-	  };
-	};
-
-	var _dateformat = __webpack_require__(14);
-
-	var _dateformat2 = _interopRequireDefault(_dateformat);
-
-	var _createBrowserHistory = __webpack_require__(28);
-
-	var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
-
-	var _qs = __webpack_require__(22);
-
-	var _qs2 = _interopRequireDefault(_qs);
-
-	var _timezone = __webpack_require__(36);
-
-	var _timezone2 = _interopRequireDefault(_timezone);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/***/ },
-/* 28 */,
 /* 29 */,
 /* 30 */,
 /* 31 */,
 /* 32 */,
 /* 33 */,
-/* 34 */,
-/* 35 */,
-/* 36 */
+/* 34 */
 /***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function (table) {
-	  var timezones = ['+00:00|Africa/Abidjan', '+00:00|Africa/Accra', '+00:00|Africa/Bamako', '+00:00|Africa/Banjul', '+00:00|Africa/Bissau', '+00:00|Africa/Casablanca', '+00:00|Africa/Conakry', '+00:00|Africa/Dakar', '+00:00|Africa/El Aaiun', '+00:00|Africa/Freetown', '+00:00|Africa/Lome', '+00:00|Africa/Monrovia', '+00:00|Africa/Nouakchott', '+00:00|Africa/Ouagadougou', '+00:00|Africa/Sao Tome', '+01:00|Africa/Algiers', '+01:00|Africa/Bangui', '+01:00|Africa/Brazzaville', '+01:00|Africa/Douala', '+01:00|Africa/Kinshasa', '+01:00|Africa/Lagos', '+01:00|Africa/Libreville', '+01:00|Africa/Luanda', '+01:00|Africa/Malabo', '+01:00|Africa/Ndjamena', '+01:00|Africa/Niamey', '+01:00|Africa/Porto-Novo', '+01:00|Africa/Tunis', '+01:00|Africa/Windhoek', '+02:00|Africa/Blantyre', '+02:00|Africa/Bujumbura', '+02:00|Africa/Cairo', '+02:00|Africa/Ceuta', '+02:00|Africa/Gaborone', '+02:00|Africa/Harare', '+02:00|Africa/Johannesburg', '+02:00|Africa/Kigali', '+02:00|Africa/Lubumbashi', '+02:00|Africa/Lusaka', '+02:00|Africa/Maputo', '+02:00|Africa/Maseru', '+02:00|Africa/Mbabane', '+02:00|Africa/Tripoli', '+03:00|Africa/Addis Ababa', '+03:00|Africa/Asmara', '+03:00|Africa/Dar es Salaam', '+03:00|Africa/Djibouti', '+03:00|Africa/Juba', '+03:00|Africa/Kampala', '+03:00|Africa/Khartoum', '+03:00|Africa/Mogadishu', '+03:00|Africa/Nairobi', '-09:00|America/Adak', '-08:00|America/Anchorage', '-08:00|America/Juneau', '-08:00|America/Metlakatla', '-08:00|America/Nome', '-08:00|America/Sitka', '-08:00|America/Yakutat', '-07:00|America/Creston', '-07:00|America/Dawson', '-07:00|America/Dawson Creek', '-07:00|America/Hermosillo', '-07:00|America/Los Angeles', '-07:00|America/Phoenix', '-07:00|America/Santa Isabel', '-07:00|America/Tijuana', '-07:00|America/Vancouver', '-07:00|America/Whitehorse', '-06:00|America/Belize', '-06:00|America/Boise', '-06:00|America/Cambridge Bay', '-06:00|America/Chihuahua', '-06:00|America/Costa Rica', '-06:00|America/Denver', '-06:00|America/Edmonton', '-06:00|America/El Salvador', '-06:00|America/Guatemala', '-06:00|America/Inuvik', '-06:00|America/Managua', '-06:00|America/Mazatlan', '-06:00|America/Ojinaga', '-06:00|America/Regina', '-06:00|America/Swift Current', '-06:00|America/Tegucigalpa', '-06:00|America/Yellowknife', '-05:00|America/Atikokan', '-05:00|America/Bahia Banderas', '-05:00|America/Bogota', '-05:00|America/Cancun', '-05:00|America/Cayman', '-05:00|America/Chicago', '-05:00|America/Eirunepe', '-05:00|America/Guayaquil', '-05:00|America/Indiana/Knox', '-05:00|America/Indiana/Tell City', '-05:00|America/Jamaica', '-05:00|America/Lima', '-05:00|America/Matamoros', '-05:00|America/Menominee', '-05:00|America/Merida', '-05:00|America/Mexico City', '-05:00|America/Monterrey', '-05:00|America/North Dakota/Beulah', '-05:00|America/North Dakota/Center', '-05:00|America/North Dakota/New Salem', '-05:00|America/Panama', '-05:00|America/Rainy River', '-05:00|America/Rankin Inlet', '-05:00|America/Resolute', '-05:00|America/Rio Branco', '-05:00|America/Winnipeg', '-04:30|America/Caracas', '-04:00|America/Anguilla', '-04:00|America/Antigua', '-04:00|America/Aruba', '-04:00|America/Asuncion', '-04:00|America/Barbados', '-04:00|America/Blanc-Sablon', '-04:00|America/Boa Vista', '-04:00|America/Campo Grande', '-04:00|America/Cuiaba', '-04:00|America/Curacao', '-04:00|America/Detroit', '-04:00|America/Dominica', '-04:00|America/Grand Turk', '-04:00|America/Grenada', '-04:00|America/Guadeloupe', '-04:00|America/Guyana', '-04:00|America/Havana', '-04:00|America/Indiana/Indianapolis', '-04:00|America/Indiana/Marengo', '-04:00|America/Indiana/Petersburg', '-04:00|America/Indiana/Vevay', '-04:00|America/Indiana/Vincennes', '-04:00|America/Indiana/Winamac', '-04:00|America/Iqaluit', '-04:00|America/Kentucky/Louisville', '-04:00|America/Kentucky/Monticello', '-04:00|America/Kralendijk', '-04:00|America/La Paz', '-04:00|America/Lower Princes', '-04:00|America/Manaus', '-04:00|America/Marigot', '-04:00|America/Martinique', '-04:00|America/Montserrat', '-04:00|America/Nassau', '-04:00|America/New York', '-04:00|America/Nipigon', '-04:00|America/Pangnirtung', '-04:00|America/Port-au-Prince', '-04:00|America/Port of Spain', '-04:00|America/Porto Velho', '-04:00|America/Puerto Rico', '-04:00|America/Santiago', '-04:00|America/Santo Domingo', '-04:00|America/St Barthelemy', '-04:00|America/St Kitts', '-04:00|America/St Lucia', '-04:00|America/St Thomas', '-04:00|America/St Vincent', '-04:00|America/Thunder Bay', '-04:00|America/Toronto', '-04:00|America/Tortola', '-03:00|America/Araguaina', '-03:00|America/Argentina/Buenos Aires', '-03:00|America/Argentina/Catamarca', '-03:00|America/Argentina/Cordoba', '-03:00|America/Argentina/Jujuy', '-03:00|America/Argentina/La Rioja', '-03:00|America/Argentina/Mendoza', '-03:00|America/Argentina/Rio Gallegos', '-03:00|America/Argentina/Salta', '-03:00|America/Argentina/San Juan', '-03:00|America/Argentina/San Luis', '-03:00|America/Argentina/Tucuman', '-03:00|America/Argentina/Ushuaia', '-03:00|America/Bahia', '-03:00|America/Belem', '-03:00|America/Cayenne', '-03:00|America/Fortaleza', '-03:00|America/Glace Bay', '-03:00|America/Goose Bay', '-03:00|America/Halifax', '-03:00|America/Maceio', '-03:00|America/Moncton', '-03:00|America/Montevideo', '-03:00|America/Paramaribo', '-03:00|America/Recife', '-03:00|America/Santarem', '-03:00|America/Sao Paulo', '-03:00|America/Thule', '-02:00|America/Godthab', '-02:00|America/Miquelon', '-02:00|America/Noronha', '-02:30|America/St Johns', '+00:00|America/Danmarkshavn', '+00:00|America/Scoresbysund', '-04:00|Antarctica/Palmer', '-03:00|Antarctica/Rothera', '+02:00|Antarctica/Troll', '+03:00|Antarctica/Syowa', '+05:00|Antarctica/Mawson', '+06:00|Antarctica/Vostok', '+07:00|Antarctica/Davis', '+08:00|Antarctica/Casey', '+10:00|Antarctica/DumontDUrville', '+11:00|Antarctica/Macquarie', '+12:00|Antarctica/McMurdo', '+03:00|Asia/Aden', '+03:00|Asia/Amman', '+03:00|Asia/Baghdad', '+03:00|Asia/Bahrain', '+03:00|Asia/Beirut', '+03:00|Asia/Damascus', '+03:00|Asia/Gaza', '+03:00|Asia/Hebron', '+03:00|Asia/Jerusalem', '+03:00|Asia/Kuwait', '+03:00|Asia/Nicosia', '+03:00|Asia/Qatar', '+03:00|Asia/Riyadh', '+04:30|Asia/Kabul', '+04:30|Asia/Tehran', '+04:00|Asia/Dubai', '+04:00|Asia/Muscat', '+04:00|Asia/Tbilisi', '+04:00|Asia/Yerevan', '+05:45|Asia/Kathmandu', '+05:30|Asia/Colombo', '+05:30|Asia/Kolkata', '+05:00|Asia/Aqtau', '+05:00|Asia/Aqtobe', '+05:00|Asia/Ashgabat', '+05:00|Asia/Baku', '+05:00|Asia/Dushanbe', '+05:00|Asia/Karachi', '+05:00|Asia/Oral', '+05:00|Asia/Samarkand', '+05:00|Asia/Tashkent', '+05:00|Asia/Yekaterinburg', '+06:00|Asia/Almaty', '+06:00|Asia/Bishkek', '+06:00|Asia/Dhaka', '+06:00|Asia/Novosibirsk', '+06:00|Asia/Omsk', '+06:00|Asia/Qyzylorda', '+06:00|Asia/Thimphu', '+06:00|Asia/Urumqi', '+06:30|Asia/Rangoon', '+07:00|Asia/Bangkok', '+07:00|Asia/Ho Chi Minh', '+07:00|Asia/Hovd', '+07:00|Asia/Jakarta', '+07:00|Asia/Krasnoyarsk', '+07:00|Asia/Novokuznetsk', '+07:00|Asia/Phnom Penh', '+07:00|Asia/Pontianak', '+07:00|Asia/Vientiane', '+08:00|Asia/Brunei', '+08:00|Asia/Chita', '+08:00|Asia/Choibalsan', '+08:00|Asia/Hong Kong', '+08:00|Asia/Irkutsk', '+08:00|Asia/Kuala Lumpur', '+08:00|Asia/Kuching', '+08:00|Asia/Macau', '+08:00|Asia/Makassar', '+08:00|Asia/Manila', '+08:00|Asia/Shanghai', '+08:00|Asia/Singapore', '+08:00|Asia/Taipei', '+08:00|Asia/Ulaanbaatar', '+09:00|Asia/Dili', '+09:00|Asia/Jayapura', '+09:00|Asia/Khandyga', '+09:00|Asia/Pyongyang', '+09:00|Asia/Seoul', '+09:00|Asia/Tokyo', '+09:00|Asia/Yakutsk', '+10:00|Asia/Magadan', '+10:00|Asia/Sakhalin', '+10:00|Asia/Ust-Nera', '+10:00|Asia/Vladivostok', '+11:00|Asia/Srednekolymsk', '+12:00|Asia/Anadyr', '+12:00|Asia/Kamchatka', '-03:00|Atlantic/Bermuda', '-03:00|Atlantic/Stanley', '-02:00|Atlantic/South Georgia', '-01:00|Atlantic/Cape Verde', '+00:00|Atlantic/Azores', '+00:00|Atlantic/Reykjavik', '+00:00|Atlantic/St Helena', '+01:00|Atlantic/Canary', '+01:00|Atlantic/Faroe', '+01:00|Atlantic/Madeira', '+01:00|Europe/Dublin', '+01:00|Europe/Guernsey', '+01:00|Europe/Isle of Man', '+01:00|Europe/Jersey', '+01:00|Europe/Lisbon', '+01:00|Europe/London', '+02:00|Europe/Amsterdam', '+02:00|Europe/Andorra', '+02:00|Europe/Belgrade', '+02:00|Europe/Berlin', '+02:00|Europe/Bratislava', '+02:00|Europe/Brussels', '+02:00|Europe/Budapest', '+02:00|Europe/Busingen', '+02:00|Europe/Copenhagen', '+02:00|Europe/Gibraltar', '+02:00|Europe/Kaliningrad', '+02:00|Europe/Ljubljana', '+02:00|Europe/Luxembourg', '+02:00|Europe/Madrid', '+02:00|Europe/Malta', '+02:00|Europe/Monaco', '+02:00|Europe/Oslo', '+02:00|Europe/Paris', '+02:00|Europe/Podgorica', '+02:00|Europe/Prague', '+02:00|Europe/Rome', '+02:00|Europe/San Marino', '+02:00|Europe/Sarajevo', '+02:00|Europe/Skopje', '+02:00|Europe/Stockholm', '+02:00|Europe/Tirane', '+02:00|Europe/Vaduz', '+02:00|Europe/Vatican', '+02:00|Europe/Vienna', '+02:00|Europe/Warsaw', '+02:00|Europe/Zagreb', '+02:00|Europe/Zurich', '+03:00|Europe/Athens', '+03:00|Europe/Bucharest', '+03:00|Europe/Chisinau', '+03:00|Europe/Helsinki', '+03:00|Europe/Istanbul', '+03:00|Europe/Kiev', '+03:00|Europe/Mariehamn', '+03:00|Europe/Minsk', '+03:00|Europe/Moscow', '+03:00|Europe/Riga', '+03:00|Europe/Simferopol', '+03:00|Europe/Sofia', '+03:00|Europe/Tallinn', '+03:00|Europe/Uzhgorod', '+03:00|Europe/Vilnius', '+03:00|Europe/Volgograd', '+03:00|Europe/Zaporozhye', '+04:00|Europe/Samara', '+03:00|Indian/Antananarivo', '+03:00|Indian/Comoro', '+03:00|Indian/Mayotte', '+04:00|Indian/Mahe', '+04:00|Indian/Mauritius', '+04:00|Indian/Reunion', '+05:00|Indian/Kerguelen', '+05:00|Indian/Maldives', '+06:30|Indian/Cocos', '+06:00|Indian/Chagos', '+07:00|Indian/Christmas', '-11:00|Pacific/Midway', '-11:00|Pacific/Niue', '-11:00|Pacific/Pago Pago', '-10:00|Pacific/Honolulu', '-10:00|Pacific/Johnston', '-10:00|Pacific/Rarotonga', '-10:00|Pacific/Tahiti', '-09:30|Pacific/Marquesas', '-09:00|Pacific/Gambier', '-08:00|Pacific/Pitcairn', '-06:00|Pacific/Easter', '-06:00|Pacific/Galapagos', '+09:00|Pacific/Palau', '+10:00|Pacific/Chuuk', '+10:00|Pacific/Guam', '+10:00|Pacific/Port Moresby', '+10:00|Pacific/Saipan', '+11:30|Pacific/Norfolk', '+11:00|Pacific/Bougainville', '+11:00|Pacific/Efate', '+11:00|Pacific/Guadalcanal', '+11:00|Pacific/Kosrae', '+11:00|Pacific/Noumea', '+11:00|Pacific/Pohnpei', '+12:00|Pacific/Auckland', '+12:00|Pacific/Fiji', '+12:00|Pacific/Funafuti', '+12:00|Pacific/Kwajalein', '+12:00|Pacific/Majuro', '+12:00|Pacific/Nauru', '+12:00|Pacific/Tarawa', '+12:00|Pacific/Wake', '+12:00|Pacific/Wallis', '+12:45|Pacific/Chatham', '+13:00|Pacific/Apia', '+13:00|Pacific/Enderbury', '+13:00|Pacific/Fakaofo', '+13:00|Pacific/Tongatapu'];
-
-	  return {};
-	};
-
-/***/ },
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -2196,239 +3322,251 @@ webpackJsonp([0],[
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-	exports.default = function () {
-	  var tableColumns = (0, _tableColumns2.default)();
-
-	  var columsForAll = void 0;
-
-	  var createNode = function createNode(tag, cls, txt) {
-	    var el = document.createElement(tag);
-	    var classes = cls || [];
-
-	    var _iteratorNormalCompletion = true;
-	    var _didIteratorError = false;
-	    var _iteratorError = undefined;
-
-	    try {
-	      for (var _iterator = classes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	        var c = _step.value;
-
-	        if (c) {
-	          el.classList.add(c);
-	        }
-	      }
-	    } catch (err) {
-	      _didIteratorError = true;
-	      _iteratorError = err;
-	    } finally {
-	      try {
-	        if (!_iteratorNormalCompletion && _iterator.return) {
-	          _iterator.return();
-	        }
-	      } finally {
-	        if (_didIteratorError) {
-	          throw _iteratorError;
-	        }
-	      }
-	    }
-
-	    if (txt) {
-	      el.innerText = txt;
-	    }
-
-	    return el;
-	  };
-
-	  return {
-	    render: function render(request) {
-	      var data = request.result.data;
-	      var type = typeof data === 'undefined' ? 'undefined' : _typeof(data);
-
-	      var div = createNode('div', ['table']);
-	      var table = createNode('table');
-
-	      div.appendChild(table);
-
-	      if (Array.isArray(data)) {
-	        if (_typeof(data[0]) === 'object') {
-	          (function () {
-	            /* columns */
-
-	            var keys = {};
-	            var columns = void 0;
-
-	            data.forEach(function (record) {
-	              if ((typeof record === 'undefined' ? 'undefined' : _typeof(record)) === 'object' && !Array.isArray(record)) {
-	                Object.keys(record).forEach(function (k) {
-	                  keys[k] = true;
-	                });
-	              }
-	            });
-
-	            columns = Object.keys(keys);
-	            columsForAll = columns;
-
-	            /* thead */
-
-	            var thead = createNode('tr');
-	            table.appendChild(thead);
-
-	            columns.forEach(function (key) {
-	              var th = createNode('th', null, tableColumns.getName(key));
-	              thead.appendChild(th);
-	            });
-
-	            /* rows */
-
-	            data.forEach(function (record, i) {
-	              if ((typeof record === 'undefined' ? 'undefined' : _typeof(record)) === 'object' && !Array.isArray(record)) {
-	                (function () {
-	                  var clsTr = [];
-
-	                  if (i % 2) {
-	                    clsTr.push('is-even-row');
-	                  }
-
-	                  clsTr.push('is-level' + request.level);
-
-	                  var tr = createNode('tr', clsTr);
-	                  tr.request = request.body;
-	                  tr.filter = request.filter || [];
-	                  tr.filter.push({ field: request.field, value: record[request.field] });
-	                  tr.dataset.level = request.level;
-	                  table.appendChild(tr);
-
-	                  columns.forEach(function (key, j) {
-	                    var td = void 0;
-
-	                    if (_typeof(record[key]) !== 'object' && !Array.isArray(record[key])) {
-	                      if (j === 0) {
-	                        td = createNode('td');
-
-	                        var cls = ['is-main'];
-
-	                        if (record.pl && record.pl > 0) {
-	                          cls.push('is-positive');
-	                        } else if (record.pl && record.pl < 0) {
-	                          cls.push('is-negative');
-	                        }
-
-	                        var main = createNode('div', cls);
-	                        td.appendChild(main);
-
-	                        if (request.is_parent) {
-	                          var swtch = createNode('div', ['is-switch']);
-	                          main.appendChild(swtch);
-	                        }
-
-	                        var span = createNode('span', null, record.hasOwnProperty(request.field) ? record[request.field] : '[[empty value]]');
-	                        main.appendChild(span);
-	                      } else {
-	                        td = createNode('td', null, record.hasOwnProperty(key) ? record[key] : '');
-	                      }
-	                    } else {
-	                      td = createNode('td');
-	                    }
-
-	                    tr.appendChild(td);
-	                  });
-	                })();
-	              }
-	            });
-	          })();
-	        }
-	      }
-
-	      document.querySelector('.js-canvas').innerHTML = '';
-	      document.querySelector('.js-canvas').appendChild(div);
-
-	      return div;
-	    },
-
-	    renderRow: function renderRow(request) {
-	      var data = request.result.data;
-	      var type = typeof data === 'undefined' ? 'undefined' : _typeof(data);
-	      var parent = request.current.parentNode;
-	      var next = request.current.nextSibling;
-
-	      request.current.classList.add('is-open');
-
-	      if (Array.isArray(data)) {
-	        if (_typeof(data[0]) === 'object') {
-	          data.forEach(function (record, i) {
-	            if ((typeof record === 'undefined' ? 'undefined' : _typeof(record)) === 'object' && !Array.isArray(record)) {
-	              (function () {
-	                var clsTr = [];
-
-	                if (i % 2) {
-	                  clsTr.push('is-even-row');
-	                }
-
-	                clsTr.push('is-level' + request.level);
-
-	                var tr = createNode('tr', clsTr);
-	                tr.request = request.body;
-	                tr.filter = request.filter || [];
-	                tr.filter.push({ field: request.field, value: record[request.field] });
-	                tr.dataset.level = request.level;
-
-	                if (next) {
-	                  parent.insertBefore(tr, next);
-	                } else {
-	                  parent.appendChild(tr);
-	                }
-
-	                columsForAll.forEach(function (key, j) {
-	                  var td = void 0;
-
-	                  if (_typeof(record[key]) !== 'object' && !Array.isArray(record[key])) {
-	                    if (j === 0) {
-	                      td = createNode('td');
-
-	                      var cls = ['is-main'];
-
-	                      if (record.pl && record.pl > 0) {
-	                        cls.push('is-positive');
-	                      } else if (record.pl && record.pl < 0) {
-	                        cls.push('is-negative');
-	                      }
-
-	                      var main = createNode('div', cls);
-	                      td.appendChild(main);
-
-	                      if (request.is_parent) {
-	                        var swtch = createNode('div', ['is-switch']);
-	                        main.appendChild(swtch);
-	                      }
-
-	                      var span = createNode('span', null, record.hasOwnProperty(request.field) ? record[request.field] : '[[empty value]]');
-	                      main.appendChild(span);
-	                    } else {
-	                      td = createNode('td', null, record.hasOwnProperty(key) ? record[key] : '');
-	                    }
-	                  } else {
-	                    td = createNode('td');
-	                  }
-
-	                  tr.appendChild(td);
-	                });
-	              })();
-	            }
-	          });
-	        }
-	      }
-	    }
-	  };
+	var columnsList = {
+	  campaign_id: 'Campaign',
+	  browser: 'Browser',
+	  browser_language: 'Browser language',
+	  payment: 'Payment',
+	  tm_spend: 'Tm spend',
+	  unique_shows: 'Unique shows',
+	  shows: 'Shows',
+	  unique_clicks: 'Unique clicks',
+	  clicks: 'Clicks',
+	  uctr: 'UCTR',
+	  ctr: 'CTR',
+	  leads: 'Leads',
+	  declined: 'Declined',
+	  pending: 'Pending',
+	  total: 'Total',
+	  cvr: 'CVR',
+	  epc: 'EPC',
+	  cpc: 'CPC',
+	  rev: 'Rev',
+	  spend: 'Spend',
+	  pl: 'P/L',
+	  roi: 'ROI',
+	  label: 'Label'
 	};
 
-	var _tableColumns = __webpack_require__(38);
+	var createNode = function createNode(tag, cls, txt) {
+	  var el = document.createElement(tag);
+	  var classes = cls || [];
+	  var _iteratorNormalCompletion = true;
+	  var _didIteratorError = false;
+	  var _iteratorError = undefined;
 
-	var _tableColumns2 = _interopRequireDefault(_tableColumns);
+	  try {
+	    for (var _iterator = classes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	      var c = _step.value;
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	      if (c) el.classList.add(c);
+	    }
+	  } catch (err) {
+	    _didIteratorError = true;
+	    _iteratorError = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion && _iterator.return) {
+	        _iterator.return();
+	      }
+	    } finally {
+	      if (_didIteratorError) {
+	        throw _iteratorError;
+	      }
+	    }
+	  }
+
+	  if (txt) el.innerHTML = txt;
+	  return el;
+	};
+
+	var columns = void 0;
+
+	var renderRows = function renderRows(tr, record, response) {
+	  if (response.is_tree) {
+	    tr.level = response.level;
+	    tr.filter = response.filter || [];
+	    tr.filter.push({ field: response.field, value: record[response.field] });
+	  }
+
+	  columns.forEach(function (key, j) {
+	    var td = void 0;
+
+	    var name = void 0;
+
+	    if (key === 'campaign_id') {
+	      if (record.label && record.label.name) {
+	        name = record.label.name;
+	      } else if (record[key] || record[key] === 0) {
+	        name = '[id: ' + record[key] + ']';
+	      } else {
+	        name = '[empty value]';
+	      }
+	    } else {
+	      if (record[key] || record[key] === 0) {
+	        name = record[key];
+	      } else {
+	        name = '-';
+	      }
+	    }
+
+	    if (j === 0) {
+	      td = createNode('td');
+
+	      var main = createNode('div', ['is-main']);
+	      td.appendChild(main);
+
+	      if (record.pl && record.pl > 0) {
+	        main.classList.add('is-positive');
+	      } else if (record.pl && record.pl < 0) {
+	        main.classList.add('is-negative');
+	      }
+
+	      if (!response.is_bottom) {
+	        var swtch = createNode('div', ['is-switch']);
+	        main.appendChild(swtch);
+	      }
+
+	      var span = createNode('span', null, name);
+	      if (response.field.indexOf(key) !== -1) {
+	        span.classList.add('is-clickable');
+	      }
+	      main.appendChild(span);
+	    } else {
+	      td = createNode('td');
+
+	      var _span = createNode('span', null, name);
+	      if (response.field.indexOf(key) !== -1) {
+	        _span.classList.add('is-clickable');
+	      }
+	      td.appendChild(_span);
+	    }
+
+	    tr.appendChild(td);
+	  });
+	};
+
+	exports.default = {
+	  render: function render(response) {
+	    var data = response.result.data;
+	    var sum = response.result.sum;
+	    var type = typeof data === 'undefined' ? 'undefined' : _typeof(data);
+
+	    var div = createNode('div', ['table']);
+	    var table = createNode('table');
+
+	    div.appendChild(table);
+
+	    if (Array.isArray(data)) {
+	      if (_typeof(data[0]) === 'object') {
+	        (function () {
+
+	          var keys = {};
+
+	          data.forEach(function (record) {
+	            if ((typeof record === 'undefined' ? 'undefined' : _typeof(record)) === 'object' && !Array.isArray(record)) {
+	              Object.keys(record).forEach(function (k) {
+	                keys[k] = true;
+	              });
+	            }
+	          });
+
+	          columns = Object.keys(keys);
+
+	          var thead = createNode('tr');
+	          table.appendChild(thead);
+
+	          columns.forEach(function (key) {
+	            var th = createNode('th', null, columnsList[key] || key);
+	            thead.appendChild(th);
+	          });
+
+	          data.forEach(function (record, i) {
+	            if ((typeof record === 'undefined' ? 'undefined' : _typeof(record)) === 'object' && !Array.isArray(record)) {
+	              var clsTr = [];
+
+	              if (i % 2) {
+	                clsTr.push('is-even-row');
+	              }
+
+	              clsTr.push('is-level' + response.level);
+
+	              var tr = createNode('tr', clsTr);
+	              table.appendChild(tr);
+	              renderRows(tr, record, response);
+	            }
+	          });
+
+	          if ((typeof sum === 'undefined' ? 'undefined' : _typeof(sum)) === 'object') {
+	            (function () {
+	              var total = createNode('tr', ['is-total']);
+	              table.appendChild(total);
+
+	              columns.forEach(function (key, j) {
+	                var td = void 0;
+
+	                if (j === 0) {
+	                  td = createNode('td');
+
+	                  var main = createNode('div', ['is-main']);
+	                  td.appendChild(main);
+
+	                  var span = createNode('span', null, '&nbsp;');
+	                  main.appendChild(span);
+	                } else {
+	                  td = createNode('td', null, sum.hasOwnProperty(key) ? sum[key] : '-');
+	                }
+
+	                total.appendChild(td);
+	              });
+	            })();
+	          }
+	        })();
+	      }
+	    }
+
+	    document.querySelector('.js-canvas').innerHTML = '';
+	    document.querySelector('.js-canvas').appendChild(div);
+
+	    return div;
+	  },
+
+	  renderRow: function renderRow(response) {
+	    var data = response.result.data;
+	    var type = typeof data === 'undefined' ? 'undefined' : _typeof(data);
+	    var table = response.current.parentNode;
+	    var nextRow = response.current.nextSibling;
+
+	    response.current.classList.add('is-open');
+
+	    if (Array.isArray(data)) {
+	      data.forEach(function (record, i) {
+	        if ((typeof record === 'undefined' ? 'undefined' : _typeof(record)) === 'object' && !Array.isArray(record)) {
+	          var clsTr = [];
+
+	          if (i % 2) {
+	            clsTr.push('is-even-row');
+	          }
+
+	          clsTr.push('is-level' + response.level);
+
+	          var tr = createNode('tr', clsTr);
+
+	          if (nextRow) {
+	            table.insertBefore(tr, nextRow);
+	          } else {
+	            table.appendChild(tr);
+	          }
+
+	          renderRows(tr, record, response);
+	        }
+	      });
+	    }
+	  }
+	};
 
 /***/ },
-/* 38 */
+/* 35 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2437,51 +3575,8 @@ webpackJsonp([0],[
 	  value: true
 	});
 
-	exports.default = function () {
-	  var columnsList = {
-	    campaign_id: 'Campaign',
-	    payment: 'Payment',
-	    tm_spend: 'Tm spend',
-	    unique_shows: 'Unique shows',
-	    shows: 'Shows',
-	    unique_clicks: 'Unique clicks',
-	    clicks: 'Clicks',
-	    uctr: 'UCTR',
-	    ctr: 'CTR',
-	    leads: 'Leads',
-	    declined: 'Declined',
-	    pending: 'Pending',
-	    total: 'Total',
-	    cvr: 'CVR',
-	    epc: 'EPC',
-	    cpc: 'CPC',
-	    rev: 'Rev',
-	    spend: 'Spend',
-	    pl: 'P/L',
-	    roi: 'ROI',
-	    label: 'Label'
-	  };
-
-	  return {
-	    getName: function getName(key) {
-	      return columnsList[key] || key;
-	    }
-	  };
-	};
-
-/***/ },
-/* 39 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
 	exports.default = function (table) {
-	  var statEvent = (0, _statEvent2.default)();
-
+	  var stat = document.querySelector('.js-stat');
 	  var switches = table.querySelectorAll('.is-switch');
 	  var checkboxes = table.querySelectorAll('.is-checkbox');
 
@@ -2588,37 +3683,25 @@ webpackJsonp([0],[
 	      return;
 	    }
 
-	    // if (elements.current.classList.contains('is-open')) {
-	    //   elements.current.classList.remove('is-open');
-	    //   elements.offspring.forEach(el => {
-	    //     el.classList.remove('is-show');
-	    //     el.classList.remove('is-open');
-	    //   });
-	    // } else {
-	    //   elements.current.classList.add('is-open');
-	    //   elements.child.forEach(el => {
-	    //     el.classList.add('is-show');
-	    //   });
-	    // }
-
 	    if (elements.current.classList.contains('is-open')) {
 	      elements.current.classList.remove('is-open');
 	      elements.offspring.forEach(function (el) {
 	        el.parentNode.removeChild(el);
 	      });
 	    } else {
-	      var level = elements.current.dataset.level;
+	      var level = elements.current.level;
 	      var filter = elements.current.filter;
 
 	      if (!level || !filter) {
 	        return;
 	      }
 
-	      statEvent.setChildsTable({
-	        current: elements.current,
-	        level: level,
-	        filter: filter
-	      });
+	      var params = window.might.stat.params;
+	      params.draw++;
+	      params.level = parseInt(level, 10) + 1;
+	      params.filter = filter;
+	      params.current = elements.current;
+	      stat.triggerEvent('drawtable');
 	    }
 	  });
 
@@ -2683,16 +3766,115 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _statEvent = __webpack_require__(27);
-
-	var _statEvent2 = _interopRequireDefault(_statEvent);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 40 */
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  var authKey = 'mkj-l123k-kFWSdl90d';
+	  var allFields = 0;
+
+	  var stat = document.querySelector('.js-stat');
+	  var statGraph = stat.querySelector('.js-stat-graph');
+	  var url = window.might.url + '/graph/data';
+	  var headers = new Headers();
+	  headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+	  if (!statGraph) {
+	    return;
+	  }
+
+	  var dateToString = function dateToString(y, m, d) {
+	    var date = new Date(y, m, d);
+	    return (0, _dateformat2.default)(date, 'yyyy-mm-dd');
+	  };
+
+	  var getFormData = function getFormData() {
+	    var params = window.might.stat.params;
+
+	    if (params.level > params.segments.length || params.level > 1 && !params.current) {
+	      return null;
+	    }
+
+	    var data = {};
+	    data.auth_key = authKey;
+	    data.all_fields = allFields;
+	    data.draw = params.draw;
+	    data.start = (params.page - 1) * params.length;
+	    data.length = params.length;
+	    data.search = params.search;
+	    data.order = params.order;
+	    data.currency = params.currency.toUpperCase();
+	    data.currency_type = params.currency_type;
+	    data.currency_date = params.currency_date;
+	    var from = dateToString(params.date_from.year, params.date_from.month, params.date_from.date);
+	    var to = dateToString(params.date_to.year, params.date_to.month, params.date_to.date);
+	    data.date_filter = from + ' - ' + to;
+	    data.start_time = params.start_time;
+	    data.end_time = params.end_time;
+	    data.timezone = params.timezone;
+	    if (params.postback_date) {
+	      data.postback_date = true;
+	    }
+	    data.group = params.segments[params.level - 1];
+	    data.filter = JSON.stringify(params.filter);
+
+	    return data;
+	  };
+
+	  var options = {
+	    method: 'post',
+	    mode: 'cors',
+	    headers: headers
+	  };
+
+	  stat.addEventListener('drawgraph', function () {
+	    var params = window.might.stat.params;
+
+	    if (!params.show_graph) {
+	      statGraph.style.display = 'none';
+	      return;
+	    }
+
+	    var obj = getFormData();
+
+	    if (obj) {
+	      options.body = _qs2.default.stringify(obj);
+
+	      fetch(url, options).then(function (response) {
+	        return response.json();
+	      }).then(function (result) {
+	        (0, _graphRender2.default)(result);
+	      });
+	    }
+	  });
+	};
+
+	var _qs = __webpack_require__(29);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	var _dateformat = __webpack_require__(18);
+
+	var _dateformat2 = _interopRequireDefault(_dateformat);
+
+	var _graphRender = __webpack_require__(37);
+
+	var _graphRender2 = _interopRequireDefault(_graphRender);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(23)))
+
+/***/ },
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2701,1309 +3883,88 @@ webpackJsonp([0],[
 	  value: true
 	});
 
-	exports.default = function () {
-	  var url = 'http://148.251.195.78:94/clicks/data';
+	exports.default = function (result) {
+	  var stat = document.querySelector('.js-stat');
+	  var statGraph = stat.querySelector('.js-stat-graph');
+	  var canvas = stat.querySelector('#stat-graph');
 
-	  var might = window.might;
+	  if (!statGraph || !canvas) {
+	    return;
+	  }
 
-	  var statParams = might.stat.params;
-	  var statConfig = might.stat.config;
+	  statGraph.style.display = '';
+	  canvas.innerHTML = '';
 
-	  // Highcharts.chart('statGraph', {
-	  //   colors: ['#ad7eea', '#41c9f2', '#1be5a0', '#ec2c4c', '#f5d817'],
-	  //   title: {
-	  //     text: null
-	  //   },
-	  //   credits: {
-	  //     enabled: false
-	  //   },
-	  //   xAxis: {
-	  //     categories: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October'],
-	  //     tickLength: 0
-	  //   },
-	  //   yAxis: {
-	  //     title: {
-	  //       text: null
-	  //     },
-	  //     plotLines: [{
-	  //       value: 0,
-	  //       width: 1,
-	  //       color: '#808080'
-	  //     }]
-	  //   },
-	  //   legend: {
-	  //     enabled: false
-	  //   },
-	  //   tooltip: {
-	  //     shared: true,
-	  //     padding: 15,
-	  //     borderRadius: 0,
-	  //     borderColor: '#3a62c6',
-	  //     backgroundColor: '#ffffff',
-	  //     style: {
-	  //       color: '#54647e',
-	  //       fontSize: '14px',
-	  //       lineHeight: '20px'
-	  //     },
-	  //     headerFormat: '<span style="font-weight: bold; font-size: 14px;">{point.key}</span><br/><br/>'
-	  //   },
-	  //   plotOptions: {
-	  //     series: {
-	  //       marker: {
-	  //         symbol: 'circle'
-	  //       }
-	  //     }
-	  //   },
-	  //   series: [{
-	  //     name: 'Tokyo',
-	  //     data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3]
-	  //   }, {
-	  //     name: 'New York',
-	  //     data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1]
-	  //   }, {
-	  //     name: 'Berlin',
-	  //     data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0]
-	  //   }, {
-	  //     name: 'London',
-	  //     data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3]
-	  //   }]
-	  // });
-
-	  return {
-	    draw: function draw() {
-	      if (!statConfig.main_segment || !statConfig.show_graph) {
-	        return;
+	  _highcharts2.default.chart('stat-graph', {
+	    colors: ['#ad7eea', '#41c9f2', '#1be5a0', '#ec2c4c', '#f5d817'],
+	    title: {
+	      text: null
+	    },
+	    credits: {
+	      enabled: false
+	    },
+	    xAxis: {
+	      categories: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October'],
+	      tickLength: 0
+	    },
+	    yAxis: {
+	      title: {
+	        text: null
+	      },
+	      plotLines: [{
+	        value: 0,
+	        width: 1,
+	        color: '#808080'
+	      }]
+	    },
+	    legend: {
+	      enabled: false
+	    },
+	    tooltip: {
+	      shared: true,
+	      padding: 15,
+	      borderRadius: 0,
+	      borderColor: '#3a62c6',
+	      backgroundColor: '#ffffff',
+	      style: {
+	        color: '#54647e',
+	        fontSize: '14px',
+	        lineHeight: '20px'
+	      },
+	      headerFormat: '<span style="font-weight: bold; font-size: 14px;">{point.key}</span><br/><br/>'
+	    },
+	    plotOptions: {
+	      series: {
+	        marker: {
+	          symbol: 'circle'
+	        }
 	      }
-
-	      // statParams.group = statConfig.main_segment;
-
-	      // fetch(url, {method: 'post', mode: 'no-cors', body: JSON.stringify(statParams)}).then(response => {
-	      //   return response.json();
-	      // }).then(data => {
-	      // });
-	    }
-	  };
+	    },
+	    series: [{
+	      name: 'Tokyo',
+	      data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3]
+	    }, {
+	      name: 'New York',
+	      data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1]
+	    }, {
+	      name: 'Berlin',
+	      data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0]
+	    }, {
+	      name: 'London',
+	      data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3]
+	    }]
+	  });
 	};
 
-	var _highcharts = __webpack_require__(41);
+	var _highcharts = __webpack_require__(38);
 
 	var _highcharts2 = _interopRequireDefault(_highcharts);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 41 */,
-/* 42 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function () {
-	  [].concat(_toConsumableArray(document.querySelectorAll('.js-input-time'))).forEach(function (input) {
-	    var range = 1;
-
-	    var selectRange = function selectRange() {
-	      if (range === 1) {
-	        input.selectionStart = 0;
-	        input.selectionEnd = 2;
-	      } else {
-	        input.selectionStart = 3;
-	        input.selectionEnd = 5;
-	      }
-	      input.focus();
-	    };
-
-	    var keyDown = function keyDown(event) {
-	      var char = String.fromCharCode(event.keyCode);
-
-	      if (!/\s/.test(char)) {
-	        event.preventDefault();
-	      }
-
-	      var key = '0123456789'.indexOf(char);
-
-	      if (key !== -1) {
-	        var value = event.target.value;
-	        var chunks = value.split(':');
-	        var newChunk = void 0;
-
-	        if (range === 1) {
-	          newChunk = value[1] + '' + key;
-
-	          if (parseInt(newChunk, 10) < 24) {
-	            chunks[0] = newChunk;
-	          } else {
-	            chunks[0] = '0' + key;
-	          }
-
-	          if (parseInt(chunks[0], 10) > 2) {
-	            range = 2;
-	          }
-	        } else {
-	          newChunk = value[4] + '' + key;
-
-	          if (parseInt(newChunk, 10) < 60) {
-	            chunks[1] = newChunk;
-	          } else {
-	            chunks[1] = '0' + key;
-	          }
-	        }
-
-	        input.value = chunks.join(':');
-
-	        var ev = document.createEvent('HTMLEvents');
-	        ev.initEvent('change', false, true);
-	        input.dispatchEvent(ev);
-
-	        selectRange();
-	      }
-	    };
-
-	    input.addEventListener('focus', function () {
-	      setTimeout(function () {
-	        range = 1;
-	        selectRange();
-	      }, 0);
-	    });
-
-	    input.addEventListener('paste', function (event) {
-	      event.preventDefault();
-	    });
-
-	    input.addEventListener('cut', function (event) {
-	      event.preventDefault();
-	    });
-
-	    input.addEventListener('keydown', function (event) {
-	      var code = event.keyCode;
-
-	      switch (code) {
-	        case 9:
-	          if (event.shiftKey && range === 2) {
-	            range = 1;
-	            selectRange();
-	            event.preventDefault();
-	          } else if (!event.shiftKey && range === 1) {
-	            range = 2;
-	            selectRange();
-	            event.preventDefault();
-	          }
-	          break;
-	        case 37:
-	          event.preventDefault();
-	          range = 1;
-	          selectRange();
-	          break;
-	        case 38:
-	          event.preventDefault();
-	          break;
-	        case 39:
-	          event.preventDefault();
-	          range = 2;
-	          selectRange();
-	          break;
-	        case 40:
-	          event.preventDefault();
-	          break;
-	        default:
-	          keyDown(event);
-	      }
-	    });
-	  });
-	};
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function () {
-	  [].concat(_toConsumableArray(document.querySelectorAll('.js-calendar'))).forEach(function (control) {
-	    var calendarPopup = control.querySelector('.js-calendar-popup');
-
-	    if (calendarPopup) {
-	      (0, _calendarRender2.default)(calendarPopup, control);
-	    }
-	  });
-	};
-
-	var _calendarRender = __webpack_require__(44);
-
-	var _calendarRender2 = _interopRequireDefault(_calendarRender);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/***/ },
-/* 44 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-	exports.default = function (calendar, control) {
-	  var currentDatetime = window.might.current_datetime;
-
-	  var today = {
-	    year: currentDatetime.getFullYear(),
-	    month: currentDatetime.getMonth(),
-	    date: currentDatetime.getDate()
-	  };
-
-	  var period = void 0;
-
-	  var labelControl = control.querySelector('.js-calendar-value');
-
-	  var boxes = {
-	    from: calendar.querySelectorAll('.js-calendar-box')[0],
-	    to: calendar.querySelectorAll('.js-calendar-box')[1]
-	  };
-
-	  var ranges = {
-	    today: calendar.querySelector('.js-calendar-range-today'),
-	    yesterday: calendar.querySelector('.js-calendar-range-yesterday'),
-	    lastweek: calendar.querySelector('.js-calendar-range-lastweek'),
-	    lastdays: calendar.querySelector('.js-calendar-range-lastdays'),
-	    thismonth: calendar.querySelector('.js-calendar-range-thismonth'),
-	    lastmonth: calendar.querySelector('.js-calendar-range-lastmonth'),
-	    custom: calendar.querySelector('.js-calendar-range-custom')
-	  };
-
-	  var inputTimeStart = calendar.querySelector('.js-calendar-time-start');
-	  var inputTimeEnd = calendar.querySelector('.js-calendar-time-end');
-	  var applyBtn = calendar.querySelector('.js-calendar-apply');
-	  var closeBtn = calendar.querySelector('.js-calendar-close');
-
-	  var clickWindow = void 0;
-	  var _open = void 0;
-	  var close = void 0;
-	  var resetPeriod = void 0;
-	  var renderDefault = void 0;
-	  var renderDays = void 0;
-	  var renderRanges = void 0;
-	  var renderInputs = void 0;
-	  var updateSelects = void 0;
-	  var clickDay = void 0;
-	  var clickRange = void 0;
-	  var eventBoxes = void 0;
-	  var setLabelControl = void 0;
-	  var updateValue = void 0;
-	  var setValue = void 0;
-
-	  clickWindow = function clickWindow(event) {
-	    var closest = event.target.closest('.js-calendar');
-
-	    if (!closest || closest !== control) {
-	      resetPeriod();
-	      close(event);
-	    }
-	  };
-
-	  _open = function open(event) {
-	    event.stopPropagation();
-
-	    resetPeriod();
-	    renderDefault();
-
-	    calendar.classList.add('is-open');
-	    control.removeEventListener('click', _open);
-	    window.addEventListener('click', clickWindow);
-	  };
-
-	  close = function close(event) {
-	    event.stopPropagation();
-	    calendar.classList.remove('is-open');
-	    control.addEventListener('click', _open);
-	    window.removeEventListener('click', clickWindow);
-	  };
-
-	  resetPeriod = function resetPeriod() {
-	    var value = control.value;
-
-	    period = {
-	      from: {
-	        year: value.from.year,
-	        month: value.from.month,
-	        date: value.from.date
-	      },
-	      to: {
-	        year: value.to.year,
-	        month: value.to.month,
-	        date: value.to.date
-	      },
-	      start_time: value.start_time,
-	      end_time: value.end_time
-	    };
-	  };
-
-	  renderDefault = function renderDefault() {
-	    var curFrom = boxes.from.current;
-	    var curTo = boxes.to.current;
-
-	    curFrom.year = period.from.year;
-	    curFrom.month = period.from.month;
-
-	    curTo.year = period.to.year;
-	    curTo.month = period.to.month;
-
-	    if (curFrom.year === curTo.year && curFrom.month === curTo.month) {
-	      curFrom.month--;
-
-	      if (curFrom.month < 0) {
-	        curFrom.month = 11;
-	        curFrom.year--;
-	      }
-	    }
-
-	    updateSelects('from');
-	    updateSelects('to');
-
-	    renderDays('from');
-	    renderDays('to');
-	    renderRanges();
-
-	    renderInputs();
-	  };
-
-	  renderDays = function renderDays(b) {
-	    var days = boxes[b].querySelector('.js-calendar-days');
-
-	    var month = boxes[b].current.month;
-	    var year = boxes[b].current.year;
-	    var count = new Date(year, month + 1, 0).getDate();
-	    var first = new Date(year, month, 1).getDay() - 1;
-
-	    if (first === -1) {
-	      first = 6;
-	    }
-
-	    var tsFrom = +new Date(period.from.year, period.from.month, period.from.date);
-	    var tsTo = +new Date(period.to.year, period.to.month, period.to.date);
-	    var tsToday = +new Date(today.year, today.month, today.date);
-
-	    days.innerHTML = '';
-
-	    for (var i = 1 - first; i <= count; i++) {
-	      var span = document.createElement('span');
-	      var day = void 0;
-
-	      if (i > 0) {
-	        span.innerText = i;
-	        day = +new Date(year, month, i);
-
-	        if (tsFrom === day) {
-	          span.classList.add('is-start');
-	        }
-
-	        if (tsFrom < day && tsTo > day) {
-	          span.classList.add('is-between');
-	        }
-
-	        if (tsTo === day) {
-	          span.classList.add('is-end');
-	        }
-
-	        if (tsToday < day) {
-	          span.classList.add('is-future');
-	        } else {
-	          span.dataset.value = day;
-	          span.addEventListener('click', clickDay);
-	        }
-	      } else {
-	        span.classList.add('is-empty');
-	      }
-
-	      days.appendChild(span);
-	    }
-	  };
-
-	  renderRanges = function renderRanges() {
-	    for (var i in ranges) {
-	      if (ranges.hasOwnProperty(i)) {
-	        ranges[i].parentNode.classList.remove('is-select');
-	      }
-	    }
-
-	    var tsFrom = +new Date(period.from.year, period.from.month, period.from.date);
-	    var tsTo = +new Date(period.to.year, period.to.month, period.to.date);
-
-	    var tsToday = +new Date(today.year, today.month, today.date);
-	    var tsYesterday = +new Date(today.year, today.month, today.date - 1);
-	    var ts7 = +new Date(today.year, today.month, today.date - 6);
-	    var ts30 = +new Date(today.year, today.month, today.date - 29);
-
-	    var tsMonthFrom = +new Date(today.year, today.month, 1);
-
-	    var tsLastMonthFrom = +new Date(today.year, today.month - 1, 1);
-	    var tsLastMonthTo = +new Date(today.year, today.month, 0);
-
-	    if (tsFrom === tsToday && tsTo === tsToday) {
-	      ranges.today.parentNode.classList.add('is-select');
-	    } else if (tsFrom === tsYesterday && tsTo === tsYesterday) {
-	      ranges.yesterday.parentNode.classList.add('is-select');
-	    } else if (tsFrom === ts7 && tsTo === tsToday) {
-	      ranges.lastweek.parentNode.classList.add('is-select');
-	    } else if (tsFrom === ts30 && tsTo === tsToday) {
-	      ranges.lastdays.parentNode.classList.add('is-select');
-	    } else if (tsFrom === tsMonthFrom && tsTo === tsToday) {
-	      ranges.thismonth.parentNode.classList.add('is-select');
-	    } else if (tsFrom === tsLastMonthFrom && tsTo === tsLastMonthTo) {
-	      ranges.lastmonth.parentNode.classList.add('is-select');
-	    } else {
-	      ranges.custom.parentNode.classList.add('is-select');
-	    }
-	  };
-
-	  renderInputs = function renderInputs() {
-	    inputTimeStart.value = period.start_time;
-	    inputTimeEnd.value = period.end_time;
-	  };
-
-	  updateSelects = function updateSelects(b) {
-	    var monthSelect = boxes[b].querySelector('.js-calendar-month');
-	    var yearSelect = boxes[b].querySelector('.js-calendar-year');
-
-	    try {
-	      monthSelect.setValue(boxes[b].current.month);
-	      yearSelect.setValue(boxes[b].current.year);
-	    } catch (err) {
-	      throw new Error(err);
-	    }
-	  };
-
-	  clickDay = function clickDay(event) {
-	    event.stopPropagation();
-
-	    var tsFrom = +new Date(period.from.year, period.from.month, period.from.date);
-	    var tsTo = +new Date(period.to.year, period.to.month, period.to.date);
-
-	    var valueDate = new Date(parseInt(this.dataset.value, 10));
-
-	    var year = valueDate.getFullYear();
-	    var month = valueDate.getMonth();
-	    var date = valueDate.getDate();
-
-	    period.to.year = year;
-	    period.to.month = month;
-	    period.to.date = date;
-
-	    if (tsFrom !== tsTo) {
-	      period.from.year = year;
-	      period.from.month = month;
-	      period.from.date = date;
-	    } else {
-	      tsTo = valueDate.getTime();
-
-	      if (tsFrom > tsTo) {
-	        var y = period.from.year;
-	        var m = period.from.month;
-	        var d = period.from.date;
-
-	        period.from.year = period.to.year;
-	        period.from.month = period.to.month;
-	        period.from.date = period.to.date;
-
-	        period.to.year = y;
-	        period.to.month = m;
-	        period.to.date = d;
-	      }
-	    }
-
-	    renderDays('from');
-	    renderDays('to');
-	    renderRanges();
-	  };
-
-	  clickRange = function clickRange(f, t) {
-	    var from = f;
-	    var to = t || from;
-
-	    period = {
-	      from: {
-	        year: from.getFullYear(),
-	        month: from.getMonth(),
-	        date: from.getDate()
-	      },
-	      to: {
-	        year: to.getFullYear(),
-	        month: to.getMonth(),
-	        date: to.getDate()
-	      },
-	      start_time: '00:00',
-	      end_time: '23:59'
-	    };
-
-	    renderDefault();
-	  };
-
-	  eventBoxes = function eventBoxes(b) {
-	    var box = boxes[b];
-
-	    var next = box.querySelector('.js-calendar-next');
-	    var prev = box.querySelector('.js-calendar-prev');
-	    var monthSelect = box.querySelector('.js-calendar-month');
-	    var yearSelect = box.querySelector('.js-calendar-year');
-
-	    box.current = {};
-
-	    prev.addEventListener('click', function () {
-	      box.current.month--;
-
-	      if (box.current.month < 0) {
-	        box.current.month = 11;
-	        box.current.year--;
-	      }
-
-	      updateSelects(b);
-	      renderDays(b);
-	    });
-
-	    next.addEventListener('click', function () {
-	      box.current.month++;
-
-	      if (box.current.month > 11) {
-	        box.current.month = 0;
-	        box.current.year++;
-	      }
-
-	      updateSelects(b);
-	      renderDays(b);
-	    });
-
-	    monthSelect.addEventListener('change', function () {
-	      try {
-	        box.current.month = parseInt(monthSelect.value, 10);
-	        renderDays(b);
-	      } catch (err) {
-	        throw new Error(err);
-	      }
-	    });
-
-	    yearSelect.addEventListener('change', function () {
-	      try {
-	        box.current.year = parseInt(yearSelect.value, 10);
-	        renderDays(b);
-	      } catch (err) {
-	        throw new Error(err);
-	      }
-	    });
-	  };
-
-	  setLabelControl = function setLabelControl() {
-	    if (labelControl) {
-	      var value = control.value;
-	      var from = new Date(value.from.year, value.from.month, value.from.date);
-	      var to = new Date(value.to.year, value.to.month, value.to.date);
-
-	      from = (0, _dateformat2.default)(from, 'mmmm dd, yyyy');
-	      to = (0, _dateformat2.default)(to, 'mmmm dd, yyyy');
-
-	      if (from === to) {
-	        labelControl.textContent = from;
-	      } else {
-	        labelControl.textContent = from + ' — ' + to;
-	      }
-	    }
-	  };
-
-	  updateValue = function updateValue(obj) {
-	    var value = control.value;
-	    var newValue = obj || period;
-	    var isUpdate = false;
-
-	    for (var i in value) {
-	      if (value.hasOwnProperty(i) && newValue.hasOwnProperty(i)) {
-	        if (_typeof(value[i]) === 'object') {
-	          for (var j in value[i]) {
-	            if (value[i].hasOwnProperty(j) && newValue[i].hasOwnProperty(j)) {
-	              if (value[i][j] !== newValue[i][j]) {
-	                value[i][j] = newValue[i][j];
-	                isUpdate = true;
-	              }
-	            }
-	          }
-	        } else {
-	          if (value[i] !== newValue[i]) {
-	            value[i] = newValue[i];
-	            isUpdate = true;
-	          }
-	        }
-	      }
-	    }
-
-	    setLabelControl();
-
-	    return isUpdate;
-	  };
-
-	  setValue = function setValue(obj) {
-	    if (updateValue(obj)) {
-	      control.triggerEvent('change');
-	    }
-	  };
-
-	  ranges.today.addEventListener('click', function () {
-	    var tsToday = new Date(today.year, today.month, today.date);
-	    clickRange(tsToday);
-	  });
-
-	  ranges.yesterday.addEventListener('click', function () {
-	    var tsYesterday = new Date(today.year, today.month, today.date - 1);
-	    clickRange(tsYesterday);
-	  });
-
-	  ranges.lastweek.addEventListener('click', function () {
-	    var ts7 = new Date(today.year, today.month, today.date - 6);
-	    var tsToday = new Date(today.year, today.month, today.date);
-	    clickRange(ts7, tsToday);
-	  });
-
-	  ranges.lastdays.addEventListener('click', function () {
-	    var ts30 = new Date(today.year, today.month, today.date - 29);
-	    var tsToday = new Date(today.year, today.month, today.date);
-	    clickRange(ts30, tsToday);
-	  });
-
-	  ranges.thismonth.addEventListener('click', function () {
-	    var tsMonthFrom = new Date(today.year, today.month, 1);
-	    var tsToday = new Date(today.year, today.month, today.date);
-	    clickRange(tsMonthFrom, tsToday);
-	  });
-
-	  ranges.lastmonth.addEventListener('click', function () {
-	    var tsLastMonthFrom = new Date(today.year, today.month - 1, 1);
-	    var tsLastMonthTo = new Date(today.year, today.month, 0);
-	    clickRange(tsLastMonthFrom, tsLastMonthTo);
-	  });
-
-	  inputTimeStart.addEventListener('change', function () {
-	    period.start_time = inputTimeStart.value;
-	  });
-
-	  inputTimeEnd.addEventListener('change', function () {
-	    period.end_time = inputTimeEnd.value;
-	  });
-
-	  applyBtn.addEventListener('click', function (event) {
-	    setValue();
-	    close(event);
-	  });
-
-	  closeBtn.addEventListener('click', function (event) {
-	    close(event);
-	  });
-
-	  control.addEventListener('click', _open);
-
-	  control.value = {
-	    from: {
-	      year: today.year,
-	      month: today.month,
-	      date: today.date
-	    },
-	    to: {
-	      year: today.year,
-	      month: today.month,
-	      date: today.date
-	    },
-	    start_time: '00:00',
-	    end_time: '23:59'
-	  };
-
-	  eventBoxes('from');
-	  eventBoxes('to');
-
-	  setLabelControl();
-
-	  control.updateValue = updateValue;
-	  control.setValue = setValue;
-	};
-
-	var _dateformat = __webpack_require__(14);
-
-	var _dateformat2 = _interopRequireDefault(_dateformat);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function () {
-	  [].concat(_toConsumableArray(document.querySelectorAll('.js-postback'))).forEach(function (control) {
-	    var postbackPopup = control.querySelector('.js-postback-popup');
-
-	    if (postbackPopup) {
-	      (0, _postbackRender2.default)(postbackPopup, control);
-	    }
-	  });
-	};
-
-	var _postbackRender = __webpack_require__(46);
-
-	var _postbackRender2 = _interopRequireDefault(_postbackRender);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/***/ },
-/* 46 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function (postback, control) {
-	  var trigger = postback.querySelector('.js-postback-trigger');
-	  var usd = postback.querySelector('.js-postback-usd');
-	  var eur = postback.querySelector('.js-postback-eur');
-	  var rub = postback.querySelector('.js-postback-rub');
-	  var applyBtn = postback.querySelector('.js-postback-apply');
-	  var closeBtn = postback.querySelector('.js-postback-close');
-
-	  var clickWindow = void 0;
-	  var resetBtns = void 0;
-	  var _open = void 0;
-	  var close = void 0;
-	  var updateValue = void 0;
-	  var setValue = void 0;
-	  var tempValue = {};
-
-	  clickWindow = function clickWindow(event) {
-	    var closest = event.target.closest('.js-postback');
-
-	    if (!closest || closest !== control) {
-	      close(event);
-	    }
-	  };
-
-	  resetBtns = function resetBtns(obj) {
-	    if (obj.postback_date) {
-	      trigger.classList.add('is-active');
-	    } else {
-	      trigger.classList.remove('is-active');
-	    }
-
-	    switch (obj.currency) {
-	      case 'usd':
-	        usd.classList.add('is-active');
-	        eur.classList.remove('is-active');
-	        rub.classList.remove('is-active');
-	        break;
-	      case 'eur':
-	        usd.classList.remove('is-active');
-	        eur.classList.add('is-active');
-	        rub.classList.remove('is-active');
-	        break;
-	      case 'rub':
-	        usd.classList.remove('is-active');
-	        eur.classList.remove('is-active');
-	        rub.classList.add('is-active');
-	        break;
-	      default:
-	        break;
-	    }
-	  };
-
-	  _open = function open(event) {
-	    event.stopPropagation();
-
-	    tempValue.postback_date = control.value.postback_date;
-	    tempValue.currency = control.value.currency;
-
-	    control.removeEventListener('click', _open);
-	    control.classList.add('is-open');
-	    window.addEventListener('click', clickWindow);
-	  };
-
-	  close = function close(event) {
-	    event.stopPropagation();
-
-	    resetBtns(control.value);
-
-	    window.removeEventListener('click', clickWindow);
-	    control.addEventListener('click', _open);
-	    control.classList.remove('is-open');
-	  };
-
-	  updateValue = function updateValue(obj) {
-	    var isUpdate = false;
-
-	    if (obj.hasOwnProperty('postback_date')) {
-	      if (control.value.postback_date !== !!obj.postback_date) {
-	        control.value.postback_date = !!obj.postback_date;
-	        isUpdate = true;
-	      }
-	    }
-
-	    if (obj.hasOwnProperty('currency')) {
-	      if (control.value.currency !== obj.currency.toUpperCase()) {
-	        control.value.currency = obj.currency.toUpperCase();
-	        isUpdate = true;
-	      }
-	    }
-
-	    resetBtns(obj);
-
-	    return isUpdate;
-	  };
-
-	  setValue = function setValue(obj) {
-	    if (updateValue(obj)) {
-	      control.triggerEvent('change');
-	    }
-	  };
-
-	  trigger.addEventListener('click', function () {
-	    if (trigger.classList.contains('is-active')) {
-	      trigger.classList.remove('is-active');
-	      tempValue.postback_date = false;
-	    } else {
-	      trigger.classList.add('is-active');
-	      tempValue.postback_date = true;
-	    }
-	  });
-
-	  usd.addEventListener('click', function () {
-	    usd.classList.add('is-active');
-	    eur.classList.remove('is-active');
-	    rub.classList.remove('is-active');
-	    tempValue.currency = 'usd';
-	  });
-
-	  eur.addEventListener('click', function () {
-	    usd.classList.remove('is-active');
-	    eur.classList.add('is-active');
-	    rub.classList.remove('is-active');
-	    tempValue.currency = 'eur';
-	  });
-
-	  rub.addEventListener('click', function () {
-	    usd.classList.remove('is-active');
-	    eur.classList.remove('is-active');
-	    rub.classList.add('is-active');
-	    tempValue.currency = 'rub';
-	  });
-
-	  applyBtn.addEventListener('click', function (event) {
-	    setValue(tempValue);
-	    close(event);
-	  });
-
-	  closeBtn.addEventListener('click', function (event) {
-	    close(event);
-	  });
-
-	  control.value = {};
-
-	  control.addEventListener('click', _open);
-
-	  control.updateValue = updateValue;
-	  control.setValue = setValue;
-	};
-
-/***/ },
-/* 47 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function () {
-	  [].concat(_toConsumableArray(document.querySelectorAll('.js-nav'))).forEach(function (nav) {
-	    var body = document.body;
-
-	    var rows = nav.querySelector('.js-nav-rows');
-	    var label = nav.querySelector('.js-nav-rows-label');
-	    var items = nav.querySelectorAll('.js-nav-rows-item');
-
-	    var clickWindow = function clickWindow(event) {
-	      var target = event.target;
-
-	      for (; target !== body;) {
-	        if (target === rows) {
-	          return;
-	        }
-
-	        target = target.parentNode;
-	      }
-
-	      rows.classList.remove('is-open');
-	    };
-
-	    var open = function open() {
-	      rows.classList.add('is-open');
-	      window.addEventListener('click', clickWindow);
-	    };
-
-	    var close = function close() {
-	      rows.classList.remove('is-open');
-	      window.removeEventListener('click', clickWindow);
-	    };
-
-	    var setRows = function setRows(sel) {
-	      var item = items[sel];
-	      var value = void 0;
-
-	      if (item) {
-	        value = item.innerHTML;
-	      } else {
-	        return;
-	      }
-
-	      if (rows.value === value) {
-	        return;
-	      }
-
-	      label.innerText = value;
-	      rows.value = value;
-
-	      [].concat(_toConsumableArray(items)).forEach(function (el) {
-	        return el.classList.remove('is-select');
-	      });
-
-	      item.classList.add('is-select');
-
-	      rows.triggerEvent('change');
-	    };
-
-	    rows.setValue = function (v) {
-	      var sel = -1;
-	      var val = String(v);
-
-	      [].concat(_toConsumableArray(items)).forEach(function (item) {
-	        if (sel === -1 && val === item.innerText) {
-	          sel = i;
-	        }
-	      });
-
-	      setRows(sel);
-	    };
-
-	    label.addEventListener('click', function () {
-	      if (rows.classList.contains('is-open')) {
-	        close();
-	      } else {
-	        open();
-	      }
-	    });
-
-	    [].concat(_toConsumableArray(items)).forEach(function (item, i) {
-	      item.addEventListener('click', function () {
-	        setRows(i);
-	        close();
-	      });
-
-	      if (item.classList.contains('.is-select')) {
-	        setRows(i);
-	      }
-	    });
-
-	    if (!label.innerText) {
-	      setRows(0);
-	    }
-	  });
-	};
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/***/ },
-/* 48 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-	exports.default = function () {
-	  var setList = function setList(list) {
-	    var body = document.body;
-	    var listValue = list.querySelector('.js-list-value');
-	    var search = list.querySelector('.js-list-search');
-	    var items = list.querySelectorAll('.js-list-item');
-	    var placeholder = list.dataset.placeholder;
-
-	    var clickWindow = void 0;
-	    var open = void 0;
-	    var close = void 0;
-	    var getItemByValue = void 0;
-	    var updateValue = void 0;
-	    var setValue = void 0;
-	    var setDisabled = void 0;
-	    var unsetDisabled = void 0;
-
-	    clickWindow = function clickWindow(event) {
-	      var closest = event.target.closest('.js-list');
-
-	      if (!closest || closest !== list) {
-	        close();
-	      }
-	    };
-
-	    open = function open() {
-	      list.classList.add('is-open');
-	      window.addEventListener('click', clickWindow);
-	    };
-
-	    close = function close() {
-	      if (search) {
-	        search.value = '';
-
-	        [].concat(_toConsumableArray(items)).forEach(function (item) {
-	          item.style.display = '';
-	        });
-	      }
-
-	      list.classList.remove('is-open');
-	      window.removeEventListener('click', clickWindow);
-	    };
-
-	    getItemByValue = function getItemByValue(val) {
-	      var sel = -1;
-	      var value = String(val);
-
-	      [].concat(_toConsumableArray(items)).forEach(function (item, i) {
-	        if (sel === -1 && value === (item.dataset.value || item.innerText)) {
-	          sel = i;
-	        }
-	      });
-
-	      return sel;
-	    };
-
-	    updateValue = function updateValue(param) {
-	      var obj = {
-	        item: -1,
-	        value: null,
-	        is_clear: false,
-	        label: null
-	      };
-
-	      var clearBtn = void 0;
-
-	      if (typeof param === 'string' || typeof param === 'number') {
-	        obj.item = getItemByValue(param);
-	        obj.value = param;
-	        obj.is_clear = false;
-	        obj.label = false;
-	      } else if ((typeof param === 'undefined' ? 'undefined' : _typeof(param)) === 'object' && !Array.isArray(param)) {
-	        if (!param.hasOwnProperty('item') && param.hasOwnProperty('value')) {
-	          obj.item = getItemByValue(param.value);
-	          obj.value = param.value;
-	        } else if (items[parseInt(param.item, 10)]) {
-	          obj.item = parseInt(param.item, 10);
-	          obj.value = items[obj.item].dataset.value || items[obj.item].innerHTML;
-	        }
-
-	        obj.is_clear = !!param.is_clear;
-	        obj.label = param.label;
-	      }
-
-	      var item = items[obj.item];
-	      var text = void 0;
-	      var value = void 0;
-
-	      if (obj.value) {
-	        text = item ? item.innerHTML : obj.value;
-	        value = obj.value;
-	      } else {
-	        text = placeholder || items[0].innerHTML;
-	        value = null;
-
-	        clearBtn = list.querySelector('.list__clear');
-
-	        if (clearBtn) {
-	          clearBtn.parentNode.removeChild(clearBtn);
-	        }
-	      }
-
-	      if (list.value === value) {
-	        return false;
-	      }
-
-	      listValue.innerText = text;
-	      list.oldValue = list.value;
-	      list.value = value;
-
-	      [].concat(_toConsumableArray(items)).forEach(function (el) {
-	        return el.classList.remove('is-select');
-	      });
-
-	      if (item) {
-	        item.classList.add('is-select');
-	      }
-
-	      if (obj.is_clear && list.value) {
-	        (function () {
-	          clearBtn = document.createElement('div');
-	          clearBtn.classList.add('list__clear');
-	          list.appendChild(clearBtn);
-
-	          var clear = function clear() {
-	            setValue({ is_clear: true });
-	            clearBtn.removeEventListener('click', clear);
-	          };
-
-	          clearBtn.addEventListener('click', clear);
-	        })();
-	      }
-
-	      if (obj.label) {
-	        var label = list.querySelector('.list-label');
-
-	        if (label) {
-	          label.parentNode.removeChild(label);
-
-	          label = document.createElement('div');
-	          label.classList.add('list-label');
-	          label.innerText = obj.label;
-	          list.insertBefore(label, list.firstChild);
-	        }
-	      }
-
-	      return true;
-	    };
-
-	    setValue = function setValue(param) {
-	      if (updateValue(param)) {
-	        list.triggerEvent('change');
-	      }
-	    };
-
-	    setDisabled = function setDisabled(arr) {
-	      var setDis = function setDis() {
-	        var item = getItemByValue(arr);
-
-	        if (item !== -1) {
-	          items[item].classList.add('is-disabled');
-	        }
-	      };
-
-	      if (typeof arr === 'string' || typeof arr === 'number') {
-	        setDis(arr);
-	      } else if (Array.isArray(arr)) {
-	        arr.forEach(setDis);
-	      }
-	    };
-
-	    unsetDisabled = function unsetDisabled(arr) {
-	      var setDis = function setDis() {
-	        var item = getItemByValue(arr);
-
-	        if (item !== -1) {
-	          items[item].classList.remove('is-disabled');
-	        }
-	      };
-
-	      if (typeof arr === 'string' || typeof arr === 'number') {
-	        setDis(arr);
-	      } else if (Array.isArray(arr)) {
-	        arr.forEach(setDis);
-	      } else {
-	        [].concat(_toConsumableArray(items)).forEach(function (item) {
-	          return item.classList.remove('is-disabled');
-	        });
-	      }
-	    };
-
-	    list.updateValue = updateValue;
-	    list.setValue = setValue;
-	    list.setDisabled = setDisabled;
-	    list.unsetDisabled = unsetDisabled;
-
-	    listValue.addEventListener('click', function () {
-	      if (list.classList.contains('is-open')) {
-	        close();
-	      } else {
-	        open();
-	      }
-	    });
-
-	    if (search) {
-	      var filterSearch = function filterSearch(event) {
-	        var reg = new RegExp(event.target.value, 'i');
-
-	        [].concat(_toConsumableArray(items)).forEach(function (item) {
-	          if (item.innerText.search(reg) === -1) {
-	            item.style.display = 'none';
-	          } else {
-	            item.style.display = '';
-	          }
-	        });
-	      };
-
-	      search.addEventListener('select', filterSearch);
-	      search.addEventListener('change', filterSearch);
-	      search.addEventListener('keyup', filterSearch);
-	    }
-
-	    [].concat(_toConsumableArray(items)).forEach(function (item, i) {
-	      item.addEventListener('click', function (event) {
-	        if (event.target.classList.contains('is-disabled')) {
-	          return;
-	        }
-
-	        setValue({ item: i });
-	        close();
-	      });
-
-	      if (item.classList.contains('.is-select')) {
-	        updateValue({ item: i });
-	      }
-	    });
-
-	    if (!listValue.innerText) {
-	      if (placeholder) {
-	        listValue.innerText = placeholder;
-	      } else {
-	        updateValue({ item: 0 });
-	      }
-	    }
-	  };
-
-	  [].concat(_toConsumableArray(document.querySelectorAll('.js-list'))).forEach(setList);
-
-	  return setList;
-	};
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/***/ },
-/* 49 */
+/* 38 */,
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4015,197 +3976,340 @@ webpackJsonp([0],[
 	exports.default = function () {
 	  var history = (0, _createBrowserHistory2.default)();
 	  var location = history.location;
-
-	  var stat = document.querySelector('.js-stat');
-	  var might = window.might;
-	  var currentDate = might.current_datetime;
 	  var defaultTimezone = '+03:00|Europe/Moscow';
 
-	  might.stat = {
-	    params: {
-	      auth_key: 'mkj-l123k-kFWSdl90d',
-	      all_fields: 0,
-
-	      draw: 1,
-	      order: false,
-	      start: 0,
-	      length: 25,
-	      search: {
-	        value: '',
-	        regex: false
-	      },
-	      currency: 'USD',
-	      currency_type: 'action',
-	      currency_date: false,
-	      timezone: defaultTimezone,
-	      start_time: '00:00',
-	      end_time: '23:59',
-	      filter: []
+	  window.might.stat.params = {
+	    draw: 1,
+	    length: 25,
+	    page: 1,
+	    total: 1,
+	    search: {
+	      value: '',
+	      regex: false
 	    },
-	    config: {
-	      date_from: {
-	        year: currentDate.getFullYear(),
-	        month: currentDate.getMonth(),
-	        date: currentDate.getDate()
-	      },
-	      date_to: {
-	        year: currentDate.getFullYear(),
-	        month: currentDate.getMonth(),
-	        date: currentDate.getDate()
-	      },
-	      is_tree: true,
-	      show_graph: false,
-	      main_segment: null,
-	      segments: [],
-	      level: 1,
-	      current: null,
-	      value: null
-	    }
+	    order: false,
+
+	    currency: 'usd',
+	    currency_type: 'action',
+	    currency_date: false,
+
+	    date_from: {},
+	    date_to: {},
+	    start_time: '00:00',
+	    end_time: '23:59',
+	    timezone: defaultTimezone,
+	    postback_date: false,
+
+	    is_tree: true,
+	    show_graph: false,
+
+	    segments: [],
+	    level: 1,
+	    filter: [],
+	    current: null,
+	    value: null
 	  };
 
-	  var statParams = might.stat.params;
-	  var statConfig = might.stat.config;
+	  var stat = document.querySelector('.js-stat');
+	  var params = window.might.stat.params;
+	  var currentDate = might.current_datetime;
 
 	  var regTime = new RegExp(/^([0,1][0-9]|2[0-3]):[0-5][0-9]$/);
-	  var regDate = new RegExp(/\d{4}-(0[1-9]|1[0-2])-([0-1][0-9]|3[0-1])/, 'g');
+	  var regDate = new RegExp(/^\d{4}-(0[1-9]|1[0-2])-([0-1][0-9]|3[0-1])$/);
 
-	  var setDateFilter = function setDateFilter() {
-	    var from = new Date(statConfig.date_from.year, statConfig.date_from.month, statConfig.date_from.date);
-	    var to = new Date(statConfig.date_to.year, statConfig.date_to.month, statConfig.date_to.date);
-	    statParams.date_filter = (0, _dateformat2.default)(from, 'yyyy-mm-dd') + ' - ' + (0, _dateformat2.default)(to, 'yyyy-mm-dd');
+	  var dateToString = function dateToString(y, m, d) {
+	    var date = new Date(y, m, d);
+	    return (0, _dateformat2.default)(date, 'yyyy-mm-dd');
 	  };
 
 	  var updateTableParams = function updateTableParams(loc) {
-	    var search = loc.search.slice(1);
-	    var obj = _qs2.default.parse(search);
+	    var query = _qs2.default.parse(loc.search.slice(1));
 
-	    statConfig.main_segment = obj.main_segment || null;
+	    params.length = query.length || 25;
+	    params.page = query.page || 1;
+	    params.order = query.order || false;
+	    params.currency = query.currency || 'usd';
 
-	    if (statConfig.main_segment) {
-	      statConfig.segments = obj.segments || [];
+	    if (query.from && regDate.test(query.from)) {
+	      var from = query.from.split('-');
+	      params.date_from.year = parseInt(from[0], 10) || currentDate.getFullYear();
+	      params.date_from.month = parseInt(from[1], 10) - 1 || currentDate.getMonth();
+	      params.date_from.date = parseInt(from[2], 10) || currentDate.getDate();
 	    } else {
-	      statConfig.segments = [];
+	      params.date_from.year = currentDate.getFullYear();
+	      params.date_from.month = currentDate.getMonth();
+	      params.date_from.date = currentDate.getDate();
 	    }
 
-	    var datetime = (obj.date_filter || '').match(regDate);
-
-	    if (datetime && datetime[0]) {
-	      var from = datetime[0].split('-');
-	      statConfig.date_from.year = parseInt(from[0], 10) || currentDate.getFullYear();
-	      statConfig.date_from.month = parseInt(from[1], 10) - 1 || currentDate.getMonth();
-	      statConfig.date_from.date = parseInt(from[2], 10) || currentDate.getDate();
+	    if (query.to && regDate.test(query.to)) {
+	      var to = query.to.split('-');
+	      params.date_to.year = parseInt(to[0], 10) || currentDate.getFullYear();
+	      params.date_to.month = parseInt(to[1], 10) - 1 || currentDate.getMonth();
+	      params.date_to.date = parseInt(to[2], 10) || currentDate.getDate();
 	    } else {
-	      statConfig.date_from.year = currentDate.getFullYear();
-	      statConfig.date_from.month = currentDate.getMonth();
-	      statConfig.date_from.date = currentDate.getDate();
+	      params.date_to.year = currentDate.getFullYear();
+	      params.date_to.month = currentDate.getMonth();
+	      params.date_to.date = currentDate.getDate();
 	    }
 
-	    if (datetime && datetime[1]) {
-	      var to = datetime[1].split('-');
-	      statConfig.date_to.year = parseInt(to[0], 10) || currentDate.getFullYear();
-	      statConfig.date_to.month = parseInt(to[1], 10) - 1 || currentDate.getMonth();
-	      statConfig.date_to.date = parseInt(to[2], 10) || currentDate.getDate();
-	    } else {
-	      statConfig.date_to.year = currentDate.getFullYear();
-	      statConfig.date_to.month = currentDate.getMonth();
-	      statConfig.date_to.date = currentDate.getDate();
-	    }
-
-	    setDateFilter();
-
-	    statParams.start_time = obj.start_time || '00:00';
-	    statParams.end_time = obj.end_time || '23:59';
-	    if (obj.postback_date) {
-	      statParams.postback_date = true;
-	    } else {
-	      delete statParams.postback_date;
-	    }
-	    statConfig.is_tree = obj.hasOwnProperty('is_tree') ? !!obj.is_tree : true;
-	    statConfig.show_graph = obj.hasOwnProperty('show_graph') ? !!obj.show_graph : false;
-
-	    if (obj.currency) {
-	      statParams.currency = obj.currency;
-	    } else {
-	      statParams.currency = 'USD';
-	    }
-
-	    statParams.timezone = obj.timezone || defaultTimezone;
-	    statParams.start = obj.start || 0;
-	    statParams.length = obj.length || 25;
+	    params.start_time = query.start_time || '00:00';
+	    params.end_time = query.end_time || '23:59';
+	    params.timezone = query.timezone || defaultTimezone;
+	    params.postback_date = !!parseInt(query.postback_date, 10);
+	    params.segments = query.segments || [];
+	    params.is_tree = query.hasOwnProperty('is_tree') ? !!parseInt(query.is_tree, 10) : true;
+	    params.show_graph = !!parseInt(query.show_graph, 10);
 	  };
 
-	  updateTableParams(location);
-	  stat.triggerEvent('drawgraph');
-	  stat.triggerEvent('drawtable');
+	  var pushHistroy = function pushHistroy() {
+	    var query = {};
 
-	  might.stat.pushHistory = function () {
-	    var obj = {};
-
-	    obj.main_segment = statConfig.main_segment;
-	    obj.segments = statConfig.segments;
-	    obj.date_filter = statParams.date_filter;
-	    obj.start_time = statParams.start_time;
-	    obj.end_time = statParams.end_time;
-
-	    if (statParams.postback_date) {
-	      obj.postback_date = 1;
+	    if (params.length !== 25) {
+	      query.length = params.length;
 	    }
 
-	    if (!statConfig.is_tree) {
-	      obj.is_tree = 0;
+	    if (params.page !== 1) {
+	      query.page = params.page;
 	    }
 
-	    if (statConfig.show_graph) {
-	      obj.show_graph = 1;
+	    if (params.order) {
+	      query.order = params.order;
 	    }
 
-	    if (statParams.currency !== 'USD') {
-	      obj.currency = statParams.currency;
+	    if (params.currency !== 'usd') {
+	      query.currency = params.currency;
 	    }
 
-	    obj.timezone = statParams.timezone;
+	    query.from = dateToString(params.date_from.year, params.date_from.month, params.date_from.date);
+	    query.to = dateToString(params.date_to.year, params.date_to.month, params.date_to.date);
 
-	    if (statParams.start !== 0) {
-	      obj.start = statParams.start;
+	    if (params.start_time !== '00:00') {
+	      query.start_time = params.start_time;
 	    }
 
-	    if (statParams.length !== 25) {
-	      obj.length = statParams.length;
+	    if (params.end_time !== '23:59') {
+	      query.end_time = params.end_time;
 	    }
+
+	    query.timezone = params.timezone;
+
+	    if (params.postback_date) {
+	      query.postback_date = 1;
+	    }
+
+	    if (!params.is_tree) {
+	      query.is_tree = 0;
+	    }
+
+	    if (params.show_graph) {
+	      query.show_graph = 1;
+	    }
+
+	    query.segments = params.segments;
 
 	    history.push({
 	      pathname: '/',
-	      search: _qs2.default.stringify(obj)
+	      search: _qs2.default.stringify(query)
 	    });
 	  };
 
 	  history.listen(function (loc, action) {
 	    if (action === 'POP') {
-	      statParams.draw++;
-	      statParams.filter = [];
-	      statConfig.level = 1;
-	      statConfig.current = null;
 	      updateTableParams(loc);
+	      params.draw++;
+	      params.level = 1;
+	      params.filter = [];
+	      params.current = null;
+	      params.value = null;
+
 	      stat.triggerEvent('backurl');
 	      stat.triggerEvent('drawgraph');
 	      stat.triggerEvent('drawtable');
 	    }
 	  });
+
+	  stat.addEventListener('newurl', pushHistroy);
+
+	  updateTableParams(location);
+	  stat.triggerEvent('drawgraph');
+	  stat.triggerEvent('drawtable');
 	};
 
-	var _dateformat = __webpack_require__(14);
-
-	var _dateformat2 = _interopRequireDefault(_dateformat);
-
-	var _createBrowserHistory = __webpack_require__(28);
-
-	var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
-
-	var _qs = __webpack_require__(22);
+	var _qs = __webpack_require__(29);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
+	var _dateformat = __webpack_require__(18);
+
+	var _dateformat2 = _interopRequireDefault(_dateformat);
+
+	var _createBrowserHistory = __webpack_require__(40);
+
+	var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 40 */,
+/* 41 */,
+/* 42 */,
+/* 43 */,
+/* 44 */,
+/* 45 */,
+/* 46 */,
+/* 47 */,
+/* 48 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (obj) {
+	  var params = window.might.stat.params;
+
+	  var isUpdate = false;
+	  var isUpdateTable = false;
+	  var isUpdateGraph = false;
+	  var isUpdateNav = false;
+
+	  for (var param in obj) {
+	    if (obj.hasOwnProperty(param)) {
+	      switch (param) {
+	        case 'postback_date':
+	          if (params.postback_date !== !!obj.postback_date) {
+	            params.postback_date = !!obj.postback_date;
+	            isUpdate = true;
+	          }
+	          break;
+
+	        case 'currency':
+	          if (params.currency !== obj.currency && ['usd', 'eur', 'rub'].indexOf(obj.currency) !== -1) {
+	            params.currency = obj.currency;
+	            isUpdate = true;
+	          }
+	          break;
+
+	        case 'segment':
+	          if (obj.segment.hasOwnProperty('level')) {
+	            if (obj.segment.hasOwnProperty('value')) {
+	              if (params.segments[obj.segment.level] !== obj.segment.value) {
+	                params.segments[obj.segment.level] = obj.segment.value;
+	                isUpdate = true;
+	              }
+	            } else {
+	              if (params.segments.splice(obj.segment.level, 1).length === 1) {
+	                isUpdate = true;
+	              }
+	            }
+	          }
+	          break;
+
+	        case 'date_from':
+	          var from = params.date_from;
+	          var newFrom = obj.date_from;
+	          if (from.year !== newFrom.year || from.month !== newFrom.month || from.date !== newFrom.date) {
+	            params.date_from.year = obj.date_from.year;
+	            params.date_from.month = obj.date_from.month;
+	            params.date_from.date = obj.date_from.date;
+	            isUpdate = true;
+	          }
+	          break;
+
+	        case 'date_to':
+	          var to = params.date_to;
+	          var newTo = obj.date_to;
+	          if (to.year !== newTo.year || to.month !== newTo.month || to.date !== newTo.date) {
+	            params.date_to.year = obj.date_to.year;
+	            params.date_to.month = obj.date_to.month;
+	            params.date_to.date = obj.date_to.date;
+	            isUpdate = true;
+	          }
+	          break;
+
+	        case 'start_time':
+	          if (regTime.test(obj.start_time) && params.start_time !== obj.start_time) {
+	            params.start_time = obj.start_time;
+	            isUpdate = true;
+	          }
+	          break;
+
+	        case 'end_time':
+	          if (regTime.test(obj.end_time) && params.end_time !== obj.end_time) {
+	            params.end_time = obj.end_time;
+	            isUpdate = true;
+	          }
+	          break;
+
+	        case 'show_graph':
+	          if (params.show_graph !== !!obj.show_graph) {
+	            params.show_graph = !!obj.show_graph;
+	            isUpdateGraph = true;
+	          }
+	          break;
+
+	        case 'is_tree':
+	          if (params.is_tree !== !!obj.is_tree) {
+	            params.is_tree = !!obj.is_tree;
+	            isUpdateTable = true;
+	          }
+	          break;
+
+	        case 'page':
+	          if (params.page !== obj.page) {
+	            params.page = obj.page;
+	            params.start = (params.page - 1) * params.length;
+	            isUpdateNav = true;
+	          }
+	          break;
+
+	        case 'length':
+	          if (params.length !== obj.length) {
+	            params.length = obj.length;
+	            params.start = (params.page - 1) * params.length;
+	            isUpdateNav = true;
+	          }
+	          break;
+
+	        default:
+	          break;
+	      }
+	    }
+	  }
+
+	  if (isUpdate || isUpdateTable) {
+	    params.draw++;
+	    params.page = 1;
+	    params.start = 0;
+	    params.filter = [];
+	    params.level = 1;
+	    params.current = null;
+	    params.value = null;
+	  } else if (isUpdateNav) {
+	    params.draw++;
+	    stat.triggerEvent('newurl');
+	    stat.triggerEvent('drawtable');
+	  }
+
+	  if (isUpdate) {
+	    stat.triggerEvent('newurl');
+	    stat.triggerEvent('drawtable');
+	    stat.triggerEvent('drawgraph');
+	  } else if (isUpdateGraph) {
+	    stat.triggerEvent('newurl');
+	    stat.triggerEvent('drawgraph');
+	  } else if (isUpdateTable) {
+	    stat.triggerEvent('newurl');
+	    stat.triggerEvent('drawtable');
+	  }
+	};
+
+	var stat = document.querySelector('.js-stat');
+
+	var regTime = new RegExp(/^([0,1][0-9]|2[0-3]):[0-5][0-9]$/);
+	var regDate = new RegExp(/\d{4}-(0[1-9]|1[0-2])-([0-1][0-9]|3[0-1])/, 'g');
 
 /***/ }
 ]);

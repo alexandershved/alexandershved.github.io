@@ -2829,6 +2829,7 @@ body.noscroll {
   display: inline-block;
   width: 65px;
   height: 34px;
+  margin-right: 10px;
   font-size: 1em;
   color: #54647e;
   text-align: center;
@@ -2838,9 +2839,6 @@ body.noscroll {
 }
 .calendar__time:focus {
   border: 1px solid #838fa2;
-}
-.calendar__time + .calendar__time {
-  margin-left: 10px;
 }
 .calendar__controls {
   float: right;
@@ -3212,7 +3210,7 @@ body.noscroll {
 }
 .list__search input {
   width: 100%;
-  padding: 10px 0 10px 15px;
+  padding: 10px 0 10px 20px;
   font-size: 1em;
   color: #54647e;
   border: 0;
@@ -3301,14 +3299,21 @@ body.noscroll {
 .nav {
   display: block;
   padding: 20px;
+  user-select: none;
+  -webkit-user-drag: none;
 }
-.nav__label {
+.nav__label,
+.nav__counters {
   display: inline-block;
   padding: 7px 10px 0 0;
   font-size: 1em;
   color: #54647e;
 }
-.nav__goto {
+.nav__counters {
+  width: 120px;
+  text-align: right;
+}
+.nav__page {
   width: 40px;
   height: 28px;
   margin-right: 30px;
@@ -3319,17 +3324,16 @@ body.noscroll {
   border: 1px solid #e4e5e9;
   background-color: #fff;
 }
-.nav__rows {
+.nav__count {
   position: relative;
   display: inline-block;
   width: 60px;
   height: 28px;
-  margin-right: 30px;
   vertical-align: top;
   cursor: pointer;
   transition: all 200ms ease;
 }
-.nav__rows-label {
+.nav__count-label {
   position: relative;
   height: 100%;
   padding: 0 25px 0 10px;
@@ -3341,10 +3345,10 @@ body.noscroll {
   background-color: #fff;
   transition: background-color 200ms ease;
 }
-.nav__rows-label:hover {
+.nav__count-label:hover {
   background-color: rgba(244,244,244,0.7);
 }
-.nav__rows-label:after {
+.nav__count-label:after {
   content: '';
   position: absolute;
   width: 0;
@@ -3355,28 +3359,35 @@ body.noscroll {
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
 }
-.nav__rows.is-open .nav__rows-label:after {
+.nav__count.is-open .nav__count-label:after {
   border-top: 0;
   border-bottom: 6px solid #54647e;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
 }
-.nav__rows-items {
-  position: relative;
-  overflow: hidden;
-  height: 0;
-  top: -1px;
-  border: 1px solid #e4e5e9;
-  border-top: 0;
-  border-bottom: 0;
+.nav__count-items {
+  position: absolute;
+  display: none;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  transform: translateY(1px);
   background-color: #fff;
   z-index: 2;
 }
-.nav__rows.is-open .nav__rows-items {
-  height: auto;
+.nav__count-items:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   border: 1px solid #e4e5e9;
 }
-.nav__rows-item {
+.nav__count.is-open .nav__count-items {
+  display: block;
+}
+.nav__count-item {
   position: relative;
   display: block;
   height: 28px;
@@ -3388,8 +3399,11 @@ body.noscroll {
   white-space: nowrap;
   transition: all 200ms ease;
 }
-.nav__rows-item:hover {
+.nav__count-item:hover {
   background-color: rgba(244,244,244,0.7);
+}
+.nav__controls {
+  display: inline-block;
 }
 .nav__tostart,
 .nav__toend,
@@ -3749,12 +3763,6 @@ body.noscroll {
   border-left: 2px solid transparent;
   box-shadow: inset 0 0.5px 0 0 rgba(101,134,157,0.1), inset 0 -0.5px 0 0 rgba(101,134,157,0.1);
 }
-.table .is-main a,
-.table .is-main span {
-  position: relative;
-  display: inline-block;
-  border-bottom: 1px solid rgba(101,134,157,0.2);
-}
 .table .is-main input[type=checkbox] {
   position: relative;
   display: inline-block;
@@ -3836,6 +3844,23 @@ body.noscroll {
   top: 16px;
   left: 13px;
   transform: rotate(45deg);
+}
+.table .is-clickable {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+.table .is-clickable:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  border-bottom: 1px solid rgba(101,134,157,0.4);
+}
+.table .is-clickable:hover {
+  color: #0182ec;
 }
 
 /*# sourceMappingURL=application.css.map*/
