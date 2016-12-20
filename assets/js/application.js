@@ -154,35 +154,24 @@ webpackJsonp([0],[
 	      var char = String.fromCharCode(event.keyCode);
 	      var key = '0123456789'.indexOf(char);
 
-	      if (!/\s/.test(char)) {
-	        event.preventDefault();
-	      }
+	      event.preventDefault();
 
 	      if (key !== -1) {
 	        var value = event.target.value;
 	        var chunks = value.split(':');
-	        var newChunk = void 0;
+	        var str = range === 1 ? value[1] : value[4];
+	        var maxVal = range === 1 ? 24 : 60;
 
-	        if (range === 1) {
-	          newChunk = value[1] + '' + key;
+	        str += String(key);
 
-	          if (parseInt(newChunk, 10) < 24) {
-	            chunks[0] = newChunk;
-	          } else {
-	            chunks[0] = '0' + key;
-	          }
-
-	          if (parseInt(chunks[0], 10) > 2) {
-	            range = 2;
-	          }
+	        if (parseInt(str, 10) < maxVal) {
+	          chunks[range - 1] = str;
 	        } else {
-	          newChunk = value[4] + '' + key;
+	          chunks[range - 1] = '0' + key;
+	        }
 
-	          if (parseInt(newChunk, 10) < 60) {
-	            chunks[1] = newChunk;
-	          } else {
-	            chunks[1] = '0' + key;
-	          }
+	        if (range === 1 && parseInt(chunks[0], 10) > 2) {
+	          range = 2;
 	        }
 
 	        input.value = chunks.join(':');
@@ -190,6 +179,42 @@ webpackJsonp([0],[
 
 	        selectRange();
 	      }
+	    };
+
+	    var keyForChange = function keyForChange(code) {
+	      var chunks = event.target.value.split(':');
+	      var hours = parseInt(chunks[0], 10);
+	      var minutes = parseInt(chunks[1], 10);
+
+	      if (range === 1) {
+	        hours += code === 38 ? 1 : -1;
+	      } else {
+	        minutes += code === 38 ? 1 : -1;
+	      }
+
+	      if (minutes > 59) {
+	        minutes = 0;
+	        hours++;
+	      }
+
+	      if (minutes < 0) {
+	        minutes = 59;
+	        hours--;
+	      }
+
+	      if (hours > 23) {
+	        hours = 0;
+	      }
+
+	      if (hours < 0) {
+	        hours = 23;
+	      }
+
+	      chunks[0] = hours < 10 ? '0' + hours : hours;
+	      chunks[1] = minutes < 10 ? '0' + minutes : minutes;
+
+	      input.value = chunks.join(':');
+	      input.triggerEvent('chage');
 	    };
 
 	    input.addEventListener('focus', function () {
@@ -222,14 +247,21 @@ webpackJsonp([0],[
 	            event.preventDefault();
 	          }
 	          break;
+	        case 13:
+	        case 27:
+	          event.target.blur();
+	          break;
 	        case 37:
 	          event.preventDefault();
 	          range = 1;
 	          selectRange();
 	          break;
 	        case 38:
-	        case 32:
 	        case 40:
+	          event.preventDefault();
+	          keyForChange(code);
+	          break;
+	        case 32:
 	          event.preventDefault();
 	          break;
 	        case 39:
@@ -1273,7 +1305,7 @@ webpackJsonp([0],[
 	      }
 
 	      segment.removeEventListener('change', segmentChange);
-	      (0, _update2.default)({ segment: { level: level } });
+	      (0, _update2.default)({ segment: { level: level + 1 } });
 	      segmentList.splice(level, 1);
 	      segment.parentNode.removeChild(segment);
 	    }
@@ -1537,15 +1569,37 @@ webpackJsonp([0],[
 	    });
 
 	    page.addEventListener('keydown', function (event) {
-	      var char = String.fromCharCode(event.keyCode);
+	      var code = event.keyCode;
+	      var char = String.fromCharCode(code);
 	      var key = '0123456789'.indexOf(char);
+	      var value = parseInt(event.target.value, 10);
 
-	      if ([13, 27, 9].indexOf(event.keyCode) === -1 && key === -1) {
-	        event.preventDefault();
-	      } else {
-	        if ([13, 27, 9].indexOf(event.keyCode) !== -1) {
+	      switch (code) {
+	        case 9:
+	        case 13:
+	        case 27:
 	          event.target.blur();
-	        }
+	          break;
+	        case 38:
+	          event.preventDefault();
+	          value++;
+	          if (value > Math.ceil(nav.value.total / nav.value.length)) {
+	            value = Math.ceil(nav.value.total / nav.value.length);
+	          }
+	          setValue({ page: value });
+	          break;
+	        case 40:
+	          event.preventDefault();
+	          value--;
+	          if (value < 1) {
+	            value = 1;
+	          }
+	          setValue({ page: value });
+	          break;
+	        default:
+	          if (key === -1) {
+	            event.preventDefault();
+	          }
 	      }
 	    });
 
@@ -1556,9 +1610,8 @@ webpackJsonp([0],[
 	        value = 1;
 	      }
 
-	      if (value > nav.value.max_pages) {
-	        value = nav.value.max_pages;
-	        event.target.value = nav.value.max_pages;
+	      if (value > Math.ceil(nav.value.total / nav.value.length)) {
+	        value = Math.ceil(nav.value.total / nav.value.length);
 	      }
 
 	      setValue({ page: value });
@@ -1683,8 +1736,9 @@ webpackJsonp([0],[
 	        toend.classList.remove('is-disabled');
 	      }
 
+	      page.value = nav.value.page;
+
 	      if (isUpdate) {
-	        page.value = nav.value.page;
 	        labelCount.innerText = nav.value.length;
 
 	        [].concat(_toConsumableArray(itemsCount)).forEach(function (item) {
@@ -1818,16 +1872,43 @@ webpackJsonp([0],[
 	        obj.result = result;
 
 	        if (obj.level === 1) {
-	          var table = _tableRender2.default.render(obj);
-	          (0, _tableEvent2.default)(table);
+	          var yPosNav = navControl.getBoundingClientRect().top;
+	          var xScrollWindow = window.scrollX;
+	          var visibleNav = yPosNav < window.innerHeight;
+
+	          (0, _tableEvent2.default)(_tableRender2.default.render(obj));
 
 	          if (params.total !== parseInt(result.recordsTotal, 10)) {
 	            params.total = parseInt(result.recordsTotal, 10);
-
 	            navControl.setValue({
 	              total: params.total
 	            });
 	          }
+
+	          if (visibleNav) {
+	            var t = 0;
+	            var o = navControl;
+	            while (o) {
+	              if (o.offsetParent) {
+	                t += o.offsetTop;
+	              }
+	              o = o.offsetParent;
+	            }
+	            window.scrollTo(xScrollWindow, t - yPosNav);
+	          }
+
+	          params.filter_graph = {};
+	          params.filter_graph[obj.field] = [];
+
+	          if (result.data && Array.isArray(result.data)) {
+	            result.data.forEach(function (record) {
+	              if (record[obj.field]) {
+	                params.filter_graph[obj.field].push(record[obj.field]);
+	              }
+	            });
+	          }
+
+	          stat.triggerEvent('drawgraph');
 	        } else {
 	          _tableRender2.default.renderRow(obj);
 	        }
@@ -3324,6 +3405,7 @@ webpackJsonp([0],[
 
 	var columnsList = {
 	  campaign_id: 'Campaign',
+	  country: 'Country',
 	  browser: 'Browser',
 	  browser_language: 'Browser language',
 	  payment: 'Payment',
@@ -3391,20 +3473,20 @@ webpackJsonp([0],[
 
 	  columns.forEach(function (key, j) {
 	    var td = void 0;
-
 	    var name = void 0;
+	    var k = j === 0 ? response.field : key;
 
-	    if (key === 'campaign_id') {
+	    if (k === 'campaign_id') {
 	      if (record.label && record.label.name) {
 	        name = record.label.name;
-	      } else if (record[key] || record[key] === 0) {
-	        name = '[id: ' + record[key] + ']';
+	      } else if (record[k] || record[k] === 0) {
+	        name = '[id: ' + record[k] + ']';
 	      } else {
 	        name = '[empty value]';
 	      }
 	    } else {
-	      if (record[key] || record[key] === 0) {
-	        name = record[key];
+	      if (record[k] || record[k] === 0) {
+	        name = record[k];
 	      } else {
 	        name = '-';
 	      }
@@ -3428,17 +3510,12 @@ webpackJsonp([0],[
 	      }
 
 	      var span = createNode('span', null, name);
-	      if (response.field.indexOf(key) !== -1) {
-	        span.classList.add('is-clickable');
-	      }
+	      span.classList.add('is-clickable');
 	      main.appendChild(span);
 	    } else {
 	      td = createNode('td');
 
 	      var _span = createNode('span', null, name);
-	      if (response.field.indexOf(key) !== -1) {
-	        _span.classList.add('is-clickable');
-	      }
 	      td.appendChild(_span);
 	    }
 
@@ -3826,6 +3903,7 @@ webpackJsonp([0],[
 	    }
 	    data.group = params.segments[params.level - 1];
 	    data.filter = JSON.stringify(params.filter);
+	    data.filter_graph = params.filter_graph;
 
 	    return data;
 	  };
@@ -3887,6 +3965,7 @@ webpackJsonp([0],[
 	  var stat = document.querySelector('.js-stat');
 	  var statGraph = stat.querySelector('.js-stat-graph');
 	  var canvas = stat.querySelector('#stat-graph');
+	  var res = result || {};
 
 	  if (!statGraph || !canvas) {
 	    return;
@@ -3895,8 +3974,48 @@ webpackJsonp([0],[
 	  statGraph.style.display = '';
 	  canvas.innerHTML = '';
 
+	  var colors = res.colors || ['#ad7eea', '#41c9f2', '#1be5a0', '#ec2c4c', '#f5d817'];
+	  var series = [];
+	  var categories = [];
+
+	  (result.names || []).forEach(function (name, i) {
+	    if (result.values[i] && Array.isArray(result.values[i])) {
+	      series[i] = {
+	        name: name,
+	        data: []
+	      };
+
+	      if (result.start && result.step) {
+	        result.values[i].forEach(function (value, j) {
+	          series[i].data[j] = [+new Date(result.step * j + result.start), value];
+	        });
+	      }
+	    }
+	  });
+
 	  _highcharts2.default.chart('stat-graph', {
-	    colors: ['#ad7eea', '#41c9f2', '#1be5a0', '#ec2c4c', '#f5d817'],
+	    chart: {
+	      zoomType: 'x',
+	      resetZoomButton: {
+	        theme: {
+	          fill: '#0182ec',
+	          stroke: '#0182ec',
+	          style: {
+	            color: '#ffffff'
+	          },
+	          r: 0,
+	          states: {
+	            hover: {
+	              fill: '#3a62c6',
+	              stroke: '#3a62c6',
+	              style: {
+	                color: '#ffffff'
+	              }
+	            }
+	          }
+	        }
+	      }
+	    },
 	    title: {
 	      text: null
 	    },
@@ -3904,8 +4023,17 @@ webpackJsonp([0],[
 	      enabled: false
 	    },
 	    xAxis: {
-	      categories: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October'],
-	      tickLength: 0
+	      dateTimeLabelFormats: {
+	        millisecond: '%H:%M:%S',
+	        second: '%H:%M:%S',
+	        minute: '%H:%M',
+	        hour: '%H:%M',
+	        day: '%b %e',
+	        week: '%b %e',
+	        month: '%b \'%y',
+	        year: '%Y'
+	      },
+	      type: 'datetime'
 	    },
 	    yAxis: {
 	      title: {
@@ -3926,6 +4054,16 @@ webpackJsonp([0],[
 	      borderRadius: 0,
 	      borderColor: '#3a62c6',
 	      backgroundColor: '#ffffff',
+	      dateTimeLabelFormats: {
+	        millisecond: '%b %e, %Y, %H:%M',
+	        second: '%b %e, %Y, %H:%M:%S',
+	        minute: '%b %e, %Y, %H:%M',
+	        hour: '%b %e, %Y, %H:%M',
+	        day: '%b %e, %Y',
+	        week: '%b %e, %Y',
+	        month: '%B %Y',
+	        year: '%Y'
+	      },
 	      style: {
 	        color: '#54647e',
 	        fontSize: '14px',
@@ -3940,21 +4078,15 @@ webpackJsonp([0],[
 	        }
 	      }
 	    },
-	    series: [{
-	      name: 'Tokyo',
-	      data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3]
-	    }, {
-	      name: 'New York',
-	      data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1]
-	    }, {
-	      name: 'Berlin',
-	      data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0]
-	    }, {
-	      name: 'London',
-	      data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3]
-	    }]
+
+	    colors: colors,
+	    series: series
 	  });
 	};
+
+	var _dateformat = __webpack_require__(18);
+
+	var _dateformat2 = _interopRequireDefault(_dateformat);
 
 	var _highcharts = __webpack_require__(38);
 
@@ -4006,8 +4138,10 @@ webpackJsonp([0],[
 	    segments: [],
 	    level: 1,
 	    filter: [],
+	    filters_stock: [],
 	    current: null,
-	    value: null
+	    value: null,
+	    filter_graph: {}
 	  };
 
 	  var stat = document.querySelector('.js-stat');
@@ -4025,13 +4159,13 @@ webpackJsonp([0],[
 	  var updateTableParams = function updateTableParams(loc) {
 	    var query = _qs2.default.parse(loc.search.slice(1));
 
-	    params.length = query.length || 25;
-	    params.page = query.page || 1;
-	    params.order = query.order || false;
-	    params.currency = query.currency || 'usd';
+	    params.length = query.l || 25;
+	    params.page = query.p || 1;
+	    params.order = query.ord || false;
+	    params.cur = query.c || 'usd';
 
-	    if (query.from && regDate.test(query.from)) {
-	      var from = query.from.split('-');
+	    if (query.df && regDate.test(query.df)) {
+	      var from = query.df.split('-');
 	      params.date_from.year = parseInt(from[0], 10) || currentDate.getFullYear();
 	      params.date_from.month = parseInt(from[1], 10) - 1 || currentDate.getMonth();
 	      params.date_from.date = parseInt(from[2], 10) || currentDate.getDate();
@@ -4041,8 +4175,8 @@ webpackJsonp([0],[
 	      params.date_from.date = currentDate.getDate();
 	    }
 
-	    if (query.to && regDate.test(query.to)) {
-	      var to = query.to.split('-');
+	    if (query.dt && regDate.test(query.dt)) {
+	      var to = query.dt.split('-');
 	      params.date_to.year = parseInt(to[0], 10) || currentDate.getFullYear();
 	      params.date_to.month = parseInt(to[1], 10) - 1 || currentDate.getMonth();
 	      params.date_to.date = parseInt(to[2], 10) || currentDate.getDate();
@@ -4052,60 +4186,65 @@ webpackJsonp([0],[
 	      params.date_to.date = currentDate.getDate();
 	    }
 
-	    params.start_time = query.start_time || '00:00';
-	    params.end_time = query.end_time || '23:59';
-	    params.timezone = query.timezone || defaultTimezone;
-	    params.postback_date = !!parseInt(query.postback_date, 10);
-	    params.segments = query.segments || [];
-	    params.is_tree = query.hasOwnProperty('is_tree') ? !!parseInt(query.is_tree, 10) : true;
-	    params.show_graph = !!parseInt(query.show_graph, 10);
+	    params.start_time = query.st || '00:00';
+	    params.end_time = query.et || '23:59';
+	    params.timezone = query.tz || defaultTimezone;
+	    params.postback_date = !!parseInt(query.pd, 10);
+	    params.segments = query.seg || [];
+	    params.is_tree = query.hasOwnProperty('it') ? !!parseInt(query.it, 10) : true;
+	    params.show_graph = !!parseInt(query.sg, 10);
+	    params.filters_stock = query.fs || [];
 	  };
 
 	  var pushHistroy = function pushHistroy() {
 	    var query = {};
 
 	    if (params.length !== 25) {
-	      query.length = params.length;
+	      query.l = params.length;
 	    }
 
 	    if (params.page !== 1) {
-	      query.page = params.page;
+	      query.p = params.page;
 	    }
 
+	    query.seg = params.segments;
+
 	    if (params.order) {
-	      query.order = params.order;
+	      query.ord = params.order;
 	    }
 
 	    if (params.currency !== 'usd') {
-	      query.currency = params.currency;
+	      query.cur = params.currency;
 	    }
 
-	    query.from = dateToString(params.date_from.year, params.date_from.month, params.date_from.date);
-	    query.to = dateToString(params.date_to.year, params.date_to.month, params.date_to.date);
+	    query.df = dateToString(params.date_from.year, params.date_from.month, params.date_from.date);
+	    query.dt = dateToString(params.date_to.year, params.date_to.month, params.date_to.date);
 
 	    if (params.start_time !== '00:00') {
-	      query.start_time = params.start_time;
+	      query.st = params.start_time;
 	    }
 
 	    if (params.end_time !== '23:59') {
-	      query.end_time = params.end_time;
+	      query.et = params.end_time;
 	    }
 
-	    query.timezone = params.timezone;
+	    query.tz = params.timezone;
 
 	    if (params.postback_date) {
-	      query.postback_date = 1;
+	      query.pd = 1;
 	    }
 
 	    if (!params.is_tree) {
-	      query.is_tree = 0;
+	      query.it = 0;
 	    }
 
 	    if (params.show_graph) {
-	      query.show_graph = 1;
+	      query.sg = 1;
 	    }
 
-	    query.segments = params.segments;
+	    if (params.filters_stock.length > 0) {
+	      query.fs = params.filters_stock;
+	    }
 
 	    history.push({
 	      pathname: '/',
@@ -4123,7 +4262,6 @@ webpackJsonp([0],[
 	      params.value = null;
 
 	      stat.triggerEvent('backurl');
-	      stat.triggerEvent('drawgraph');
 	      stat.triggerEvent('drawtable');
 	    }
 	  });
@@ -4131,7 +4269,6 @@ webpackJsonp([0],[
 	  stat.addEventListener('newurl', pushHistroy);
 
 	  updateTableParams(location);
-	  stat.triggerEvent('drawgraph');
 	  stat.triggerEvent('drawtable');
 	};
 
@@ -4296,7 +4433,6 @@ webpackJsonp([0],[
 	  if (isUpdate) {
 	    stat.triggerEvent('newurl');
 	    stat.triggerEvent('drawtable');
-	    stat.triggerEvent('drawgraph');
 	  } else if (isUpdateGraph) {
 	    stat.triggerEvent('newurl');
 	    stat.triggerEvent('drawgraph');

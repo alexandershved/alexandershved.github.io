@@ -3724,6 +3724,7 @@ body.noscroll {
   border-bottom: 1px solid rgba(101,134,157,0.2);
 }
 .table td {
+  height: 46px;
   padding: 0;
   font-size: 12px;
   color: #54647e;
@@ -3757,7 +3758,7 @@ body.noscroll {
 }
 .table .is-main {
   position: relative;
-  height: 100%;
+  height: 46px;
   padding: 15px 15px 15px 10px;
   white-space: nowrap;
   border-left: 2px solid transparent;
@@ -3829,7 +3830,7 @@ body.noscroll {
   position: absolute;
   width: 7px;
   height: 7px;
-  top: 18px;
+  top: 17px;
   left: 11px;
   border-right: 2px solid #54647e;
   border-bottom: 2px solid #54647e;
