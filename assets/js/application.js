@@ -22,19 +22,19 @@ webpackJsonp([0],[
 
 	var _listFetch2 = _interopRequireDefault(_listFetch);
 
-	var _select = __webpack_require__(31);
+	var _select = __webpack_require__(32);
 
 	var _select2 = _interopRequireDefault(_select);
 
-	var _calendar = __webpack_require__(33);
+	var _calendar = __webpack_require__(34);
 
 	var _calendar2 = _interopRequireDefault(_calendar);
 
-	var _postback = __webpack_require__(34);
+	var _postback = __webpack_require__(35);
 
 	var _postback2 = _interopRequireDefault(_postback);
 
-	var _index = __webpack_require__(35);
+	var _index = __webpack_require__(36);
 
 	var _index2 = _interopRequireDefault(_index);
 
@@ -320,8 +320,6 @@ webpackJsonp([0],[
 	  value: true
 	});
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 	exports.default = function (list) {
 	  var listValue = list.querySelector('.js-list-value');
 	  var search = list.querySelector('.js-list-search');
@@ -332,6 +330,7 @@ webpackJsonp([0],[
 	  var open = void 0;
 	  var close = void 0;
 	  var getItemByValue = void 0;
+	  var haveValue = void 0;
 	  var updateValue = void 0;
 	  var setValue = void 0;
 	  var setDisabled = void 0;
@@ -367,7 +366,7 @@ webpackJsonp([0],[
 	    var value = String(val);
 
 	    [].concat(_toConsumableArray(items)).forEach(function (item, i) {
-	      if (value === (item.dataset.value || item.innerText)) {
+	      if (value === item.dataset.value) {
 	        sel = i;
 	        return false;
 	      }
@@ -377,101 +376,91 @@ webpackJsonp([0],[
 	    return sel;
 	  };
 
-	  updateValue = function updateValue(param) {
-	    var obj = {
-	      item: -1,
-	      value: null,
-	      is_clear: false,
-	      label: null
-	    };
+	  haveValue = function haveValue(val) {
+	    var isHave = false;
 
-	    var clearBtn = void 0;
+	    if (val || val !== 0) {
+	      var selectItemPos = getItemByValue(val);
 
-	    if (typeof param === 'string' || typeof param === 'number') {
-	      obj.item = getItemByValue(param);
-	      obj.value = param;
-	      obj.is_clear = false;
-	      obj.label = false;
-	    } else if ((typeof param === 'undefined' ? 'undefined' : _typeof(param)) === 'object' && !Array.isArray(param)) {
-	      if (!param.hasOwnProperty('item') && param.hasOwnProperty('value')) {
-	        obj.item = getItemByValue(param.value);
-	        obj.value = param.value;
-	      } else if (items[parseInt(param.item, 10)]) {
-	        obj.item = parseInt(param.item, 10);
-	        obj.value = items[obj.item].dataset.value || items[obj.item].innerHTML;
+	      if (selectItemPos !== -1) {
+	        isHave = true;
 	      }
-
-	      obj.is_clear = !!param.is_clear;
-	      obj.label = param.label;
 	    }
 
-	    var item = items[obj.item];
-	    var text = void 0;
-	    var value = void 0;
+	    return isHave;
+	  };
 
-	    if (obj.value) {
-	      text = item ? item.innerHTML : obj.value;
-	      value = obj.value;
+	  updateValue = function updateValue(val, lbl, clr) {
+	    var isUpdate = false;
+
+	    if (!val && val !== 0) {
+	      if (list.value) {
+	        list.oldValue = list.value;
+	        list.value = null;
+	        isUpdate = true;
+	      }
+
+	      [].concat(_toConsumableArray(items)).forEach(function (el) {
+	        return el.classList.remove('is-select');
+	      });
+
+	      if (placeholder) {
+	        listValue.innerText = placeholder;
+	      }
 	    } else {
-	      text = placeholder || items[0].innerHTML;
-	      value = null;
+	      var value = String(val);
+	      var selectItem = items[getItemByValue(value)];
+	      var text = void 0;
 
-	      clearBtn = list.querySelector('.list__clear');
+	      if (selectItem) {
+	        text = selectItem.innerHTML;
+	      } else {
+	        text = value;
+	      }
 
-	      if (clearBtn) {
-	        clearBtn.parentNode.removeChild(clearBtn);
+	      if (list.value !== value) {
+	        list.oldValue = list.value;
+	        list.value = value;
+	        listValue.innerText = text;
+	        isUpdate = true;
+
+	        [].concat(_toConsumableArray(items)).forEach(function (el) {
+	          return el.classList.remove('is-select');
+	        });
+
+	        if (selectItem) {
+	          selectItem.classList.add('is-select');
+	        }
 	      }
 	    }
 
-	    if (list.value === value) {
-	      return false;
+	    if (clr) {
+	      var clearBtn = document.createElement('div');
+	      clearBtn.className = 'list__clear';
+	      list.appendChild(clearBtn);
+	      clearBtn.addEventListener('click', function () {
+	        return setValue();
+	      });
 	    }
 
-	    listValue.innerText = text;
-	    list.oldValue = list.value;
-	    list.value = value;
-
-	    [].concat(_toConsumableArray(items)).forEach(function (el) {
-	      return el.classList.remove('is-select');
-	    });
-
-	    if (item) {
-	      item.classList.add('is-select');
-	    }
-
-	    if (obj.is_clear && list.value) {
-	      (function () {
-	        clearBtn = document.createElement('div');
-	        clearBtn.classList.add('list__clear');
-	        list.appendChild(clearBtn);
-
-	        var clear = function clear() {
-	          setValue({ is_clear: true });
-	          clearBtn.removeEventListener('click', clear);
-	        };
-
-	        clearBtn.addEventListener('click', clear);
-	      })();
-	    }
-
-	    if (obj.label) {
-	      var label = list.querySelector('.list-label');
+	    if (lbl) {
+	      var label = list.querySelector('.list__label');
 
 	      if (label) {
 	        label.parentNode.removeChild(label);
-
-	        label = document.createElement('div');
-	        label.classList.add('list-label');
-	        label.innerText = obj.label;
-	        list.insertBefore(label, list.firstChild);
 	      }
+
+	      label = document.createElement('div');
+	      label.className = 'list__label';
+	      label.innerText = lbl;
+	      list.insertBefore(label, list.firstChild);
 	    }
 
-	    return true;
+	    return isUpdate;
 	  };
 
-	  setValue = function setValue(param) {
-	    if (updateValue(param)) {
+	  setValue = function setValue(val, label, clear) {
+	    if (updateValue(val, label, clear)) {
 	      list.triggerEvent('change');
 	    }
 	  };
@@ -512,6 +501,7 @@ webpackJsonp([0],[
 	    }
 	  };
 
+	  list.haveValue = haveValue;
 	  list.updateValue = updateValue;
 	  list.setValue = setValue;
 	  list.setDisabled = setDisabled;
@@ -549,21 +539,20 @@ webpackJsonp([0],[
 	        return;
 	      }
 
-	      setValue({ item: i });
+	      if (item.dataset.value) {
+	        setValue(item.dataset.value);
+	      }
+
 	      close();
 	    });
 
-	    if (item.classList.contains('.is-select')) {
-	      updateValue({ item: i });
+	    if (item.classList.contains('is-select') && item.dataset.value) {
+	      setValue(item.dataset.value);
 	    }
 	  });
 
-	  if (!listValue.innerText) {
-	    if (placeholder) {
-	      listValue.innerText = placeholder;
-	    } else {
-	      updateValue({ item: 0 });
-	    }
+	  if (!listValue.innerText && placeholder) {
+	    listValue.innerText = placeholder;
 	  }
 	};
 
@@ -601,21 +590,14 @@ webpackJsonp([0],[
 	  value: true
 	});
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 	exports.default = function (list) {
-	  var allList = list.parentNode.querySelectorAll('.js-list-fetch');
-	  var listLabel = list.querySelector('.js-list-fetch-label');
 	  var listValue = list.querySelector('.js-list-fetch-value');
 	  var search = list.querySelector('.js-list-fetch-search');
 	  var itemsWrap = list.querySelector('.js-list-fetch-items');
-	  var clear = list.querySelector('.js-list-fetch-clear');
-	  var placeholder = list.dataset.placeholder;
 
 	  var clickWindow = void 0;
 	  var open = void 0;
 	  var close = void 0;
-	  var getItemByValue = void 0;
 	  var updateItems = void 0;
 	  var updateValue = void 0;
 	  var setValue = void 0;
@@ -630,19 +612,7 @@ webpackJsonp([0],[
 
 	  open = function open() {
 	    search.value = '';
-
-	    [].concat(_toConsumableArray(list.querySelectorAll('.js-list-fetch-item'))).forEach(function (item) {
-	      item.style.display = '';
-
-	      var val = list.value.value;
-
-	      if (item.dataset.value === val) {
-	        item.classList.add('is-select');
-	      } else {
-	        item.classList.remove('is-select');
-	      }
-	    });
-
+	    updateItems();
 	    list.classList.add('is-open');
 	    window.addEventListener('click', clickWindow);
 	  };
@@ -658,26 +628,42 @@ webpackJsonp([0],[
 	  };
 
 	  updateItems = function updateItems() {
-	    var authKey = 'mkj-l123k-kFWSdl90d';
-	    var headers = new Headers();
 	    var url = window.might.url + '/campaign/data/for/top_filter';
 	    var params = window.might.stat.params;
-	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
 	    var from = dateToString(params.date_from.year, params.date_from.month, params.date_from.date);
 	    var to = dateToString(params.date_to.year, params.date_to.month, params.date_to.date);
 	    var dateFilter = from + ' - ' + to;
+
+	    var headers = new Headers();
+	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+	    var data = {
+	      date_filter: dateFilter,
+	      timezone: params.timezone,
+	      search: search.value || false,
+	      field: list.field
+	    };
+
+	    if (window.might.hasOwnProperty('auth_key')) {
+	      data.auth_key = window.might.auth_key;
+	    }
+
+	    if (window.might.hasOwnProperty('auth_key')) {
+	      data.auth_key = window.might.auth_key;
+	    }
+
+	    params.filters_stock.forEach(function (filter, i) {
+	      if (filter.field !== list.field) {
+	        data.filter_items = data.filter_items || [];
+	        data.filter_items[filter];
+	      }
+	    });
 
 	    var options = {
 	      method: 'post',
 	      mode: 'cors',
 	      headers: headers,
-	      body: _qs2.default.stringify({
-	        auth_key: authKey,
-	        date_filter: dateFilter,
-	        search: false,
-	        field: list.value.field
-	      })
+	      body: _qs2.default.stringify(data)
 	    };
 
 	    fetch(url, options).then(function (response) {
@@ -686,67 +672,85 @@ webpackJsonp([0],[
 	      itemsWrap.innerHTML = '';
 
 	      if (result.error === false) {
-	        (function () {
-	          var field = list.value.field;
+	        result.data.forEach(function (item) {
+	          var name = void 0;
 
-	          result.data.forEach(function (item) {
-	            var name = void 0;
-
-	            if (field === 'campaign_id') {
-	              if (item.title) {
-	                name = item.title;
-	              } else {
-	                name = '[id: ' + (item.campaign_id || item.v) + ']';
-	              }
+	          if (list.field === 'campaign_id') {
+	            if (item.title) {
+	              name = item.title;
 	            } else {
-	              name = item[field] || item.v;
+	              name = '[id: ' + (item.campaign_id || item.v) + ']';
 	            }
+	          } else {
+	            name = item[list.field] || item.v;
+	          }
 
-	            itemsWrap.innerHTML += '<div ' + 'class="list__item js-list-fetch-item" ' + 'data-value="' + item.v + '">' + name + '</div>';
-	          });
-	        })();
+	          itemsWrap.innerHTML += '<div ' + 'class="list__item js-list-fetch-item' + (item.v === list.value ? ' is-select"' : '"') + ' data-value="' + item.v + '">' + name + '</div>';
+	        });
 	      }
 	    });
 	  };
 
-	  updateValue = function updateValue(param) {
+	  updateValue = function updateValue(val, ttl, fld, clr) {
 	    var isUpdate = false;
 
-	    if ((typeof param === 'undefined' ? 'undefined' : _typeof(param)) === 'object' && !Array.isArray(param)) {
-	      var obj = {};
-	      var params = window.might.stat.params;
-
-	      if (param.hasOwnProperty('value') && (!list.value || list.value.value !== param.value)) {
-	        list.value = list.value || {};
-
-	        list.value.value = param.value;
-	        list.value.title = param.title || param.value;
-
-	        if (param.field && list.value.field !== param.field) {
-	          list.value.field = param.field;
-	          updateItems();
-	        }
-
-	        listLabel.innerText = list.value.field;
-	        listLabel.style.display = '';
-	        listValue.innerText = list.value.title;
-
+	    if (!val && val !== 0) {
+	      if (list.value) {
+	        list.value = null;
+	        list.title = null;
 	        isUpdate = true;
 	      }
-	    } else if (!param && list.value) {
-	      list.value = null;
-	      listLabel.innerText = '';
-	      listLabel.style.display = 'none';
-	      listValue.innerText = '';
+	    } else {
+	      (function () {
+	        var value = String(val);
+	        var title = ttl || value;
 
-	      isUpdate = true;
+	        if (list.value !== value) {
+	          list.value = value;
+	          list.title = title;
+	          listValue.innerText = title;
+	          isUpdate = true;
+
+	          [].concat(_toConsumableArray(list.querySelectorAll('.js-list-fetch-item'))).forEach(function (el) {
+	            if (el.dataset.value === value) {
+	              el.classList.add('is-select');
+	            } else {
+	              el.classList.remove('is-select');
+	            }
+	          });
+	        }
+	      })();
+	    }
+
+	    if (clr) {
+	      var clearBtn = document.createElement('div');
+	      clearBtn.className = 'list__clear';
+	      list.appendChild(clearBtn);
+	      clearBtn.addEventListener('click', function () {
+	        setValue();
+	      });
+	    }
+
+	    if (fld) {
+	      list.field = fld;
+
+	      var label = list.querySelector('.list__label');
+
+	      if (label) {
+	        label.parentNode.removeChild(label);
+	      }
+
+	      label = document.createElement('div');
+	      label.className = 'list__label';
+	      label.innerText = (0, _fieldName2.default)(fld);
+	      list.insertBefore(label, list.firstChild);
 	    }
 
 	    return isUpdate;
 	  };
 
-	  setValue = function setValue(param) {
-	    if (updateValue(param)) {
+	  setValue = function setValue(value, title) {
+	    if (updateValue(value, title)) {
 	      list.triggerEvent('change:list');
 	    }
 	  };
@@ -762,19 +766,15 @@ webpackJsonp([0],[
 	    }
 	  });
 
+	  var timeSearch = void 0;
+
 	  filterSearch = function filterSearch(event) {
-	    var reg = new RegExp(event.target.value, 'i');
+	    if (timeSearch) {
+	      clearTimeout(timeSearch);
+	    }
 
-	    [].concat(_toConsumableArray(list.querySelectorAll('.js-list-fetch-item'))).forEach(function (item) {
-	      if (item.innerText.search(reg) === -1) {
-	        item.style.display = 'none';
-	      } else {
-	        item.style.display = '';
-	      }
-	    });
+	    timeSearch = setTimeout(updateItems, 300);
 	  };
-
-	  list.value = {};
 
 	  search.addEventListener('select', filterSearch);
 	  search.addEventListener('change', filterSearch);
@@ -784,17 +784,9 @@ webpackJsonp([0],[
 	    var item = event.target.closest('.js-list-fetch-item');
 
 	    if (item) {
-	      if (event.target.classList.contains('is-disabled')) {
-	        return;
-	      }
-
-	      setValue({ value: item.dataset.value, title: item.innerText });
+	      setValue(item.dataset.value, item.innerText);
 	      close();
 	    }
-	  });
-
-	  clear.addEventListener('click', function () {
-	    return setValue();
 	  });
 	};
 
@@ -805,6 +797,10 @@ webpackJsonp([0],[
 	var _dateformat = __webpack_require__(30);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
+
+	var _fieldName = __webpack_require__(31);
+
+	var _fieldName2 = _interopRequireDefault(_fieldName);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2269,6 +2265,48 @@ webpackJsonp([0],[
 /* 29 */,
 /* 30 */,
 /* 31 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (param) {
+	  return names[param] || param;
+	};
+
+	var names = {
+	  campaign_id: 'Campaign',
+	  country: 'Country',
+	  browser: 'Browser',
+	  browser_language: 'Browser language',
+	  payment: 'Payment',
+	  tm_spend: 'Tm spend',
+	  unique_shows: 'Unique shows',
+	  shows: 'Shows',
+	  unique_clicks: 'Unique clicks',
+	  clicks: 'Clicks',
+	  uctr: 'UCTR',
+	  ctr: 'CTR',
+	  leads: 'Leads',
+	  declined: 'Declined',
+	  pending: 'Pending',
+	  total: 'Total',
+	  cvr: 'CVR',
+	  epc: 'EPC',
+	  cpc: 'CPC',
+	  rev: 'Rev',
+	  spend: 'Spend',
+	  pl: 'P/L',
+	  roi: 'ROI',
+	  label: 'Label',
+	  ip: 'IP'
+	};
+
+/***/ },
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2281,7 +2319,7 @@ webpackJsonp([0],[
 	  [].concat(_toConsumableArray(document.querySelectorAll('.js-select'))).forEach(_selectEvent2.default);
 	};
 
-	var _selectEvent = __webpack_require__(32);
+	var _selectEvent = __webpack_require__(33);
 
 	var _selectEvent2 = _interopRequireDefault(_selectEvent);
 
@@ -2290,7 +2328,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2466,7 +2504,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2527,6 +2565,8 @@ webpackJsonp([0],[
 	    var renderRanges = void 0;
 	    var renderInputs = void 0;
 	    var updateSelects = void 0;
+	    var mouseoverDay = void 0;
+	    var mouseoutDay = void 0;
 	    var clickDay = void 0;
 	    var clickRange = void 0;
 	    var eventBoxes = void 0;
@@ -2629,6 +2669,7 @@ webpackJsonp([0],[
 	      var tsToday = +new Date(today.year, today.month, today.date);
 
 	      days.innerHTML = '';
+	      boxes[b].days_scope = {};
 
 	      for (var i = 1 - first; i <= count; i++) {
 	        var span = document.createElement('span');
@@ -2655,6 +2696,7 @@ webpackJsonp([0],[
 	          } else {
 	            span.dataset.value = day;
 	            span.addEventListener('click', clickDay);
+	            boxes[b].days_scope[day] = span;
 	          }
 	        } else {
 	          span.classList.add('is-empty');
@@ -2715,6 +2757,105 @@ webpackJsonp([0],[
 	        yearSelect.updateValue(boxes[b].current.year);
 	      } catch (err) {
 	        throw new Error(err);
+	      }
+	    };
+
+	    mouseoverDay = function mouseoverDay(event) {
+	      var target = event.target;
+
+	      if (target.nodeName !== 'SPAN' || !target.dataset.value) {
+	        mouseoutDay();
+	        return;
+	      }
+
+	      var date = parseInt(target.dataset.value, 10);
+	      var tsFrom = +new Date(period.from.year, period.from.month, period.from.date);
+	      var tsTo = +new Date(period.to.year, period.to.month, period.to.date);
+
+	      var fromScope = boxes.from.days_scope;
+	      var toScope = boxes.to.days_scope;
+
+	      var setBetween = function setBetween(day, span) {
+	        if (tsFrom === tsTo) {
+	          if (tsFrom < date && day < date && tsFrom < day || date < tsFrom && date < day && day < tsFrom) {
+	            span.classList.add('is-between');
+	          } else {
+	            span.classList.remove('is-between');
+	          }
+
+	          if (tsFrom < date && day === date || tsFrom === day && date < day) {
+	            span.classList.remove('is-start');
+	            span.classList.add('is-end');
+	          } else if (date < tsFrom && day === date || tsFrom === day && day < date) {
+	            span.classList.add('is-start');
+	            span.classList.remove('is-end');
+	          } else {
+	            span.classList.remove('is-start');
+	            span.classList.remove('is-end');
+	          }
+	        } else {
+	          span.classList.remove('is-between');
+
+	          if (date === day) {
+	            span.classList.add('is-start');
+	            span.classList.add('is-end');
+	          } else {
+	            span.classList.remove('is-start');
+	            span.classList.remove('is-end');
+	          }
+	        }
+	      };
+
+	      for (var i in fromScope) {
+	        if (fromScope.hasOwnProperty(i)) {
+	          setBetween(parseInt(i, 10), fromScope[i]);
+	        }
+	      }
+
+	      for (var _i in toScope) {
+	        if (toScope.hasOwnProperty(_i)) {
+	          setBetween(parseInt(_i, 10), toScope[_i]);
+	        }
+	      }
+	    };
+
+	    mouseoutDay = function mouseoutDay() {
+	      var tsFrom = +new Date(period.from.year, period.from.month, period.from.date);
+	      var tsTo = +new Date(period.to.year, period.to.month, period.to.date);
+
+	      var fromScope = boxes.from.days_scope;
+	      var toScope = boxes.to.days_scope;
+
+	      var setBetween = function setBetween(day, span) {
+	        if (tsFrom === day) {
+	          span.classList.add('is-start');
+	        } else {
+	          span.classList.remove('is-start');
+	        }
+
+	        if (tsFrom < day && day < tsTo) {
+	          span.classList.add('is-between');
+	        } else {
+	          span.classList.remove('is-between');
+	        }
+
+	        if (tsTo === day) {
+	          span.classList.add('is-end');
+	        } else {
+	          span.classList.remove('is-end');
+	        }
+	      };
+
+	      for (var i in fromScope) {
+	        if (fromScope.hasOwnProperty(i)) {
+	          setBetween(parseInt(i, 10), fromScope[i]);
+	        }
+	      }
+
+	      for (var _i2 in toScope) {
+	        if (toScope.hasOwnProperty(_i2)) {
+	          setBetween(parseInt(_i2, 10), toScope[_i2]);
+	        }
 	      }
 	    };
 
@@ -2889,6 +3030,11 @@ webpackJsonp([0],[
 	      }
 	    };
 
+	    boxes.from.addEventListener('mouseover', mouseoverDay);
+	    boxes.to.addEventListener('mouseover', mouseoverDay);
+	    boxes.from.addEventListener('mouseout', mouseoutDay);
+	    boxes.to.addEventListener('mouseout', mouseoutDay);
+
 	    ranges.today.addEventListener('click', function () {
 	      var tsToday = new Date(today.year, today.month, today.date);
 	      clickRange(tsToday);
@@ -2981,7 +3127,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -3149,7 +3295,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -3165,105 +3311,105 @@ webpackJsonp([0],[
 	    return;
 	  }
 
-	  var authKey = 'mkj-l123k-kFWSdl90d';
 	  var headers = new Headers();
 	  headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
+	  (0, _helper2.default)();
 	  (0, _nav2.default)();
 	  (0, _table2.default)();
 	  (0, _graph2.default)();
 	  (0, _init2.default)();
 
 	  var statParams = window.might.stat.params;
-	  var filterStockControl = stat.querySelectorAll('.js-stat-filter');
+	  var filterControl = stat.querySelector('.js-stat-filter');
 	  var datetime = stat.querySelector('.js-stat-datetime');
-	  var segmentBtns = stat.querySelectorAll('.js-stat-main-segment');
-	  var segmentAdd = stat.querySelector('.js-stat-addsegment');
-	  var segmentList = [];
+	  var segmentBtns = stat.querySelectorAll('.js-stat-btn-segment');
+	  var segmentLists = stat.querySelectorAll('.js-stat-list-segment');
+	  var segmentAdd = stat.querySelector('.js-stat-add-segment');
+	  var segmentScope = [];
 	  var graphBtn = stat.querySelector('.js-stat-show-graph');
 	  var treeBtn = stat.querySelector('.js-stat-is-tree');
-	  var columnsControl = stat.querySelector('.js-stat-columns');
 	  var postbackControl = stat.querySelector('.js-stat-postback');
 	  var navControl = stat.querySelector('.js-stat-nav');
+	  var refreshBtn = stat.querySelector('.js-stat-refresh');
+	  var columnsControl = stat.querySelector('.js-stat-columns');
+
+	  var updateFilterStock = function updateFilterStock() {
+	    filterControl.style.display = 'none';
+	    filterControl.innerHTML = '';
+
+	    statParams.filters_stock.forEach(function (filter) {
+	      var filterEl = document.createElement('div');
+	      filterEl.className = 'list js-list-fetch';
+	      filterEl.innerHTML = '' + '<div class="list__wrap">' + '<div class="list__value js-list-fetch-value"></div>' + '<div class="list__dropdown">' + '<div class="list__search">' + '<i class="fa fa-search"></i>' + '<input class="js-list-fetch-search" type="text">' + '</div>' + '<div class="list__items js-list-fetch-items"></div>' + '</div>' + '</div>';
+	      filterControl.appendChild(filterEl);
+	      (0, _listFetchEvent2.default)(filterEl);
+
+	      filterEl.updateValue(filter.value, filter.title, filter.field, true);
+
+	      filterEl.addEventListener('change:list', function (event) {
+	        (0, _update2.default)({ filter_stock: { field: filter.field, value: filterEl.value, title: filterEl.title } });
+	        updateFilterStock();
+	      });
+
+	      filterControl.style.display = '';
+	    });
+	  };
 
 	  var segmentChange = function segmentChange(event) {
 	    var segment = event.target;
 	    var value = segment.value;
 	    var oldValue = segment.oldValue;
-	    var level = segmentList.indexOf(segment);
+	    var level = segmentScope.indexOf(segment);
 
 	    segmentAdd.unsetDisabled(oldValue);
-	    segmentList.forEach(function (el) {
+	    segmentScope.forEach(function (el) {
 	      return el.unsetDisabled(oldValue);
 	    });
 
 	    if (value || value === 0) {
 	      segmentAdd.setDisabled(value);
-	      segmentList.forEach(function (el, l) {
-	        if (l !== level) {
+	      segmentScope.forEach(function (el, l) {
+	        if (el !== segment) {
 	          el.setDisabled(value);
 	        }
 	      });
 	      (0, _update2.default)({ segment: { value: value, level: level + 1 } });
 	    } else {
-	      if (statParams.segments.length) {
+	      segment.removeEventListener('change', segmentChange);
+	      (0, _update2.default)({ segment: { level: level + 1 } });
+	      segmentScope.splice(level, 1);
+	      segment.parentNode.removeChild(segment);
+
+	      if (statParams.segments.length && segmentScope.length < 3) {
 	        segmentAdd.style.display = '';
 	      } else {
 	        segmentAdd.style.display = 'none';
 	      }
-
-	      segment.removeEventListener('change', segmentChange);
-	      (0, _update2.default)({ segment: { level: level + 1 } });
-	      segmentList.splice(level, 1);
-	      segment.parentNode.removeChild(segment);
 	    }
 	  };
 
 	  var segmentClone = function segmentClone(value) {
 	    segmentAdd.updateValue();
 	    segmentAdd.setDisabled(value);
-	    segmentList.forEach(function (el) {
+	    segmentScope.forEach(function (el) {
 	      return el.setDisabled(value);
 	    });
 
 	    var segment = segmentAdd.cloneNode(true);
-	    segment.classList.remove('is-open', 'is-add', 'js-stat-addsegment');
+	    segment.classList.remove('is-open', 'is-add', 'js-stat-add-segment');
 	    segmentAdd.parentNode.insertBefore(segment, segmentAdd);
 	    (0, _listEvent2.default)(segment);
-	    segment.updateValue({ value: value, is_clear: true });
+	    segment.updateValue(value, null, true);
 	    segment.addEventListener('change', segmentChange);
-	    segmentList.push(segment);
+	    segmentScope.push(segment);
 
-	    if (statParams.segments.length && segmentList.length < 3) {
+	    if (statParams.segments.length && segmentScope.length < 3) {
 	      segmentAdd.style.display = '';
 	    } else {
 	      segmentAdd.style.display = 'none';
 	    }
 	  };
-
-	  var updateFilterStock = function updateFilterStock() {
-	    filterStockControl[0].parentNode.style.display = 'none';
-
-	    [].concat(_toConsumableArray(filterStockControl)).forEach(function (fs, i) {
-	      if (statParams.filters_stock[i]) {
-	        fs.updateValue(statParams.filters_stock[i]);
-	        fs.style.display = '';
-	        filterStockControl[i].parentNode.style.display = '';
-	      } else {
-	        fs.updateValue();
-	        fs.style.display = 'none';
-	      }
-	    });
-	  };
-
-	  if (filterStockControl.length) {
-	    [].concat(_toConsumableArray(filterStockControl)).forEach(function (fs, i) {
-	      fs.addEventListener('change:list', function (event) {
-	        (0, _update2.default)({ filter_stock_upd: { value: fs.value, level: i } });
-	        updateFilterStock();
-	      });
-	    });
-	  }
 
 	  if (datetime) {
 	    datetime.addEventListener('change', function (event) {
@@ -3296,10 +3442,43 @@ webpackJsonp([0],[
 	          el.classList.remove('is-active');
 	        });
 
+	        [].concat(_toConsumableArray(segmentLists)).forEach(function (el) {
+	          el.updateValue();
+	          el.classList.remove('is-active');
+	        });
+
 	        (0, _update2.default)({ segment: { value: value, level: 0 } });
 	        btn.classList.add('is-active');
 
-	        if (statParams.segments.length && segmentList.length < 3) {
+	        if (statParams.segments.length && segmentScope.length < 3) {
+	          segmentAdd.style.display = '';
+	        } else {
+	          segmentAdd.style.display = 'none';
+	        }
+	      }
+	    });
+	  });
+
+	  [].concat(_toConsumableArray(segmentLists)).forEach(function (list) {
+	    list.addEventListener('change', function () {
+	      var value = list.value;
+
+	      if (value) {
+	        [].concat(_toConsumableArray(segmentBtns)).forEach(function (el) {
+	          el.classList.remove('is-active');
+	        });
+
+	        [].concat(_toConsumableArray(segmentLists)).forEach(function (el) {
+	          if (el !== list) {
+	            el.updateValue();
+	            el.classList.remove('is-active');
+	          }
+	        });
+
+	        (0, _update2.default)({ segment: { value: value, level: 0 } });
+	        list.classList.add('is-active');
+
+	        if (statParams.segments.length && segmentScope.length < 3) {
 	          segmentAdd.style.display = '';
 	        } else {
 	          segmentAdd.style.display = 'none';
@@ -3311,9 +3490,10 @@ webpackJsonp([0],[
 	  if (segmentAdd) {
 	    segmentAdd.addEventListener('change', function (event) {
 	      var value = segmentAdd.value;
-
-	      segmentClone(segmentAdd.value);
-	      (0, _update2.default)({ segment: { value: value, level: segmentList.length } });
+	      if (value) {
+	        segmentClone(value);
+	        (0, _update2.default)({ segment: { value: value, level: segmentScope.length } });
+	      }
 	    });
 	  }
 
@@ -3338,32 +3518,6 @@ webpackJsonp([0],[
 	        treeBtn.classList.add('is-active');
 	        (0, _update2.default)({ is_tree: true });
 	      }
-	    });
-	  }
-
-	  if (columnsControl) {
-	    columnsControl.addEventListener('change', function () {
-	      var url = window.might.url + '/user/update/columns';
-	      var cols = {};
-
-	      columnsControl.value.forEach(function (val) {
-	        cols[val] = 1;
-	      });
-
-	      var options = {
-	        method: 'post',
-	        mode: 'cors',
-	        headers: headers,
-	        body: _qs2.default.stringify(cols)
-	      };
-
-	      fetch(url, options).then(function (response) {
-	        return response.json();
-	      }).then(function (result) {
-	        if (result.error === false) {
-	          stat.triggerEvent('drawtable');
-	        }
-	      });
 	    });
 	  }
 
@@ -3393,6 +3547,16 @@ webpackJsonp([0],[
 	      }
 	    });
 
+	    [].concat(_toConsumableArray(segmentLists)).forEach(function (list) {
+	      if (list.haveValue(statParams.segments[0])) {
+	        list.updateValue(statParams.segments[0]);
+	        list.classList.add('is-active');
+	      } else {
+	        list.updateValue();
+	        list.classList.remove('is-active');
+	      }
+	    });
+
 	    if (datetime) {
 	      var datetimeFrom = statParams.date_from;
 	      var datetimeTo = statParams.date_to;
@@ -3417,17 +3581,17 @@ webpackJsonp([0],[
 	    if (segmentAdd) {
 	      segmentAdd.style.display = '';
 	      segmentAdd.unsetDisabled();
-	      segmentList.forEach(function (segment, i) {
+	      segmentScope.forEach(function (segment, i) {
 	        segment.removeEventListener('change', segmentChange);
 	        segment.parentNode.removeChild(segment);
 	      });
-	      segmentList = [];
+	      segmentScope = [];
 	      statParams.segments.forEach(function (value, i) {
-	        if (i) {
+	        if (i && i <= 3) {
 	          segmentClone(value);
 	        }
 	      });
-	      if (statParams.segments.length && segmentList.length < 3) {
+	      if (statParams.segments.length && segmentScope.length < 3) {
 	        segmentAdd.style.display = '';
 	      } else {
 	        segmentAdd.style.display = 'none';
@@ -3450,28 +3614,6 @@ webpackJsonp([0],[
 	      }
 	    }
 
-	    if (columnsControl) {
-	      var url = window.might.url + '/settings';
-
-	      var options = {
-	        method: 'post',
-	        mode: 'cors',
-	        headers: headers,
-	        body: _qs2.default.stringify({
-	          auth_key: authKey
-	        })
-	      };
-
-	      fetch(url, options).then(function (response) {
-	        return response.json();
-	      }).then(function (result) {
-	        if (result && result.user && result.user.columns) {
-	          var arr = result.user.columns.split(',');
-	          columnsControl.updateValue(arr);
-	        }
-	      });
-	    }
-
 	    if (postbackControl) {
 	      postbackControl.updateValue({
 	        postback_date: !!statParams.postback_date,
@@ -3489,8 +3631,78 @@ webpackJsonp([0],[
 
 	  resetControls();
 	  stat.addEventListener('backurl', resetControls);
-
 	  stat.addEventListener('filterstockupdate', updateFilterStock);
+
+	  if (refreshBtn) {
+	    refreshBtn.addEventListener('click', function () {
+	      stat.triggerEvent('drawtable');
+	    });
+	  }
+
+	  if (columnsControl) {
+	    var url = window.might.url + '/settings';
+
+	    var options = {
+	      method: 'post',
+	      mode: 'cors',
+	      headers: headers
+	    };
+
+	    if (window.might.hasOwnProperty('auth_key')) {
+	      options.body = _qs2.default.stringify({
+	        auth_key: window.might.auth_key
+	      });
+	    }
+
+	    fetch(url, options).then(function (response) {
+	      return response.json();
+	    }).then(function (result) {
+	      if (result && result.user && result.user.columns) {
+	        var arr = result.user.columns.split(',');
+	        columnsControl.updateValue(arr);
+	        statParams.columns = {};
+
+	        arr.forEach(function (val) {
+	          statParams.columns[val] = 1;
+	        });
+
+	        stat.triggerEvent('drawtable');
+	      }
+	    });
+
+	    columnsControl.addEventListener('change', function () {
+	      var u = window.might.url + '/user/update/columns';
+	      var cols = {};
+
+	      statParams.columns = {};
+
+	      columnsControl.value.forEach(function (val) {
+	        cols[val] = 1;
+	        statParams.columns[val] = 1;
+	      });
+
+	      if (window.might.hasOwnProperty('auth_key')) {
+	        cols.auth_key = window.might.auth_key;
+	      }
+
+	      var opt = {
+	        method: 'post',
+	        mode: 'cors',
+	        headers: headers,
+	        body: _qs2.default.stringify(cols)
+	      };
+
+	      fetch(u, opt).then(function (response) {
+	        return response.json();
+	      }).then(function (result) {
+	        if (result.error === false) {
+	          stat.triggerEvent('drawtable');
+	        }
+	      });
+	    });
+	  } else {
+	    stat.triggerEvent('drawtable');
+	  }
 	};
 
 	var _qs = __webpack_require__(25);
@@ -3501,23 +3713,31 @@ webpackJsonp([0],[
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
-	var _nav = __webpack_require__(36);
+	var _listFetchEvent = __webpack_require__(18);
+
+	var _listFetchEvent2 = _interopRequireDefault(_listFetchEvent);
+
+	var _helper = __webpack_require__(37);
+
+	var _helper2 = _interopRequireDefault(_helper);
+
+	var _nav = __webpack_require__(38);
 
 	var _nav2 = _interopRequireDefault(_nav);
 
-	var _table = __webpack_require__(37);
+	var _table = __webpack_require__(39);
 
 	var _table2 = _interopRequireDefault(_table);
 
-	var _graph = __webpack_require__(41);
+	var _graph = __webpack_require__(43);
 
 	var _graph2 = _interopRequireDefault(_graph);
 
-	var _init = __webpack_require__(44);
+	var _init = __webpack_require__(46);
 
 	var _init2 = _interopRequireDefault(_init);
 
-	var _update = __webpack_require__(40);
+	var _update = __webpack_require__(42);
 
 	var _update2 = _interopRequireDefault(_update);
 
@@ -3527,7 +3747,53 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(19)))
 
 /***/ },
-/* 36 */
+/* 37 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  window.addEventListener('mouseover', function (event) {
+	    var helper = event.target.closest('.js-helper');
+
+	    if (helper && !helper.isOpen) {
+	      (function () {
+	        helper.isOpen = true;
+	        helper.classList.add('is-open');
+
+	        var closeHelper = void 0;
+	        var mouseOverHelper = void 0;
+	        var mouseOutHelper = void 0;
+	        var timer = void 0;
+
+	        closeHelper = function closeHelper() {
+	          helper.isOpen = false;
+	          helper.classList.remove('is-open');
+	          helper.removeEventListener('mouseover', mouseOverHelper);
+	          helper.removeEventListener('mouseout', mouseOutHelper);
+	        };
+
+	        mouseOverHelper = function mouseOverHelper() {
+	          clearTimeout(timer);
+	        };
+
+	        mouseOutHelper = function mouseOutHelper() {
+	          timer = setTimeout(closeHelper, 200);
+	        };
+
+	        helper.addEventListener('mouseover', mouseOverHelper);
+	        helper.addEventListener('mouseout', mouseOutHelper);
+	      })();
+	    }
+	  });
+	};
+
+/***/ },
+/* 38 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -3760,7 +4026,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 37 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -3770,9 +4036,6 @@ webpackJsonp([0],[
 	});
 
 	exports.default = function () {
-	  var authKey = 'mkj-l123k-kFWSdl90d';
-	  var allFields = 0;
-
 	  var stat = document.querySelector('.js-stat');
 	  var navControl = document.querySelector('.js-stat-nav');
 	  var url = window.might.url + '/clicks/grid';
@@ -3792,8 +4055,15 @@ webpackJsonp([0],[
 	    }
 
 	    var data = {};
-	    data.auth_key = authKey;
-	    data.all_fields = allFields;
+
+	    if (window.might.hasOwnProperty('auth_key')) {
+	      data.auth_key = window.might.auth_key;
+	    }
+
+	    if (window.might.hasOwnProperty('all_fields')) {
+	      data.all_fields = window.might.all_fields;
+	    }
+
 	    data.draw = params.draw;
 	    if (params.level === 1 || !params.is_tree) {
 	      data.start = (params.page - 1) * params.length;
@@ -3803,7 +4073,6 @@ webpackJsonp([0],[
 	      data.length = 50;
 	    }
 	    data.search = params.search;
-	    data.order = params.order;
 	    data.currency = params.currency.toUpperCase();
 	    data.currency_type = params.currency_type;
 	    data.currency_date = params.currency_date;
@@ -3830,6 +4099,12 @@ webpackJsonp([0],[
 	      filter.push(f);
 	    });
 	    data.filter = JSON.stringify(filter);
+
+	    if (params.sort && params.sort.column && params.sort.direction) {
+	      data.order = params.sort.column + ' ' + params.sort.direction.toUpperCase();
+	    } else {
+	      data.order = false;
+	    }
 
 	    var obj = {
 	      field: data.group,
@@ -3897,12 +4172,22 @@ webpackJsonp([0],[
 	          }
 
 	          params.filter_graph = {};
+	          params.filter_graph_show = {};
 	          params.filter_graph[obj.field] = [];
+	          params.filter_graph_show[obj.field] = [];
 
 	          if (result.data && Array.isArray(result.data)) {
-	            result.data.forEach(function (record) {
+	            result.data.forEach(function (record, i) {
 	              if (record[obj.field]) {
 	                params.filter_graph[obj.field].push(record[obj.field]);
+
+	                if (i < 5) {
+	                  var l = {};
+
+	                  l.value = record[obj.field];
+	                  l.show = true;
+	                  params.filter_graph_show[obj.field].push(l);
+	                }
 	              }
 	            });
 	          }
@@ -3924,11 +4209,11 @@ webpackJsonp([0],[
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _tableRender = __webpack_require__(38);
+	var _tableRender = __webpack_require__(40);
 
 	var _tableRender2 = _interopRequireDefault(_tableRender);
 
-	var _tableEvent = __webpack_require__(39);
+	var _tableEvent = __webpack_require__(41);
 
 	var _tableEvent2 = _interopRequireDefault(_tableEvent);
 
@@ -3936,8 +4221,8 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(19)))
 
 /***/ },
-/* 38 */
-/***/ function(module, exports) {
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -3947,32 +4232,11 @@ webpackJsonp([0],[
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-	var columnsList = {
-	  campaign_id: 'Campaign',
-	  country: 'Country',
-	  browser: 'Browser',
-	  browser_language: 'Browser language',
-	  payment: 'Payment',
-	  tm_spend: 'Tm spend',
-	  unique_shows: 'Unique shows',
-	  shows: 'Shows',
-	  unique_clicks: 'Unique clicks',
-	  clicks: 'Clicks',
-	  uctr: 'UCTR',
-	  ctr: 'CTR',
-	  leads: 'Leads',
-	  declined: 'Declined',
-	  pending: 'Pending',
-	  total: 'Total',
-	  cvr: 'CVR',
-	  epc: 'EPC',
-	  cpc: 'CPC',
-	  rev: 'Rev',
-	  spend: 'Spend',
-	  pl: 'P/L',
-	  roi: 'ROI',
-	  label: 'Label'
-	};
+	var _fieldName = __webpack_require__(31);
+
+	var _fieldName2 = _interopRequireDefault(_fieldName);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var createNode = function createNode(tag, cls, txt) {
 	  var el = document.createElement(tag);
@@ -4057,6 +4321,13 @@ webpackJsonp([0],[
 	      var span = createNode('span', null, name);
 	      span.classList.add('is-clickable');
 	      main.appendChild(span);
+
+	      if (k === 'campaign_id') {
+	        var helper = createNode('div', ['helper', 'js-helper']);
+	        helper.innerHTML = '<div class="helper__cloud">' + '<div class="helper__link"><span>Edit</span></div>' + '<div class="helper__link"><span>Copy</span></div>' + '<div class="helper__link"><span>Update cost</span></div>' + '<div class="helper__link"><span>Linnks</span></div>' + '</div>';
+	        main.appendChild(helper);
+	        main.classList.add('is-with-helper');
+	      }
 	    } else {
 	      td = createNode('td');
 
@@ -4083,23 +4354,36 @@ webpackJsonp([0],[
 	      if (_typeof(data[0]) === 'object') {
 	        (function () {
 
+	          var params = window.might.stat.params;
 	          var keys = {};
 
 	          data.forEach(function (record) {
 	            if ((typeof record === 'undefined' ? 'undefined' : _typeof(record)) === 'object' && !Array.isArray(record)) {
 	              Object.keys(record).forEach(function (k) {
-	                keys[k] = true;
+	                if (params.columns.hasOwnProperty(k)) {
+	                  keys[k] = true;
+	                }
 	              });
 	            }
 	          });
 
 	          columns = Object.keys(keys);
+	          columns.unshift(response.field);
 
 	          var thead = createNode('tr');
 	          table.appendChild(thead);
 
-	          columns.forEach(function (key) {
-	            var th = createNode('th', null, columnsList[key] || key);
+	          columns.forEach(function (key, j) {
+	            var th = createNode('th', null, (0, _fieldName2.default)(key));
+	            th.className = 'is-sort';
+	            if (params.sort && params.sort.column === key) {
+	              if (params.sort.direction === 'asc') {
+	                th.classList.add('is-asc');
+	              } else if (params.sort.direction === 'desc') {
+	                th.classList.add('is-desc');
+	              }
+	            }
+	            th.dataset.value = key;
 	            thead.appendChild(th);
 	          });
 
@@ -4130,11 +4414,8 @@ webpackJsonp([0],[
 	                if (j === 0) {
 	                  td = createNode('td');
 
-	                  var main = createNode('div', ['is-main']);
+	                  var main = createNode('div', ['is-main'], 'Sum');
 	                  td.appendChild(main);
-
-	                  var span = createNode('span', null, '&nbsp;');
-	                  main.appendChild(span);
 	                } else {
 	                  td = createNode('td', null, sum.hasOwnProperty(key) ? sum[key] : '-');
 	                }
@@ -4188,7 +4469,7 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 39 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4295,6 +4576,7 @@ webpackJsonp([0],[
 	  table.addEventListener('click', function (event) {
 	    var swtch = event.target.closest('.is-switch');
 	    var clickable = event.target.closest('.is-clickable');
+	    var sort = event.target.closest('.is-sort');
 
 	    if (swtch) {
 	      var elements = getElements(event.target);
@@ -4329,9 +4611,12 @@ webpackJsonp([0],[
 	      var _params = window.might.stat.params;
 
 	      _filter.title = clickable.innerText;
+	      (0, _update2.default)({ filter_stock: { field: _filter.field, value: _filter.value, title: _filter.title } });
+	    } else if (sort) {
+	      var value = sort.dataset.value;
 
-	      if (_params.filters_stock.length < 3) {
-	        (0, _update2.default)({ filter_stock_add: _filter });
+	      if (value) {
+	        (0, _update2.default)({ table_sort: value });
 	      }
 	    }
 	  });
@@ -4397,7 +4682,7 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _update = __webpack_require__(40);
+	var _update = __webpack_require__(42);
 
 	var _update2 = _interopRequireDefault(_update);
 
@@ -4406,7 +4691,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 40 */
+/* 42 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4421,7 +4706,6 @@ webpackJsonp([0],[
 	  var params = window.might.stat.params;
 
 	  var isUpdate = false;
-	  var isUpdateTable = false;
 	  var isUpdateGraph = false;
 	  var isUpdateNav = false;
 	  var isUpdateStock = false;
@@ -4504,7 +4788,7 @@ webpackJsonp([0],[
 	        case 'is_tree':
 	          if (params.is_tree !== !!obj.is_tree) {
 	            params.is_tree = !!obj.is_tree;
-	            isUpdateTable = true;
+	            isUpdate = true;
 	          }
 	          break;
 
@@ -4524,26 +4808,52 @@ webpackJsonp([0],[
 	          }
 	          break;
 
-	        case 'filter_stock_add':
-	          if (_typeof(obj.filter_stock_add) === 'object') {
-	            params.filters_stock.push(obj.filter_stock_add);
-	            isUpdateStock = true;
-	            isUpdate = true;
+	        case 'filter_stock':
+	          if (_typeof(obj.filter_stock) === 'object') {
+	            (function () {
+	              var f = obj.filter_stock;
+	              if (f.hasOwnProperty('title') && f.hasOwnProperty('value') && f.hasOwnProperty('field')) {
+	                var upd = void 0;
+	                var pos = -1;
+	                var func = function func(filter, i) {};
+	                params.filters_stock.forEach(function (filter, i) {
+	                  if (filter.field === f.field) {
+	                    pos = i;
+	                  }
+	                });
+	                if (pos !== -1) {
+	                  if (!f.value || !f.title) {
+	                    params.filters_stock.splice(pos, 1);
+	                  } else {
+	                    params.filters_stock[pos].value = f.value;
+	                    params.filters_stock[pos].title = f.title;
+	                    upd = true;
+	                  }
+	                  isUpdateStock = true;
+	                  isUpdate = true;
+	                } else if (f.value && f.title) {
+	                  params.filters_stock.push(f);
+	                  isUpdateStock = true;
+	                  isUpdate = true;
+	                }
+	              }
+	            })();
 	          }
 	          break;
 
-	        case 'filter_stock_upd':
-	          if (_typeof(obj.filter_stock_upd) === 'object') {
-	            var upd = obj.filter_stock_upd;
-
-	            if (upd.value && (typeof upd === 'undefined' ? 'undefined' : _typeof(upd)) === 'object' && upd.hasOwnProperty('level')) {
-	              params.filters_stock[upd.level] = upd.value;
-	            } else {
-	              params.filters_stock.splice(upd.value, 1);
+	        case 'table_sort':
+	          params.sort = params.sort || {};
+	          if (params.sort.column === obj.table_sort) {
+	            if (params.sort.direction === 'desc') {
+	              params.sort = null;
+	            } else if (params.sort.direction === 'asc') {
+	              params.sort.direction = 'desc';
 	            }
-	            isUpdateStock = true;
-	            isUpdate = true;
+	          } else {
+	            params.sort.column = obj.table_sort;
+	            params.sort.direction = 'asc';
 	          }
+	          isUpdate = true;
 	          break;
 
 	        default:
@@ -4552,7 +4862,7 @@ webpackJsonp([0],[
 	    }
 	  }
 
-	  if (isUpdate || isUpdateTable) {
+	  if (isUpdate || isUpdate) {
 	    params.draw++;
 	    params.page = 1;
 	    params.start = 0;
@@ -4576,9 +4886,6 @@ webpackJsonp([0],[
 	  } else if (isUpdateGraph) {
 	    stat.triggerEvent('newurl');
 	    stat.triggerEvent('drawgraph');
-	  } else if (isUpdateTable) {
-	    stat.triggerEvent('newurl');
-	    stat.triggerEvent('drawtable');
 	  }
 	};
 
@@ -4588,7 +4895,7 @@ webpackJsonp([0],[
 	var regDate = new RegExp(/\d{4}-(0[1-9]|1[0-2])-([0-1][0-9]|3[0-1])/, 'g');
 
 /***/ },
-/* 41 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -4598,9 +4905,6 @@ webpackJsonp([0],[
 	});
 
 	exports.default = function () {
-	  var authKey = 'mkj-l123k-kFWSdl90d';
-	  var allFields = 0;
-
 	  var stat = document.querySelector('.js-stat');
 	  var statGraph = stat.querySelector('.js-stat-graph');
 	  var url = window.might.url + '/graph/data';
@@ -4624,8 +4928,15 @@ webpackJsonp([0],[
 	    }
 
 	    var data = {};
-	    data.auth_key = authKey;
-	    data.all_fields = allFields;
+
+	    if (window.might.hasOwnProperty('auth_key')) {
+	      data.auth_key = window.might.auth_key;
+	    }
+
+	    if (window.might.hasOwnProperty('auth_key')) {
+	      data.auth_key = window.might.auth_key;
+	    }
+
 	    data.draw = params.draw;
 	    data.start = (params.page - 1) * params.length;
 	    data.length = params.length;
@@ -4645,7 +4956,20 @@ webpackJsonp([0],[
 	    }
 	    data.group = params.segments[params.level - 1];
 	    data.filter = JSON.stringify(params.filter);
-	    data.filter_graph = params.filter_graph;
+
+	    data.filter_graph = {};
+
+	    for (var lines in params.filter_graph_show) {
+	      if (params.filter_graph_show.hasOwnProperty(lines)) {
+	        data.filter_graph[lines] = [];
+
+	        for (var line in params.filter_graph_show[lines]) {
+	          if (params.filter_graph_show[lines].hasOwnProperty(line)) {
+	            data.filter_graph[lines].push(params.filter_graph_show[lines][line].value);
+	          }
+	        }
+	      }
+	    }
 
 	    return data;
 	  };
@@ -4686,7 +5010,7 @@ webpackJsonp([0],[
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _graphRender = __webpack_require__(42);
+	var _graphRender = __webpack_require__(44);
 
 	var _graphRender2 = _interopRequireDefault(_graphRender);
 
@@ -4694,7 +5018,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(19)))
 
 /***/ },
-/* 42 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4706,139 +5030,245 @@ webpackJsonp([0],[
 	exports.default = function (result) {
 	  var stat = document.querySelector('.js-stat');
 	  var statGraph = stat.querySelector('.js-stat-graph');
+	  var statFilter = statGraph.querySelector('.js-stat-graph-filter');
 	  var canvas = stat.querySelector('#stat-graph');
 	  var res = result || {};
 
 	  if (!statGraph || !canvas) {
+	    statGraph.style.display = 'none';
+	    statFilter.innerHTML = '';
+	    canvas.innerHTML = '';
 	    return;
 	  }
 
 	  statGraph.style.display = '';
-	  canvas.innerHTML = '';
 
-	  var colors = res.colors || ['#ad7eea', '#41c9f2', '#1be5a0', '#ec2c4c', '#f5d817'];
-	  var series = [];
-	  var categories = [];
+	  var colorsTemplate = res.colors || ['#ad7eea', '#41c9f2', '#1be5a0', '#ec2c4c', '#f5d817'];
+	  var addGraphFilter = void 0;
+	  var render = void 0;
 
-	  (result.names || []).forEach(function (name, i) {
-	    if (result.values[i] && Array.isArray(result.values[i])) {
-	      series[i] = {
-	        name: name,
-	        data: []
-	      };
+	  addGraphFilter = function addGraphFilter(pos) {
+	    var params = window.might.stat.params;
+	    var filter = document.createElement('div');
+	    filter.className = 'list js-list';
 
-	      if (result.start && result.step) {
-	        result.values[i].forEach(function (value, j) {
-	          series[i].data[j] = [+new Date(result.step * j + result.start), value];
-	        });
+	    filter.innerHTML = '' + '<div class="list__wrap">' + '<div class="list__value js-list-value"></div>' + '<div class="list__dropdown">' + '<div class="list__items js-list-items"></div>' + '</div>' + '</div>';
+
+	    var items = filter.querySelector('.js-list-items');
+
+	    var field = void 0;
+	    var visible = void 0;
+
+	    for (var lines in params.filter_graph) {
+	      if (params.filter_graph.hasOwnProperty(lines)) {
+	        field = lines;
+
+	        for (var i in params.filter_graph[lines]) {
+	          if (params.filter_graph[lines].hasOwnProperty(i)) {
+	            var item = document.createElement('div');
+	            var line = params.filter_graph[lines][i];
+
+	            item.className = 'list__item js-list-item';
+	            item.dataset.value = line;
+	            item.innerText = field === 'campaign_id' ? '[id: ' + line + ']' : line;
+
+	            for (var j in params.filter_graph_show[lines]) {
+	              if (params.filter_graph[lines].hasOwnProperty(j)) {
+	                var lineShow = params.filter_graph_show[lines][j];
+
+	                if (lineShow.value === line) {
+	                  item.classList.add('is-disabled');
+	                  if (parseInt(j, 10) === pos) {
+	                    item.classList.add('is-select');
+	                    visible = lineShow.show;
+	                  }
+	                }
+	              }
+	            }
+
+	            items.appendChild(item);
+	          }
+	        }
 	      }
 	    }
-	  });
 
-	  _highcharts2.default.chart('stat-graph', {
-	    chart: {
-	      zoomType: 'x',
-	      resetZoomButton: {
-	        theme: {
-	          fill: '#0182ec',
-	          stroke: '#0182ec',
-	          style: {
-	            color: '#ffffff'
-	          },
-	          r: 0,
-	          states: {
-	            hover: {
-	              fill: '#3a62c6',
-	              stroke: '#3a62c6',
-	              style: {
-	                color: '#ffffff'
+	    statFilter.appendChild(filter);
+	    (0, _listEvent2.default)(filter);
+
+	    var eye = document.createElement('div');
+	    eye.className = 'list__eye';
+	    eye.innerHTML = '<i class="fa fa-eye"></i>';
+
+	    if (visible) {
+	      eye.style.color = '#fff';
+	      eye.style.backgroundColor = colorsTemplate[pos];
+	    } else {
+	      eye.style.color = colorsTemplate[pos];
+	      eye.style.backgroundColor = '#fff';
+	    }
+
+	    filter.appendChild(eye);
+
+	    eye.addEventListener('click', function () {
+	      if (params.filter_graph_show[field][pos].show) {
+	        params.filter_graph_show[field][pos].show = false;
+	      } else {
+	        params.filter_graph_show[field][pos].show = true;
+	      }
+
+	      render();
+	    });
+
+	    filter.addEventListener('change', function () {
+	      params.filter_graph_show[field][pos].value = filter.value;
+	      stat.triggerEvent('drawgraph');
+	    });
+
+	    return visible;
+	  };
+
+	  render = function render() {
+	    var colors = [];
+	    var series = [];
+
+	    statFilter.innerHTML = '';
+	    canvas.innerHTML = '';
+
+	    if (Array.isArray(result.names)) {
+	      result.names.forEach(function (name, i) {
+	        if (result.values[i] && Array.isArray(result.values[i])) {
+	          if (addGraphFilter(i)) {
+	            (function () {
+	              var ser = {
+	                name: name,
+	                data: []
+	              };
+
+	              if (result.start && result.step) {
+	                result.values[i].forEach(function (value, j) {
+	                  ser.data[j] = [+new Date(result.step * j + result.start), value];
+	                });
+	              }
+
+	              series.push(ser);
+	              colors.push(colorsTemplate[i]);
+	            })();
+	          }
+	        }
+	      });
+	    }
+
+	    _highcharts2.default.chart('stat-graph', {
+	      chart: {
+	        zoomType: 'x',
+	        resetZoomButton: {
+	          theme: {
+	            fill: '#0182ec',
+	            stroke: '#0182ec',
+	            style: {
+	              color: '#ffffff'
+	            },
+	            r: 0,
+	            states: {
+	              hover: {
+	                fill: '#3a62c6',
+	                stroke: '#3a62c6',
+	                style: {
+	                  color: '#ffffff'
+	                }
 	              }
 	            }
 	          }
 	        }
-	      }
-	    },
-	    title: {
-	      text: null
-	    },
-	    credits: {
-	      enabled: false
-	    },
-	    xAxis: {
-	      dateTimeLabelFormats: {
-	        millisecond: '%H:%M:%S',
-	        second: '%H:%M:%S',
-	        minute: '%H:%M',
-	        hour: '%H:%M',
-	        day: '%b %e',
-	        week: '%b %e',
-	        month: '%b \'%y',
-	        year: '%Y'
 	      },
-	      type: 'datetime'
-	    },
-	    yAxis: {
 	      title: {
 	        text: null
 	      },
-	      plotLines: [{
-	        value: 0,
-	        width: 1,
-	        color: '#808080'
-	      }]
-	    },
-	    legend: {
-	      enabled: false
-	    },
-	    tooltip: {
-	      shared: true,
-	      padding: 15,
-	      borderRadius: 0,
-	      borderColor: '#3a62c6',
-	      backgroundColor: '#ffffff',
-	      dateTimeLabelFormats: {
-	        millisecond: '%b %e, %Y, %H:%M',
-	        second: '%b %e, %Y, %H:%M:%S',
-	        minute: '%b %e, %Y, %H:%M',
-	        hour: '%b %e, %Y, %H:%M',
-	        day: '%b %e, %Y',
-	        week: '%b %e, %Y',
-	        month: '%B %Y',
-	        year: '%Y'
+	      credits: {
+	        enabled: false
 	      },
-	      style: {
-	        color: '#54647e',
-	        fontSize: '14px',
-	        lineHeight: '20px'
+	      xAxis: {
+	        dateTimeLabelFormats: {
+	          millisecond: '%H:%M:%S',
+	          second: '%H:%M:%S',
+	          minute: '%H:%M',
+	          hour: '%H:%M',
+	          day: '%b %e',
+	          week: '%b %e',
+	          month: '%b \'%y',
+	          year: '%Y'
+	        },
+	        type: 'datetime'
 	      },
-	      headerFormat: '<span style="font-weight: bold; font-size: 14px;">{point.key}</span><br/><br/>'
-	    },
-	    plotOptions: {
-	      series: {
-	        marker: {
-	          symbol: 'circle'
+	      yAxis: {
+	        title: {
+	          text: null
+	        },
+	        plotLines: [{
+	          value: 0,
+	          width: 1,
+	          color: '#808080'
+	        }]
+	      },
+	      legend: {
+	        enabled: false
+	      },
+	      tooltip: {
+	        shared: true,
+	        padding: 15,
+	        borderRadius: 0,
+	        borderColor: '#3a62c6',
+	        backgroundColor: '#ffffff',
+	        dateTimeLabelFormats: {
+	          millisecond: '%b %e, %Y, %H:%M',
+	          second: '%b %e, %Y, %H:%M:%S',
+	          minute: '%b %e, %Y, %H:%M',
+	          hour: '%b %e, %Y, %H:%M',
+	          day: '%b %e, %Y',
+	          week: '%b %e, %Y',
+	          month: '%B %Y',
+	          year: '%Y'
+	        },
+	        style: {
+	          color: '#54647e',
+	          fontSize: '14px',
+	          lineHeight: '20px'
+	        },
+	        headerFormat: '<span style="font-weight: bold; font-size: 14px;">{point.key}</span><br/><br/>'
+	      },
+	      plotOptions: {
+	        series: {
+	          marker: {
+	            symbol: 'circle'
+	          }
 	        }
-	      }
-	    },
+	      },
 
-	    colors: colors,
-	    series: series
-	  });
+	      colors: colors,
+	      series: series
+	    });
+	  };
+
+	  render();
 	};
 
 	var _dateformat = __webpack_require__(30);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _highcharts = __webpack_require__(43);
+	var _highcharts = __webpack_require__(45);
 
 	var _highcharts2 = _interopRequireDefault(_highcharts);
+
+	var _listEvent = __webpack_require__(16);
+
+	var _listEvent2 = _interopRequireDefault(_listEvent);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 43 */,
-/* 44 */
+/* 45 */,
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4861,7 +5291,6 @@ webpackJsonp([0],[
 	      value: '',
 	      regex: false
 	    },
-	    order: false,
 
 	    currency: 'usd',
 	    currency_type: 'action',
@@ -4883,7 +5312,10 @@ webpackJsonp([0],[
 	    filters_stock: [],
 	    current: null,
 	    value: null,
-	    filter_graph: {}
+	    filter_graph: {},
+
+	    columns: {},
+	    sort: null
 	  };
 
 	  var stat = document.querySelector('.js-stat');
@@ -4936,6 +5368,15 @@ webpackJsonp([0],[
 	    params.is_tree = query.hasOwnProperty('it') ? !!parseInt(query.it, 10) : true;
 	    params.show_graph = !!parseInt(query.sg, 10);
 	    params.filters_stock = query.fs || [];
+
+	    if (query.scol && query.sdir) {
+	      params.sort = {
+	        column: query.scol,
+	        direction: query.sdir
+	      };
+	    } else {
+	      params.sort = null;
+	    }
 	  };
 
 	  var pushHistroy = function pushHistroy() {
@@ -4988,8 +5429,13 @@ webpackJsonp([0],[
 	      query.fs = params.filters_stock;
 	    }
 
+	    if (params.sort) {
+	      query.scol = params.sort.column;
+	      query.sdir = params.sort.direction;
+	    }
+
 	    history.push({
-	      pathname: '/',
+	      pathname: location.pathname,
 	      search: _qs2.default.stringify(query)
 	    });
 	  };
@@ -5009,7 +5455,6 @@ webpackJsonp([0],[
 	  });
 
 	  stat.addEventListener('newurl', pushHistroy);
-
 	  updateTableParams(location);
 	  stat.triggerEvent('drawtable');
 	};
@@ -5022,7 +5467,7 @@ webpackJsonp([0],[
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _createBrowserHistory = __webpack_require__(45);
+	var _createBrowserHistory = __webpack_require__(47);
 
 	var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
 
