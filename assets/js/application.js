@@ -3781,7 +3781,6 @@ webpackJsonp([0],[
 	    var filter = document.createElement('div');
 	    filter.className = 'list js-list';
 	    filter.dataset.placeholder = 'Select line';
-	    filter.style.display = 'none';
 	    filter.innerHTML = '' + '<div class="list__wrap">' + '<div class="list__value js-list-value"></div>' + '<div class="list__dropdown">' + '<div class="list__items js-list-items"></div>' + '</div>' + '</div>';
 
 	    var items = filter.querySelector('.js-list-items');
@@ -3833,10 +3832,6 @@ webpackJsonp([0],[
 	        }
 	        list.setDisabled(filter.value);
 	      });
-
-	      if (lists[pos + 1]) {
-	        lists[pos + 1].style.display = '';
-	      }
 	    });
 	  };
 
@@ -4115,7 +4110,6 @@ webpackJsonp([0],[
 	            return list.setDisabled(fg.field);
 	          });
 	          var list = lists[pos];
-	          list.style.display = '';
 	          list.updateValue(fg.field);
 	          var eye = list.querySelector('.js-list-eye');
 	          if (fg.visible) {
@@ -4124,9 +4118,6 @@ webpackJsonp([0],[
 	          } else {
 	            eye.style.color = window.might.graph_colors[pos];
 	            eye.style.backgroundColor = '#fff';
-	          }
-	          if (lists[pos + 1]) {
-	            lists[pos + 1].style.display = '';
 	          }
 	        });
 	      })();
@@ -5531,7 +5522,15 @@ webpackJsonp([0],[
 	      data.postback_date = true;
 	    }
 	    data.group = params.segments[params.level - 1];
-	    data.filter = JSON.stringify(params.filter);
+
+	    var filter = [];
+	    params.filters_stock.forEach(function (f) {
+	      filter.push(f);
+	    });
+	    params.filter.forEach(function (f) {
+	      filter.push(f);
+	    });
+	    data.filter = JSON.stringify(filter);
 
 	    var fields = [];
 	    params.fields_graph.forEach(function (fg) {
