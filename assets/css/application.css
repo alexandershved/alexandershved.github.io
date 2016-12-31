@@ -3158,6 +3158,7 @@ body.noscroll {
 .list__value {
   position: relative;
   display: block;
+  width: 100%;
   height: 34px;
   padding: 0 30px 0 10px;
   line-height: 34px;
@@ -3190,9 +3191,6 @@ body.noscroll {
   border-top: 6px solid #54647e;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-}
-.is-wide .list__value {
-  width: 100%;
 }
 .list.is-open .list__value:after {
   border-top: 0;

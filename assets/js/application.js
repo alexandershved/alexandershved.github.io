@@ -3685,10 +3685,12 @@ webpackJsonp([0],[
 	  var statParams = void 0;
 	  var segmentScope = [];
 
+	  var segmentsBox = stat.querySelector('.js-stat-segments');
+
 	  var filterControl = stat.querySelector('.js-stat-filter');
 	  var datetime = stat.querySelector('.js-stat-datetime');
-	  var segmentBtns = stat.querySelectorAll('.js-stat-btn-segment');
-	  var segmentLists = stat.querySelectorAll('.js-stat-list-segment');
+	  var segmentBtns = void 0;
+	  var segmentLists = void 0;
 	  var segmentAdd = stat.querySelector('.js-stat-add-segment');
 	  var graphBtn = stat.querySelector('.js-stat-show-graph');
 	  var treeBtn = stat.querySelector('.js-stat-is-tree');
@@ -4162,16 +4164,54 @@ webpackJsonp([0],[
 	      }
 
 	      if (result.table && _typeof(result.table) === 'object') {
-	        (function () {
-	          window.might.stat.columns_name = window.might.stat.columns_name || {};
-	          var columnsName = window.might.stat.columns_name;
+	        if (Array.isArray(result.table.columns)) {
+	          (function () {
+	            window.might.stat.columns_name = window.might.stat.columns_name || {};
+	            var columnsName = window.might.stat.columns_name;
 
-	          if (Array.isArray(result.table.columns)) {
 	            result.table.columns.forEach(function (column) {
 	              columnsName[column[1]] = column[0];
 	            });
-	          }
-	        })();
+	          })();
+	        }
+
+	        if (Array.isArray(result.table.group) && segmentsBox) {
+	          segmentsBox.innerHTML = '';
+	          result.table.group.forEach(function (seg) {
+	            var ctrl = void 0;
+
+	            if (seg.name) {
+	              if (seg.value) {
+	                ctrl = document.createElement('div');
+	                ctrl.className = 'btn-white is-margin-top js-stat-btn-segment';
+	                ctrl.dataset.value = seg.value;
+	                ctrl.textContent = seg.name;
+	                segmentsBox.appendChild(ctrl);
+	              } else if (seg.chield && Array.isArray(seg.chield)) {
+	                (function () {
+	                  ctrl = document.createElement('div');
+	                  ctrl.className = 'list is-btn is-margin-top js-list js-stat-list-segment';
+	                  ctrl.innerHTML = '' + '<div class="list__wrap">' + '<div class="list__value js-list-value"></div>' + '<div class="list__dropdown">' + '<div class="list__items js-list-items"></div>' + '</div>' + '</div>';
+	                  ctrl.dataset.placeholder = seg.name;
+	                  var ctrlItems = ctrl.querySelector('.js-list-items');
+	                  seg.chield.forEach(function (cld) {
+	                    if (cld && (typeof cld === 'undefined' ? 'undefined' : _typeof(cld)) === 'object') {
+	                      if (cld.name && cld.value) {
+	                        var item = document.createElement('div');
+	                        item.className = 'list__item js-list-item';
+	                        item.dataset.value = cld.value;
+	                        item.textContent = cld.name;
+	                        ctrlItems.appendChild(item);
+	                      }
+	                    }
+	                  });
+	                  segmentsBox.appendChild(ctrl);
+	                  (0, _listEvent2.default)(ctrl);
+	                })();
+	              }
+	            }
+	          });
+	        }
 	      }
 
 	      if (result.user && _typeof(result.user) === 'object') {
@@ -4216,6 +4256,9 @@ webpackJsonp([0],[
 	          })();
 	        }
 	      }
+
+	      segmentBtns = stat.querySelectorAll('.js-stat-btn-segment');
+	      segmentLists = stat.querySelectorAll('.js-stat-list-segment');
 
 	      controlEvents();
 	      controlsReset();
@@ -4575,6 +4618,13 @@ webpackJsonp([0],[
 	        case 'end_time':
 	          if (regTime.test(obj.end_time) && params.end_time !== obj.end_time) {
 	            params.end_time = obj.end_time;
+	            isUpdate = true;
+	          }
+	          break;
+
+	        case 'timezone':
+	          if (params.timezone !== obj.timezone) {
+	            params.timezone = obj.timezone;
 	            isUpdate = true;
 	          }
 	          break;
