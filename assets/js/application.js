@@ -18,31 +18,35 @@ webpackJsonp([0],[
 
 	var _time2 = _interopRequireDefault(_time);
 
-	var _list = __webpack_require__(16);
+	var _checkbox = __webpack_require__(16);
+
+	var _checkbox2 = _interopRequireDefault(_checkbox);
+
+	var _list = __webpack_require__(17);
 
 	var _list2 = _interopRequireDefault(_list);
 
-	var _helper = __webpack_require__(18);
+	var _helper = __webpack_require__(19);
 
 	var _helper2 = _interopRequireDefault(_helper);
 
-	var _select = __webpack_require__(19);
+	var _select = __webpack_require__(20);
 
 	var _select2 = _interopRequireDefault(_select);
 
-	var _calendar = __webpack_require__(21);
+	var _calendar = __webpack_require__(22);
 
 	var _calendar2 = _interopRequireDefault(_calendar);
 
-	var _postback = __webpack_require__(23);
+	var _postback = __webpack_require__(24);
 
 	var _postback2 = _interopRequireDefault(_postback);
 
-	var _listFetch = __webpack_require__(24);
+	var _listFetch = __webpack_require__(25);
 
 	var _listFetch2 = _interopRequireDefault(_listFetch);
 
-	var _index = __webpack_require__(38);
+	var _index = __webpack_require__(39);
 
 	var _index2 = _interopRequireDefault(_index);
 
@@ -52,6 +56,7 @@ webpackJsonp([0],[
 
 	(0, _nav2.default)();
 	(0, _time2.default)();
+	(0, _checkbox2.default)();
 	(0, _list2.default)();
 	(0, _helper2.default)();
 	(0, _select2.default)();
@@ -533,6 +538,27 @@ webpackJsonp([0],[
 
 /***/ },
 /* 16 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  document.body.addEventListener('click', function (event) {
+	    var closest = event.target.closest('.js-checkbox');
+
+	    if (closest) {
+	      closest.classList.toggle('is-select');
+	      closest.triggerEvent('change');
+	    }
+	  });
+	};
+
+/***/ },
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -545,7 +571,7 @@ webpackJsonp([0],[
 	  [].concat(_toConsumableArray(document.querySelectorAll('.js-list'))).forEach(_listEvent2.default);
 	};
 
-	var _listEvent = __webpack_require__(17);
+	var _listEvent = __webpack_require__(18);
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
@@ -554,7 +580,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -822,7 +848,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -868,7 +894,7 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -881,7 +907,7 @@ webpackJsonp([0],[
 	  [].concat(_toConsumableArray(document.querySelectorAll('.js-select'))).forEach(_selectEvent2.default);
 	};
 
-	var _selectEvent = __webpack_require__(20);
+	var _selectEvent = __webpack_require__(21);
 
 	var _selectEvent2 = _interopRequireDefault(_selectEvent);
 
@@ -890,7 +916,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1087,7 +1113,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1701,7 +1727,7 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _dateformat = __webpack_require__(22);
+	var _dateformat = __webpack_require__(23);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
@@ -1710,8 +1736,8 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 22 */,
-/* 23 */
+/* 23 */,
+/* 24 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1879,7 +1905,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1892,7 +1918,7 @@ webpackJsonp([0],[
 	  [].concat(_toConsumableArray(document.querySelectorAll('.js-list-fetch'))).forEach(_listFetchEvent2.default);
 	};
 
-	var _listFetchEvent = __webpack_require__(25);
+	var _listFetchEvent = __webpack_require__(26);
 
 	var _listFetchEvent2 = _interopRequireDefault(_listFetchEvent);
 
@@ -1901,7 +1927,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -2110,25 +2136,25 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _qs = __webpack_require__(32);
+	var _qs = __webpack_require__(33);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _dateformat = __webpack_require__(22);
+	var _dateformat = __webpack_require__(23);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _fieldName = __webpack_require__(37);
+	var _fieldName = __webpack_require__(38);
 
 	var _fieldName2 = _interopRequireDefault(_fieldName);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(26)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Promise, global) {/*** IMPORTS FROM imports-loader ***/
@@ -2572,10 +2598,10 @@ webpackJsonp([0],[
 	/*** EXPORTS FROM exports-loader ***/
 	module.exports = global.fetch;
 	}.call(global));
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(28), (function() { return this; }())))
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*** IMPORTS FROM imports-loader ***/
@@ -2711,7 +2737,7 @@ webpackJsonp([0],[
 	    function lib$es6$promise$asap$$attemptVertx() {
 	      try {
 	        var r = require;
-	        var vertx = __webpack_require__(30);
+	        var vertx = __webpack_require__(31);
 	        lib$es6$promise$asap$$vertxNext = vertx.runOnLoop || vertx.runOnContext;
 	        return lib$es6$promise$asap$$useVertxTimer();
 	      } catch(e) {
@@ -3529,7 +3555,7 @@ webpackJsonp([0],[
 	    };
 
 	    /* global define:true module:true window: true */
-	    if ("function" === 'function' && __webpack_require__(31)['amd']) {
+	    if ("function" === 'function' && __webpack_require__(32)['amd']) {
 	      !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return lib$es6$promise$umd$$ES6Promise; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	    } else if (typeof module !== 'undefined' && module['exports']) {
 	      module['exports'] = lib$es6$promise$umd$$ES6Promise;
@@ -3545,11 +3571,11 @@ webpackJsonp([0],[
 	/*** EXPORTS FROM exports-loader ***/
 	module.exports = global.Promise;
 	}.call(global));
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(28), (function() { return this; }()), __webpack_require__(29)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29), (function() { return this; }()), __webpack_require__(30)(module)))
 
 /***/ },
-/* 28 */,
-/* 29 */
+/* 29 */,
+/* 30 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -3565,25 +3591,25 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports) {
 
 	module.exports = function() { throw new Error("define cannot be used indirect"); };
 
 
 /***/ },
-/* 32 */,
 /* 33 */,
 /* 34 */,
 /* 35 */,
 /* 36 */,
-/* 37 */
+/* 37 */,
+/* 38 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -3648,7 +3674,7 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 38 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -3699,6 +3725,45 @@ webpackJsonp([0],[
 	  var refreshBtn = stat.querySelector('.js-stat-refresh');
 	  var columnsControl = stat.querySelector('.js-stat-columns');
 	  var statGraphFields = stat.querySelector('.js-stat-graph-fields');
+
+	  var createControls = {
+	    campaign_id: {
+	      list: stat.querySelector('.js-stat-campaign-list'),
+	      add: stat.querySelector('.js-stat-campaign-add')
+	    },
+	    lander: {
+	      list: stat.querySelector('.js-stat-lender-list'),
+	      add: stat.querySelector('.js-stat-lender-add')
+	    },
+	    offer: {
+	      list: stat.querySelector('.js-stat-offer-list'),
+	      add: stat.querySelector('.js-stat-offer-add')
+	    },
+	    traffic_source: {
+	      list: stat.querySelector('.js-stat-traff-list'),
+	      add: stat.querySelector('.js-stat-traff-add')
+	    },
+	    affiliate_network: {
+	      list: stat.querySelector('.js-stat-aff-list'),
+	      add: stat.querySelector('.js-stat-aff-add')
+	    }
+	  };
+
+	  var updateCreateControls = function updateCreateControls() {
+	    for (var i in createControls) {
+	      if (createControls.hasOwnProperty(i)) {
+	        var item = createControls[i];
+
+	        if (i !== statParams.segments[0]) {
+	          item.list.style.display = 'none';
+	          item.add.style.display = 'none';
+	        } else {
+	          item.list.style.display = '';
+	          item.add.style.display = '';
+	        }
+	      }
+	    }
+	  };
 
 	  var updateFilterStock = function updateFilterStock() {
 	    filterControl.style.display = 'none';
@@ -3836,6 +3901,8 @@ webpackJsonp([0],[
 	  };
 
 	  var controlEvents = function controlEvents() {
+	    updateCreateControls();
+
 	    if (datetime) {
 	      datetime.addEventListener('change', function (event) {
 	        var value = datetime.value;
@@ -4125,11 +4192,13 @@ webpackJsonp([0],[
 	  };
 
 	  (0, _init2.default)();
+	  (0, _createControls2.default)();
 	  (0, _table2.default)();
 	  (0, _graph2.default)();
 
 	  statParams = window.might.stat.params;
 
+	  stat.addEventListener('upadatecreatecontrols', updateCreateControls);
 	  stat.addEventListener('backurl', controlsReset);
 	  stat.addEventListener('filterstockupdate', updateFilterStock);
 
@@ -4257,41 +4326,45 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _qs = __webpack_require__(32);
+	var _qs = __webpack_require__(33);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _listEvent = __webpack_require__(17);
+	var _listEvent = __webpack_require__(18);
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
-	var _listFetchEvent = __webpack_require__(25);
+	var _listFetchEvent = __webpack_require__(26);
 
 	var _listFetchEvent2 = _interopRequireDefault(_listFetchEvent);
 
-	var _init = __webpack_require__(39);
+	var _init = __webpack_require__(40);
 
 	var _init2 = _interopRequireDefault(_init);
 
-	var _update = __webpack_require__(48);
+	var _update = __webpack_require__(49);
 
 	var _update2 = _interopRequireDefault(_update);
 
-	var _table = __webpack_require__(49);
+	var _createControls = __webpack_require__(50);
+
+	var _createControls2 = _interopRequireDefault(_createControls);
+
+	var _table = __webpack_require__(62);
 
 	var _table2 = _interopRequireDefault(_table);
 
-	var _graph = __webpack_require__(52);
+	var _graph = __webpack_require__(65);
 
 	var _graph2 = _interopRequireDefault(_graph);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(26)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
 
 /***/ },
-/* 39 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4329,7 +4402,7 @@ webpackJsonp([0],[
 	    is_tree: true,
 	    show_graph: false,
 
-	    segments: [],
+	    segments: ['campaign_id'],
 	    level: 1,
 	    filter: [],
 	    filters_stock: [],
@@ -4388,7 +4461,7 @@ webpackJsonp([0],[
 	    params.end_time = query.et || '23:59';
 	    params.timezone = query.tz || defaultTimezone;
 	    params.postback_date = !!parseInt(query.pd, 10);
-	    params.segments = query.seg || [];
+	    params.segments = query.seg || ['campaign_id'];
 	    params.is_tree = query.hasOwnProperty('it') ? !!parseInt(query.it, 10) : true;
 	    params.show_graph = !!parseInt(query.sg, 10);
 	    params.filters_stock = query.fs || [];
@@ -4423,7 +4496,9 @@ webpackJsonp([0],[
 	      query.p = params.page;
 	    }
 
-	    query.seg = params.segments;
+	    if (!(Array.isArray(params.segments) && params.segments.length === 1 && params.segments[0] === 'campaign_id')) {
+	      query.seg = params.segments;
+	    }
 
 	    if (params.order) {
 	      query.ord = params.order;
@@ -4495,26 +4570,25 @@ webpackJsonp([0],[
 	  updateTableParams(location);
 	};
 
-	var _qs = __webpack_require__(32);
+	var _qs = __webpack_require__(33);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _dateformat = __webpack_require__(22);
+	var _dateformat = __webpack_require__(23);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _createBrowserHistory = __webpack_require__(40);
+	var _createBrowserHistory = __webpack_require__(41);
 
 	var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
 
-	var _update = __webpack_require__(48);
+	var _update = __webpack_require__(49);
 
 	var _update2 = _interopRequireDefault(_update);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 40 */,
 /* 41 */,
 /* 42 */,
 /* 43 */,
@@ -4522,7 +4596,8 @@ webpackJsonp([0],[
 /* 45 */,
 /* 46 */,
 /* 47 */,
-/* 48 */
+/* 48 */,
+/* 49 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4542,6 +4617,7 @@ webpackJsonp([0],[
 	  var isUpdateNav = false;
 	  var isUpdateStock = false;
 
+	  var isCreateControl = false;
 	  var isRefresh = false;
 	  var isPop = false;
 
@@ -4568,6 +4644,9 @@ webpackJsonp([0],[
 	              if (params.segments[obj.segment.level] !== obj.segment.value) {
 	                params.segments[obj.segment.level] = obj.segment.value;
 	                isUpdate = true;
+	                if (obj.segment.level === 0) {
+	                  isCreateControl = true;
+	                }
 	              }
 	            } else {
 	              if (params.segments.splice(obj.segment.level, 1).length === 1) {
@@ -4758,6 +4837,10 @@ webpackJsonp([0],[
 	    }
 	  }
 
+	  if (isCreateControl) {
+	    stat.triggerEvent('upadatecreatecontrols');
+	  }
+
 	  if (isUpdate) {
 	    params.draw++;
 
@@ -4798,7 +4881,1010 @@ webpackJsonp([0],[
 	var regDate = new RegExp(/\d{4}-(0[1-9]|1[0-2])-([0-1][0-9]|3[0-1])/, 'g');
 
 /***/ },
-/* 49 */
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  var stat = document.querySelector('.js-stat');
+
+	  if (!stat) {
+	    return;
+	  }
+
+	  stat.querySelector('.js-stat-campaign-list').addEventListener('click', _campaignList2.default);
+	  stat.querySelector('.js-stat-campaign-add').addEventListener('click', _campaignAdd2.default);
+	  stat.querySelector('.js-stat-lender-list').addEventListener('click', _lenderList2.default);
+	  stat.querySelector('.js-stat-lender-add').addEventListener('click', _lenderAdd2.default);
+	  stat.querySelector('.js-stat-offer-list').addEventListener('click', _offerList2.default);
+	  stat.querySelector('.js-stat-offer-add').addEventListener('click', _offerAdd2.default);
+	  stat.querySelector('.js-stat-traff-list').addEventListener('click', _trafficSourceList2.default);
+	  stat.querySelector('.js-stat-traff-add').addEventListener('click', _trafficSourceAdd2.default);
+	  stat.querySelector('.js-stat-aff-list').addEventListener('click', _affiliateNetworkList2.default);
+	  stat.querySelector('.js-stat-aff-add').addEventListener('click', _affiliateNetworkAdd2.default);
+	};
+
+	var _campaignList = __webpack_require__(51);
+
+	var _campaignList2 = _interopRequireDefault(_campaignList);
+
+	var _campaignAdd = __webpack_require__(53);
+
+	var _campaignAdd2 = _interopRequireDefault(_campaignAdd);
+
+	var _lenderList = __webpack_require__(54);
+
+	var _lenderList2 = _interopRequireDefault(_lenderList);
+
+	var _lenderAdd = __webpack_require__(55);
+
+	var _lenderAdd2 = _interopRequireDefault(_lenderAdd);
+
+	var _offerList = __webpack_require__(56);
+
+	var _offerList2 = _interopRequireDefault(_offerList);
+
+	var _offerAdd = __webpack_require__(57);
+
+	var _offerAdd2 = _interopRequireDefault(_offerAdd);
+
+	var _trafficSourceList = __webpack_require__(58);
+
+	var _trafficSourceList2 = _interopRequireDefault(_trafficSourceList);
+
+	var _trafficSourceAdd = __webpack_require__(59);
+
+	var _trafficSourceAdd2 = _interopRequireDefault(_trafficSourceAdd);
+
+	var _affiliateNetworkList = __webpack_require__(60);
+
+	var _affiliateNetworkList2 = _interopRequireDefault(_affiliateNetworkList);
+
+	var _affiliateNetworkAdd = __webpack_require__(61);
+
+	var _affiliateNetworkAdd2 = _interopRequireDefault(_affiliateNetworkAdd);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  if (document.querySelector('.js-popup')) {
+	    return;
+	  }
+
+	  var popup = (0, _createPopup2.default)('Traffic source list');
+
+	  if (!popup) {
+	    return;
+	  }
+
+	  var popupBody = popup.querySelector('.js-popup-body');
+
+	  if (popupBody) {
+	    var url = window.might.url + '/affiliate_network/list';
+	    var headers = new Headers();
+	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+	    var options = {
+	      method: 'post',
+	      mode: 'cors',
+	      headers: headers
+	    };
+
+	    var data = {
+	      field: 'id,name',
+	      order: 'name'
+	    };
+
+	    if (window.might.hasOwnProperty('auth_key')) {
+	      data.auth_key = window.might.auth_key;
+	    }
+
+	    if (window.might.hasOwnProperty('all_fields')) {
+	      data.all_fields = window.might.all_fields;
+	    }
+
+	    options.body = _qs2.default.stringify(data);
+
+	    fetch(url, options).then(function (response) {
+	      return response.json();
+	    }).then(function (result) {
+	      if (result.error) {
+	        if (result.result.msg) {
+	          popupBody.innerHTML = '<div class="popup__message">' + result.result.msg + '</div>';
+	        }
+	      } else {
+	        (function () {
+	          var table = document.createElement('table');
+	          table.className = 'popup__list';
+	          popupBody.appendChild(table);
+
+	          result.result.data.forEach(function (item) {
+	            var name = item.name;
+	            var id = item.id;
+	            var tr = document.createElement('tr');
+
+	            tr.innerHTML = '\n            <td data-id="' + id + '"><span>' + name + '</span></td>\n            <td><span>Copy</span></td>\n            <td><span>Edit</span></td>\n            <td><span>Update cost</span></td>\n            <td><span>Links</span></td>\n          ';
+
+	            table.appendChild(tr);
+	          });
+	        })();
+	      }
+	    });
+	  }
+	};
+
+	var _qs = __webpack_require__(33);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	var _createPopup = __webpack_require__(52);
+
+	var _createPopup2 = _interopRequireDefault(_createPopup);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
+
+/***/ },
+/* 52 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (title, editing) {
+	  if (document.querySelector('.js-popup')) {
+	    return false;
+	  }
+
+	  var popup = document.createElement('div');
+	  popup.className = 'popup js-popup';
+
+	  popup.innerHTML = '\n    <div class="popup__veil js-popup-veil">\n    </div>\n    <div class="popup__win">\n      <div class="popup__wrap js-popup-wrap">\n        <div class="popup__headline">\n          <div class="popup__close js-popup-close"></div>\n          <div class="popup__title">' + title + '</div>\n        </div>\n        <div class="popup__body js-popup-body"></div>\n        <div class="popup__bottom">\n          <div class="poopup__bottom-error js-poopup-error"></div>\n          ' + (editing ? '<div class="btn-apply js-popup-save">Save</div>' : '') + '\n          <div class="btn-close js-popup-close">Close</div>\n        </div>\n      </div>\n    </div>';
+
+	  document.body.appendChild(popup);
+
+	  var close = function close() {
+	    popup.parentNode.removeChild(popup);
+
+	    var rect = document.body.getBoundingClientRect();
+
+	    document.body.classList.remove('noscroll');
+	    document.body.style.top = '';
+	    document.body.style.left = '';
+
+	    window.scrollTo(-rect.left, -rect.top);
+	  };
+
+	  popup.addEventListener('click', function (event) {
+	    var closeBtn = event.target.closest('.js-popup-close');
+	    var wrap = event.target.closest('.js-popup-wrap');
+
+	    if (!wrap || closeBtn) {
+	      close();
+	    }
+	  });
+
+	  popup.close = close;
+
+	  var rect = document.body.getBoundingClientRect();
+
+	  document.body.classList.add('noscroll');
+	  document.body.style.top = rect.top + 'px';
+	  document.body.style.left = rect.left + 'px';
+
+	  return popup;
+	};
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  if (document.querySelector('.js-popup')) {
+	    return;
+	  }
+
+	  var popup = (0, _createPopup2.default)('Creating new campaign', true);
+
+	  if (!popup) {
+	    return;
+	  }
+
+	  var popupBody = popup.querySelector('.js-popup-body');
+	};
+
+	var _createPopup = __webpack_require__(52);
+
+	var _createPopup2 = _interopRequireDefault(_createPopup);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  if (document.querySelector('.js-popup')) {
+	    return;
+	  }
+
+	  var popup = (0, _createPopup2.default)('Traffic source list');
+
+	  if (!popup) {
+	    return;
+	  }
+
+	  var popupBody = popup.querySelector('.js-popup-body');
+
+	  if (popupBody) {
+	    var url = window.might.url + '/affiliate_network/list';
+	    var headers = new Headers();
+	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+	    var options = {
+	      method: 'post',
+	      mode: 'cors',
+	      headers: headers
+	    };
+
+	    var data = {
+	      field: 'id,name',
+	      order: 'name'
+	    };
+
+	    if (window.might.hasOwnProperty('auth_key')) {
+	      data.auth_key = window.might.auth_key;
+	    }
+
+	    if (window.might.hasOwnProperty('all_fields')) {
+	      data.all_fields = window.might.all_fields;
+	    }
+
+	    options.body = _qs2.default.stringify(data);
+
+	    fetch(url, options).then(function (response) {
+	      return response.json();
+	    }).then(function (result) {
+	      if (result.error) {
+	        if (result.result.msg) {
+	          popupBody.innerHTML = '<div class="popup__message">' + result.result.msg + '</div>';
+	        }
+	      } else {
+	        (function () {
+	          var table = document.createElement('table');
+	          table.className = 'popup__list';
+	          popupBody.appendChild(table);
+
+	          result.result.data.forEach(function (item) {
+	            var name = item.name;
+	            var id = item.id;
+	            var tr = document.createElement('tr');
+
+	            tr.innerHTML = '\n            <td data-id="' + id + '"><span>' + name + '</span></td>\n            <td><span>Copy</span></td>\n            <td><span>Edit</span></td>\n            <td><span>Update cost</span></td>\n            <td><span>Links</span></td>\n          ';
+
+	            table.appendChild(tr);
+	          });
+	        })();
+	      }
+	    });
+	  }
+	};
+
+	var _qs = __webpack_require__(33);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	var _createPopup = __webpack_require__(52);
+
+	var _createPopup2 = _interopRequireDefault(_createPopup);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  if (document.querySelector('.js-popup')) {
+	    return;
+	  }
+
+	  var popup = (0, _createPopup2.default)('Creating new lender', true);
+
+	  if (!popup) {
+	    return;
+	  }
+
+	  var popupBody = popup.querySelector('.js-popup-body');
+	};
+
+	var _createPopup = __webpack_require__(52);
+
+	var _createPopup2 = _interopRequireDefault(_createPopup);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  if (document.querySelector('.js-popup')) {
+	    return;
+	  }
+
+	  var popup = (0, _createPopup2.default)('Traffic source list');
+
+	  if (!popup) {
+	    return;
+	  }
+
+	  var popupBody = popup.querySelector('.js-popup-body');
+
+	  if (popupBody) {
+	    var url = window.might.url + '/affiliate_network/list';
+	    var headers = new Headers();
+	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+	    var options = {
+	      method: 'post',
+	      mode: 'cors',
+	      headers: headers
+	    };
+
+	    var data = {
+	      field: 'id,name',
+	      order: 'name'
+	    };
+
+	    if (window.might.hasOwnProperty('auth_key')) {
+	      data.auth_key = window.might.auth_key;
+	    }
+
+	    if (window.might.hasOwnProperty('all_fields')) {
+	      data.all_fields = window.might.all_fields;
+	    }
+
+	    options.body = _qs2.default.stringify(data);
+
+	    fetch(url, options).then(function (response) {
+	      return response.json();
+	    }).then(function (result) {
+	      if (result.error) {
+	        if (result.result.msg) {
+	          popupBody.innerHTML = '<div class="popup__message">' + result.result.msg + '</div>';
+	        }
+	      } else {
+	        (function () {
+	          var table = document.createElement('table');
+	          table.className = 'popup__list';
+	          popupBody.appendChild(table);
+
+	          result.result.data.forEach(function (item) {
+	            var name = item.name;
+	            var id = item.id;
+	            var tr = document.createElement('tr');
+
+	            tr.innerHTML = '\n            <td data-id="' + id + '"><span>' + name + '</span></td>\n            <td><span>Copy</span></td>\n            <td><span>Edit</span></td>\n            <td><span>Update cost</span></td>\n            <td><span>Links</span></td>\n          ';
+
+	            table.appendChild(tr);
+	          });
+	        })();
+	      }
+	    });
+	  }
+	};
+
+	var _qs = __webpack_require__(33);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	var _createPopup = __webpack_require__(52);
+
+	var _createPopup2 = _interopRequireDefault(_createPopup);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
+
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  if (document.querySelector('.js-popup')) {
+	    return;
+	  }
+
+	  var popup = (0, _createPopup2.default)('Creating new affilate networks', true);
+
+	  if (!popup) {
+	    return;
+	  }
+
+	  var popupBody = popup.querySelector('.js-popup-body');
+
+	  if (!popupBody) {
+	    return;
+	  }
+
+	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new offer">\n          <span>sadfsadf<span>\n        </div>\n      </div>\n\n      <div class="popup__line-label">\n        <span>Offer URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" placeholder="Create a url">\n          <span>sadfsadf<span>\n        </div>\n        <div class="tags js-form-tags" style="display: none;"></div>\n      </div>\n\n      <div class="popup__line-label">\n        <span>Affiliate nework:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n      </div>\n    </div>';
+
+	  var tags = '{country},{cost},{campaign_id},{trafficsource_id},{ip_id},{offer_id},{country}';
+
+	  var formName = popupBody.querySelector('.js-form-name');
+	  var formUrl = popupBody.querySelector('.js-form-url');
+	  var formUrlTags = popupBody.querySelector('.js-form-tags');
+
+	  tags.split(',').forEach(function (tag) {
+	    var span = document.createElement('span');
+	    span.className = 'js-form-tag';
+	    span.textContent = tag;
+	    formUrlTags.appendChild(span);
+	  });
+
+	  formUrl.addEventListener('focus', function () {
+	    formUrlTags.style.display = '';
+	  });
+
+	  formUrl.addEventListener('blur', function () {
+	    formUrlTags.style.display = 'none';
+	  });
+
+	  formUrlTags.addEventListener('mousedown', function (event) {
+	    var closest = event.target.closest('.js-form-tag');
+
+	    if (closest) {
+	      if (!closest.classList.contains('is-select')) {
+	        var tag = closest.textContent;
+	        formUrl.value += tag;
+	        closest.classList.add('is-select');
+	      }
+	    }
+
+	    formUrl.focus();
+	    event.preventDefault();
+	    event.stopPropagation();
+	  });
+
+	  popup.querySelector('.js-popup-save').addEventListener('click', function (event) {
+	    var name = formName.value.trim();
+	    var duplicatePostbacks = formWhiteList.classList.contains('is-select');
+	    var whiteList = formWhiteList.classList.contains('is-select');
+	    var ips = [];
+
+	    var focusFormName = function focusFormName() {
+	      var parentFormName = formName.parentNode;
+
+	      parentFormName.classList.remove('is-error');
+	      parentFormName.querySelector('span').textContent = '';
+
+	      formName.removeEventListener('focus', focusFormName);
+	    };
+
+	    if (!name) {
+	      var parentFormName = formName.parentNode;
+
+	      parentFormName.classList.add('is-error');
+	      parentFormName.querySelector('span').textContent = 'The field can not be empty';
+
+	      formName.addEventListener('focus', focusFormName);
+
+	      return;
+	    }
+
+	    var focusFormIps = function focusFormIps() {
+	      formIps.classList.remove('is-error');
+	      formIps.querySelector('.js-inputs-error').textContent = '';
+	      formIps.removeEventListener('click', focusFormIps);
+	    };
+
+	    if (whiteList) {
+	      [].concat(_toConsumableArray(formIps.querySelectorAll('span'))).forEach(function (span) {
+	        var ip = span.textContent.trim();
+
+	        if (ip) {
+	          ips.push(ip);
+	        }
+	      });
+
+	      if (!ips.length) {
+	        formIps.classList.add('is-error');
+	        formIps.querySelector('.js-inputs-error').textContent = 'The field can not be empty';
+	        formIps.addEventListener('click', focusFormIps);
+
+	        return;
+	      }
+	    }
+
+	    var url = window.might.url + '/affiliate_network/create';
+	    var headers = new Headers();
+	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+	    var options = {
+	      method: 'post',
+	      mode: 'cors',
+	      headers: headers
+	    };
+
+	    var data = {
+	      name: name,
+	      duplicate_postbacks: duplicatePostbacks,
+	      white_list: whiteList,
+	      append_click_id: 0,
+	      ips: ips.join(',')
+	    };
+
+	    if (window.might.hasOwnProperty('auth_key')) {
+	      data.auth_key = window.might.auth_key;
+	    }
+
+	    if (window.might.hasOwnProperty('all_fields')) {
+	      data.all_fields = window.might.all_fields;
+	    }
+
+	    options.body = _qs2.default.stringify(data);
+
+	    fetch(url, options).then(function (response) {
+	      return response.json();
+	    }).then(function (result) {
+	      if (!result.error) {
+	        if (result.result.msg) {
+	          popupBody.querySelector('.js-poopup-error').textContent = result.result.msg;
+	        }
+	      } else {
+	        popup.close();
+	      }
+	    });
+	  });
+	};
+
+	var _qs = __webpack_require__(33);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	var _createPopup = __webpack_require__(52);
+
+	var _createPopup2 = _interopRequireDefault(_createPopup);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
+
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  if (document.querySelector('.js-popup')) {
+	    return;
+	  }
+
+	  var popup = (0, _createPopup2.default)('Traffic source list');
+
+	  if (!popup) {
+	    return;
+	  }
+
+	  var popupBody = popup.querySelector('.js-popup-body');
+
+	  if (popupBody) {
+	    var url = window.might.url + '/affiliate_network/list';
+	    var headers = new Headers();
+	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+	    var options = {
+	      method: 'post',
+	      mode: 'cors',
+	      headers: headers
+	    };
+
+	    var data = {
+	      field: 'id,name',
+	      order: 'name'
+	    };
+
+	    if (window.might.hasOwnProperty('auth_key')) {
+	      data.auth_key = window.might.auth_key;
+	    }
+
+	    if (window.might.hasOwnProperty('all_fields')) {
+	      data.all_fields = window.might.all_fields;
+	    }
+
+	    options.body = _qs2.default.stringify(data);
+
+	    fetch(url, options).then(function (response) {
+	      return response.json();
+	    }).then(function (result) {
+	      if (result.error) {
+	        if (result.result.msg) {
+	          popupBody.innerHTML = '<div class="popup__message">' + result.result.msg + '</div>';
+	        }
+	      } else {
+	        (function () {
+	          var table = document.createElement('table');
+	          table.className = 'popup__list';
+	          popupBody.appendChild(table);
+
+	          result.result.data.forEach(function (item) {
+	            var name = item.name;
+	            var id = item.id;
+	            var tr = document.createElement('tr');
+
+	            tr.innerHTML = '\n            <td data-id="' + id + '"><span>' + name + '</span></td>\n            <td><span>Copy</span></td>\n            <td><span>Edit</span></td>\n            <td><span>Update cost</span></td>\n            <td><span>Links</span></td>\n          ';
+
+	            table.appendChild(tr);
+	          });
+	        })();
+	      }
+	    });
+	  }
+	};
+
+	var _qs = __webpack_require__(33);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	var _createPopup = __webpack_require__(52);
+
+	var _createPopup2 = _interopRequireDefault(_createPopup);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
+
+/***/ },
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  if (document.querySelector('.js-popup')) {
+	    return;
+	  }
+
+	  var popup = (0, _createPopup2.default)('Creating new traffic source', true);
+
+	  if (!popup) {
+	    return;
+	  }
+
+	  var popupBody = popup.querySelector('.js-popup-body');
+	};
+
+	var _createPopup = __webpack_require__(52);
+
+	var _createPopup2 = _interopRequireDefault(_createPopup);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  if (document.querySelector('.js-popup')) {
+	    return;
+	  }
+
+	  var popup = (0, _createPopup2.default)('Traffic source list');
+
+	  if (!popup) {
+	    return;
+	  }
+
+	  var popupBody = popup.querySelector('.js-popup-body');
+
+	  if (popupBody) {
+	    var url = window.might.url + '/affiliate_network/list';
+	    var headers = new Headers();
+	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+	    var options = {
+	      method: 'post',
+	      mode: 'cors',
+	      headers: headers
+	    };
+
+	    var data = {
+	      field: 'id,name',
+	      order: 'name'
+	    };
+
+	    if (window.might.hasOwnProperty('auth_key')) {
+	      data.auth_key = window.might.auth_key;
+	    }
+
+	    if (window.might.hasOwnProperty('all_fields')) {
+	      data.all_fields = window.might.all_fields;
+	    }
+
+	    options.body = _qs2.default.stringify(data);
+
+	    fetch(url, options).then(function (response) {
+	      return response.json();
+	    }).then(function (result) {
+	      if (result.error) {
+	        if (result.result.msg) {
+	          popupBody.innerHTML = '<div class="popup__message">' + result.result.msg + '</div>';
+	        }
+	      } else {
+	        (function () {
+	          var table = document.createElement('table');
+	          table.className = 'popup__list';
+	          popupBody.appendChild(table);
+
+	          result.result.data.forEach(function (item) {
+	            var name = item.name;
+	            var id = item.id;
+	            var tr = document.createElement('tr');
+
+	            tr.innerHTML = '\n            <td data-id="' + id + '"><span>' + name + '</span></td>\n            <td><span>Copy</span></td>\n            <td><span>Edit</span></td>\n            <td><span>Update cost</span></td>\n            <td><span>Links</span></td>\n          ';
+
+	            table.appendChild(tr);
+	          });
+	        })();
+	      }
+	    });
+	  }
+	};
+
+	var _qs = __webpack_require__(33);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	var _createPopup = __webpack_require__(52);
+
+	var _createPopup2 = _interopRequireDefault(_createPopup);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
+
+/***/ },
+/* 61 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  if (document.querySelector('.js-popup')) {
+	    return;
+	  }
+
+	  var popup = (0, _createPopup2.default)('Creating new affilate networks', true);
+
+	  if (!popup) {
+	    return;
+	  }
+
+	  var popupBody = popup.querySelector('.js-popup-body');
+
+	  if (!popupBody) {
+	    return;
+	  }
+
+	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new affiliate network">\n          <span>sadfsadf<span>\n        </div>\n        <div class="popup__checkbox js-checkbox js-form-duplicate-postbacks">Accept dublicated post backs</div>\n        <div class="popup__checkbox js-checkbox js-form-list-ips">Accept postbacks from white-listed IPs</div>\n        <div class="inputs js-form-ips" style="display: none;">\n          <div class="inputs__wrap">\n            <input class="js-form-input-ip" type="text">\n          </div>\n          <div class="inputs__error js-inputs-error"></div>\n        </div>\n      </div>\n    </div>';
+
+	  var formName = popupBody.querySelector('.js-form-name');
+	  var formDuplicatePostbacks = popupBody.querySelector('.js-form-duplicate-postbacks');
+	  var formWhiteList = popupBody.querySelector('.js-form-list-ips');
+	  var formIps = popupBody.querySelector('.js-form-ips');
+	  var formInputIp = popupBody.querySelector('.js-form-input-ip');
+
+	  formWhiteList.addEventListener('change', function () {
+	    if (formWhiteList.classList.contains('is-select')) {
+	      formIps.style.display = '';
+	    } else {
+	      formIps.style.display = 'none';
+	    }
+	  });
+
+	  formIps.addEventListener('click', function (event) {
+	    var closest = event.target.closest('.js-form-ips-delete');
+
+	    if (closest) {
+	      var span = closest.parentNode;
+	      span.parentNode.removeChild(span);
+	    } else {
+	      formInputIp.focus();
+	    }
+
+	    event.stopPropagation();
+	  });
+
+	  formInputIp.addEventListener('keydown', function (event) {
+	    var code = event.keyCode;
+
+	    if (code === 13) {
+	      var span = document.createElement('span');
+	      span.textContent = formInputIp.value.trim();
+
+	      var i = document.createElement('i');
+	      i.className = 'js-form-ips-delete';
+	      span.appendChild(i);
+
+	      formInputIp.parentNode.insertBefore(span, formInputIp);
+	      formInputIp.value = '';
+	    }
+	  });
+
+	  popup.querySelector('.js-popup-save').addEventListener('click', function (event) {
+	    var name = formName.value.trim();
+	    var duplicatePostbacks = formWhiteList.classList.contains('is-select');
+	    var whiteList = formWhiteList.classList.contains('is-select');
+	    var ips = [];
+
+	    var focusFormName = function focusFormName() {
+	      var parentFormName = formName.parentNode;
+
+	      parentFormName.classList.remove('is-error');
+	      parentFormName.querySelector('span').textContent = '';
+
+	      formName.removeEventListener('focus', focusFormName);
+	    };
+
+	    if (!name) {
+	      var parentFormName = formName.parentNode;
+
+	      parentFormName.classList.add('is-error');
+	      parentFormName.querySelector('span').textContent = 'The field can not be empty';
+
+	      formName.addEventListener('focus', focusFormName);
+
+	      return;
+	    }
+
+	    var focusFormIps = function focusFormIps() {
+	      formIps.classList.remove('is-error');
+	      formIps.querySelector('.js-inputs-error').textContent = '';
+	      formIps.removeEventListener('click', focusFormIps);
+	    };
+
+	    if (whiteList) {
+	      [].concat(_toConsumableArray(formIps.querySelectorAll('span'))).forEach(function (span) {
+	        var ip = span.textContent.trim();
+
+	        if (ip) {
+	          ips.push(ip);
+	        }
+	      });
+
+	      if (!ips.length) {
+	        formIps.classList.add('is-error');
+	        formIps.querySelector('.js-inputs-error').textContent = 'The field can not be empty';
+	        formIps.addEventListener('click', focusFormIps);
+
+	        return;
+	      }
+	    }
+
+	    var url = window.might.url + '/affiliate_network/create';
+	    var headers = new Headers();
+	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+	    var options = {
+	      method: 'post',
+	      mode: 'cors',
+	      headers: headers
+	    };
+
+	    var data = {
+	      name: name,
+	      duplicate_postbacks: duplicatePostbacks,
+	      white_list: whiteList,
+	      append_click_id: 0,
+	      ips: ips.join(',')
+	    };
+
+	    if (window.might.hasOwnProperty('auth_key')) {
+	      data.auth_key = window.might.auth_key;
+	    }
+
+	    if (window.might.hasOwnProperty('all_fields')) {
+	      data.all_fields = window.might.all_fields;
+	    }
+
+	    options.body = _qs2.default.stringify(data);
+
+	    fetch(url, options).then(function (response) {
+	      return response.json();
+	    }).then(function (result) {
+	      if (!result.error) {
+	        if (result.result.msg) {
+	          popupBody.querySelector('.js-poopup-error').textContent = result.result.msg;
+	        }
+	      } else {
+	        popup.close();
+	      }
+	    });
+	  });
+	};
+
+	var _qs = __webpack_require__(33);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	var _createPopup = __webpack_require__(52);
+
+	var _createPopup2 = _interopRequireDefault(_createPopup);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
+
+/***/ },
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -4955,27 +6041,27 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _qs = __webpack_require__(32);
+	var _qs = __webpack_require__(33);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _dateformat = __webpack_require__(22);
+	var _dateformat = __webpack_require__(23);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _tableRender = __webpack_require__(50);
+	var _tableRender = __webpack_require__(63);
 
 	var _tableRender2 = _interopRequireDefault(_tableRender);
 
-	var _tableEvent = __webpack_require__(51);
+	var _tableEvent = __webpack_require__(64);
 
 	var _tableEvent2 = _interopRequireDefault(_tableEvent);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(26)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
 
 /***/ },
-/* 50 */
+/* 63 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -5235,7 +6321,7 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 51 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5443,7 +6529,7 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _update = __webpack_require__(48);
+	var _update = __webpack_require__(49);
 
 	var _update2 = _interopRequireDefault(_update);
 
@@ -5452,7 +6538,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 52 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -5579,31 +6665,31 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _qs = __webpack_require__(32);
+	var _qs = __webpack_require__(33);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _dateformat = __webpack_require__(22);
+	var _dateformat = __webpack_require__(23);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _listEvent = __webpack_require__(17);
+	var _listEvent = __webpack_require__(18);
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
-	var _update = __webpack_require__(48);
+	var _update = __webpack_require__(49);
 
 	var _update2 = _interopRequireDefault(_update);
 
-	var _graphRender = __webpack_require__(53);
+	var _graphRender = __webpack_require__(66);
 
 	var _graphRender2 = _interopRequireDefault(_graphRender);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(26)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
 
 /***/ },
-/* 53 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5746,11 +6832,11 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _dateformat = __webpack_require__(22);
+	var _dateformat = __webpack_require__(23);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _highcharts = __webpack_require__(54);
+	var _highcharts = __webpack_require__(67);
 
 	var _highcharts2 = _interopRequireDefault(_highcharts);
 
