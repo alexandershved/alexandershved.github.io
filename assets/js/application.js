@@ -3772,7 +3772,7 @@ webpackJsonp([0],[
 	    statParams.filters_stock.forEach(function (filter) {
 	      var filterEl = document.createElement('div');
 	      filterEl.className = 'list js-list-fetch is-margin-top';
-	      filterEl.innerHTML = '' + '<div class="list__wrap">' + '<div class="list__value js-list-fetch-value"></div>' + '<div class="list__dropdown">' + '<div class="list__search">' + '<i class="fa fa-search"></i>' + '<input class="js-list-fetch-search" type="text">' + '</div>' + '<div class="list__items js-list-fetch-items"></div>' + '</div>' + '</div>';
+	      filterEl.innerHTML = '\n        <div class="list__wrap">\n          <div class="list__value js-list-fetch-value"></div>\n          <div class="list__dropdown">\n            <div class="list__search">\n            <i class="fa fa-search"></i>\n            <input class="js-list-fetch-search" type="text">\n            </div>\n            <div class="list__items js-list-fetch-items"></div>\n          </div>\n        </div>';
 	      filterControl.appendChild(filterEl);
 	      (0, _listFetchEvent2.default)(filterEl);
 
@@ -3846,7 +3846,7 @@ webpackJsonp([0],[
 	    var filter = document.createElement('div');
 	    filter.className = 'list js-list';
 	    filter.dataset.placeholder = 'Select line';
-	    filter.innerHTML = '' + '<div class="list__wrap">' + '<div class="list__value js-list-value"></div>' + '<div class="list__dropdown">' + '<div class="list__items js-list-items"></div>' + '</div>' + '</div>';
+	    filter.innerHTML = '\n      <div class="list__wrap">\n        <div class="list__value js-list-value"></div>\n        <div class="list__dropdown">\n          <div class="list__items js-list-items"></div>\n        </div>\n      </div>';
 
 	    var items = filter.querySelector('.js-list-items');
 
@@ -5147,7 +5147,7 @@ webpackJsonp([0],[
 	  var popupBody = popup.querySelector('.js-popup-body');
 
 	  if (popupBody) {
-	    var url = window.might.url + '/affiliate_network/list';
+	    var url = window.might.url + '/lander/list';
 	    var headers = new Headers();
 	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
@@ -5215,7 +5215,7 @@ webpackJsonp([0],[
 /* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -5226,20 +5226,163 @@ webpackJsonp([0],[
 	    return;
 	  }
 
-	  var popup = (0, _createPopup2.default)('Creating new lender', true);
+	  var popup = (0, _createPopup2.default)('Creating new affilate networks', true);
 
 	  if (!popup) {
 	    return;
 	  }
 
 	  var popupBody = popup.querySelector('.js-popup-body');
+
+	  if (!popupBody) {
+	    return;
+	  }
+
+	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new offer">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Offer URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" placeholder="Create a url">\n          <span><span>\n        </div>\n        <div class="tags js-form-tags" style="display: none;"></div>\n      </div>\n    </div>\n    </div>';
+
+	  var tags = '{country},{cost},{campaign_id},{trafficsource_id},{ip_id},{offer_id}';
+
+	  var formName = popupBody.querySelector('.js-form-name');
+	  var formUrl = popupBody.querySelector('.js-form-url');
+	  var formUrlTags = popupBody.querySelector('.js-form-tags');
+
+	  tags.split(',').forEach(function (tag) {
+	    var span = document.createElement('span');
+	    span.className = 'js-form-tag';
+	    span.textContent = tag;
+	    formUrlTags.appendChild(span);
+	  });
+
+	  formUrl.addEventListener('focus', function () {
+	    formUrlTags.style.display = '';
+	  });
+
+	  formUrl.addEventListener('blur', function () {
+	    formUrlTags.style.display = 'none';
+	  });
+
+	  var changeFormUrl = function changeFormUrl() {
+	    var val = formUrl.value;
+
+	    [].concat(_toConsumableArray(formUrlTags.querySelectorAll('span'))).forEach(function (span) {
+	      if (val.indexOf(span.textContent.trim()) !== -1) {
+	        span.classList.add('is-select');
+	      } else {
+	        span.classList.remove('is-select');
+	      }
+	    });
+	  };
+
+	  formUrl.addEventListener('change', changeFormUrl);
+	  formUrl.addEventListener('keyup', changeFormUrl);
+	  formUrl.addEventListener('paste', changeFormUrl);
+	  formUrl.addEventListener('cut', changeFormUrl);
+
+	  formUrlTags.addEventListener('mousedown', function (event) {
+	    var closest = event.target.closest('.js-form-tag');
+
+	    if (closest) {
+	      if (!closest.classList.contains('is-select')) {
+	        var tag = closest.textContent;
+	        formUrl.value += tag;
+	        closest.classList.add('is-select');
+	      }
+	    }
+
+	    formUrl.focus();
+	    event.preventDefault();
+	    event.stopPropagation();
+	  });
+
+	  popup.querySelector('.js-popup-save').addEventListener('click', function (event) {
+	    var name = formName.value.trim();
+	    var lenderUrl = formUrl.value.trim();
+
+	    var focusFormName = function focusFormName() {
+	      var parentFormName = formName.parentNode;
+	      parentFormName.classList.remove('is-error');
+	      parentFormName.querySelector('span').textContent = '';
+	      formName.removeEventListener('focus', focusFormName);
+	    };
+
+	    if (!name) {
+	      var parentFormName = formName.parentNode;
+	      parentFormName.classList.add('is-error');
+	      parentFormName.querySelector('span').textContent = 'The field can not be empty';
+	      formName.addEventListener('focus', focusFormName);
+	      return;
+	    }
+
+	    var focusFormUrl = function focusFormUrl() {
+	      var parentFormUrl = formUrl.parentNode;
+	      parentFormUrl.classList.remove('is-error');
+	      parentFormUrl.querySelector('span').textContent = '';
+	      formUrl.removeEventListener('focus', focusFormUrl);
+	    };
+
+	    if (!lenderUrl) {
+	      var parentFormUrl = formUrl.parentNode;
+	      parentFormUrl.classList.add('is-error');
+	      parentFormUrl.querySelector('span').textContent = 'The field can not be empty';
+	      formUrl.addEventListener('focus', focusFormUrl);
+	      return;
+	    }
+
+	    var url = window.might.url + '/lander/create';
+	    var headers = new Headers();
+	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+	    var options = {
+	      method: 'post',
+	      mode: 'cors',
+	      headers: headers
+	    };
+
+	    var data = {
+	      name: name,
+	      url: lenderUrl
+	    };
+
+	    if (window.might.hasOwnProperty('auth_key')) {
+	      data.auth_key = window.might.auth_key;
+	    }
+
+	    if (window.might.hasOwnProperty('all_fields')) {
+	      data.all_fields = window.might.all_fields;
+	    }
+
+	    options.body = _qs2.default.stringify(data);
+
+	    fetch(url, options).then(function (response) {
+	      return response.json();
+	    }).then(function (result) {
+	      if (result.error) {
+	        if (result.result.msg) {
+	          popupBody.querySelector('.js-poopup-error').textContent = result.result.msg;
+	        }
+	      } else {
+	        popup.close();
+	      }
+	    });
+	  });
 	};
+
+	var _qs = __webpack_require__(33);
+
+	var _qs2 = _interopRequireDefault(_qs);
 
 	var _createPopup = __webpack_require__(52);
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
+	var _listEvent = __webpack_require__(18);
+
+	var _listEvent2 = _interopRequireDefault(_listEvent);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
 
 /***/ },
 /* 56 */
@@ -5265,7 +5408,7 @@ webpackJsonp([0],[
 	  var popupBody = popup.querySelector('.js-popup-body');
 
 	  if (popupBody) {
-	    var url = window.might.url + '/affiliate_network/list';
+	    var url = window.might.url + '/offer/list';
 	    var headers = new Headers();
 	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
@@ -5356,13 +5499,20 @@ webpackJsonp([0],[
 	    return;
 	  }
 
-	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new offer">\n          <span>sadfsadf<span>\n        </div>\n      </div>\n\n      <div class="popup__line-label">\n        <span>Offer URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" placeholder="Create a url">\n          <span>sadfsadf<span>\n        </div>\n        <div class="tags js-form-tags" style="display: none;"></div>\n      </div>\n\n      <div class="popup__line-label">\n        <span>Affiliate nework:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n      </div>\n    </div>';
+	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new offer">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Offer URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" placeholder="Create a url">\n          <span><span>\n        </div>\n        <div class="tags js-form-tags" style="display: none;"></div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Affiliate nework:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-affnet" style="display: block; margin: 0 0 15px;" data-placeholder="Select affiliate network">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Payout:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="radiobutton js-form-payout-auto">Auto</div>\n        <div class="radiobutton js-form-payout-manual is-select">Manual</div>\n        <div class="input" style="display: inline-block; width: 90px; margin-left: 30px; margin-right: 10px;">\n          <input class="js-form-payout-value" type="text" placeholder="0">\n          <span><span>\n        </div>\n        <div class="popup__currency js-form-payout-eur">\n          <i class="fa fa-euro"></i>\n        </div>\n        <div class="popup__currency js-form-payout-rub">\n          <i class="fa fa-ruble"></i>\n        </div>\n        <div class="popup__currency js-form-payout-usd is-select">\n          <i class="fa fa-dollar"></i>\n        </div>\n      </div>\n    </div>';
 
-	  var tags = '{country},{cost},{campaign_id},{trafficsource_id},{ip_id},{offer_id},{country}';
+	  var tags = '{country},{cost},{campaign_id},{trafficsource_id},{ip_id},{offer_id}';
 
 	  var formName = popupBody.querySelector('.js-form-name');
 	  var formUrl = popupBody.querySelector('.js-form-url');
 	  var formUrlTags = popupBody.querySelector('.js-form-tags');
+	  var formAffNet = popupBody.querySelector('.js-form-affnet');
+	  var formPayoutAuto = popupBody.querySelector('.js-form-payout-auto');
+	  var formPayoutManual = popupBody.querySelector('.js-form-payout-manual');
+	  var formPayoutValue = popupBody.querySelector('.js-form-payout-value');
+	  var formPayoutEur = popupBody.querySelector('.js-form-payout-eur');
+	  var formPayoutRub = popupBody.querySelector('.js-form-payout-rub');
+	  var formPayoutUsd = popupBody.querySelector('.js-form-payout-usd');
 
 	  tags.split(',').forEach(function (tag) {
 	    var span = document.createElement('span');
@@ -5378,6 +5528,23 @@ webpackJsonp([0],[
 	  formUrl.addEventListener('blur', function () {
 	    formUrlTags.style.display = 'none';
 	  });
+
+	  var changeFormUrl = function changeFormUrl() {
+	    var val = formUrl.value;
+
+	    [].concat(_toConsumableArray(formUrlTags.querySelectorAll('span'))).forEach(function (span) {
+	      if (val.indexOf(span.textContent.trim()) !== -1) {
+	        span.classList.add('is-select');
+	      } else {
+	        span.classList.remove('is-select');
+	      }
+	    });
+	  };
+
+	  formUrl.addEventListener('change', changeFormUrl);
+	  formUrl.addEventListener('keyup', changeFormUrl);
+	  formUrl.addEventListener('paste', changeFormUrl);
+	  formUrl.addEventListener('cut', changeFormUrl);
 
 	  formUrlTags.addEventListener('mousedown', function (event) {
 	    var closest = event.target.closest('.js-form-tag');
@@ -5395,57 +5562,8 @@ webpackJsonp([0],[
 	    event.stopPropagation();
 	  });
 
-	  popup.querySelector('.js-popup-save').addEventListener('click', function (event) {
-	    var name = formName.value.trim();
-	    var duplicatePostbacks = formWhiteList.classList.contains('is-select');
-	    var whiteList = formWhiteList.classList.contains('is-select');
-	    var ips = [];
-
-	    var focusFormName = function focusFormName() {
-	      var parentFormName = formName.parentNode;
-
-	      parentFormName.classList.remove('is-error');
-	      parentFormName.querySelector('span').textContent = '';
-
-	      formName.removeEventListener('focus', focusFormName);
-	    };
-
-	    if (!name) {
-	      var parentFormName = formName.parentNode;
-
-	      parentFormName.classList.add('is-error');
-	      parentFormName.querySelector('span').textContent = 'The field can not be empty';
-
-	      formName.addEventListener('focus', focusFormName);
-
-	      return;
-	    }
-
-	    var focusFormIps = function focusFormIps() {
-	      formIps.classList.remove('is-error');
-	      formIps.querySelector('.js-inputs-error').textContent = '';
-	      formIps.removeEventListener('click', focusFormIps);
-	    };
-
-	    if (whiteList) {
-	      [].concat(_toConsumableArray(formIps.querySelectorAll('span'))).forEach(function (span) {
-	        var ip = span.textContent.trim();
-
-	        if (ip) {
-	          ips.push(ip);
-	        }
-	      });
-
-	      if (!ips.length) {
-	        formIps.classList.add('is-error');
-	        formIps.querySelector('.js-inputs-error').textContent = 'The field can not be empty';
-	        formIps.addEventListener('click', focusFormIps);
-
-	        return;
-	      }
-	    }
-
-	    var url = window.might.url + '/affiliate_network/create';
+	  var fillingAffiliateNetwork = function fillingAffiliateNetwork() {
+	    var url = window.might.url + '/affiliate_network/list';
 	    var headers = new Headers();
 	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
@@ -5456,11 +5574,8 @@ webpackJsonp([0],[
 	    };
 
 	    var data = {
-	      name: name,
-	      duplicate_postbacks: duplicatePostbacks,
-	      white_list: whiteList,
-	      append_click_id: 0,
-	      ips: ips.join(',')
+	      field: 'id,name',
+	      order: 'name'
 	    };
 
 	    if (window.might.hasOwnProperty('auth_key')) {
@@ -5476,7 +5591,165 @@ webpackJsonp([0],[
 	    fetch(url, options).then(function (response) {
 	      return response.json();
 	    }).then(function (result) {
-	      if (!result.error) {
+	      var items = formAffNet.querySelector('.js-list-items');
+
+	      (result.result.data || []).forEach(function (item) {
+	        items.innerHTML += '<div class="list__item js-list-item" data-value="' + item.id + '">' + item.name + '</div>';
+	      });
+
+	      (0, _listEvent2.default)(formAffNet);
+	    });
+	  };
+
+	  fillingAffiliateNetwork();
+
+	  formPayoutAuto.addEventListener('click', function () {
+	    formPayoutAuto.classList.add('is-select');
+	    formPayoutManual.classList.remove('is-select');
+	  });
+
+	  formPayoutManual.addEventListener('click', function () {
+	    formPayoutAuto.classList.remove('is-select');
+	    formPayoutManual.classList.add('is-select');
+	  });
+
+	  formPayoutEur.addEventListener('click', function () {
+	    formPayoutEur.classList.add('is-select');
+	    formPayoutRub.classList.remove('is-select');
+	    formPayoutUsd.classList.remove('is-select');
+	  });
+
+	  formPayoutRub.addEventListener('click', function () {
+	    formPayoutEur.classList.remove('is-select');
+	    formPayoutRub.classList.add('is-select');
+	    formPayoutUsd.classList.remove('is-select');
+	  });
+
+	  formPayoutUsd.addEventListener('click', function () {
+	    formPayoutEur.classList.remove('is-select');
+	    formPayoutRub.classList.remove('is-select');
+	    formPayoutUsd.classList.add('is-select');
+	  });
+
+	  formPayoutValue.addEventListener('paste', function (event) {
+	    if (/^\d+$/.test(formPayoutValue.value.trim())) {
+	      formPayoutValue.value = '';
+	    }
+	  });
+
+	  formPayoutValue.addEventListener('keydown', function (event) {
+	    var code = event.keyCode;
+	    var char = String.fromCharCode(code);
+	    var key = '0123456789'.indexOf(char);
+	    var value = parseInt(event.target.value, 10);
+
+	    switch (code) {
+	      case 9:
+	      case 13:
+	      case 27:
+	        event.target.blur();
+	        break;
+	      case 8:
+	      case 46:
+	        break;
+	      default:
+	        if (key === -1) {
+	          event.preventDefault();
+	        }
+	    }
+	  });
+
+	  popup.querySelector('.js-popup-save').addEventListener('click', function (event) {
+	    var name = formName.value.trim();
+	    var offerUrl = formUrl.value.trim();
+	    var affNet = formAffNet.value;
+	    var payout = formPayoutAuto.classList.contains('is-select') ? 1 : 0;
+	    var currency = void 0;
+	    var payoutValue = formPayoutValue.value || 0;
+
+	    var focusFormName = function focusFormName() {
+	      var parentFormName = formName.parentNode;
+	      parentFormName.classList.remove('is-error');
+	      parentFormName.querySelector('span').textContent = '';
+	      formName.removeEventListener('focus', focusFormName);
+	    };
+
+	    if (!name) {
+	      var parentFormName = formName.parentNode;
+	      parentFormName.classList.add('is-error');
+	      parentFormName.querySelector('span').textContent = 'The field can not be empty';
+	      formName.addEventListener('focus', focusFormName);
+	      return;
+	    }
+
+	    var focusFormUrl = function focusFormUrl() {
+	      var parentFormUrl = formUrl.parentNode;
+	      parentFormUrl.classList.remove('is-error');
+	      parentFormUrl.querySelector('span').textContent = '';
+	      formUrl.removeEventListener('focus', focusFormUrl);
+	    };
+
+	    if (!offerUrl) {
+	      var parentFormUrl = formUrl.parentNode;
+	      parentFormUrl.classList.add('is-error');
+	      parentFormUrl.querySelector('span').textContent = 'The field can not be empty';
+	      formUrl.addEventListener('focus', focusFormUrl);
+	      return;
+	    }
+
+	    var clickFormAffNet = function clickFormAffNet() {
+	      formAffNet.classList.remove('is-error');
+	      formAffNet.removeEventListener('click', clickFormAffNet);
+	    };
+
+	    if (!affNet) {
+	      formAffNet.classList.add('is-error');
+	      formAffNet.addEventListener('click', clickFormAffNet);
+	      return;
+	    }
+
+	    if (formPayoutEur.classList.contains('is-select')) {
+	      currency = 'EUR';
+	    } else if (formPayoutRub.classList.contains('is-select')) {
+	      currency = 'RUB';
+	    } else {
+	      currency = 'USD';
+	    }
+
+	    var url = window.might.url + '/offer/create';
+	    var headers = new Headers();
+	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+	    var options = {
+	      method: 'post',
+	      mode: 'cors',
+	      headers: headers
+	    };
+
+	    var data = {
+	      name: name,
+	      url: offerUrl,
+	      affiliate_network: affNet,
+	      payout: payout,
+	      currency: currency,
+	      offer_type: 0,
+	      payout_value: payoutValue
+	    };
+
+	    if (window.might.hasOwnProperty('auth_key')) {
+	      data.auth_key = window.might.auth_key;
+	    }
+
+	    if (window.might.hasOwnProperty('all_fields')) {
+	      data.all_fields = window.might.all_fields;
+	    }
+
+	    options.body = _qs2.default.stringify(data);
+
+	    fetch(url, options).then(function (response) {
+	      return response.json();
+	    }).then(function (result) {
+	      if (result.error) {
 	        if (result.result.msg) {
 	          popupBody.querySelector('.js-poopup-error').textContent = result.result.msg;
 	        }
@@ -5494,6 +5767,10 @@ webpackJsonp([0],[
 	var _createPopup = __webpack_require__(52);
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
+
+	var _listEvent = __webpack_require__(18);
+
+	var _listEvent2 = _interopRequireDefault(_listEvent);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5524,7 +5801,7 @@ webpackJsonp([0],[
 	  var popupBody = popup.querySelector('.js-popup-body');
 
 	  if (popupBody) {
-	    var url = window.might.url + '/affiliate_network/list';
+	    var url = window.might.url + '/traffic/sources/list';
 	    var headers = new Headers();
 	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
@@ -5603,20 +5880,93 @@ webpackJsonp([0],[
 	    return;
 	  }
 
-	  var popup = (0, _createPopup2.default)('Creating new traffic source', true);
+	  var popup = (0, _createPopup2.default)('Creating new affilate networks', true);
 
 	  if (!popup) {
 	    return;
 	  }
 
 	  var popupBody = popup.querySelector('.js-popup-body');
+
+	  if (!popupBody) {
+	    return;
+	  }
+
+	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new offer">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Postback URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" placeholder="Create a url">\n          <span><span>\n        </div>\n        <div class="tags js-form-tags" style="display: none;"></div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Loading settings from:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-loading" style="display: block; margin: 0 0 15px;" data-placeholder="Select affiliate network">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items">\n                <div class="list__item js-list-item" data-value="0">test</div>\n              </div>\n            </div>\n          </div>\n        </div>\n\n        <div class="popup__inputs">\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-field"><div class="popup__inputs-title">Parameter<div class="info"></div></div></div>\n            <div class="popup__inputs-field"><div class="popup__inputs-title">Placeholder<div class="info"></div></div></div>\n            <div class="popup__inputs-field"><div class="popup__inputs-title">Name<div class="info"></div></div></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">External ID:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Cost:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 1:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 2:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 3:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 4:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 5:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 6:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 7:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 8:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 9:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 10:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 11:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 12:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 13:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 14:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 15:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n        </div>\n      </div>\n    </div>';
+
+	  var tags = '{country},{cost},{campaign_id},{trafficsource_id},{ip_id},{offer_id}';
+
+	  var formName = popupBody.querySelector('.js-form-name');
+	  var formUrl = popupBody.querySelector('.js-form-url');
+	  var formUrlTags = popupBody.querySelector('.js-form-tags');
+	  var formLoading = popupBody.querySelector('.js-form-loading');
+
+	  tags.split(',').forEach(function (tag) {
+	    var span = document.createElement('span');
+	    span.className = 'js-form-tag';
+	    span.textContent = tag;
+	    formUrlTags.appendChild(span);
+	  });
+
+	  formUrl.addEventListener('focus', function () {
+	    formUrlTags.style.display = '';
+	  });
+
+	  formUrl.addEventListener('blur', function () {
+	    formUrlTags.style.display = 'none';
+	  });
+
+	  var changeFormUrl = function changeFormUrl() {
+	    var val = formUrl.value;
+
+	    [].concat(_toConsumableArray(formUrlTags.querySelectorAll('span'))).forEach(function (span) {
+	      if (val.indexOf(span.textContent.trim()) !== -1) {
+	        span.classList.add('is-select');
+	      } else {
+	        span.classList.remove('is-select');
+	      }
+	    });
+	  };
+
+	  formUrl.addEventListener('change', changeFormUrl);
+	  formUrl.addEventListener('keyup', changeFormUrl);
+	  formUrl.addEventListener('paste', changeFormUrl);
+	  formUrl.addEventListener('cut', changeFormUrl);
+
+	  formUrlTags.addEventListener('mousedown', function (event) {
+	    var closest = event.target.closest('.js-form-tag');
+
+	    if (closest) {
+	      if (!closest.classList.contains('is-select')) {
+	        var tag = closest.textContent;
+	        formUrl.value += tag;
+	        closest.classList.add('is-select');
+	      }
+	    }
+
+	    formUrl.focus();
+	    event.preventDefault();
+	    event.stopPropagation();
+	  });
+
+	  (0, _listEvent2.default)(formLoading);
 	};
+
+	var _qs = __webpack_require__(33);
+
+	var _qs2 = _interopRequireDefault(_qs);
 
 	var _createPopup = __webpack_require__(52);
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
+	var _listEvent = __webpack_require__(18);
+
+	var _listEvent2 = _interopRequireDefault(_listEvent);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
 /* 60 */
@@ -5733,7 +6083,7 @@ webpackJsonp([0],[
 	    return;
 	  }
 
-	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new affiliate network">\n          <span>sadfsadf<span>\n        </div>\n        <div class="popup__checkbox js-checkbox js-form-duplicate-postbacks">Accept dublicated post backs</div>\n        <div class="popup__checkbox js-checkbox js-form-list-ips">Accept postbacks from white-listed IPs</div>\n        <div class="inputs js-form-ips" style="display: none;">\n          <div class="inputs__wrap">\n            <input class="js-form-input-ip" type="text">\n          </div>\n          <div class="inputs__error js-inputs-error"></div>\n        </div>\n      </div>\n    </div>';
+	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new affiliate network">\n          <span>sadfsadf<span>\n        </div>\n        <div class="checkbox js-checkbox js-form-duplicate-postbacks">Accept dublicated post backs</div>\n        <div class="checkbox js-checkbox js-form-list-ips">Accept postbacks from white-listed IPs</div>\n        <div class="inputs js-form-ips" style="display: none;">\n          <div class="inputs__wrap">\n            <input class="js-form-input-ip" type="text">\n          </div>\n          <div class="inputs__error js-inputs-error"></div>\n        </div>\n      </div>\n    </div>';
 
 	  var formName = popupBody.querySelector('.js-form-name');
 	  var formDuplicatePostbacks = popupBody.querySelector('.js-form-duplicate-postbacks');
@@ -5859,7 +6209,7 @@ webpackJsonp([0],[
 	    fetch(url, options).then(function (response) {
 	      return response.json();
 	    }).then(function (result) {
-	      if (!result.error) {
+	      if (result.error) {
 	        if (result.result.msg) {
 	          popupBody.querySelector('.js-poopup-error').textContent = result.result.msg;
 	        }
