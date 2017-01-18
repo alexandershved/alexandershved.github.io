@@ -10,39 +10,39 @@ webpackJsonp([0],[
 
 	var _reset2 = _interopRequireDefault(_reset);
 
-	var _nav = __webpack_require__(14);
+	var _nav = __webpack_require__(19);
 
 	var _nav2 = _interopRequireDefault(_nav);
 
-	var _time = __webpack_require__(15);
+	var _time = __webpack_require__(20);
 
 	var _time2 = _interopRequireDefault(_time);
 
-	var _checkbox = __webpack_require__(16);
+	var _checkbox = __webpack_require__(21);
 
 	var _checkbox2 = _interopRequireDefault(_checkbox);
 
-	var _list = __webpack_require__(17);
+	var _list = __webpack_require__(22);
 
 	var _list2 = _interopRequireDefault(_list);
 
-	var _helper = __webpack_require__(19);
+	var _helper = __webpack_require__(24);
 
 	var _helper2 = _interopRequireDefault(_helper);
 
-	var _select = __webpack_require__(20);
+	var _select = __webpack_require__(25);
 
 	var _select2 = _interopRequireDefault(_select);
 
-	var _calendar = __webpack_require__(22);
+	var _calendar = __webpack_require__(27);
 
 	var _calendar2 = _interopRequireDefault(_calendar);
 
-	var _postback = __webpack_require__(24);
+	var _postback = __webpack_require__(29);
 
 	var _postback2 = _interopRequireDefault(_postback);
 
-	var _listFetch = __webpack_require__(25);
+	var _listFetch = __webpack_require__(30);
 
 	var _listFetch2 = _interopRequireDefault(_listFetch);
 
@@ -85,7 +85,7 @@ webpackJsonp([0],[
 /* 11 */,
 /* 12 */,
 /* 13 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -148,10 +148,46 @@ webpackJsonp([0],[
 	      }
 	    });
 	  }
+
+	  window._getOptionsFetch = function (obj) {
+	    var headers = new Headers();
+	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+	    var options = {
+	      method: 'post',
+	      mode: 'cors',
+	      headers: headers
+	    };
+
+	    var data = obj || {};
+
+	    if (window.might.hasOwnProperty('auth_key')) {
+	      data.auth_key = window.might.auth_key;
+	    }
+
+	    if (window.might.hasOwnProperty('all_fields')) {
+	      data.all_fields = window.might.all_fields;
+	    }
+
+	    options.body = _qs2.default.stringify(data);
+
+	    return options;
+	  };
 	};
 
+	var _qs = __webpack_require__(14);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /***/ },
-/* 14 */
+/* 14 */,
+/* 15 */,
+/* 16 */,
+/* 17 */,
+/* 18 */,
+/* 19 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -188,6 +224,11 @@ webpackJsonp([0],[
 	      var value = parseInt(event.target.value, 10);
 
 	      switch (code) {
+	        case 8:
+	        case 46:
+	        case 37:
+	        case 39:
+	          break;
 	        case 9:
 	        case 13:
 	        case 27:
@@ -384,7 +425,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 15 */
+/* 20 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -537,7 +578,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 16 */
+/* 21 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -558,7 +599,7 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 17 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -571,7 +612,7 @@ webpackJsonp([0],[
 	  [].concat(_toConsumableArray(document.querySelectorAll('.js-list'))).forEach(_listEvent2.default);
 	};
 
-	var _listEvent = __webpack_require__(18);
+	var _listEvent = __webpack_require__(23);
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
@@ -580,7 +621,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 18 */
+/* 23 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -848,7 +889,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 19 */
+/* 24 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -894,7 +935,7 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 20 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -907,7 +948,7 @@ webpackJsonp([0],[
 	  [].concat(_toConsumableArray(document.querySelectorAll('.js-select'))).forEach(_selectEvent2.default);
 	};
 
-	var _selectEvent = __webpack_require__(21);
+	var _selectEvent = __webpack_require__(26);
 
 	var _selectEvent2 = _interopRequireDefault(_selectEvent);
 
@@ -916,7 +957,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 21 */
+/* 26 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1113,7 +1154,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 22 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1727,7 +1768,7 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _dateformat = __webpack_require__(23);
+	var _dateformat = __webpack_require__(28);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
@@ -1736,8 +1777,8 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 23 */,
-/* 24 */
+/* 28 */,
+/* 29 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1905,7 +1946,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 25 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1918,7 +1959,7 @@ webpackJsonp([0],[
 	  [].concat(_toConsumableArray(document.querySelectorAll('.js-list-fetch'))).forEach(_listFetchEvent2.default);
 	};
 
-	var _listFetchEvent = __webpack_require__(26);
+	var _listFetchEvent = __webpack_require__(31);
 
 	var _listFetchEvent2 = _interopRequireDefault(_listFetchEvent);
 
@@ -1927,7 +1968,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 26 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -1974,14 +2015,10 @@ webpackJsonp([0],[
 	  };
 
 	  updateItems = function updateItems() {
-	    var url = window.might.url + '/campaign/data/for/top_filter';
 	    var params = window.might.stat.params;
 	    var from = dateToString(params.date_from.year, params.date_from.month, params.date_from.date);
 	    var to = dateToString(params.date_to.year, params.date_to.month, params.date_to.date);
 	    var dateFilter = from + ' - ' + to;
-
-	    var headers = new Headers();
-	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
 	    var data = {
 	      date_filter: dateFilter,
@@ -1990,14 +2027,6 @@ webpackJsonp([0],[
 	      field: list.field
 	    };
 
-	    if (window.might.hasOwnProperty('auth_key')) {
-	      data.auth_key = window.might.auth_key;
-	    }
-
-	    if (window.might.hasOwnProperty('auth_key')) {
-	      data.auth_key = window.might.auth_key;
-	    }
-
 	    params.filters_stock.forEach(function (filter, i) {
 	      if (filter.field !== list.field) {
 	        data.filter_items = data.filter_items || [];
@@ -2005,14 +2034,9 @@ webpackJsonp([0],[
 	      }
 	    });
 
-	    var options = {
-	      method: 'post',
-	      mode: 'cors',
-	      headers: headers,
-	      body: _qs2.default.stringify(data)
-	    };
+	    var options = window._getOptionsFetch(data);
 
-	    fetch(url, options).then(function (response) {
+	    fetch(window.might.url + '/campaign/data/for/top_filter', options).then(function (response) {
 	      return response.json();
 	    }).then(function (result) {
 	      itemsWrap.innerHTML = '';
@@ -2136,11 +2160,11 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _qs = __webpack_require__(33);
+	var _qs = __webpack_require__(14);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _dateformat = __webpack_require__(23);
+	var _dateformat = __webpack_require__(28);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
@@ -2151,10 +2175,10 @@ webpackJsonp([0],[
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 27 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Promise, global) {/*** IMPORTS FROM imports-loader ***/
@@ -2598,10 +2622,10 @@ webpackJsonp([0],[
 	/*** EXPORTS FROM exports-loader ***/
 	module.exports = global.fetch;
 	}.call(global));
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(28), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(33), (function() { return this; }())))
 
 /***/ },
-/* 28 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*** IMPORTS FROM imports-loader ***/
@@ -2737,7 +2761,7 @@ webpackJsonp([0],[
 	    function lib$es6$promise$asap$$attemptVertx() {
 	      try {
 	        var r = require;
-	        var vertx = __webpack_require__(31);
+	        var vertx = __webpack_require__(36);
 	        lib$es6$promise$asap$$vertxNext = vertx.runOnLoop || vertx.runOnContext;
 	        return lib$es6$promise$asap$$useVertxTimer();
 	      } catch(e) {
@@ -3555,7 +3579,7 @@ webpackJsonp([0],[
 	    };
 
 	    /* global define:true module:true window: true */
-	    if ("function" === 'function' && __webpack_require__(32)['amd']) {
+	    if ("function" === 'function' && __webpack_require__(37)['amd']) {
 	      !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return lib$es6$promise$umd$$ES6Promise; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	    } else if (typeof module !== 'undefined' && module['exports']) {
 	      module['exports'] = lib$es6$promise$umd$$ES6Promise;
@@ -3571,11 +3595,11 @@ webpackJsonp([0],[
 	/*** EXPORTS FROM exports-loader ***/
 	module.exports = global.Promise;
 	}.call(global));
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29), (function() { return this; }()), __webpack_require__(30)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(34), (function() { return this; }()), __webpack_require__(35)(module)))
 
 /***/ },
-/* 29 */,
-/* 30 */
+/* 34 */,
+/* 35 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -3591,24 +3615,19 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 31 */
+/* 36 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 32 */
+/* 37 */
 /***/ function(module, exports) {
 
 	module.exports = function() { throw new Error("define cannot be used indirect"); };
 
 
 /***/ },
-/* 33 */,
-/* 34 */,
-/* 35 */,
-/* 36 */,
-/* 37 */,
 /* 38 */
 /***/ function(module, exports) {
 
@@ -3692,22 +3711,6 @@ webpackJsonp([0],[
 	    return;
 	  }
 
-	  var headers = new Headers();
-	  headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-	  var url = window.might.url + '/settings';
-	  var options = {
-	    method: 'post',
-	    mode: 'cors',
-	    headers: headers
-	  };
-
-	  if (window.might.hasOwnProperty('auth_key')) {
-	    options.body = _qs2.default.stringify({
-	      auth_key: window.might.auth_key
-	    });
-	  }
-
 	  var statParams = void 0;
 	  var segmentScope = [];
 
@@ -3732,8 +3735,8 @@ webpackJsonp([0],[
 	      add: stat.querySelector('.js-stat-campaign-add')
 	    },
 	    lander: {
-	      list: stat.querySelector('.js-stat-lender-list'),
-	      add: stat.querySelector('.js-stat-lender-add')
+	      list: stat.querySelector('.js-stat-lander-list'),
+	      add: stat.querySelector('.js-stat-lander-add')
 	    },
 	    offer: {
 	      list: stat.querySelector('.js-stat-offer-list'),
@@ -4030,7 +4033,6 @@ webpackJsonp([0],[
 
 	    if (columnsControl) {
 	      columnsControl.addEventListener('change', function () {
-	        var u = window.might.url + '/user/update/columns';
 	        var cols = {};
 
 	        statParams.columns = {};
@@ -4040,18 +4042,9 @@ webpackJsonp([0],[
 	          statParams.columns[val] = 1;
 	        });
 
-	        if (window.might.hasOwnProperty('auth_key')) {
-	          cols.auth_key = window.might.auth_key;
-	        }
+	        var options = window._getOptionsFetch(cols);
 
-	        var opt = {
-	          method: 'post',
-	          mode: 'cors',
-	          headers: headers,
-	          body: _qs2.default.stringify(cols)
-	        };
-
-	        fetch(u, opt).then(function (response) {
+	        fetch(window.might.url + '/user/update/columns', options).then(function (response) {
 	          return response.json();
 	        }).then(function (result) {
 	          if (result.error === false) {
@@ -4202,7 +4195,7 @@ webpackJsonp([0],[
 	  stat.addEventListener('backurl', controlsReset);
 	  stat.addEventListener('filterstockupdate', updateFilterStock);
 
-	  fetch(url, options).then(function (response) {
+	  fetch(window.might.url + '/settings', window._getOptionsFetch()).then(function (response) {
 	    return response.json();
 	  }).then(function (result) {
 	    if (result) {
@@ -4326,15 +4319,15 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _qs = __webpack_require__(33);
+	var _qs = __webpack_require__(14);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _listEvent = __webpack_require__(18);
+	var _listEvent = __webpack_require__(23);
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
-	var _listFetchEvent = __webpack_require__(26);
+	var _listFetchEvent = __webpack_require__(31);
 
 	var _listFetchEvent2 = _interopRequireDefault(_listFetchEvent);
 
@@ -4350,18 +4343,18 @@ webpackJsonp([0],[
 
 	var _createControls2 = _interopRequireDefault(_createControls);
 
-	var _table = __webpack_require__(62);
+	var _table = __webpack_require__(63);
 
 	var _table2 = _interopRequireDefault(_table);
 
-	var _graph = __webpack_require__(65);
+	var _graph = __webpack_require__(66);
 
 	var _graph2 = _interopRequireDefault(_graph);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
 /* 40 */
@@ -4570,11 +4563,11 @@ webpackJsonp([0],[
 	  updateTableParams(location);
 	};
 
-	var _qs = __webpack_require__(33);
+	var _qs = __webpack_require__(14);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _dateformat = __webpack_require__(23);
+	var _dateformat = __webpack_require__(28);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
@@ -4899,8 +4892,8 @@ webpackJsonp([0],[
 
 	  stat.querySelector('.js-stat-campaign-list').addEventListener('click', _campaignList2.default);
 	  stat.querySelector('.js-stat-campaign-add').addEventListener('click', _campaignAdd2.default);
-	  stat.querySelector('.js-stat-lender-list').addEventListener('click', _lenderList2.default);
-	  stat.querySelector('.js-stat-lender-add').addEventListener('click', _lenderAdd2.default);
+	  stat.querySelector('.js-stat-lander-list').addEventListener('click', _landerList2.default);
+	  stat.querySelector('.js-stat-lander-add').addEventListener('click', _landerAdd2.default);
 	  stat.querySelector('.js-stat-offer-list').addEventListener('click', _offerList2.default);
 	  stat.querySelector('.js-stat-offer-add').addEventListener('click', _offerAdd2.default);
 	  stat.querySelector('.js-stat-traff-list').addEventListener('click', _trafficSourceList2.default);
@@ -4917,35 +4910,35 @@ webpackJsonp([0],[
 
 	var _campaignAdd2 = _interopRequireDefault(_campaignAdd);
 
-	var _lenderList = __webpack_require__(54);
+	var _landerList = __webpack_require__(55);
 
-	var _lenderList2 = _interopRequireDefault(_lenderList);
+	var _landerList2 = _interopRequireDefault(_landerList);
 
-	var _lenderAdd = __webpack_require__(55);
+	var _landerAdd = __webpack_require__(56);
 
-	var _lenderAdd2 = _interopRequireDefault(_lenderAdd);
+	var _landerAdd2 = _interopRequireDefault(_landerAdd);
 
-	var _offerList = __webpack_require__(56);
+	var _offerList = __webpack_require__(57);
 
 	var _offerList2 = _interopRequireDefault(_offerList);
 
-	var _offerAdd = __webpack_require__(57);
+	var _offerAdd = __webpack_require__(58);
 
 	var _offerAdd2 = _interopRequireDefault(_offerAdd);
 
-	var _trafficSourceList = __webpack_require__(58);
+	var _trafficSourceList = __webpack_require__(59);
 
 	var _trafficSourceList2 = _interopRequireDefault(_trafficSourceList);
 
-	var _trafficSourceAdd = __webpack_require__(59);
+	var _trafficSourceAdd = __webpack_require__(60);
 
 	var _trafficSourceAdd2 = _interopRequireDefault(_trafficSourceAdd);
 
-	var _affiliateNetworkList = __webpack_require__(60);
+	var _affiliateNetworkList = __webpack_require__(61);
 
 	var _affiliateNetworkList2 = _interopRequireDefault(_affiliateNetworkList);
 
-	var _affiliateNetworkAdd = __webpack_require__(61);
+	var _affiliateNetworkAdd = __webpack_require__(62);
 
 	var _affiliateNetworkAdd2 = _interopRequireDefault(_affiliateNetworkAdd);
 
@@ -4966,7 +4959,7 @@ webpackJsonp([0],[
 	    return;
 	  }
 
-	  var popup = (0, _createPopup2.default)('Traffic source list');
+	  var popup = (0, _createPopup2.default)('Campaign list');
 
 	  if (!popup) {
 	    return;
@@ -4975,32 +4968,12 @@ webpackJsonp([0],[
 	  var popupBody = popup.querySelector('.js-popup-body');
 
 	  if (popupBody) {
-	    var url = window.might.url + '/affiliate_network/list';
-	    var headers = new Headers();
-	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-	    var options = {
-	      method: 'post',
-	      mode: 'cors',
-	      headers: headers
-	    };
-
-	    var data = {
+	    var options = window._getOptionsFetch({
 	      field: 'id,name',
 	      order: 'name'
-	    };
+	    });
 
-	    if (window.might.hasOwnProperty('auth_key')) {
-	      data.auth_key = window.might.auth_key;
-	    }
-
-	    if (window.might.hasOwnProperty('all_fields')) {
-	      data.all_fields = window.might.all_fields;
-	    }
-
-	    options.body = _qs2.default.stringify(data);
-
-	    fetch(url, options).then(function (response) {
+	    fetch(window.might.url + '/campaign/list', options).then(function (response) {
 	      return response.json();
 	    }).then(function (result) {
 	      if (result.error) {
@@ -5028,7 +5001,7 @@ webpackJsonp([0],[
 	  }
 	};
 
-	var _qs = __webpack_require__(33);
+	var _qs = __webpack_require__(14);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
@@ -5037,7 +5010,7 @@ webpackJsonp([0],[
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
 /* 52 */
@@ -5057,7 +5030,7 @@ webpackJsonp([0],[
 	  var popup = document.createElement('div');
 	  popup.className = 'popup js-popup';
 
-	  popup.innerHTML = '\n    <div class="popup__veil js-popup-veil">\n    </div>\n    <div class="popup__win">\n      <div class="popup__wrap js-popup-wrap">\n        <div class="popup__headline">\n          <div class="popup__close js-popup-close"></div>\n          <div class="popup__title">' + title + '</div>\n        </div>\n        <div class="popup__body js-popup-body"></div>\n        <div class="popup__bottom">\n          <div class="poopup__bottom-error js-poopup-error"></div>\n          ' + (editing ? '<div class="btn-apply js-popup-save">Save</div>' : '') + '\n          <div class="btn-close js-popup-close">Close</div>\n        </div>\n      </div>\n    </div>';
+	  popup.innerHTML = '\n    <div class="popup__veil">\n    </div>\n    <div class="popup__win">\n      <div class="popup__wrap js-popup-wrap">\n        <div class="popup__headline">\n          <div class="popup__close js-popup-close"></div>\n          <div class="popup__title">' + title + '</div>\n        </div>\n        <div class="popup__body js-popup-body"></div>\n        <div class="popup__bottom">\n          <div class="poopup__bottom-error js-poopup-error"></div>\n          ' + (editing ? '<div class="btn-apply js-popup-save">Save</div>' : '') + '\n          <div class="btn-close js-popup-close">Close</div>\n        </div>\n      </div>\n    </div>';
 
 	  document.body.appendChild(popup);
 
@@ -5075,9 +5048,8 @@ webpackJsonp([0],[
 
 	  popup.addEventListener('click', function (event) {
 	    var closeBtn = event.target.closest('.js-popup-close');
-	    var wrap = event.target.closest('.js-popup-wrap');
 
-	    if (!wrap || closeBtn) {
+	    if (closeBtn) {
 	      close();
 	    }
 	  });
@@ -5097,7 +5069,7 @@ webpackJsonp([0],[
 /* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -5115,16 +5087,418 @@ webpackJsonp([0],[
 	  }
 
 	  var popupBody = popup.querySelector('.js-popup-body');
+
+	  if (!popupBody) {
+	    return;
+	  }
+
+	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for campaign">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Domain:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-domain" style="display: block; margin: 0 0 15px;" data-placeholder="Select domain">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Campaign URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" readonly="true">\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Traffic Source:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-traffic-source" style="display: block; margin: 0 0 15px;" data-placeholder="Select traffic source">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Payout:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="radiobutton js-form-cost-donottrack">Do not track</div>\n        <div class="radiobutton js-form-cost-cpc is-select">CPC</div>\n        <div class="radiobutton js-form-cost-cpa">CPA</div>\n        <div class="popup__line-lbl" style="margin-left: 80px;"><span>Cost click:</span><div class="info"></div></div>\n        <div class="input" style="display: inline-block; width: 90px; margin-left: 10px; margin-right: 10px;">\n          <input class="js-form-cost-click" type="text" placeholder="0">\n          <span><span>\n        </div>\n        <div class="popup__currency js-form-cost-eur">\n          <i class="fa fa-euro"></i>\n        </div>\n        <div class="popup__currency js-form-cost-rub">\n          <i class="fa fa-ruble"></i>\n        </div>\n        <div class="popup__currency js-form-cost-usd is-select">\n          <i class="fa fa-dollar"></i>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Postback URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="js-form-input-parent">\n          <div class="input is-with-plus">\n            <input class="js-form-postbackurl" type="text" placeholder="Postback URL">\n            <div class="input__plus js-form-postbackurl-add"></div>\n            <span><span>\n          </div>\n          <div class="tags js-form-tags" style="display: none;"></div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Redirect mode:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-directtype" style="display: block; margin: 0 0 15px;" data-placeholder="Select redirect mode">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items">\n                <div class="list__item js-list-item" data-value="301">301</div>\n                <div class="list__item js-list-item" data-value="302">302</div>\n                <div class="list__item js-list-item" data-value="js">js</div>\n                <div class="list__item js-list-item" data-value="double_js">double_js</div>\n                <div class="list__item js-list-item" data-value="meta_refresh">meta_refresh</div>\n                <div class="list__item js-list-item" data-value="double_meta_refresh">double_meta_refresh</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="cc js-create-campaign"></div>';
+
+	  var formName = popupBody.querySelector('.js-form-name');
+	  var formDomain = popupBody.querySelector('.js-form-domain');
+	  var formUrl = popupBody.querySelector('.js-form-url');
+	  var formUrlTags = popupBody.querySelector('.js-form-tags');
+	  var formTrafficSource = popupBody.querySelector('.js-form-traffic-source');
+	  var formCostDoNotTrack = popupBody.querySelector('.js-form-cost-donottrack');
+	  var formCostCPC = popupBody.querySelector('.js-form-cost-cpc');
+	  var formCostCPA = popupBody.querySelector('.js-form-cost-cpa');
+	  var formCostClick = popupBody.querySelector('.js-form-cost-click');
+	  var formCostEur = popupBody.querySelector('.js-form-cost-eur');
+	  var formCostRub = popupBody.querySelector('.js-form-cost-rub');
+	  var formCostUsd = popupBody.querySelector('.js-form-cost-usd');
+	  var formPostbackUrl = popupBody.querySelector('.js-form-postbackurl');
+	  var formPostbackUrlAdd = popupBody.querySelector('.js-form-postbackurl-add');
+	  var formDirectType = popupBody.querySelector('.js-form-directtype');
+	  var createCampaign = popupBody.querySelector('.js-create-campaign');
+
+	  (function () {
+	    var options = window._getOptionsFetch({
+	      field: 'id,name',
+	      order: 'name'
+	    });
+
+	    fetch(window.might.url + '/sites/list', options).then(function (response) {
+	      return response.json();
+	    }).then(function (result) {
+	      var items = formDomain.querySelector('.js-list-items');
+	      var obj = result.result.data || {};
+
+	      for (var i in obj) {
+	        if (obj.hasOwnProperty(i)) {
+	          var item = obj[i];
+	          items.innerHTML += '<div class="list__item js-list-item" data-value="' + item.id + '">' + item.name + '</div>';
+	        }
+	      }
+
+	      (0, _listEvent2.default)(formDomain);
+	    });
+	  })();
+
+	  (function () {
+	    var options = window._getOptionsFetch({
+	      field: 'id,name',
+	      order: 'name'
+	    });
+
+	    fetch(window.might.url + '/traffic/sources/list', options).then(function (response) {
+	      return response.json();
+	    }).then(function (result) {
+	      var items = formTrafficSource.querySelector('.js-list-items');
+
+	      (result.result.data || []).forEach(function (item) {
+	        items.innerHTML += '<div class="list__item js-list-item" data-value="' + item.id + '">' + item.name + '</div>';
+	      });
+
+	      (0, _listEvent2.default)(formTrafficSource);
+	    });
+	  })();
+
+	  formCostDoNotTrack.addEventListener('click', function () {
+	    formCostDoNotTrack.classList.add('is-select');
+	    formCostCPC.classList.remove('is-select');
+	    formCostCPA.classList.remove('is-select');
+	  });
+
+	  formCostCPC.addEventListener('click', function () {
+	    formCostDoNotTrack.classList.remove('is-select');
+	    formCostCPC.classList.add('is-select');
+	    formCostCPA.classList.remove('is-select');
+	  });
+
+	  formCostCPA.addEventListener('click', function () {
+	    formCostDoNotTrack.classList.remove('is-select');
+	    formCostCPC.classList.remove('is-select');
+	    formCostCPA.classList.add('is-select');
+	  });
+
+	  formCostEur.addEventListener('click', function () {
+	    formCostEur.classList.add('is-select');
+	    formCostRub.classList.remove('is-select');
+	    formCostUsd.classList.remove('is-select');
+	  });
+
+	  formCostRub.addEventListener('click', function () {
+	    formCostEur.classList.remove('is-select');
+	    formCostRub.classList.add('is-select');
+	    formCostUsd.classList.remove('is-select');
+	  });
+
+	  formCostUsd.addEventListener('click', function () {
+	    formCostEur.classList.remove('is-select');
+	    formCostRub.classList.remove('is-select');
+	    formCostUsd.classList.add('is-select');
+	  });
+
+	  formCostClick.addEventListener('paste', function (event) {
+	    if (/^\d+$/.test(formCostClick.value.trim())) {
+	      formCostClick.value = '';
+	    }
+	  });
+
+	  formCostClick.addEventListener('keydown', function (event) {
+	    var code = event.keyCode;
+	    var char = String.fromCharCode(code);
+	    var key = '¾.0123456789'.indexOf(char);
+	    var value = parseInt(event.target.value, 10);
+
+	    switch (code) {
+	      case 9:
+	      case 13:
+	      case 27:
+	        event.target.blur();
+	        break;
+	      case 8:
+	      case 46:
+	      case 37:
+	      case 39:
+	      case 190:
+	        break;
+	      default:
+	        if (key === -1) {
+	          event.preventDefault();
+	        }
+	    }
+	  });
+
+	  '{country},{cost},{campaign_id},{trafficsource_id},{ip_id},{offer_id}'.split(',').forEach(function (tag) {
+	    var span = document.createElement('span');
+	    span.className = 'js-form-tag';
+	    span.textContent = tag;
+	    formUrlTags.appendChild(span);
+	  });
+
+	  var _removePostbackUrl = void 0;
+	  var _dublicatePostbackUrl = void 0;
+	  var initTags = void 0;
+
+	  _removePostbackUrl = function removePostbackUrl(event) {
+	    var el = event.target;
+	    var parent = el.closest('.js-form-input-parent');
+	    var allParent = parent.parentNode.querySelectorAll('.js-form-input-parent');
+
+	    allParent[allParent.length - 1].querySelector('.input').classList.add('is-with-plus');
+	    el.removeEventListener('click', _removePostbackUrl);
+	    parent.parentNode.removeChild(parent);
+
+	    event.stopPropagation();
+	  };
+
+	  _dublicatePostbackUrl = function dublicatePostbackUrl(event) {
+	    var el = event.target;
+	    var parent = el.closest('.js-form-input-parent');
+
+	    if (parent.parentNode.querySelectorAll('.js-form-input-parent').length < 3) {
+	      var clone = parent.cloneNode(true);
+
+	      parent.parentNode.appendChild(clone);
+	      el.parentNode.classList.add('is-with-clear');
+	      el.removeEventListener('click', _dublicatePostbackUrl);
+	      el.addEventListener('click', _removePostbackUrl);
+
+	      initTags(clone.querySelector('.js-form-postbackurl'));
+	    }
+	  };
+
+	  initTags = function initTags(el) {
+	    var parent = el.closest('.js-form-input-parent');
+	    var tags = parent.querySelector('.js-form-tags');
+	    var tag = tags.querySelectorAll('.js-form-tag');
+
+	    el.value = '';
+	    [].concat(_toConsumableArray(tag)).forEach(function (span) {
+	      return span.classList.remove('is-select');
+	    });
+
+	    el.addEventListener('focus', function () {
+	      tags.style.display = '';
+	    });
+
+	    el.addEventListener('blur', function () {
+	      tags.style.display = 'none';
+	    });
+
+	    var changeFormUrl = function changeFormUrl() {
+	      var val = el.value;
+
+	      [].concat(_toConsumableArray(tag)).forEach(function (span) {
+	        if (val.indexOf(span.textContent.trim()) !== -1) {
+	          span.classList.add('is-select');
+	        } else {
+	          span.classList.remove('is-select');
+	        }
+	      });
+	    };
+
+	    el.addEventListener('change', changeFormUrl);
+	    el.addEventListener('keyup', changeFormUrl);
+	    el.addEventListener('paste', changeFormUrl);
+	    el.addEventListener('cut', changeFormUrl);
+
+	    tags.addEventListener('mousedown', function (event) {
+	      var closest = event.target.closest('.js-form-tag');
+
+	      if (closest) {
+	        if (!closest.classList.contains('is-select')) {
+	          var val = closest.textContent;
+	          el.value += val;
+	          closest.classList.add('is-select');
+	        }
+	      }
+
+	      el.focus();
+	      event.preventDefault();
+	      event.stopPropagation();
+	    });
+
+	    parent.querySelector('.js-form-postbackurl-add').addEventListener('click', _dublicatePostbackUrl);
+
+	    var allParent = parent.parentNode.querySelectorAll('.js-form-input-parent');
+
+	    if (allParent.length >= 3) {
+	      allParent[allParent.length - 1].querySelector('.input').classList.remove('is-with-plus');
+	    }
+	  };
+
+	  initTags(formPostbackUrl);
+	  (0, _listEvent2.default)(formDirectType);
+	  (0, _campaignAddChild2.default)(createCampaign);
+
+	  popup.querySelector('.js-popup-save').addEventListener('click', function (event) {
+	    var name = formName.value.trim();
+	    var offerUrl = formUrl.value.trim();
+	    var affNet = formAffNet.value;
+	    var payout = formPayoutAuto.classList.contains('is-select') ? 1 : 0;
+	    var currency = void 0;
+	    var payoutValue = formPayoutValue.value || 0;
+
+	    var focusFormName = function focusFormName() {
+	      var parentFormName = formName.parentNode;
+	      parentFormName.classList.remove('is-error');
+	      parentFormName.querySelector('span').textContent = '';
+	      formName.removeEventListener('focus', focusFormName);
+	    };
+
+	    if (!name) {
+	      var parentFormName = formName.parentNode;
+	      parentFormName.classList.add('is-error');
+	      parentFormName.querySelector('span').textContent = 'The field can not be empty';
+	      formName.addEventListener('focus', focusFormName);
+	      return;
+	    }
+
+	    var focusFormUrl = function focusFormUrl() {
+	      var parentFormUrl = formUrl.parentNode;
+	      parentFormUrl.classList.remove('is-error');
+	      parentFormUrl.querySelector('span').textContent = '';
+	      formUrl.removeEventListener('focus', focusFormUrl);
+	    };
+
+	    if (!offerUrl) {
+	      var parentFormUrl = formUrl.parentNode;
+	      parentFormUrl.classList.add('is-error');
+	      parentFormUrl.querySelector('span').textContent = 'The field can not be empty';
+	      formUrl.addEventListener('focus', focusFormUrl);
+	      return;
+	    }
+
+	    var clickFormAffNet = function clickFormAffNet() {
+	      formAffNet.classList.remove('is-error');
+	      formAffNet.removeEventListener('click', clickFormAffNet);
+	    };
+
+	    if (!affNet) {
+	      formAffNet.classList.add('is-error');
+	      formAffNet.addEventListener('click', clickFormAffNet);
+	      return;
+	    }
+
+	    if (formPayoutEur.classList.contains('is-select')) {
+	      currency = 'EUR';
+	    } else if (formPayoutRub.classList.contains('is-select')) {
+	      currency = 'RUB';
+	    } else {
+	      currency = 'USD';
+	    }
+
+	    var options = window._getOptionsFetch({
+	      name: name,
+	      url: offerUrl,
+	      affiliate_network: affNet,
+	      payout: payout,
+	      currency: currency,
+	      offer_type: 0,
+	      payout_value: payoutValue
+	    });
+
+	    fetch(window.might.url + '/offer/create', options).then(function (response) {
+	      return response.json();
+	    }).then(function (result) {
+	      if (result.error) {
+	        if (result.result.msg) {
+	          popupBody.querySelector('.js-poopup-error').textContent = result.result.msg;
+	        }
+	      } else {
+	        popup.close();
+	      }
+	    });
+	  });
 	};
 
 	var _createPopup = __webpack_require__(52);
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
+	var _listEvent = __webpack_require__(23);
+
+	var _listEvent2 = _interopRequireDefault(_listEvent);
+
+	var _campaignAddChild = __webpack_require__(54);
+
+	var _campaignAddChild2 = _interopRequireDefault(_campaignAddChild);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
 /* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (box) {
+	  box.innerHTML = '\n    <div class="cc__left">\n      <div class="cc__label">Default paths</div>\n    </div>\n\n    <div class="cc__right">\n      <div class="cc__line">\n        <div class="cc__col"><div class="cc__label">Name:</div></div>\n        <div class="cc__col"><div class="cc__label">Weight:</div></div>\n        <div class="cc__col"><div class="cc__label">Status:</div></div>\n      </div>\n\n      <div class="cc__line">\n        <div class="cc__col">\n          <div class="input">\n            <input class="js-cc-name" type="text" placeholder="Path name">\n            <span><span>\n          </div>\n        </div>\n        <div class="cc__col">\n          <div class="input">\n            <input class="js-cc-name-weight" type="text" placeholder="0">\n            <span><span>\n          </div>\n        </div>\n        <div class="cc__col">\n          <div class="cc__status js-cc-status"></div>\n        </div>\n      </div>\n\n      <div class="js-cc-lander">\n        <div class="cc__line js-cc-labels-for-lander">\n          <div class="cc__col"><div class="cc__label">Lander:</div></div>\n          <div class="cc__col"><div class="cc__label">Weight:</div></div>\n          <div class="cc__col"></div>\n        </div>\n\n        <div class="cc__line js-cc-landers">\n          <div class="cc__col">\n            <div class="list is-add js-list js-cc-lander-add" style="display: block; margin: 0 0 15px;" data-placeholder="+ Add Lander">\n              <div class="list__wrap" style="display: block;">\n                <div class="list__value js-list-value"></div>\n                <div class="list__dropdown" style="right: 0;">\n                  <div class="list__items js-list-items"></div>\n                </div>\n              </div>\n            </div>\n          </div>\n          <div class="cc__col js-cc-labels-for-lander">\n            <div class="input">\n              <input class="js-cc-lander-weight" type="text" placeholder="0">\n              <span><span>\n            </div>\n          </div>\n          <div class="cc__col js-cc-labels-for-lander">\n            <div class="cc__clear js-clear"></div>\n          </div>\n        </div>\n      </div>\n\n      <div class="js-cc-offers">\n        <div class="cc__line js-cc-labels-for-offer">\n          <div class="cc__col"><div class="cc__label">Offer:</div></div>\n          <div class="cc__col"><div class="cc__label">Weight:</div></div>\n          <div class="cc__col"></div>\n        </div>\n\n        <div class="cc__line js-cc-offer">\n          <div class="cc__col">\n            <div class="list is-add js-list js-cc-offer-add" style="display: block; margin: 0 0 15px;" data-placeholder="+ Add Offer">\n              <div class="list__wrap" style="display: block;">\n                <div class="list__value js-list-value"></div>\n                <div class="list__dropdown" style="right: 0;">\n                  <div class="list__items js-list-items"></div>\n                </div>\n              </div>\n            </div>\n          </div>\n          <div class="cc__col js-cc-labels-for-offer">\n            <div class="input">\n              <input class="js-cc-offer-weight" type="text" placeholder="0">\n              <span><span>\n            </div>\n          </div>\n          <div class="cc__col js-cc-labels-for-offer">\n            <div class="cc__clear js-clear"></div>\n          </div>\n        </div>\n      </div>\n    </div>\n  ';
+
+	  var path = '\n    <div class="cc__path">\n      <div class="cc__path-name">Path 1</div>\n      <div class="cc__path-weight">100 (50.00%)</div>\n      <div class="cc__path-undo"></div>\n      <div class="cc__path-copy"></div>\n      <div class="cc__path-delete"></div>\n    </div>';
+
+	  var newField = true;
+
+	  var nameField = box.querySelector('.js-cc-name');
+
+	  var addLander = box.querySelector('.js-cc-lander-add');
+	  var addOffer = box.querySelector('.js-cc-offer-add');
+
+	  (function () {
+	    var options = window._getOptionsFetch({
+	      field: 'id,name',
+	      order: 'name'
+	    });
+
+	    fetch(window.might.url + '/lander/list', options).then(function (response) {
+	      return response.json();
+	    }).then(function (result) {
+	      var items = addLander.querySelector('.js-list-items');
+	      var obj = result.result.data || {};
+
+	      for (var i in obj) {
+	        if (obj.hasOwnProperty(i)) {
+	          var item = obj[i];
+	          items.innerHTML += '<div class="list__item js-list-item" data-value="' + item.id + '">' + item.name + '</div>';
+	        }
+	      }
+
+	      (0, _listEvent2.default)(addLander);
+	    });
+	  })();
+
+	  (function () {
+	    var options = window._getOptionsFetch({
+	      field: 'id,name',
+	      order: 'name'
+	    });
+
+	    fetch(window.might.url + '/offer/list', options).then(function (response) {
+	      return response.json();
+	    }).then(function (result) {
+	      var items = addOffer.querySelector('.js-list-items');
+	      var obj = result.result.data || {};
+
+	      for (var i in obj) {
+	        if (obj.hasOwnProperty(i)) {
+	          var item = obj[i];
+	          items.innerHTML += '<div class="list__item js-list-item" data-value="' + item.id + '">' + item.name + '</div>';
+	        }
+	      }
+
+	      (0, _listEvent2.default)(addOffer);
+	    });
+	  })();
+	};
+
+	var _listEvent = __webpack_require__(23);
+
+	var _listEvent2 = _interopRequireDefault(_listEvent);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
+
+/***/ },
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -5138,7 +5512,7 @@ webpackJsonp([0],[
 	    return;
 	  }
 
-	  var popup = (0, _createPopup2.default)('Traffic source list');
+	  var popup = (0, _createPopup2.default)('List of landers');
 
 	  if (!popup) {
 	    return;
@@ -5147,32 +5521,12 @@ webpackJsonp([0],[
 	  var popupBody = popup.querySelector('.js-popup-body');
 
 	  if (popupBody) {
-	    var url = window.might.url + '/lander/list';
-	    var headers = new Headers();
-	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+	    var options = window._getOptionsFetch({
+	      name: name,
+	      url: landerUrl
+	    });
 
-	    var options = {
-	      method: 'post',
-	      mode: 'cors',
-	      headers: headers
-	    };
-
-	    var data = {
-	      field: 'id,name',
-	      order: 'name'
-	    };
-
-	    if (window.might.hasOwnProperty('auth_key')) {
-	      data.auth_key = window.might.auth_key;
-	    }
-
-	    if (window.might.hasOwnProperty('all_fields')) {
-	      data.all_fields = window.might.all_fields;
-	    }
-
-	    options.body = _qs2.default.stringify(data);
-
-	    fetch(url, options).then(function (response) {
+	    fetch(window.might.url + '/lander/list', options).then(function (response) {
 	      return response.json();
 	    }).then(function (result) {
 	      if (result.error) {
@@ -5200,7 +5554,7 @@ webpackJsonp([0],[
 	  }
 	};
 
-	var _qs = __webpack_require__(33);
+	var _qs = __webpack_require__(14);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
@@ -5209,10 +5563,10 @@ webpackJsonp([0],[
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -5226,7 +5580,7 @@ webpackJsonp([0],[
 	    return;
 	  }
 
-	  var popup = (0, _createPopup2.default)('Creating new affilate networks', true);
+	  var popup = (0, _createPopup2.default)('Creating new lander', true);
 
 	  if (!popup) {
 	    return;
@@ -5240,13 +5594,11 @@ webpackJsonp([0],[
 
 	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new offer">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Offer URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" placeholder="Create a url">\n          <span><span>\n        </div>\n        <div class="tags js-form-tags" style="display: none;"></div>\n      </div>\n    </div>\n    </div>';
 
-	  var tags = '{country},{cost},{campaign_id},{trafficsource_id},{ip_id},{offer_id}';
-
 	  var formName = popupBody.querySelector('.js-form-name');
 	  var formUrl = popupBody.querySelector('.js-form-url');
 	  var formUrlTags = popupBody.querySelector('.js-form-tags');
 
-	  tags.split(',').forEach(function (tag) {
+	  '{country},{cost},{campaign_id},{trafficsource_id},{ip_id},{offer_id}'.split(',').forEach(function (tag) {
 	    var span = document.createElement('span');
 	    span.className = 'js-form-tag';
 	    span.textContent = tag;
@@ -5296,7 +5648,7 @@ webpackJsonp([0],[
 
 	  popup.querySelector('.js-popup-save').addEventListener('click', function (event) {
 	    var name = formName.value.trim();
-	    var lenderUrl = formUrl.value.trim();
+	    var landerUrl = formUrl.value.trim();
 
 	    var focusFormName = function focusFormName() {
 	      var parentFormName = formName.parentNode;
@@ -5320,7 +5672,7 @@ webpackJsonp([0],[
 	      formUrl.removeEventListener('focus', focusFormUrl);
 	    };
 
-	    if (!lenderUrl) {
+	    if (!landerUrl) {
 	      var parentFormUrl = formUrl.parentNode;
 	      parentFormUrl.classList.add('is-error');
 	      parentFormUrl.querySelector('span').textContent = 'The field can not be empty';
@@ -5328,32 +5680,12 @@ webpackJsonp([0],[
 	      return;
 	    }
 
-	    var url = window.might.url + '/lander/create';
-	    var headers = new Headers();
-	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-	    var options = {
-	      method: 'post',
-	      mode: 'cors',
-	      headers: headers
-	    };
-
-	    var data = {
+	    var options = window._getOptionsFetch({
 	      name: name,
-	      url: lenderUrl
-	    };
+	      url: landerUrl
+	    });
 
-	    if (window.might.hasOwnProperty('auth_key')) {
-	      data.auth_key = window.might.auth_key;
-	    }
-
-	    if (window.might.hasOwnProperty('all_fields')) {
-	      data.all_fields = window.might.all_fields;
-	    }
-
-	    options.body = _qs2.default.stringify(data);
-
-	    fetch(url, options).then(function (response) {
+	    fetch(window.might.url + '/lander/create', options).then(function (response) {
 	      return response.json();
 	    }).then(function (result) {
 	      if (result.error) {
@@ -5367,7 +5699,7 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _qs = __webpack_require__(33);
+	var _qs = __webpack_require__(14);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
@@ -5375,17 +5707,17 @@ webpackJsonp([0],[
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _listEvent = __webpack_require__(18);
+	var _listEvent = __webpack_require__(23);
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -5399,7 +5731,7 @@ webpackJsonp([0],[
 	    return;
 	  }
 
-	  var popup = (0, _createPopup2.default)('Traffic source list');
+	  var popup = (0, _createPopup2.default)('Offer list');
 
 	  if (!popup) {
 	    return;
@@ -5408,32 +5740,12 @@ webpackJsonp([0],[
 	  var popupBody = popup.querySelector('.js-popup-body');
 
 	  if (popupBody) {
-	    var url = window.might.url + '/offer/list';
-	    var headers = new Headers();
-	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-	    var options = {
-	      method: 'post',
-	      mode: 'cors',
-	      headers: headers
-	    };
-
-	    var data = {
+	    var options = window._getOptionsFetch({
 	      field: 'id,name',
 	      order: 'name'
-	    };
+	    });
 
-	    if (window.might.hasOwnProperty('auth_key')) {
-	      data.auth_key = window.might.auth_key;
-	    }
-
-	    if (window.might.hasOwnProperty('all_fields')) {
-	      data.all_fields = window.might.all_fields;
-	    }
-
-	    options.body = _qs2.default.stringify(data);
-
-	    fetch(url, options).then(function (response) {
+	    fetch(window.might.url + '/offer/list', options).then(function (response) {
 	      return response.json();
 	    }).then(function (result) {
 	      if (result.error) {
@@ -5461,7 +5773,7 @@ webpackJsonp([0],[
 	  }
 	};
 
-	var _qs = __webpack_require__(33);
+	var _qs = __webpack_require__(14);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
@@ -5470,10 +5782,10 @@ webpackJsonp([0],[
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -5487,7 +5799,7 @@ webpackJsonp([0],[
 	    return;
 	  }
 
-	  var popup = (0, _createPopup2.default)('Creating new affilate networks', true);
+	  var popup = (0, _createPopup2.default)('Creating new offer', true);
 
 	  if (!popup) {
 	    return;
@@ -5501,8 +5813,6 @@ webpackJsonp([0],[
 
 	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new offer">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Offer URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" placeholder="Create a url">\n          <span><span>\n        </div>\n        <div class="tags js-form-tags" style="display: none;"></div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Affiliate nework:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-affnet" style="display: block; margin: 0 0 15px;" data-placeholder="Select affiliate network">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Payout:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="radiobutton js-form-payout-auto">Auto</div>\n        <div class="radiobutton js-form-payout-manual is-select">Manual</div>\n        <div class="input" style="display: inline-block; width: 90px; margin-left: 30px; margin-right: 10px;">\n          <input class="js-form-payout-value" type="text" placeholder="0">\n          <span><span>\n        </div>\n        <div class="popup__currency js-form-payout-eur">\n          <i class="fa fa-euro"></i>\n        </div>\n        <div class="popup__currency js-form-payout-rub">\n          <i class="fa fa-ruble"></i>\n        </div>\n        <div class="popup__currency js-form-payout-usd is-select">\n          <i class="fa fa-dollar"></i>\n        </div>\n      </div>\n    </div>';
 
-	  var tags = '{country},{cost},{campaign_id},{trafficsource_id},{ip_id},{offer_id}';
-
 	  var formName = popupBody.querySelector('.js-form-name');
 	  var formUrl = popupBody.querySelector('.js-form-url');
 	  var formUrlTags = popupBody.querySelector('.js-form-tags');
@@ -5514,7 +5824,7 @@ webpackJsonp([0],[
 	  var formPayoutRub = popupBody.querySelector('.js-form-payout-rub');
 	  var formPayoutUsd = popupBody.querySelector('.js-form-payout-usd');
 
-	  tags.split(',').forEach(function (tag) {
+	  '{country},{cost},{campaign_id},{trafficsource_id},{ip_id},{offer_id}'.split(',').forEach(function (tag) {
 	    var span = document.createElement('span');
 	    span.className = 'js-form-tag';
 	    span.textContent = tag;
@@ -5562,33 +5872,13 @@ webpackJsonp([0],[
 	    event.stopPropagation();
 	  });
 
-	  var fillingAffiliateNetwork = function fillingAffiliateNetwork() {
-	    var url = window.might.url + '/affiliate_network/list';
-	    var headers = new Headers();
-	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-	    var options = {
-	      method: 'post',
-	      mode: 'cors',
-	      headers: headers
-	    };
-
-	    var data = {
+	  (function () {
+	    var options = window._getOptionsFetch({
 	      field: 'id,name',
 	      order: 'name'
-	    };
+	    });
 
-	    if (window.might.hasOwnProperty('auth_key')) {
-	      data.auth_key = window.might.auth_key;
-	    }
-
-	    if (window.might.hasOwnProperty('all_fields')) {
-	      data.all_fields = window.might.all_fields;
-	    }
-
-	    options.body = _qs2.default.stringify(data);
-
-	    fetch(url, options).then(function (response) {
+	    fetch(window.might.url + '/affiliate_network/list', options).then(function (response) {
 	      return response.json();
 	    }).then(function (result) {
 	      var items = formAffNet.querySelector('.js-list-items');
@@ -5599,9 +5889,7 @@ webpackJsonp([0],[
 
 	      (0, _listEvent2.default)(formAffNet);
 	    });
-	  };
-
-	  fillingAffiliateNetwork();
+	  })();
 
 	  formPayoutAuto.addEventListener('click', function () {
 	    formPayoutAuto.classList.add('is-select');
@@ -5716,17 +6004,7 @@ webpackJsonp([0],[
 	      currency = 'USD';
 	    }
 
-	    var url = window.might.url + '/offer/create';
-	    var headers = new Headers();
-	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-	    var options = {
-	      method: 'post',
-	      mode: 'cors',
-	      headers: headers
-	    };
-
-	    var data = {
+	    var options = window._getOptionsFetch({
 	      name: name,
 	      url: offerUrl,
 	      affiliate_network: affNet,
@@ -5734,19 +6012,9 @@ webpackJsonp([0],[
 	      currency: currency,
 	      offer_type: 0,
 	      payout_value: payoutValue
-	    };
+	    });
 
-	    if (window.might.hasOwnProperty('auth_key')) {
-	      data.auth_key = window.might.auth_key;
-	    }
-
-	    if (window.might.hasOwnProperty('all_fields')) {
-	      data.all_fields = window.might.all_fields;
-	    }
-
-	    options.body = _qs2.default.stringify(data);
-
-	    fetch(url, options).then(function (response) {
+	    fetch(window.might.url + '/offer/create', options).then(function (response) {
 	      return response.json();
 	    }).then(function (result) {
 	      if (result.error) {
@@ -5760,7 +6028,7 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _qs = __webpack_require__(33);
+	var _qs = __webpack_require__(14);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
@@ -5768,17 +6036,17 @@ webpackJsonp([0],[
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _listEvent = __webpack_require__(18);
+	var _listEvent = __webpack_require__(23);
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 58 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -5801,32 +6069,12 @@ webpackJsonp([0],[
 	  var popupBody = popup.querySelector('.js-popup-body');
 
 	  if (popupBody) {
-	    var url = window.might.url + '/traffic/sources/list';
-	    var headers = new Headers();
-	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-	    var options = {
-	      method: 'post',
-	      mode: 'cors',
-	      headers: headers
-	    };
-
-	    var data = {
+	    var options = window._getOptionsFetch({
 	      field: 'id,name',
 	      order: 'name'
-	    };
+	    });
 
-	    if (window.might.hasOwnProperty('auth_key')) {
-	      data.auth_key = window.might.auth_key;
-	    }
-
-	    if (window.might.hasOwnProperty('all_fields')) {
-	      data.all_fields = window.might.all_fields;
-	    }
-
-	    options.body = _qs2.default.stringify(data);
-
-	    fetch(url, options).then(function (response) {
+	    fetch(window.might.url + '/traffic/sources/list', options).then(function (response) {
 	      return response.json();
 	    }).then(function (result) {
 	      if (result.error) {
@@ -5854,7 +6102,7 @@ webpackJsonp([0],[
 	  }
 	};
 
-	var _qs = __webpack_require__(33);
+	var _qs = __webpack_require__(14);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
@@ -5863,10 +6111,10 @@ webpackJsonp([0],[
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5880,7 +6128,7 @@ webpackJsonp([0],[
 	    return;
 	  }
 
-	  var popup = (0, _createPopup2.default)('Creating new affilate networks', true);
+	  var popup = (0, _createPopup2.default)('Creating new traffic source', true);
 
 	  if (!popup) {
 	    return;
@@ -5894,14 +6142,12 @@ webpackJsonp([0],[
 
 	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new offer">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Postback URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" placeholder="Create a url">\n          <span><span>\n        </div>\n        <div class="tags js-form-tags" style="display: none;"></div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Loading settings from:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-loading" style="display: block; margin: 0 0 15px;" data-placeholder="Select affiliate network">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items">\n                <div class="list__item js-list-item" data-value="0">test</div>\n              </div>\n            </div>\n          </div>\n        </div>\n\n        <div class="popup__inputs">\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-field"><div class="popup__inputs-title">Parameter<div class="info"></div></div></div>\n            <div class="popup__inputs-field"><div class="popup__inputs-title">Placeholder<div class="info"></div></div></div>\n            <div class="popup__inputs-field"><div class="popup__inputs-title">Name<div class="info"></div></div></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">External ID:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Cost:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 1:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 2:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 3:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 4:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 5:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 6:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 7:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 8:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 9:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 10:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 11:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 12:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 13:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 14:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 15:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n        </div>\n      </div>\n    </div>';
 
-	  var tags = '{country},{cost},{campaign_id},{trafficsource_id},{ip_id},{offer_id}';
-
 	  var formName = popupBody.querySelector('.js-form-name');
 	  var formUrl = popupBody.querySelector('.js-form-url');
 	  var formUrlTags = popupBody.querySelector('.js-form-tags');
 	  var formLoading = popupBody.querySelector('.js-form-loading');
 
-	  tags.split(',').forEach(function (tag) {
+	  '{country},{cost},{campaign_id},{trafficsource_id},{ip_id},{offer_id}'.split(',').forEach(function (tag) {
 	    var span = document.createElement('span');
 	    span.className = 'js-form-tag';
 	    span.textContent = tag;
@@ -5952,7 +6198,7 @@ webpackJsonp([0],[
 	  (0, _listEvent2.default)(formLoading);
 	};
 
-	var _qs = __webpack_require__(33);
+	var _qs = __webpack_require__(14);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
@@ -5960,7 +6206,7 @@ webpackJsonp([0],[
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _listEvent = __webpack_require__(18);
+	var _listEvent = __webpack_require__(23);
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
@@ -5969,7 +6215,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -5983,7 +6229,7 @@ webpackJsonp([0],[
 	    return;
 	  }
 
-	  var popup = (0, _createPopup2.default)('Traffic source list');
+	  var popup = (0, _createPopup2.default)('List of affiliate networks');
 
 	  if (!popup) {
 	    return;
@@ -5992,32 +6238,12 @@ webpackJsonp([0],[
 	  var popupBody = popup.querySelector('.js-popup-body');
 
 	  if (popupBody) {
-	    var url = window.might.url + '/affiliate_network/list';
-	    var headers = new Headers();
-	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-	    var options = {
-	      method: 'post',
-	      mode: 'cors',
-	      headers: headers
-	    };
-
-	    var data = {
+	    var options = window._getOptionsFetch({
 	      field: 'id,name',
 	      order: 'name'
-	    };
+	    });
 
-	    if (window.might.hasOwnProperty('auth_key')) {
-	      data.auth_key = window.might.auth_key;
-	    }
-
-	    if (window.might.hasOwnProperty('all_fields')) {
-	      data.all_fields = window.might.all_fields;
-	    }
-
-	    options.body = _qs2.default.stringify(data);
-
-	    fetch(url, options).then(function (response) {
+	    fetch(window.might.url + '/affiliate_network/list', options).then(function (response) {
 	      return response.json();
 	    }).then(function (result) {
 	      if (result.error) {
@@ -6045,7 +6271,7 @@ webpackJsonp([0],[
 	  }
 	};
 
-	var _qs = __webpack_require__(33);
+	var _qs = __webpack_require__(14);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
@@ -6054,10 +6280,10 @@ webpackJsonp([0],[
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 61 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -6178,35 +6404,15 @@ webpackJsonp([0],[
 	      }
 	    }
 
-	    var url = window.might.url + '/affiliate_network/create';
-	    var headers = new Headers();
-	    headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-	    var options = {
-	      method: 'post',
-	      mode: 'cors',
-	      headers: headers
-	    };
-
-	    var data = {
+	    var options = window._getOptionsFetch({
 	      name: name,
 	      duplicate_postbacks: duplicatePostbacks,
 	      white_list: whiteList,
 	      append_click_id: 0,
 	      ips: ips.join(',')
-	    };
+	    });
 
-	    if (window.might.hasOwnProperty('auth_key')) {
-	      data.auth_key = window.might.auth_key;
-	    }
-
-	    if (window.might.hasOwnProperty('all_fields')) {
-	      data.all_fields = window.might.all_fields;
-	    }
-
-	    options.body = _qs2.default.stringify(data);
-
-	    fetch(url, options).then(function (response) {
+	    fetch(window.might.url + '/affiliate_network/create', options).then(function (response) {
 	      return response.json();
 	    }).then(function (result) {
 	      if (result.error) {
@@ -6220,7 +6426,7 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _qs = __webpack_require__(33);
+	var _qs = __webpack_require__(14);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
@@ -6231,10 +6437,10 @@ webpackJsonp([0],[
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 62 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -6246,16 +6452,6 @@ webpackJsonp([0],[
 	exports.default = function () {
 	  var stat = document.querySelector('.js-stat');
 	  var navControl = document.querySelector('.js-stat-nav');
-	  var url = window.might.url + '/clicks/grid';
-
-	  var headers = new Headers();
-	  headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-	  var options = {
-	    method: 'post',
-	    mode: 'cors',
-	    headers: headers
-	  };
 
 	  var dateToString = function dateToString(y, m, d) {
 	    var date = new Date(y, m, d);
@@ -6342,9 +6538,9 @@ webpackJsonp([0],[
 	    var obj = getFormData();
 
 	    if (obj) {
-	      options.body = _qs2.default.stringify(obj.form_data);
+	      var options = window._getOptionsFetch(obj.form_data);
 
-	      fetch(url, options).then(function (response) {
+	      fetch(window.might.url + '/clicks/grid', options).then(function (response) {
 	        return response.json();
 	      }).then(function (result) {
 	        var params = window.might.stat.params;
@@ -6391,27 +6587,27 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _qs = __webpack_require__(33);
+	var _qs = __webpack_require__(14);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _dateformat = __webpack_require__(23);
+	var _dateformat = __webpack_require__(28);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _tableRender = __webpack_require__(63);
+	var _tableRender = __webpack_require__(64);
 
 	var _tableRender2 = _interopRequireDefault(_tableRender);
 
-	var _tableEvent = __webpack_require__(64);
+	var _tableEvent = __webpack_require__(65);
 
 	var _tableEvent2 = _interopRequireDefault(_tableEvent);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 63 */
+/* 64 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6671,7 +6867,7 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6888,7 +7084,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 65 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -6905,16 +7101,6 @@ webpackJsonp([0],[
 	  if (!statGraph || !statGraphCanvas) {
 	    return;
 	  }
-
-	  var url = window.might.url + '/graph/data';
-	  var headers = new Headers();
-	  headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-	  var options = {
-	    method: 'post',
-	    mode: 'cors',
-	    headers: headers
-	  };
 
 	  var dateToString = function dateToString(y, m, d) {
 	    var date = new Date(y, m, d);
@@ -7004,9 +7190,9 @@ webpackJsonp([0],[
 	    var obj = getFormData();
 
 	    if (obj) {
-	      options.body = _qs2.default.stringify(obj);
+	      var options = window._getOptionsFetch(obj);
 
-	      fetch(url, options).then(function (response) {
+	      fetch(window.might.url + '/graph/data', options).then(function (response) {
 	        return response.json();
 	      }).then(function (result) {
 	        (0, _graphRender2.default)(result);
@@ -7015,15 +7201,15 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _qs = __webpack_require__(33);
+	var _qs = __webpack_require__(14);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _dateformat = __webpack_require__(23);
+	var _dateformat = __webpack_require__(28);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _listEvent = __webpack_require__(18);
+	var _listEvent = __webpack_require__(23);
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
@@ -7031,15 +7217,15 @@ webpackJsonp([0],[
 
 	var _update2 = _interopRequireDefault(_update);
 
-	var _graphRender = __webpack_require__(66);
+	var _graphRender = __webpack_require__(67);
 
 	var _graphRender2 = _interopRequireDefault(_graphRender);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 66 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7182,11 +7368,11 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _dateformat = __webpack_require__(23);
+	var _dateformat = __webpack_require__(28);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _highcharts = __webpack_require__(67);
+	var _highcharts = __webpack_require__(68);
 
 	var _highcharts2 = _interopRequireDefault(_highcharts);
 
