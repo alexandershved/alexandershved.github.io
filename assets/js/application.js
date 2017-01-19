@@ -5190,7 +5190,7 @@ webpackJsonp([0],[
 	  });
 
 	  formCostClick.addEventListener('paste', function (event) {
-	    if (/^\d+$/.test(formCostClick.value.trim())) {
+	    if (/^\d*.?\d+$/.test(formCostClick.value.trim())) {
 	      formCostClick.value = '';
 	    }
 	  });
@@ -5432,61 +5432,479 @@ webpackJsonp([0],[
 	});
 
 	exports.default = function (box) {
-	  box.innerHTML = '\n    <div class="cc__left">\n      <div class="cc__label">Default paths</div>\n    </div>\n\n    <div class="cc__right">\n      <div class="cc__line">\n        <div class="cc__col"><div class="cc__label">Name:</div></div>\n        <div class="cc__col"><div class="cc__label">Weight:</div></div>\n        <div class="cc__col"><div class="cc__label">Status:</div></div>\n      </div>\n\n      <div class="cc__line">\n        <div class="cc__col">\n          <div class="input">\n            <input class="js-cc-name" type="text" placeholder="Path name">\n            <span><span>\n          </div>\n        </div>\n        <div class="cc__col">\n          <div class="input">\n            <input class="js-cc-name-weight" type="text" placeholder="0">\n            <span><span>\n          </div>\n        </div>\n        <div class="cc__col">\n          <div class="cc__status js-cc-status"></div>\n        </div>\n      </div>\n\n      <div class="js-cc-lander">\n        <div class="cc__line js-cc-labels-for-lander">\n          <div class="cc__col"><div class="cc__label">Lander:</div></div>\n          <div class="cc__col"><div class="cc__label">Weight:</div></div>\n          <div class="cc__col"></div>\n        </div>\n\n        <div class="cc__line js-cc-landers">\n          <div class="cc__col">\n            <div class="list is-add js-list js-cc-lander-add" style="display: block; margin: 0 0 15px;" data-placeholder="+ Add Lander">\n              <div class="list__wrap" style="display: block;">\n                <div class="list__value js-list-value"></div>\n                <div class="list__dropdown" style="right: 0;">\n                  <div class="list__items js-list-items"></div>\n                </div>\n              </div>\n            </div>\n          </div>\n          <div class="cc__col js-cc-labels-for-lander">\n            <div class="input">\n              <input class="js-cc-lander-weight" type="text" placeholder="0">\n              <span><span>\n            </div>\n          </div>\n          <div class="cc__col js-cc-labels-for-lander">\n            <div class="cc__clear js-clear"></div>\n          </div>\n        </div>\n      </div>\n\n      <div class="js-cc-offers">\n        <div class="cc__line js-cc-labels-for-offer">\n          <div class="cc__col"><div class="cc__label">Offer:</div></div>\n          <div class="cc__col"><div class="cc__label">Weight:</div></div>\n          <div class="cc__col"></div>\n        </div>\n\n        <div class="cc__line js-cc-offer">\n          <div class="cc__col">\n            <div class="list is-add js-list js-cc-offer-add" style="display: block; margin: 0 0 15px;" data-placeholder="+ Add Offer">\n              <div class="list__wrap" style="display: block;">\n                <div class="list__value js-list-value"></div>\n                <div class="list__dropdown" style="right: 0;">\n                  <div class="list__items js-list-items"></div>\n                </div>\n              </div>\n            </div>\n          </div>\n          <div class="cc__col js-cc-labels-for-offer">\n            <div class="input">\n              <input class="js-cc-offer-weight" type="text" placeholder="0">\n              <span><span>\n            </div>\n          </div>\n          <div class="cc__col js-cc-labels-for-offer">\n            <div class="cc__clear js-clear"></div>\n          </div>\n        </div>\n      </div>\n    </div>\n  ';
+	  box.innerHTML = '\n    <div class="cc__left">\n      <div class="cc__label">Default paths:</div>\n      <div class="js-cc-all-paths"></div>\n      <div class="cc__added"><span class="js-cc-add-path">+ Add new Path</span></div>\n\n      <div class="cc__label">Rules:</div>\n      <div class="js-cc-all-rules"></div>\n      <div class="cc__added"><span class="js-cc-add-offer">+ Add new Rule</span></div>\n    </div>\n\n    <div class="cc__right">\n      <div class="js-cc-name">\n        <div class="cc__line">\n          <div class="cc__col"><div class="cc__label">Name:</div></div>\n          <div class="cc__col"><div class="cc__label">Weight:</div></div>\n          <div class="cc__col"><div class="cc__label">Status:</div></div>\n        </div>\n\n        <div class="cc__line">\n          <div class="cc__col">\n            <div class="input">\n              <input class="js-cc-input" type="text" placeholder="Path name">\n              <span><span>\n            </div>\n          </div>\n          <div class="cc__col">\n            <div class="input">\n              <input class="js-cc-weight" type="text" placeholder="0">\n              <span><span>\n            </div>\n          </div>\n          <div class="cc__col">\n            <div class="cc__status js-cc-status"></div>\n          </div>\n        </div>\n      </div>\n\n      <div class="js-cc-landers">\n        <div class="cc__line">\n          <div class="cc__col"><div class="cc__label">Lander:</div></div>\n          <div class="cc__col"><div class="cc__label cc__hidden js-cc-hidden">Weight:</div></div>\n          <div class="cc__col"></div>\n        </div>\n\n        <div class="cc__line js-cc-list js-cc-with-hidden">\n          <div class="cc__col">\n            <div class="list is-add js-list js-cc-add" style="display: block; margin: 0 0 15px;" data-placeholder="+ Add Lander">\n              <div class="list__wrap" style="display: block;">\n                <div class="list__value js-list-value"></div>\n                <div class="list__dropdown" style="right: 0;">\n                  <div class="list__items js-list-items"></div>\n                </div>\n              </div>\n            </div>\n          </div>\n          <div class="cc__col cc__hidden js-cc-hidden">\n            <div class="input">\n              <input class="js-cc-weight" type="text" placeholder="0">\n              <span><span>\n            </div>\n          </div>\n          <div class="cc__col cc__hidden js-cc-hidden">\n            <div class="cc__clear js-clear"></div>\n          </div>\n        </div>\n      </div>\n\n      <div class="js-cc-offers">\n        <div class="cc__line">\n          <div class="cc__col"><div class="cc__label">Offer:</div></div>\n          <div class="cc__col"><div class="cc__label cc__hidden js-cc-hidden">Weight:</div></div>\n          <div class="cc__col"></div>\n        </div>\n\n        <div class="cc__line js-cc-list js-cc-with-hidden">\n          <div class="cc__col">\n            <div class="list is-add js-list js-cc-add" style="display: block; margin: 0 0 15px;" data-placeholder="+ Add Offer">\n              <div class="list__wrap" style="display: block;">\n                <div class="list__value js-list-value"></div>\n                <div class="list__dropdown" style="right: 0;">\n                  <div class="list__items js-list-items"></div>\n                </div>\n              </div>\n            </div>\n          </div>\n          <div class="cc__col cc__hidden js-cc-hidden">\n            <div class="input">\n              <input class="js-cc-weight" type="text" placeholder="0">\n              <span><span>\n            </div>\n          </div>\n          <div class="cc__col cc__hidden js-cc-hidden">\n            <div class="cc__clear js-clear"></div>\n          </div>\n        </div>\n      </div>\n    </div>\n  ';
 
-	  var path = '\n    <div class="cc__path">\n      <div class="cc__path-name">Path 1</div>\n      <div class="cc__path-weight">100 (50.00%)</div>\n      <div class="cc__path-undo"></div>\n      <div class="cc__path-copy"></div>\n      <div class="cc__path-delete"></div>\n    </div>';
+	  var allPaths = box.querySelector('.js-cc-all-paths');
+	  var boxName = box.querySelector('.js-cc-name');
 
-	  var newField = true;
+	  var newPath = true;
+	  var currentPath = void 0;
+	  var paths = [];
+	  var checkSelect = false;
 
-	  var nameField = box.querySelector('.js-cc-name');
+	  function insertAfter(elem, refElem) {
+	    var parent = refElem.parentNode;
+	    var next = refElem.nextSibling;
 
-	  var addLander = box.querySelector('.js-cc-lander-add');
-	  var addOffer = box.querySelector('.js-cc-offer-add');
+	    if (next) {
+	      return parent.insertBefore(elem, next);
+	    }
 
-	  (function () {
-	    var options = window._getOptionsFetch({
-	      field: 'id,name',
-	      order: 'name'
+	    return parent.appendChild(elem);
+	  }
+
+	  function eventPath(element) {
+	    element.addEventListener('click', function (event) {
+	      var path = event.target.closest('.js-cc-path');
+	      var copy = event.target.closest('.js-cc-path-copy');
+	      var del = event.target.closest('.js-cc-path-delete');
+
+	      if (path) {
+	        (function () {
+	          var position = paths.indexOf(path);
+
+	          if (copy) {
+	            (function () {
+	              var clone = path.cloneNode(true);
+	              var name = path.value.name;
+
+	              insertAfter(clone, path);
+	              paths.splice(position + 1, 0, clone);
+
+	              clone.value = Object.assign({}, path.value);
+
+	              if (!/ \(copy\)$/.test(name)) {
+	                name = name + ' (copy)';
+	              }
+
+	              clone.value.name = name;
+	              clone.querySelector('.js-cc-path-name').textContent = name;
+	              eventPath(clone);
+
+	              var count = 0;
+
+	              paths.forEach(function (p) {
+	                count += p.value.weight;
+	              });
+
+	              paths.forEach(function (p) {
+	                if (count) {
+	                  var percent = Math.round(10000 * p.value.weight / count) / 100;
+	                  p.querySelector('.js-cc-path-weight').textContent = p.value.weight + ' (' + percent + '%)';
+	                } else {
+	                  p.querySelector('.js-cc-path-weight').textContent = '0 (0%)';
+	                }
+	              });
+	            })();
+	          } else if (del) {
+	            if (currentPath === position) {
+	              currentPath = undefined;
+	              clearFrom();
+	              newPath = true;
+	            }
+
+	            path.classList.add('is-deleted');
+
+	            path._deleteTimeout = setTimeout(function () {
+	              path.parentNode.removeChild(path);
+	              paths.splice(position, 1);
+	              if (currentPath > position) {
+	                currentPath--;
+	              }
+	            }, 5000);
+
+	            path.querySelector('.js-cc-path-undo').addEventListener('click', function () {
+	              clearTimeout(path._deleteTimeout);
+	              setTimeout(function () {
+	                path.classList.remove('is-deleted');
+	              }, 300);
+	            });
+	          } else {
+	            (function () {
+	              checkSelect = true;
+
+	              clearFrom();
+	              [].concat(_toConsumableArray(box.querySelectorAll('.js-cc-path'))).forEach(function (el) {
+	                return el.classList.remove('is-select');
+	              });
+	              path.classList.add('is-select');
+
+	              currentPath = position;
+
+	              boxName.querySelector('.js-cc-input').value = path.value.name || '';
+	              boxName.querySelector('.js-cc-weight').value = path.value.weight || '';
+
+	              if (path.value.checkbox === 'off') {
+	                boxName.querySelector('.js-cc-status').classList.add('is-stoped');
+	              }
+
+	              var landers = box.querySelector('.js-cc-landers');
+	              var offers = box.querySelector('.js-cc-offers');
+	              var landerAdd = landers.querySelector('.js-cc-add');
+	              var offerAdd = offers.querySelector('.js-cc-add');
+
+	              path.value.lander.forEach(function (value, index) {
+	                landerAdd.setValue(value);
+	                landers.querySelectorAll('.js-cc-list')[index].querySelector('.js-cc-weight').value = path.value.lander_weight[index] || '';
+	              });
+
+	              path.value.offer.forEach(function (value, index) {
+	                offerAdd.setValue(value);
+	                offers.querySelectorAll('.js-cc-list')[index].querySelector('.js-cc-weight').value = path.value.lander_weight[index] || '';
+	              });
+
+	              checkSelect = false;
+	            })();
+	          }
+	        })();
+	      }
+	    });
+	  }
+
+	  function createPath() {
+	    var pathElement = document.createElement('div');
+
+	    pathElement.className = 'cc__path is-select js-cc-path';
+	    pathElement.innerHTML = '\n      <div class="cc__path-name js-cc-path-name">[path unnamed]</div>\n      <div class="cc__path-weight js-cc-path-weight">0 (0%)</div>\n      <div class="cc__path-copy js-cc-path-copy"></div>\n      <div class="cc__path-delete js-cc-path-delete"></div>\n      <div class="cc__path-undo js-cc-path-undo"><i class="fa fa-undo"></i>Undo</div>';
+
+	    allPaths.appendChild(pathElement);
+	    paths.push(pathElement);
+
+	    pathElement.value = {
+	      name: '',
+	      weight: 0,
+	      checkbox: 'on',
+	      lander: [],
+	      lander_weight: [],
+	      offer: [],
+	      offer_weight: []
+	    };
+
+	    eventPath(pathElement);
+	    currentPath = paths.length - 1;
+	  }
+
+	  function updatePath(obj) {
+	    if (checkSelect) {
+	      return;
+	    }
+
+	    if (newPath) {
+	      switch (obj.field) {
+	        case 'name':
+	        case 'weight':
+	        case 'lander_add':
+	        case 'offer_add':
+	        case 'checkbox':
+	          createPath();
+	          newPath = false;
+	          break;
+	        default:
+	          break;
+	      }
+	    }
+
+	    var path = paths[currentPath];
+	    var value = path.value;
+
+	    (function () {
+	      switch (obj.field) {
+	        case 'name':
+	          path.value.name = obj.value.trim();
+	          path.querySelector('.js-cc-path-name').textContent = obj.value.trim() || '[path unnamed]';
+	          break;
+	        case 'weight':
+	          var count = 0;
+	          path.value.weight = obj.value || 0;
+
+	          paths.forEach(function (p) {
+	            count += p.value.weight;
+	          });
+
+	          paths.forEach(function (p) {
+	            if (count) {
+	              var percent = Math.round(10000 * p.value.weight / count) / 100;
+	              p.querySelector('.js-cc-path-weight').textContent = p.value.weight + ' (' + percent + '%)';
+	            } else {
+	              p.querySelector('.js-cc-path-weight').textContent = '0 (0%)';
+	            }
+	          });
+	          break;
+	        case 'lander_add':
+	          path.value.lander.push(obj.value);
+	          path.value.lander_weight.push(0);
+	          break;
+	        case 'lander_update':
+	          path.value.lander[obj.position] = obj.value;
+	          break;
+	        case 'lander_update_weight':
+	          path.value.lander_weight[obj.position] = obj.value;
+	          break;
+	        case 'lander_remove':
+	          path.value.lander.splice(obj.position, 1);
+	          path.value.lander_weight.splice(obj.position, 1);
+	          break;
+	        case 'offer_add':
+	          path.value.offer.push(obj.value);
+	          path.value.offer_weight.push(0);
+	          break;
+	        case 'offer_update':
+	          path.value.offer[obj.position] = obj.value;
+	          break;
+	        case 'offer_update_weight':
+	          path.value.offer_weight[obj.position] = obj.value;
+	          break;
+	        case 'offer_remove':
+	          path.value.offer.splice(obj.position, 1);
+	          path.value.offer_weight.splice(obj.position, 1);
+	          break;
+	        case 'checkbox':
+	          path.value.checkbox = obj.value;
+	          if (obj.value === 'off') {
+	            path.classList.add('is-stoped');
+	          } else {
+	            path.classList.remove('is-stoped');
+	          }
+	          break;
+	        default:
+	          break;
+	      }
+	    })();
+	  }
+
+	  function clearFrom() {
+	    boxName.querySelector('.js-cc-input').value = '';
+	    boxName.querySelector('.js-cc-weight').value = '';
+	    boxName.querySelector('.js-cc-status').classList.remove('is-stoped');
+
+	    [].concat(_toConsumableArray(box.querySelectorAll('.js-cc-list'))).forEach(function (list) {
+	      if (!list.querySelector('.js-cc-add')) {
+	        list.parentNode.removeChild(list);
+	      } else {
+	        list.querySelector('.js-cc-add').unsetDisabled();
+	      }
 	    });
 
-	    fetch(window.might.url + '/lander/list', options).then(function (response) {
+	    [].concat(_toConsumableArray(box.querySelectorAll('.js-cc-hidden'))).forEach(function (el) {
+	      return el.classList.remove('is-show');
+	    });
+	    boxName.querySelector('.js-cc-input').focus();
+	  }
+
+	  box.querySelector('.js-cc-add-path').addEventListener('click', function () {
+	    clearFrom();
+	    [].concat(_toConsumableArray(box.querySelectorAll('.js-cc-path'))).forEach(function (el) {
+	      return el.classList.remove('is-select');
+	    });
+	    createPath();
+	    newPath = false;
+	  });
+
+	  var nameInput = boxName.querySelector('.js-cc-input');
+	  var nameWeight = boxName.querySelector('.js-cc-weight');
+
+	  nameInput.addEventListener('change', function () {
+	    var value = nameInput.value;
+
+	    updatePath({
+	      field: 'name',
+	      value: value
+	    });
+	  });
+
+	  nameWeight.addEventListener('change', function () {
+	    var value = nameWeight.value;
+
+	    updatePath({
+	      field: 'weight',
+	      value: Number(value) || 0
+	    });
+	  });
+
+	  function maskWeight(input) {
+	    input.addEventListener('paste', function (event) {
+	      if (/^\d*.?\d+$/.test(input.value.trim())) {
+	        input.value = '';
+	      }
+	    });
+
+	    input.addEventListener('keydown', function (event) {
+	      var code = event.keyCode;
+	      var char = String.fromCharCode(code);
+	      var key = '¾.0123456789'.indexOf(char);
+	      var value = parseInt(event.target.value, 10);
+
+	      switch (code) {
+	        case 9:
+	        case 13:
+	        case 27:
+	          event.target.blur();
+	          break;
+	        case 8:
+	        case 46:
+	        case 37:
+	        case 39:
+	        case 190:
+	          break;
+	        default:
+	          if (key === -1) {
+	            event.preventDefault();
+	          }
+	      }
+	    });
+	  }
+
+	  [].concat(_toConsumableArray(box.querySelectorAll('.js-cc-weight'))).forEach(maskWeight);
+
+	  var statusBtn = box.querySelector('.js-cc-status');
+
+	  statusBtn.addEventListener('click', function () {
+	    if (statusBtn.classList.contains('is-stoped')) {
+	      statusBtn.classList.remove('is-stoped');
+	      updatePath({
+	        field: 'checkbox',
+	        value: 'on'
+	      });
+	    } else {
+	      statusBtn.classList.add('is-stoped');
+	      updatePath({
+	        field: 'checkbox',
+	        value: 'off'
+	      });
+	    }
+	  });
+
+	  var addLander = box.querySelector('.js-cc-landers').querySelector('.js-cc-add');
+	  var addOffer = box.querySelector('.js-cc-offers').querySelector('.js-cc-add');
+
+	  function changeList(event, type) {
+	    var list = event.target;
+	    var lists = list.closest('.js-cc-' + type + 's').querySelectorAll('.js-list');
+	    var wrapList = list.closest('.js-cc-list');
+	    var wrapLists = wrapList.parentNode.querySelectorAll('.js-cc-list');
+	    var oldValue = list.oldValue;
+	    var value = list.value;
+	    var position = [].concat(_toConsumableArray(wrapLists)).indexOf(wrapList);
+
+	    [].concat(_toConsumableArray(lists)).forEach(function (el) {
+	      return el.unsetDisabled(oldValue);
+	    });
+	    [].concat(_toConsumableArray(lists)).forEach(function (el) {
+	      return el.setDisabled(value);
+	    });
+
+	    updatePath({
+	      field: type + '_update',
+	      value: value,
+	      position: position
+	    });
+	  }
+
+	  function removeList(event, type) {
+	    var clear = event.target;
+	    var wrapList = clear.closest('.js-cc-list');
+	    var wrapLists = wrapList.parentNode.querySelectorAll('.js-cc-list');
+	    var list = wrapList.querySelector('.js-list');
+	    var lists = box.querySelector('.js-cc-' + type + 's').querySelectorAll('.js-list');
+	    var value = list.value;
+	    var position = [].concat(_toConsumableArray(wrapLists)).indexOf(wrapList);
+
+	    [].concat(_toConsumableArray(lists)).forEach(function (el) {
+	      return el.unsetDisabled(value);
+	    });
+	    wrapList.parentNode.removeChild(wrapList);
+
+	    if (box.querySelector('.js-cc-' + type + 's').querySelectorAll('.js-list').length === 1) {
+	      [].concat(_toConsumableArray(box.querySelector('.js-cc-' + type + 's').querySelectorAll('.js-cc-hidden'))).forEach(function (el) {
+	        return el.classList.remove('is-show');
+	      });
+	    }
+
+	    updatePath({
+	      field: type + '_remove',
+	      position: position
+	    });
+	  }
+
+	  function addList(add, type) {
+	    var wrapAll = add.closest('.js-cc-' + type + 's');
+	    var wrapAdd = add.closest('.js-cc-list');
+	    var lists = wrapAll.querySelectorAll('.js-list');
+	    var value = add.value;
+	    var hiddens = wrapAll.querySelectorAll('.js-cc-hidden');
+
+	    if (!value) {
+	      return;
+	    }
+
+	    add.updateValue();
+	    add.setDisabled(value);
+	    [].concat(_toConsumableArray(lists)).forEach(function (el) {
+	      return el.setDisabled(value);
+	    });
+
+	    var newWrapList = wrapAdd.cloneNode(true);
+	    var newList = newWrapList.querySelector('.js-list');
+	    newWrapList.classList.remove('js-cc-with-hidden');
+	    newList.classList.remove('is-open', 'is-add', 'js-cc-add');
+	    wrapAdd.parentNode.insertBefore(newWrapList, wrapAdd);
+	    (0, _listEvent2.default)(newList);
+	    newList.updateValue(value);
+	    newList.addEventListener('change', function (event) {
+	      return changeList(event, type);
+	    });
+	    newWrapList.querySelector('.js-clear').addEventListener('click', function (event) {
+	      return removeList(event, type);
+	    });
+
+	    [].concat(_toConsumableArray(wrapAll.querySelectorAll('.js-cc-hidden'))).forEach(function (el) {
+	      return el.classList.add('is-show');
+	    });
+	    [].concat(_toConsumableArray(box.querySelectorAll('.js-cc-with-hidden .js-cc-hidden'))).forEach(function (el) {
+	      return el.classList.remove('is-show');
+	    });
+
+	    maskWeight(newWrapList.querySelector('.js-cc-weight'));
+
+	    newWrapList.querySelector('.js-cc-weight').addEventListener('change', function (event) {
+	      var wL = event.target.closest('.js-cc-list');
+	      var wLs = wL.parentNode.querySelectorAll('.js-cc-list');
+	      var position = [].concat(_toConsumableArray(wLs)).indexOf(wL);
+
+	      updatePath({
+	        field: type + '_update_weight',
+	        value: Number(event.target.value),
+	        position: position
+	      });
+	    });
+
+	    updatePath({
+	      field: type + '_add',
+	      value: value
+	    });
+	  }
+
+	  function fillingAddLists(add, url, type) {
+	    var options = window._getOptionsFetch({ field: 'id,name', order: 'name' });
+	    fetch(window.might.url + url, options).then(function (response) {
 	      return response.json();
 	    }).then(function (result) {
-	      var items = addLander.querySelector('.js-list-items');
 	      var obj = result.result.data || {};
-
 	      for (var i in obj) {
 	        if (obj.hasOwnProperty(i)) {
-	          var item = obj[i];
-	          items.innerHTML += '<div class="list__item js-list-item" data-value="' + item.id + '">' + item.name + '</div>';
+	          add.querySelector('.js-list-items').innerHTML += '<div class="list__item js-list-item" data-value="' + obj[i].id + '">' + obj[i].name + '</div>';
 	        }
 	      }
-
-	      (0, _listEvent2.default)(addLander);
+	      (0, _listEvent2.default)(add);
+	      add.addEventListener('change', function () {
+	        return addList(add, type);
+	      });
 	    });
-	  })();
+	  }
 
 	  (function () {
-	    var options = window._getOptionsFetch({
-	      field: 'id,name',
-	      order: 'name'
-	    });
-
-	    fetch(window.might.url + '/offer/list', options).then(function (response) {
-	      return response.json();
-	    }).then(function (result) {
-	      var items = addOffer.querySelector('.js-list-items');
-	      var obj = result.result.data || {};
-
-	      for (var i in obj) {
-	        if (obj.hasOwnProperty(i)) {
-	          var item = obj[i];
-	          items.innerHTML += '<div class="list__item js-list-item" data-value="' + item.id + '">' + item.name + '</div>';
-	        }
-	      }
-
-	      (0, _listEvent2.default)(addOffer);
-	    });
+	    fillingAddLists(addLander, '/lander/list', 'lander');
+	    fillingAddLists(addOffer, '/offer/list', 'offer');
 	  })();
 	};
 
@@ -5495,6 +5913,8 @@ webpackJsonp([0],[
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
@@ -5610,7 +6030,9 @@ webpackJsonp([0],[
 	  });
 
 	  formUrl.addEventListener('blur', function () {
-	    formUrlTags.style.display = 'none';
+	    setTimeout(function () {
+	      formUrlTags.style.display = 'none';
+	    }, 200);
 	  });
 
 	  var changeFormUrl = function changeFormUrl() {
@@ -5836,7 +6258,9 @@ webpackJsonp([0],[
 	  });
 
 	  formUrl.addEventListener('blur', function () {
-	    formUrlTags.style.display = 'none';
+	    setTimeout(function () {
+	      formUrlTags.style.display = 'none';
+	    }, 200);
 	  });
 
 	  var changeFormUrl = function changeFormUrl() {
@@ -6159,7 +6583,9 @@ webpackJsonp([0],[
 	  });
 
 	  formUrl.addEventListener('blur', function () {
-	    formUrlTags.style.display = 'none';
+	    setTimeout(function () {
+	      formUrlTags.style.display = 'none';
+	    }, 200);
 	  });
 
 	  var changeFormUrl = function changeFormUrl() {

@@ -2944,7 +2944,7 @@ body.noscroll {
   border-top: 6px solid transparent;
   border-bottom: 6px solid transparent;
 }
-.cc__status.is-stop:after {
+.cc__status.is-stoped:after {
   height: 10px;
   top: 11px;
   left: 11px;
@@ -2952,18 +2952,26 @@ body.noscroll {
   border-top: 0;
   border-bottom: 0;
 }
+.cc__hidden {
+  visibility: hidden;
+}
+.cc__hidden.is-show {
+  visibility: visible;
+}
 .cc__path {
   position: relative;
   height: 34px;
   margin-left: 10px;
-  padding: 10px 20px 0 10px;
+  padding: 10px 10px 0 10px;
   line-height: 14px;
   font-size: 14px;
   border-left: 2px solid transparent;
   transition: all 200ms ease;
   cursor: pointer;
 }
-.cc__path:hover {
+.cc__path:hover,
+.cc__path.is-deleted,
+.cc__path.is-select {
   border-left: 2px solid #4f607a;
   background-color: rgba(244,244,244,0.7);
 }
@@ -2976,12 +2984,14 @@ body.noscroll {
   bottom: 0;
   background-color: #fff;
 }
+.cc__path.is-deleted:hover:after {
+  display: none;
+}
 .cc__path-name {
   display: inline-block;
 }
 .cc__path-weight {
   float: right;
-  margin-right: 90px;
   line-height: 14px;
   font-size: 12px;
 }
@@ -3057,8 +3067,22 @@ body.noscroll {
 .cc__path-delete:hover {
   background-color: #fff;
 }
-.cc__path.is-stop .cc__path-name,
-.cc__path.is-stop .cc__path-weight {
+.cc__path-undo {
+  display: none;
+  float: right;
+  margin-right: 10px;
+  line-height: 14px;
+  font-size: 14px;
+  color: #0182ec;
+}
+.cc__path-undo:hover {
+  color: #3a62c6;
+}
+.cc__path-undo i {
+  margin-right: 5px;
+}
+.cc__path.is-stoped .cc__path-name,
+.cc__path.is-stoped .cc__path-weight {
   opacity: 0.5;
 }
 .cc__path:hover .cc__path-weight {
@@ -3068,6 +3092,40 @@ body.noscroll {
 .cc__path:hover .cc__path-delete {
   opacity: 1;
   z-index: 1;
+}
+.cc__path.is-deleted .cc__path-weight,
+.cc__path.is-deleted .cc__path-copy,
+.cc__path.is-deleted .cc__path-delete {
+  display: none;
+}
+.cc__path.is-deleted .cc__path-undo {
+  display: block;
+}
+.cc__added {
+  position: relative;
+  height: 34px;
+  margin-left: 10px;
+  margin-bottom: 20px;
+  padding: 10px 20px 10px 10px;
+}
+.cc__added span {
+  position: relative;
+  display: inline-block;
+  line-height: 14px;
+  font-size: 14px;
+  color: #0182ec;
+  cursor: pointer;
+}
+.cc__added span:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  border-bottom: 1px solid #0182ec;
+}
+.cc__added span:hover {
+  color: #3a62c6;
 }
 .checkbox {
   position: relative;
