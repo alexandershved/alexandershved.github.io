@@ -125,6 +125,12 @@ webpackJsonp([0],[
 	        parent.appendChild(elem);
 	      }
 	    };
+
+	    proto._insertBefore = proto.insertBefore;
+
+	    proto.insertBefore = function (elem) {
+	      this.parentNode._insertBefore(elem, this);
+	    };
 	  })(Element.prototype);
 
 	  if (!Object.assign) {
@@ -768,7 +774,7 @@ webpackJsonp([0],[
 	      label = document.createElement('div');
 	      label.className = 'list__label';
 	      label.textContent = lbl;
-	      list.insertBefore(label, list.firstChild);
+	      list.firstChild.insertBefore(label);
 	    }
 
 	    return isUpdate;
@@ -2124,7 +2130,7 @@ webpackJsonp([0],[
 	      label = document.createElement('div');
 	      label.className = 'list__label';
 	      label.textContent = (0, _fieldName2.default)(fld);
-	      list.insertBefore(label, list.firstChild);
+	      list.firstChild.insertBefore(label);
 	    }
 
 	    return isUpdate;
@@ -3843,7 +3849,7 @@ webpackJsonp([0],[
 
 	    var segment = segmentAdd.cloneNode(true);
 	    segment.classList.remove('is-open', 'is-add', 'js-stat-add-segment');
-	    segmentAdd.parentNode.insertBefore(segment, segmentAdd);
+	    segmentAdd.insertBefore(segment);
 	    (0, _listEvent2.default)(segment);
 	    segment.updateValue(value, null, true);
 	    segment.addEventListener('change', segmentChange);
@@ -5445,10 +5451,7 @@ webpackJsonp([0],[
 	});
 
 	exports.default = function (box) {
-	  box.innerHTML = '\n    <div class="cc__left">\n      <div class="cc__label">Default paths:</div>\n      <div class="js-cc-all-paths"></div>\n      <div class="cc__added"><span class="js-cc-add-path">+ Add new Path</span></div>\n\n      <div class="cc__label">Rules:</div>\n      <div class="js-cc-all-rules"></div>\n      <div class="cc__added"><span class="js-cc-add-rule">+ Add new Rule</span></div>\n    </div>\n\n    <div class="cc__right">\n      <div class="js-cc-path-box">\n        <div class="js-cc-name">\n          <div class="cc__line">\n            <div class="cc__col"><div class="cc__label">Name:</div></div>\n            <div class="cc__col"><div class="cc__label">Weight:</div></div>\n            <div class="cc__col"><div class="cc__label">Status:</div></div>\n          </div>\n\n          <div class="cc__line">\n            <div class="cc__col">\n              <div class="input">\n                <input class="js-cc-input" type="text" placeholder="Path name">\n                <span><span>\n              </div>\n            </div>\n            <div class="cc__col">\n              <div class="input">\n                <input class="js-cc-weight" type="text" placeholder="0">\n                <span><span>\n              </div>\n            </div>\n            <div class="cc__col">\n              <div class="cc__status js-cc-status"></div>\n            </div>\n          </div>\n        </div>\n\n        <div class="js-cc-landers">\n          <div class="cc__line">\n            <div class="cc__col"><div class="cc__label">Lander:</div></div>\n            <div class="cc__col"><div class="cc__label cc__hidden js-cc-hidden">Weight:</div></div>\n            <div class="cc__col"></div>\n          </div>\n\n          <div class="cc__line js-cc-list js-cc-with-hidden">\n            <div class="cc__col">\n              <div class="list is-add js-list js-cc-add" style="display: block; margin: 0 0 15px;" data-placeholder="+ Add Lander">\n                <div class="list__wrap" style="display: block;">\n                  <div class="list__value js-list-value"></div>\n                  <div class="list__dropdown" style="right: 0;">\n                    <div class="list__items js-list-items"></div>\n                  </div>\n                </div>\n              </div>\n            </div>\n            <div class="cc__col cc__hidden js-cc-hidden">\n              <div class="input">\n                <input class="js-cc-weight" type="text" placeholder="0">\n                <span><span>\n              </div>\n            </div>\n            <div class="cc__col cc__hidden js-cc-hidden">\n              <div class="cc__clear js-clear"></div>\n            </div>\n          </div>\n        </div>\n\n        <div class="js-cc-offers">\n          <div class="cc__line">\n            <div class="cc__col"><div class="cc__label">Offer:</div></div>\n            <div class="cc__col"><div class="cc__label cc__hidden js-cc-hidden">Weight:</div></div>\n            <div class="cc__col"></div>\n          </div>\n\n          <div class="cc__line js-cc-list js-cc-with-hidden">\n            <div class="cc__col">\n              <div class="list is-add js-list js-cc-add" style="display: block; margin: 0 0 15px;" data-placeholder="+ Add Offer">\n                <div class="list__wrap" style="display: block;">\n                  <div class="list__value js-list-value"></div>\n                  <div class="list__dropdown" style="right: 0;">\n                    <div class="list__items js-list-items"></div>\n                  </div>\n                </div>\n              </div>\n            </div>\n            <div class="cc__col cc__hidden js-cc-hidden">\n              <div class="input">\n                <input class="js-cc-weight" type="text" placeholder="0">\n                <span><span>\n              </div>\n            </div>\n            <div class="cc__col cc__hidden js-cc-hidden">\n              <div class="cc__clear js-clear"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class="js-cc-rule-box" style="display: none;">\n        <div class="cc__line">\n          <div class="cc__label">Name:</div>\n        </div>\n\n        <div class="cc__line">\n          <div class="input">\n            <input class="js-cc-rule-name" type="text" placeholder="Rule name">\n            <span><span>\n          </div>\n        </div>\n\n        <div class="cc__line js-cc-rule-list">\n          <div class="list is-add js-list js-cc-rule-add" style="margin: 0 0 15px; width: 180px;" data-placeholder="+ Add Rule">\n            <div class="list__wrap" style="display: block;">\n              <div class="list__value js-list-value"></div>\n              <div class="list__dropdown" style="right: 0;">\n                <div class="list__items js-list-items"></div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  ';
-
-	  box.paths = [];
-	  box.rules = [];
+	  box.innerHTML = '\n    <div class="cc__left">\n      <div class="cc__label">Default paths:</div>\n\n      <div class="cc__left-wrap">\n        <div class="js-pathes-default"></div>\n        <div class="cc__added"><span class="js-path-add">+ Add new Path</span></div>\n      </div>\n\n      <div class="js-rules"></div>\n      <div class="cc__added"><span class="js-rule-add">+ Add new Rule</span></div>\n    </div>\n\n    <div class="cc__right">\n      <div class="js-path-box"></div>\n      <div class="js-rule-box" style="display: none;"></div>\n    </div>\n  ';
 
 	  (0, _campaignAddPath2.default)(box);
 	  (0, _campaignAddRule2.default)(box);
@@ -5475,130 +5478,217 @@ webpackJsonp([0],[
 	});
 
 	exports.default = function (box) {
-	  var pathBox = box.querySelector('.js-cc-path-box');
-	  var ruleBox = box.querySelector('.js-cc-rule-box');
+	  var pathBox = box.querySelector('.js-path-box');
+	  var ruleBox = box.querySelector('.js-rule-box');
 
-	  var allPaths = box.querySelector('.js-cc-all-paths');
-	  var boxName = box.querySelector('.js-cc-name');
+	  pathBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Name:</div></div>\n      <div class="cc__col cc__col-120 cc__col-pad"><div class="cc__label">Weight:</div></div>\n      <div class="cc__col cc__col-50 cc__col-pad"><div class="cc__label">Status:</div></div>\n    </div>\n\n    <div class="cc__line">\n      <div class="cc__col">\n        <div class="input">\n          <input class="js-path-name" type="text" placeholder="Path name">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-120 cc__col-pad">\n        <div class="input">\n          <input class="js-path-weight" type="text" placeholder="0">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-50 cc__col-pad">\n        <div class="cc__status js-path-status"></div>\n      </div>\n    </div>';
+
+	  pathBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Lander:</div></div>\n      <div class="cc__col cc__col-120 cc__col-pad"><div class="cc__label js-path-lander-label-weight"></div></div>\n      <div class="cc__col cc__col-50 cc__col-pad"></div>\n    </div>\n\n    <div class="cc__line js-path-lander-add">\n      <div class="cc__col">\n        <div class="list is-add js-list" data-placeholder="+ Add Lander">\n          <div class="list__wrap">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-120 cc__col-pad cc__hidden js-path-hidden">\n        <div class="input">\n          <input class="js-path-lander-weight" type="text" placeholder="0">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-50 cc__col-pad cc__hidden js-path-hidden">\n        <div class="cc__clear js-path-clear"></div>\n      </div>\n    </div>';
+
+	  pathBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Offer:</div></div>\n      <div class="cc__col cc__col-120 cc__col-pad"><div class="cc__label js-path-offer-label-weight"></div></div>\n      <div class="cc__col cc__col-50 cc__col-pad"></div>\n    </div>\n\n    <div class="cc__line js-path-offer-add">\n      <div class="cc__col">\n        <div class="list is-add js-list" data-placeholder="+ Add Offer">\n          <div class="list__wrap">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-120 cc__col-pad cc__hidden js-path-hidden">\n        <div class="input">\n          <input class="js-path-offer-weight" type="text" placeholder="0">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-50 cc__col-pad cc__hidden js-path-hidden">\n        <div class="cc__clear js-path-clear"></div>\n      </div>\n    </div>';
+
+	  var pathName = pathBox.querySelector('.js-path-name');
+	  var pathWeight = pathBox.querySelector('.js-path-weight');
+	  var pathStatus = pathBox.querySelector('.js-path-status');
+
+	  var add = {
+	    lander: {
+	      labelWeight: pathBox.querySelector('.js-path-lander-label-weight'),
+	      wrap: pathBox.querySelector('.js-path-lander-add'),
+	      list: pathBox.querySelector('.js-path-lander-add').querySelector('.js-list')
+	    },
+	    offer: {
+	      labelWeight: pathBox.querySelector('.js-path-offer-label-weight'),
+	      wrap: pathBox.querySelector('.js-path-offer-add'),
+	      list: pathBox.querySelector('.js-path-offer-add').querySelector('.js-list')
+	    }
+	  };
 
 	  var checkSelect = false;
 
-	  function eventPath(element) {
-	    element.addEventListener('click', function (event) {
-	      var path = event.target.closest('.js-cc-path');
-	      var copy = event.target.closest('.js-cc-path-copy');
-	      var del = event.target.closest('.js-cc-path-delete');
+	  function updatePathWeight(parent) {
+	    var count = 0;
+	    var pathes = parent.querySelectorAll('.js-path');
 
-	      if (path) {
-	        (function () {
-	          var position = box.paths.indexOf(path);
+	    [].concat(_toConsumableArray(pathes)).forEach(function (path) {
+	      count += path.value.weight;
+	    });
 
-	          if (copy) {
-	            (function () {
-	              var clone = path.cloneNode(true);
-	              var name = path.value.name;
+	    [].concat(_toConsumableArray(pathes)).forEach(function (path) {
+	      if (count) {
+	        var percent = Math.round(10000 * path.value.weight / count) / 100;
+	        path.querySelector('.js-path-weight').textContent = path.value.weight + ' (' + percent + '%)';
+	      } else {
+	        path.querySelector('.js-path-weight').textContent = '0 (0%)';
+	      }
+	    });
+	  }
 
-	              path.insertAfter(clone);
-	              box.paths.splice(position + 1, 0, clone);
+	  function updatePath(obj) {
+	    if (checkSelect) {
+	      return;
+	    }
 
-	              clone.value = Object.assign({}, path.value);
+	    if (!box.querySelector('.js-path.is-select')) {
+	      switch (obj.field) {
+	        case 'name':
+	        case 'weight':
+	        case 'lander_add':
+	        case 'offer_add':
+	        case 'status':
+	          createPath();
+	          break;
+	        default:
+	          break;
+	      }
+	    }
 
-	              if (!/ \(copy\)$/.test(name)) {
-	                name = name + ' (copy)';
-	              }
+	    var path = box.querySelector('.js-path.is-select');
 
-	              clone.value.name = name;
-	              clone.querySelector('.js-cc-path-name').textContent = name;
-	              eventPath(clone);
+	    switch (obj.field) {
+	      case 'name':
+	        path.value.name = obj.value.trim();
+	        path.querySelector('.js-path-name').textContent = path.value.name || '[path unnamed]';
+	        break;
+	      case 'weight':
+	        path.value.weight = obj.value || 0;
+	        updatePathWeight(path.parentNode);
+	        break;
+	      case 'lander_add':
+	        path.value.lander.push(obj.value);
+	        path.value.lander_weight.push(0);
+	        break;
+	      case 'lander_update':
+	        path.value.lander[obj.position] = obj.value;
+	        break;
+	      case 'lander_update_weight':
+	        path.value.lander_weight[obj.position] = obj.value;
+	        break;
+	      case 'lander_remove':
+	        path.value.lander.splice(obj.position, 1);
+	        path.value.lander_weight.splice(obj.position, 1);
+	        break;
+	      case 'offer_add':
+	        path.value.offer.push(obj.value);
+	        path.value.offer_weight.push(0);
+	        break;
+	      case 'offer_update':
+	        path.value.offer[obj.position] = obj.value;
+	        break;
+	      case 'offer_update_weight':
+	        path.value.offer_weight[obj.position] = obj.value;
+	        break;
+	      case 'offer_remove':
+	        path.value.offer.splice(obj.position, 1);
+	        path.value.offer_weight.splice(obj.position, 1);
+	        break;
+	      case 'status':
+	        path.value.checkbox = obj.value;
+	        if (path.value.checkbox === 'off') {
+	          path.classList.add('is-stoped');
+	        } else {
+	          path.classList.remove('is-stoped');
+	        }
+	        break;
+	      default:
+	        break;
+	    }
+	  }
 
-	              var count = 0;
+	  function eventPath(path) {
+	    path.addEventListener('click', function (event) {
+	      var copy = event.target.closest('.js-path-copy');
+	      var del = event.target.closest('.js-path-delete');
+	      var item = event.target.closest('.js-path-item');
 
-	              box.paths.forEach(function (p) {
-	                count += p.value.weight;
-	              });
+	      var siblignsPaths = path.parentNode.querySelectorAll('.js-path');
+	      var position = [].concat(_toConsumableArray(siblignsPaths)).indexOf(path);
 
-	              box.paths.forEach(function (p) {
-	                if (count) {
-	                  var percent = Math.round(10000 * p.value.weight / count) / 100;
-	                  p.querySelector('.js-cc-path-weight').textContent = p.value.weight + ' (' + percent + '%)';
-	                } else {
-	                  p.querySelector('.js-cc-path-weight').textContent = '0 (0%)';
-	                }
-	              });
-	            })();
-	          } else if (del) {
-	            if (path.classList.contains('is-select')) {
-	              path.classList.remove('is-select');
-	              clearFrom();
-	            }
+	      if (copy) {
+	        var clone = path.cloneNode(true);
+	        var name = path.value.name;
 
-	            path.classList.add('is-deleted');
+	        if (!/ \(copy\)$/.test(name)) {
+	          name = (name + ' (copy)').trim();
+	        }
 
-	            path._deleteTimeout = setTimeout(function () {
-	              path.parentNode.removeChild(path);
-	              box.paths.splice(position, 1);
-	            }, 5000);
+	        path.insertAfter(clone);
+	        clone.value = Object.assign({}, path.value);
+	        clone.value.name = name;
+	        clone.querySelector('.js-path-name').textContent = name;
+	        eventPath(clone);
 
-	            path.querySelector('.js-cc-path-undo').addEventListener('click', function () {
-	              clearTimeout(path._deleteTimeout);
-	              setTimeout(function () {
-	                path.classList.remove('is-deleted');
-	              }, 300);
-	            });
-	          } else {
-	            (function () {
-	              pathBox.style.display = '';
-	              ruleBox.style.display = 'none';
+	        updatePathWeight(path.parentNode);
+	      } else if (del) {
+	        if (path.classList.contains('is-select')) {
+	          path.classList.remove('is-select');
+	          clearForm();
+	        }
 
-	              checkSelect = true;
+	        path.classList.add('is-deleted');
 
-	              clearFrom();
-	              [].concat(_toConsumableArray(box.querySelectorAll('.js-cc-path'))).forEach(function (el) {
-	                return el.classList.remove('is-select');
-	              });
-	              [].concat(_toConsumableArray(box.querySelectorAll('.js-cc-rule'))).forEach(function (el) {
-	                return el.classList.remove('is-select');
-	              });
-	              path.classList.add('is-select');
+	        path._deleteTimeout = setTimeout(function () {
+	          var parent = path.parentNode;
+	          path.parentNode.removeChild(path);
+	          updatePathWeight(parent);
+	        }, 5000);
 
-	              boxName.querySelector('.js-cc-input').value = path.value.name || '';
-	              boxName.querySelector('.js-cc-weight').value = path.value.weight || '';
+	        path.querySelector('.js-path-undo').addEventListener('click', function () {
+	          clearTimeout(path._deleteTimeout);
+	          setTimeout(function () {
+	            return path.classList.remove('is-deleted');
+	          }, 300);
+	        });
+	      } else if (item) {
+	        checkSelect = true;
 
-	              if (path.value.checkbox === 'off') {
-	                boxName.querySelector('.js-cc-status').classList.add('is-stoped');
-	              }
+	        showForm();
+	        clearForm();
 
-	              var landers = box.querySelector('.js-cc-landers');
-	              var offers = box.querySelector('.js-cc-offers');
-	              var landerAdd = landers.querySelector('.js-cc-add');
-	              var offerAdd = offers.querySelector('.js-cc-add');
+	        [].concat(_toConsumableArray(box.querySelectorAll('.js-path'))).forEach(function (el) {
+	          return el.classList.remove('is-select');
+	        });
+	        [].concat(_toConsumableArray(box.querySelectorAll('.js-rule'))).forEach(function (el) {
+	          return el.classList.remove('is-select');
+	        });
 
-	              path.value.lander.forEach(function (value, index) {
-	                landerAdd.setValue(value);
-	                landers.querySelectorAll('.js-cc-list')[index].querySelector('.js-cc-weight').value = path.value.lander_weight[index] || '';
-	              });
+	        var rule = path.closest('.js-rule');
+	        if (rule) {
+	          rule.classList.add('is-select');
+	        }
 
-	              path.value.offer.forEach(function (value, index) {
-	                offerAdd.setValue(value);
-	                offers.querySelectorAll('.js-cc-list')[index].querySelector('.js-cc-weight').value = path.value.lander_weight[index] || '';
-	              });
+	        path.classList.add('is-select');
+	        pathName.value = path.value.name || '';
+	        pathWeight.value = path.value.weight || '';
 
-	              checkSelect = false;
-	            })();
-	          }
-	        })();
+	        if (path.value.checkbox === 'off') {
+	          pathStatus.classList.add('is-stoped');
+	        }
+
+	        ['lander', 'offer'].forEach(function (type) {
+	          path.value[type].forEach(function (value, index) {
+	            add[type].list.setValue(value);
+	            pathBox.querySelectorAll('.js-path-' + type)[index].querySelector('.js-path-' + type + '-weight').value = path.value.lander_weight[index] || '';
+	          });
+	        });
+
+	        checkSelect = false;
 	      }
 	    });
 	  }
 
 	  function createPath() {
 	    var pathElement = document.createElement('div');
+	    pathElement.className = 'cc__element is-select js-path';
+	    pathElement.innerHTML = '\n      <div class="cc__element-item js-path-item">\n        <div class="cc__element-name js-path-name">[path unnamed]</div>\n        <div class="cc__element-weight js-path-weight">0 (0%)</div>\n        <div class="cc__element-copy js-path-copy"></div>\n        <div class="cc__element-delete js-path-delete"></div>\n        <div class="cc__element-undo js-path-undo"><i class="fa fa-undo"></i>Undo</div>\n      </div>';
 
-	    pathElement.className = 'cc__path is-select js-cc-path';
-	    pathElement.innerHTML = '\n      <div class="cc__path-name js-cc-path-name">[path unnamed]</div>\n      <div class="cc__path-weight js-cc-path-weight">0 (0%)</div>\n      <div class="cc__path-copy js-cc-path-copy"></div>\n      <div class="cc__path-delete js-cc-path-delete"></div>\n      <div class="cc__path-undo js-cc-path-undo"><i class="fa fa-undo"></i>Undo</div>';
+	    var rule = box.querySelector('.js-rule.is-select');
 
-	    allPaths.appendChild(pathElement);
-	    box.paths.push(pathElement);
+	    if (rule) {
+	      rule.querySelector('.js-pathes').appendChild(pathElement);
+	    } else {
+	      box.querySelector('.js-pathes-default').appendChild(pathElement);
+	    }
 
 	    pathElement.value = {
 	      name: '',
@@ -5607,150 +5697,63 @@ webpackJsonp([0],[
 	      lander: [],
 	      lander_weight: [],
 	      offer: [],
-	      offer_weight: []
+	      offer_weight: [],
+	      offer_url: []
 	    };
 
 	    eventPath(pathElement);
 	  }
 
-	  function updatePath(obj) {
-	    if (checkSelect) {
-	      return;
-	    }
-
-	    if (!box.querySelector('.js-cc-path.is-select')) {
-	      switch (obj.field) {
-	        case 'name':
-	        case 'weight':
-	        case 'lander_add':
-	        case 'offer_add':
-	        case 'checkbox':
-	          createPath();
-	          break;
-	        default:
-	          break;
-	      }
-	    }
-
-	    var path = box.querySelector('.js-cc-path.is-select');
-	    var value = path.value;
-
-	    (function () {
-	      switch (obj.field) {
-	        case 'name':
-	          path.value.name = obj.value.trim();
-	          path.querySelector('.js-cc-path-name').textContent = obj.value.trim() || '[path unnamed]';
-	          break;
-	        case 'weight':
-	          var count = 0;
-	          path.value.weight = obj.value || 0;
-
-	          box.paths.forEach(function (p) {
-	            count += p.value.weight;
-	          });
-
-	          box.paths.forEach(function (p) {
-	            if (count) {
-	              var percent = Math.round(10000 * p.value.weight / count) / 100;
-	              p.querySelector('.js-cc-path-weight').textContent = p.value.weight + ' (' + percent + '%)';
-	            } else {
-	              p.querySelector('.js-cc-path-weight').textContent = '0 (0%)';
-	            }
-	          });
-	          break;
-	        case 'lander_add':
-	          path.value.lander.push(obj.value);
-	          path.value.lander_weight.push(0);
-	          break;
-	        case 'lander_update':
-	          path.value.lander[obj.position] = obj.value;
-	          break;
-	        case 'lander_update_weight':
-	          path.value.lander_weight[obj.position] = obj.value;
-	          break;
-	        case 'lander_remove':
-	          path.value.lander.splice(obj.position, 1);
-	          path.value.lander_weight.splice(obj.position, 1);
-	          break;
-	        case 'offer_add':
-	          path.value.offer.push(obj.value);
-	          path.value.offer_weight.push(0);
-	          break;
-	        case 'offer_update':
-	          path.value.offer[obj.position] = obj.value;
-	          break;
-	        case 'offer_update_weight':
-	          path.value.offer_weight[obj.position] = obj.value;
-	          break;
-	        case 'offer_remove':
-	          path.value.offer.splice(obj.position, 1);
-	          path.value.offer_weight.splice(obj.position, 1);
-	          break;
-	        case 'checkbox':
-	          path.value.checkbox = obj.value;
-	          if (obj.value === 'off') {
-	            path.classList.add('is-stoped');
-	          } else {
-	            path.classList.remove('is-stoped');
-	          }
-	          break;
-	        default:
-	          break;
-	      }
-	    })();
-	  }
-
-	  function clearFrom() {
-	    boxName.querySelector('.js-cc-input').value = '';
-	    boxName.querySelector('.js-cc-weight').value = '';
-	    boxName.querySelector('.js-cc-status').classList.remove('is-stoped');
-
-	    [].concat(_toConsumableArray(box.querySelectorAll('.js-cc-list'))).forEach(function (list) {
-	      if (!list.querySelector('.js-cc-add')) {
-	        list.parentNode.removeChild(list);
-	      } else {
-	        list.querySelector('.js-cc-add').unsetDisabled();
-	      }
-	    });
-
-	    [].concat(_toConsumableArray(box.querySelectorAll('.js-cc-hidden'))).forEach(function (el) {
-	      return el.classList.remove('is-show');
-	    });
-	    boxName.querySelector('.js-cc-input').focus();
-	  }
-
-	  box.querySelector('.js-cc-add-path').addEventListener('click', function () {
+	  function showForm() {
 	    pathBox.style.display = '';
 	    ruleBox.style.display = 'none';
+	  }
 
-	    clearFrom();
-	    [].concat(_toConsumableArray(box.querySelectorAll('.js-cc-path'))).forEach(function (el) {
-	      return el.classList.remove('is-select');
+	  function clearForm() {
+	    pathName.value = '';
+	    pathWeight.value = '';
+	    pathStatus.classList.remove('is-stoped');
+
+	    ['lander', 'offer'].forEach(function (type) {
+	      [].concat(_toConsumableArray(pathBox.querySelectorAll('.js-path-' + type))).forEach(function (wrap) {
+	        wrap.parentNode.removeChild(wrap);
+	      });
+	      add[type].list.unsetDisabled();
+	      add[type].labelWeight.textContent = '';
 	    });
-	    [].concat(_toConsumableArray(box.querySelectorAll('.js-cc-rule'))).forEach(function (el) {
-	      return el.classList.remove('is-select');
-	    });
-	    createPath();
+
+	    pathName.focus();
+	  }
+
+	  box.addEventListener('click', function (event) {
+	    var addPath = event.target.closest('.js-path-add');
+
+	    if (addPath) {
+	      showForm();
+	      clearForm();
+
+	      [].concat(_toConsumableArray(box.querySelectorAll('.js-path'))).forEach(function (el) {
+	        return el.classList.remove('is-select');
+	      });
+	      [].concat(_toConsumableArray(box.querySelectorAll('.js-rule'))).forEach(function (el) {
+	        return el.classList.remove('is-select');
+	      });
+
+	      var rule = addPath.closest('.js-rule');
+	      if (rule) {
+	        rule.classList.add('is-select');
+	      }
+
+	      createPath();
+	    }
 	  });
 
-	  var nameInput = boxName.querySelector('.js-cc-input');
-	  var nameWeight = boxName.querySelector('.js-cc-weight');
-
-	  nameInput.addEventListener('change', function () {
-	    var value = nameInput.value;
+	  pathName.addEventListener('change', function () {
+	    var value = pathName.value;
 
 	    updatePath({
 	      field: 'name',
 	      value: value
-	    });
-	  });
-
-	  nameWeight.addEventListener('change', function () {
-	    var value = nameWeight.value;
-
-	    updatePath({
-	      field: 'weight',
-	      value: Number(value) || 0
 	    });
 	  });
 
@@ -5765,7 +5768,6 @@ webpackJsonp([0],[
 	      var code = event.keyCode;
 	      var char = String.fromCharCode(code);
 	      var key = '¾.0123456789'.indexOf(char);
-	      var value = parseInt(event.target.value, 10);
 
 	      switch (code) {
 	        case 9:
@@ -5787,43 +5789,39 @@ webpackJsonp([0],[
 	    });
 	  }
 
-	  [].concat(_toConsumableArray(box.querySelectorAll('.js-cc-weight'))).forEach(maskWeight);
-
-	  var statusBtn = box.querySelector('.js-cc-status');
-
-	  statusBtn.addEventListener('click', function () {
-	    if (statusBtn.classList.contains('is-stoped')) {
-	      statusBtn.classList.remove('is-stoped');
-	      updatePath({
-	        field: 'checkbox',
-	        value: 'on'
-	      });
-	    } else {
-	      statusBtn.classList.add('is-stoped');
-	      updatePath({
-	        field: 'checkbox',
-	        value: 'off'
-	      });
-	    }
+	  maskWeight(pathWeight);
+	  pathWeight.addEventListener('change', function () {
+	    var value = pathWeight.value;
+	    updatePath({
+	      field: 'weight',
+	      value: Number(value) || 0
+	    });
 	  });
 
-	  var addLander = box.querySelector('.js-cc-landers').querySelector('.js-cc-add');
-	  var addOffer = box.querySelector('.js-cc-offers').querySelector('.js-cc-add');
+	  pathStatus.addEventListener('click', function () {
+	    pathStatus.classList.toggle('is-stoped');
+	    updatePath({
+	      field: 'status',
+	      value: pathStatus.classList.contains('is-stoped') ? 'off' : 'on'
+	    });
+	  });
 
 	  function changeList(event, type) {
 	    var list = event.target;
-	    var lists = list.closest('.js-cc-' + type + 's').querySelectorAll('.js-list');
-	    var wrapList = list.closest('.js-cc-list');
-	    var wrapLists = wrapList.parentNode.querySelectorAll('.js-cc-list');
+	    var wrap = list.closest('.js-path-' + type);
+	    var lists = pathBox.querySelectorAll('.js-path-' + type + ' .js-list');
+	    var wraps = pathBox.querySelectorAll('.js-path-' + type);
+
 	    var oldValue = list.oldValue;
 	    var value = list.value;
-	    var position = [].concat(_toConsumableArray(wrapLists)).indexOf(wrapList);
+	    var position = [].concat(_toConsumableArray(wraps)).indexOf(wrap);
+
+	    add[type].list.unsetDisabled(oldValue);
+	    add[type].list.setDisabled(value);
 
 	    [].concat(_toConsumableArray(lists)).forEach(function (el) {
-	      return el.unsetDisabled(oldValue);
-	    });
-	    [].concat(_toConsumableArray(lists)).forEach(function (el) {
-	      return el.setDisabled(value);
+	      el.unsetDisabled(oldValue);
+	      el.setDisabled(value);
 	    });
 
 	    updatePath({
@@ -5835,22 +5833,23 @@ webpackJsonp([0],[
 
 	  function removeList(event, type) {
 	    var clear = event.target;
-	    var wrapList = clear.closest('.js-cc-list');
-	    var wrapLists = wrapList.parentNode.querySelectorAll('.js-cc-list');
-	    var list = wrapList.querySelector('.js-list');
-	    var lists = box.querySelector('.js-cc-' + type + 's').querySelectorAll('.js-list');
-	    var value = list.value;
-	    var position = [].concat(_toConsumableArray(wrapLists)).indexOf(wrapList);
 
+	    var wrap = clear.closest('.js-path-' + type);
+	    var list = wrap.querySelector('.js-list');
+	    var wraps = pathBox.querySelectorAll('.js-path-' + type);
+	    var lists = pathBox.querySelectorAll('.js-path-' + type + ' .js-list');
+
+	    var value = list.value;
+	    var position = [].concat(_toConsumableArray(wraps)).indexOf(wrap);
+
+	    add[type].list.unsetDisabled(value);
 	    [].concat(_toConsumableArray(lists)).forEach(function (el) {
 	      return el.unsetDisabled(value);
 	    });
-	    wrapList.parentNode.removeChild(wrapList);
+	    wrap.parentNode.removeChild(wrap);
 
-	    if (box.querySelector('.js-cc-' + type + 's').querySelectorAll('.js-list').length === 1) {
-	      [].concat(_toConsumableArray(box.querySelector('.js-cc-' + type + 's').querySelectorAll('.js-cc-hidden'))).forEach(function (el) {
-	        return el.classList.remove('is-show');
-	      });
+	    if (!pathBox.querySelectorAll('.js-path-' + type).length) {
+	      add[type].labelWeight.textContent = '';
 	    }
 
 	    updatePath({
@@ -5859,50 +5858,53 @@ webpackJsonp([0],[
 	    });
 	  }
 
-	  function addList(add, type) {
-	    var wrapAll = add.closest('.js-cc-' + type + 's');
-	    var wrapAdd = add.closest('.js-cc-list');
-	    var lists = wrapAll.querySelectorAll('.js-list');
-	    var value = add.value;
-	    var hiddens = wrapAll.querySelectorAll('.js-cc-hidden');
+	  function newList(type) {
+	    var wrap = add[type].wrap;
+	    var list = add[type].list;
+	    var wraps = pathBox.querySelectorAll('.js-path-' + type);
+	    var lists = pathBox.querySelectorAll('.js-path-' + type + ' .js-list');
+
+	    var value = list.value;
 
 	    if (!value) {
 	      return;
 	    }
 
-	    add.updateValue();
-	    add.setDisabled(value);
+	    list.updateValue();
+	    list.setDisabled(value);
+
 	    [].concat(_toConsumableArray(lists)).forEach(function (el) {
 	      return el.setDisabled(value);
 	    });
 
-	    var newWrapList = wrapAdd.cloneNode(true);
-	    var newList = newWrapList.querySelector('.js-list');
-	    newWrapList.classList.remove('js-cc-with-hidden');
-	    newList.classList.remove('is-open', 'is-add', 'js-cc-add');
-	    wrapAdd.parentNode.insertBefore(newWrapList, wrapAdd);
-	    (0, _listEvent2.default)(newList);
-	    newList.updateValue(value);
-	    newList.addEventListener('change', function (event) {
-	      return changeList(event, type);
-	    });
-	    newWrapList.querySelector('.js-clear').addEventListener('click', function (event) {
+	    var cloneWrap = wrap.cloneNode(true);
+	    var cloneList = cloneWrap.querySelector('.js-list');
+
+	    cloneWrap.classList.remove('js-path-' + type + '-add');
+	    cloneWrap.classList.add('js-path-' + type);
+	    cloneList.classList.remove('is-open', 'is-add');
+
+	    add[type].labelWeight.textContent = 'Weight:';
+	    wrap.insertBefore(cloneWrap);
+	    (0, _listEvent2.default)(cloneList);
+	    cloneWrap.querySelector('.js-path-clear').addEventListener('click', function (event) {
 	      return removeList(event, type);
 	    });
-
-	    [].concat(_toConsumableArray(wrapAll.querySelectorAll('.js-cc-hidden'))).forEach(function (el) {
+	    [].concat(_toConsumableArray(cloneWrap.querySelectorAll('.js-path-hidden'))).forEach(function (el) {
 	      return el.classList.add('is-show');
 	    });
-	    [].concat(_toConsumableArray(box.querySelectorAll('.js-cc-with-hidden .js-cc-hidden'))).forEach(function (el) {
-	      return el.classList.remove('is-show');
+
+	    cloneList.updateValue(value);
+	    cloneList.addEventListener('change', function (event) {
+	      return changeList(event, type);
 	    });
 
-	    maskWeight(newWrapList.querySelector('.js-cc-weight'));
-
-	    newWrapList.querySelector('.js-cc-weight').addEventListener('change', function (event) {
-	      var wL = event.target.closest('.js-cc-list');
-	      var wLs = wL.parentNode.querySelectorAll('.js-cc-list');
-	      var position = [].concat(_toConsumableArray(wLs)).indexOf(wL);
+	    var weight = cloneWrap.querySelector('.js-path-' + type + '-weight');
+	    maskWeight(weight);
+	    weight.addEventListener('change', function (event) {
+	      var targetWrap = event.target.closest('.js-path-' + type);
+	      var allWraps = pathBox.querySelectorAll('.js-path-' + type);
+	      var position = [].concat(_toConsumableArray(allWraps)).indexOf(targetWrap);
 
 	      updatePath({
 	        field: type + '_update_weight',
@@ -5917,27 +5919,32 @@ webpackJsonp([0],[
 	    });
 	  }
 
-	  function fillingAddLists(add, url, type) {
-	    var options = window._getOptionsFetch({ field: 'id,name', order: 'name' });
-	    fetch(window.might.url + url, options).then(function (response) {
+	  function fillingAddLists(type) {
+	    var link = '/' + type + '/list';
+	    var list = add[type].list;
+	    var listItems = add[type].list.querySelector('.js-list-items');
+
+	    fetch(window.might.url + link, window._getOptionsFetch({ field: 'id,name', order: 'name' })).then(function (response) {
 	      return response.json();
 	    }).then(function (result) {
 	      var obj = result.result.data || {};
+
 	      for (var i in obj) {
 	        if (obj.hasOwnProperty(i)) {
-	          add.querySelector('.js-list-items').innerHTML += '<div class="list__item js-list-item" data-value="' + obj[i].id + '">' + obj[i].name + '</div>';
+	          listItems.innerHTML += '<div class="list__item js-list-item" data-value="' + obj[i].id + '">' + obj[i].name + '</div>';
 	        }
 	      }
-	      (0, _listEvent2.default)(add);
-	      add.addEventListener('change', function () {
-	        return addList(add, type);
+
+	      (0, _listEvent2.default)(list);
+	      list.addEventListener('change', function () {
+	        return newList(type);
 	      });
 	    });
 	  }
 
 	  (function () {
-	    fillingAddLists(addLander, '/lander/list', 'lander');
-	    fillingAddLists(addOffer, '/offer/list', 'offer');
+	    fillingAddLists('lander');
+	    fillingAddLists('offer');
 	  })();
 	};
 
@@ -5961,83 +5968,146 @@ webpackJsonp([0],[
 	});
 
 	exports.default = function (box) {
-	  var pathBox = box.querySelector('.js-cc-path-box');
-	  var ruleBox = box.querySelector('.js-cc-rule-box');
+	  var pathBox = box.querySelector('.js-path-box');
+	  var ruleBox = box.querySelector('.js-rule-box');
 
-	  var allRules = box.querySelector('.js-cc-all-rules');
+	  ruleBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Name:</div></div>\n      <div class="cc__col cc__col-120 cc__col-pad"><div class="cc__label">Weight:</div></div>\n    </div>\n\n    <div class="cc__line">\n      <div class="cc__col">\n        <div class="input">\n          <input class="js-rule-name" type="text" placeholder="Rule name">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-120 cc__col-pad">\n        <div class="input">\n          <input class="js-rule-weight" type="text" placeholder="0">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="cc__line js-rule-line-add">\n      <div class="list is-add js-list" data-placeholder="+ Add Rule">\n        <div class="list__wrap">\n          <div class="list__value js-list-value"></div>\n          <div class="list__dropdown">\n            <div class="list__items js-list-items"></div>\n          </div>\n        </div>\n      </div>\n    </div>';
 
-	  var ruleName = box.querySelector('.js-cc-rule-name');
-	  var ruleLoad = box.querySelector('.js-cc-rule-load');
-	  var ruleAdd = box.querySelector('.js-cc-rule-add');
+	  var allRules = box.querySelector('.js-rules');
 
-	  var currentRule = void 0;
+	  var ruleName = ruleBox.querySelector('.js-rule-name');
+	  var ruleWeight = ruleBox.querySelector('.js-rule-weight');
+	  var ruleAddWrap = ruleBox.querySelector('.js-rule-line-add');
+	  var ruleAddList = ruleAddWrap.querySelector('.js-list');
+
 	  var checkSelect = false;
 
-	  function eventRule(element) {
-	    element.addEventListener('click', function (event) {
-	      var rule = event.target.closest('.js-cc-rule');
-	      var copy = event.target.closest('.js-cc-rule-copy');
-	      var del = event.target.closest('.js-cc-rule-delete');
+	  function updateRuleWeight() {
+	    var count = 0;
+	    var rules = box.querySelectorAll('.js-rule');
 
-	      if (rule) {
-	        (function () {
-	          var position = box.rules.indexOf(rule);
+	    [].concat(_toConsumableArray(rules)).forEach(function (rule) {
+	      count += rule.value.weight;
+	    });
 
-	          if (copy) {
-	            var clone = rule.cloneNode(true);
-	            var name = rule.value.name;
+	    [].concat(_toConsumableArray(rules)).forEach(function (rule) {
+	      if (count) {
+	        var percent = Math.round(10000 * rule.value.weight / count) / 100;
+	        rule.querySelector('.js-rule-weight').textContent = rule.value.weight + ' (' + percent + '%)';
+	      } else {
+	        rule.querySelector('.js-rule-weight').textContent = '0 (0%)';
+	      }
+	    });
+	  }
 
-	            rule.insertAfter(clone);
-	            box.rules.splice(position + 1, 0, clone);
+	  function updateRule(obj) {
+	    if (checkSelect) {
+	      return;
+	    }
 
-	            clone.value = Object.assign({}, rule.value);
+	    if (!box.querySelector('.js-rule.is-select')) {
+	      switch (obj.field) {
+	        case 'name':
+	        case 'weight':
+	        case 'rule_add':
+	          createRule();
+	          break;
+	        default:
+	          break;
+	      }
+	    }
 
-	            if (!/ \(copy\)$/.test(name)) {
-	              name = name + ' (copy)';
-	            }
+	    var rule = box.querySelector('.js-rule.is-select');
 
-	            clone.value.name = name;
-	            clone.querySelector('.js-cc-rule-name').textContent = name;
-	            eventRule(clone);
-	          } else if (del) {
-	            if (rule.classList.contains('is-select')) {
-	              rule.classList.remove('is-select');
-	              clearFrom();
-	            }
+	    switch (obj.field) {
+	      case 'name':
+	        rule.value.name = obj.value.trim();
+	        rule.querySelector('.js-rule-name').textContent = rule.value.name || '[rule unnamed]';
+	        break;
+	      case 'weight':
+	        rule.value.weight = obj.value || 0;
+	        updateRuleWeight();
+	        break;
+	      case 'rule':
+	        rule.value.rules[obj.position] = rule.value.rules[obj.position] || {};
+	        rule.value.rules[obj.position].name = obj.value;
+	        break;
+	      case 'condition':
+	        rule.value.rules[obj.position] = rule.value.rules[obj.position] || {};
+	        rule.value.rules[obj.position].condition = obj.value;
+	        break;
+	      case 'set':
+	        rule.value.rules[obj.position] = rule.value.rules[obj.position] || {};
+	        rule.value.rules[obj.position].set = obj.value;
+	        break;
+	      default:
+	        break;
+	    }
+	  }
 
-	            rule.classList.add('is-deleted');
+	  function eventRule(rule) {
+	    rule.addEventListener('click', function (event) {
+	      var del = event.target.closest('.js-rule-delete');
+	      var item = event.target.closest('.js-rule-item');
 
-	            rule._deleteTimeout = setTimeout(function () {
-	              rule.parentNode.removeChild(rule);
-	              box.rules.splice(position, 1);
-	            }, 5000);
+	      var rules = ruleBox.querySelectorAll('.js-rule');
+	      var position = [].concat(_toConsumableArray(rules)).indexOf(rule);
 
-	            rule.querySelector('.js-cc-rule-undo').addEventListener('click', function () {
-	              clearTimeout(rule._deleteTimeout);
-	              setTimeout(function () {
-	                rule.classList.remove('is-deleted');
-	              }, 300);
-	            });
-	          } else {
-	            pathBox.style.display = 'none';
-	            ruleBox.style.display = '';
+	      if (del) {
+	        if (rule.classList.contains('is-select')) {
+	          rule.classList.remove('is-select');
+	          [].concat(_toConsumableArray(rule.querySelectorAll('.js-path'))).forEach(function (el) {
+	            return el.classList.remove('is-select');
+	          });
+	          clearForm();
+	        }
 
-	            checkSelect = true;
+	        rule.classList.add('is-deleted');
 
-	            clearFrom();
-	            [].concat(_toConsumableArray(box.querySelectorAll('.js-cc-path'))).forEach(function (el) {
-	              return el.classList.remove('is-select');
-	            });
-	            [].concat(_toConsumableArray(box.querySelectorAll('.js-cc-rule'))).forEach(function (el) {
-	              return el.classList.remove('is-select');
-	            });
-	            rule.classList.add('is-select');
+	        rule._deleteTimeout = setTimeout(function () {
+	          rule.parentNode.removeChild(rule);
+	          updateRuleWeight();
+	        }, 5000);
 
-	            ruleName.value = rule.value.name || '';
+	        rule.querySelector('.js-rule-undo').addEventListener('click', function () {
+	          clearTimeout(rule._deleteTimeout);
+	          setTimeout(function () {
+	            return rule.classList.remove('is-deleted');
+	          }, 300);
+	        });
+	      } else if (item) {
+	        checkSelect = true;
 
-	            checkSelect = false;
+	        showForm();
+	        clearForm();
+
+	        [].concat(_toConsumableArray(box.querySelectorAll('.js-path'))).forEach(function (el) {
+	          return el.classList.remove('is-select');
+	        });
+	        [].concat(_toConsumableArray(box.querySelectorAll('.js-rule'))).forEach(function (el) {
+	          return el.classList.remove('is-select');
+	        });
+	        rule.classList.add('is-select');
+
+	        ruleName.value = rule.value.name || '';
+	        ruleWeight.value = rule.value.weight || '';
+
+	        rule.value.rules.forEach(function (i, index) {
+	          ruleAddList.setValue(i.name);
+
+	          var line = ruleBox.querySelectorAll('.js-rule-line')[index];
+	          var conditionList = line.querySelector('.js-rule-condition');
+
+	          if (i.condition && conditionList) {
+	            conditionList.setValue(i.condition);
 	          }
-	        })();
+
+	          if (i.set) {
+	            line.querySelector('.js-rule-checklist').updateValue(i.set);
+	          }
+	        });
+
+	        checkSelect = false;
 	      }
 	    });
 	  }
@@ -6045,106 +6115,214 @@ webpackJsonp([0],[
 	  function createRule() {
 	    var ruleElement = document.createElement('div');
 
-	    ruleElement.className = 'cc__path is-select js-cc-rule';
-	    ruleElement.innerHTML = '\n      <div class="cc__path-name js-cc-rule-name">[rule unnamed]</div>\n      <div class="cc__path-copy js-cc-rule-copy"></div>\n      <div class="cc__path-delete js-cc-rule-delete"></div>\n      <div class="cc__path-undo js-cc-rule-undo"><i class="fa fa-undo"></i>Undo</div>';
+	    ruleElement.className = 'cc__element is-select js-rule';
+	    ruleElement.innerHTML = '\n      <div class="cc__element-item js-rule-item">\n        <div class="cc__element-name js-rule-name">[rule unnamed]</div>\n        <div class="cc__element-weight js-rule-weight">0 (0%)</div>\n        <div class="cc__element-delete js-rule-delete"></div>\n        <div class="cc__element-undo js-rule-undo"><i class="fa fa-undo"></i>Undo</div>\n      </div>\n      <div class="cc__left-wrap">\n        <div class="js-pathes"></div>\n        <div class="cc__added"><span class="js-path-add">+ Add new Path</span></div>\n      </div>';
 
 	    allRules.appendChild(ruleElement);
-	    box.rules.push(ruleElement);
 
 	    ruleElement.value = {
-	      name: ''
+	      name: '',
+	      weight: 0,
+	      rules: []
 	    };
 
 	    eventRule(ruleElement);
 	  }
 
-	  function updateRule(obj) {}
+	  function showForm() {
+	    pathBox.style.display = 'none';
+	    ruleBox.style.display = '';
+	  }
 
-	  function clearFrom() {
+	  function clearForm() {
 	    ruleName.value = '';
-
-	    [].concat(_toConsumableArray(box.querySelectorAll('.js-cc-rule-item'))).forEach(function (item) {
-	      if (!list.querySelector('.js-cc-rule-add')) {
-	        item.parentNode.removeChild(item);
-	      } else {
-	        item.querySelector('.js-cc-rule-add').unsetDisabled();
-	      }
+	    ruleWeight.value = '';
+	    [].concat(_toConsumableArray(ruleBox.querySelectorAll('.js-rule-line'))).forEach(function (el) {
+	      return el.parentNode.removeChild(el);
 	    });
-
+	    ruleAddList.unsetDisabled();
 	    ruleName.focus();
 	  }
 
-	  box.querySelector('.js-cc-add-rule').addEventListener('click', function () {
-	    pathBox.style.display = 'none';
-	    ruleBox.style.display = '';
+	  box.addEventListener('click', function (event) {
+	    var addPath = event.target.closest('.js-rule-add');
 
-	    clearFrom();
-	    [].concat(_toConsumableArray(box.querySelectorAll('.js-cc-path'))).forEach(function (el) {
-	      return el.classList.remove('is-select');
-	    });
-	    [].concat(_toConsumableArray(box.querySelectorAll('.js-cc-rule'))).forEach(function (el) {
-	      return el.classList.remove('is-select');
-	    });
-	    createRule();
+	    if (addPath) {
+	      showForm();
+	      clearForm();
+	      [].concat(_toConsumableArray(box.querySelectorAll('.js-path'))).forEach(function (el) {
+	        return el.classList.remove('is-select');
+	      });
+	      [].concat(_toConsumableArray(box.querySelectorAll('.js-rule'))).forEach(function (el) {
+	        return el.classList.remove('is-select');
+	      });
+	      createRule();
+	    }
 	  });
 
-	  function addList() {
-	    var wrapAll = ruleBox.querySelectorAll('.js-cc-rule-list');
-	    var wrapAdd = ruleAdd.closest('.js-cc-rule-list');
-	    var lists = ruleBox.querySelectorAll('.js-list');
+	  ruleName.addEventListener('change', function () {
+	    var value = ruleName.value;
+	    updateRule({
+	      field: 'name',
+	      value: value
+	    });
+	  });
 
-	    var value = ruleAdd.value;
+	  (function () {
+	    ruleWeight.addEventListener('paste', function (event) {
+	      if (/^\d*.?\d+$/.test(ruleWeight.value.trim())) {
+	        ruleWeight.value = '';
+	      }
+	    });
+
+	    ruleWeight.addEventListener('keydown', function (event) {
+	      var code = event.keyCode;
+	      var char = String.fromCharCode(code);
+	      var key = '¾.0123456789'.indexOf(char);
+
+	      switch (code) {
+	        case 9:
+	        case 13:
+	        case 27:
+	          event.target.blur();
+	          break;
+	        case 8:
+	        case 46:
+	        case 37:
+	        case 39:
+	        case 190:
+	          break;
+	        default:
+	          if (key === -1) {
+	            event.preventDefault();
+	          }
+	      }
+	    });
+	  })();
+
+	  ruleWeight.addEventListener('change', function () {
+	    var value = ruleWeight.value;
+	    updateRule({
+	      field: 'weight',
+	      value: Number(value) || 0
+	    });
+	  });
+
+	  function fillingLine(line, value) {
+	    line.innerHTML = '';
+
+	    line.innerHTML += '\n      <div class="cc__col cc__col-180">\n        <div class="list js-list js-rule-list">\n          <div class="list__wrap">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    ';
+
+	    if (__RULES__[value].conditions) {
+	      line.innerHTML += '\n        <div class="cc__col cc__col-120">\n          <div class="list js-list js-rule-condition">\n            <div class="list__wrap">\n              <div class="list__value js-list-value"></div>\n              <div class="list__dropdown">\n                <div class="list__items js-list-items"></div>\n              </div>\n            </div>\n          </div>\n        </div>';
+	    }
+
+	    line.innerHTML += '\n      <div class="cc__col">\n        <div class="checklist js-checklist js-rule-checklist"></div>\n      </div>';
+
+	    line.innerHTML += '\n      <div class="cc__col cc__col-50 cc__col-pad">\n        <div class="cc__clear js-rule-clear"></div>\n      </div>';
+
+	    var list = line.querySelector('.js-rule-list');
+	    var condition = line.querySelector('.js-rule-condition');
+	    var checklist = line.querySelector('.js-rule-checklist');
+	    var clear = line.querySelector('.js-rule-clear');
+	    var position = [].concat(_toConsumableArray(ruleBox.querySelectorAll('.js-rule-line'))).indexOf(line);
+
+	    updateRule({
+	      field: 'rule',
+	      value: value,
+	      position: position
+	    });
+
+	    list.querySelector('.js-list-items').innerHTML = ruleAddList.querySelector('.js-list-items').innerHTML;
+	    (0, _listEvent2.default)(list);
+	    list.setValue(value);
+
+	    list.addEventListener('change', function () {
+	      var lists = ruleBox.querySelectorAll('.js-rule-line .js-rule-list');
+
+	      ruleAddList.unsetDisabled(list.oldValue);
+	      ruleAddList.setDisabled(list.value);
+
+	      [].concat(_toConsumableArray(lists)).forEach(function (el) {
+	        return el.unsetDisabled(list.oldValue);
+	      });
+	      [].concat(_toConsumableArray(lists)).forEach(function (el) {
+	        return el.setDisabled(list.value);
+	      });
+
+	      fillingLine(line, list.value);
+	    });
+
+	    if (condition) {
+	      (function () {
+	        var conditionItems = condition.querySelector('.js-list-items');
+
+	        __RULES__[value].conditions.forEach(function (item) {
+	          conditionItems.innerHTML += '<div class="list__item js-list-item" data-value="' + item.slug + '">' + item.name + '</div>';
+	        });
+
+	        (0, _listEvent2.default)(condition);
+
+	        condition.addEventListener('change', function () {
+	          updateRule({
+	            field: 'condition',
+	            value: condition.value,
+	            position: position
+	          });
+	        });
+
+	        condition.setValue(__RULES__[value].conditions[0].slug);
+	      })();
+	    }
+
+	    (0, _checklistEvent2.default)(checklist, __RULES__[value].childs);
+	    checklist.addEventListener('change', function () {
+	      updateRule({
+	        field: 'set',
+	        value: checklist.value,
+	        position: position
+	      });
+	    });
+
+	    clear.addEventListener('click', function () {
+	      ruleAddList.unsetDisabled(list.value);
+	      line.parentNode.removeChild(line);
+	    });
+	  }
+
+	  function addLine() {
+	    var lists = ruleBox.querySelectorAll('.js-rule-line .js-rule-list');
+	    var value = ruleAddList.value;
 
 	    if (!value) {
 	      return;
 	    }
 
-	    ruleAdd.updateValue();
-	    ruleAdd.setDisabled(value);
+	    ruleAddList.updateValue();
+	    ruleAddList.setDisabled(value);
 	    [].concat(_toConsumableArray(lists)).forEach(function (el) {
 	      return el.setDisabled(value);
 	    });
 
-	    var newWrapList = wrapAdd.cloneNode(true);
-	    var newList = newWrapList.querySelector('.js-list');
+	    var newWrapList = document.createElement('div');
+	    newWrapList.className = 'cc__line js-rule-line';
+	    ruleAddWrap.insertBefore(newWrapList);
 
-	    newList.classList.remove('is-open', 'is-add', 'js-cc-rule-add');
-	    wrapAdd.parentNode.insertBefore(newWrapList, wrapAdd);
-	    (0, _listEvent2.default)(newList);
-	    newList.updateValue(value);
-
-	    newWrapList.innerHTML += '\n      <div class="js-cc-rule-wrap" style="display: inline-block;">\n        <div class="list js-list js-cc-rule-condition" style="margin: 0 0 15px; width: 120px;">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n        <div class="checklist js-checklist js-cc-rule-checklist" style="width: 267px">\n          <div class="checklist__value js-checklist-value"></div>\n          <div class="checklist__dropdown">\n            <div class="checklist__search">\n              <i class="fa fa-search"></i>\n              <input class="js-checklist-search" type="text">\n            </div>\n            <div class="checklist__items js-checklist-items"></div>\n          </div>\n        </div>\n        <div class="cc__clear js-clear" style="margin-left: 10px;"></div>\n      </div>';
-
-	    var selectRule = void 0;
-	    var listCondition = newWrapList.querySelector('.js-cc-rule-condition');
-	    var listItemsCondition = listCondition.querySelector('.js-list-items');
-
-	    __RULES__.forEach(function (item) {
-	      if (item.slug === value) {
-	        selectRule = item;
-	        return false;
-	      }
-	      return true;
-	    });
-
-	    selectRule.conditions.forEach(function (condition, index) {
-	      listItemsCondition.innerHTML += '<div class="list__item js-list-item" data-value="' + condition.slug + '">' + condition.name + '</div>';
-	    });
-
-	    (0, _listEvent2.default)(listCondition);
-	    listCondition.setValue(selectRule.conditions[0].slug);
-	    (0, _checklistEvent2.default)(newWrapList.querySelector('.js-cc-rule-checklist'), selectRule);
+	    fillingLine(newWrapList, value);
 	  }
 
 	  (function () {
-	    var items = ruleAdd.querySelector('.js-list-items');
+	    var items = ruleAddList.querySelector('.js-list-items');
 
-	    __RULES__.forEach(function (item) {
-	      items.innerHTML += '<div class="list__item js-list-item" data-value="' + item.slug + '">' + item.name + '</div>';
-	    });
+	    for (var i in __RULES__) {
+	      if (__RULES__.hasOwnProperty(i)) {
+	        items.innerHTML += '<div class="list__item js-list-item" data-value="' + i + '">' + __RULES__[i].name + '</div>';
+	      }
+	    }
 
-	    (0, _listEvent2.default)(ruleAdd);
-	    ruleAdd.addEventListener('change', addList);
+	    (0, _listEvent2.default)(ruleAddList);
+
+	    ruleAddList.addEventListener('change', addLine);
 	  })();
 	};
 
@@ -6164,26 +6342,41 @@ webpackJsonp([0],[
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-	var __RULES__ = [{
-	  name: 'Brand and Model',
-	  slug: 'brand_and_model',
-	  link: '/rules/brand_and_model/search',
-	  link_for_childs: '/rules/model/list',
-	  key_for_childs: 'brand',
-	  conditions: [{
-	    name: 'Is any of',
-	    slug: 'is_any_of'
-	  }, {
-	    name: 'Is not any of',
-	    slug: 'is_not_any_of'
-	  }, {
-	    name: 'Contain',
-	    slug: 'contain'
-	  }, {
-	    name: 'Not contain',
-	    slug: 'not_contain'
-	  }]
-	}];
+	var __RULES__ = {
+	  brand_and_model: {
+	    name: 'Brand and Model',
+	    conditions: [{
+	      name: 'Is any of',
+	      slug: 'is_any_of'
+	    }, {
+	      name: 'Is not any of',
+	      slug: 'is_not_any_of'
+	    }, {
+	      name: 'Contain',
+	      slug: 'contain'
+	    }, {
+	      name: 'Not contain',
+	      slug: 'not_contain'
+	    }],
+	    childs: {
+	      type: 'tree',
+	      search_link: '/rules/brand_and_model/search',
+	      childs_link: '/rules/model/list',
+	      childs_key: 'brand' }
+	  },
+	  week: {
+	    name: 'Days of week',
+	    childs: {
+	      type: 'line',
+	      data: ['Monday', 'Tuesday', 'Wednesday'] }
+	  },
+	  ips: {
+	    name: 'IP addresses',
+	    childs: {
+	      type: 'normal'
+	    }
+	  }
+	};
 
 /***/ },
 /* 57 */
@@ -6198,250 +6391,80 @@ webpackJsonp([0],[
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 	exports.default = function (list, obj) {
-	  var listValue = list.querySelector('.js-checklist-value');
-	  var search = list.querySelector('.js-checklist-search');
-	  var itemsWrap = list.querySelector('.js-checklist-items');
+	  list.innerHTML = '\n    <div class="checklist__value js-checklist-value">\n      <input class="checklist__input js-checklist-input" type="text">\n    </div>';
 
-	  var link = obj.link;
-	  var linkFroChilds = obj.link_for_childs;
-	  var keyForChilds = obj.key_for_childs;
+	  var type = obj.type;
+	  var searchLink = obj.search_link;
+	  var childsLink = obj.childs_link;
+	  var childsKey = obj.childs_key;
+	  var childsData = obj.data;
 
+	  var isFetch = false;
+	  var isTree = false;
+	  var isLine = false;
+	  var isNormal = false;
 	  var loading = false;
+	  var timeSearch = void 0;
 
-	  var clickWindow = void 0;
-	  var open = void 0;
-	  var close = void 0;
-	  var updateItems = void 0;
-	  var drawTags = void 0;
-	  var deleteTag = void 0;
-	  var setValue = void 0;
-	  var filterSearch = void 0;
-
-	  clickWindow = function clickWindow(event) {
-	    var closest = event.target.closest('.js-checklist');
-	    if (!closest || closest !== list) {
-	      close();
-	    }
-	  };
-
-	  open = function open() {
-	    search.value = '';
-	    search.focus();
-	    updateItems();
-	    list.classList.add('is-open');
-	    window.addEventListener('click', clickWindow);
-	  };
-
-	  close = function close() {
-	    list.classList.remove('is-open');
-	    window.removeEventListener('click', clickWindow);
-	  };
-
-	  updateItems = function updateItems() {
-	    var val = search.value;
-
-	    if (!val || val.length < 3) {
-	      itemsWrap.innerHTML = '';
-	      return;
-	    }
-
-	    var data = {
-	      search: val || ''
-	    };
-
-	    var options = window._getOptionsFetch(data);
-
-	    fetch(window.might.url + link, options).then(function (response) {
-	      return response.json();
-	    }).then(function (result) {
-	      itemsWrap.innerHTML = '';
-
-	      if (result.error === false && result.result && _typeof(result.result.data) === 'object') {
-	        var res = result.result.data;
-
-	        var _loop = function _loop(i) {
-	          if (res.hasOwnProperty(i)) {
-	            var cls = list.value[i] && list.value[i] === 'select all' ? ' is-select' : '';
-	            itemsWrap.innerHTML += '<div class="checklist__item js-checklist-item' + cls + '" data-value="' + i + '">' + i + '</div>';
-
-	            var item = res[i];
-	            var html = '';
-
-	            if (Array.isArray(item)) {
-	              html += '<div class="checklist__items-group js-checklist-items-group">';
-	              item.forEach(function (j) {
-	                var cl = list.value[i] && (list.value[i][j] || list.value[i] === 'select all') ? ' is-select' : '';
-	                html += '<div class="checklist__item js-checklist-item' + cl + '" data-value="' + j + '" data-parent-value="' + i + '">' + j + '</div>';
-	              });
-	              html += '</div>';
-	            }
-
-	            itemsWrap.innerHTML += html;
-	          }
-	        };
-
-	        for (var i in res) {
-	          _loop(i);
-	        }
+	  if (type !== 'normal') {
+	    if (searchLink) {
+	      isFetch = true;
+	      if (!childsLink || !childsKey) {
+	        type = 'line';
 	      }
-	    });
-	  };
-
-	  drawTags = function drawTags() {
-	    var value = list.value;
-
-	    listValue.innerHTML = '';
-
-	    for (var i in value) {
-	      if (value.hasOwnProperty(i)) {
-	        var parent = value[i];
-
-	        if (parent === 'select all') {
-	          var span = document.createElement('span');
-	          span.className = 'js-checklist-tag';
-	          span.textContent = 'All ' + i;
-	          span.dataset.parentValue = i;
-
-	          var del = document.createElement('i');
-	          del.className = 'js-checklist-tag-delete';
-	          span.appendChild(del);
-
-	          listValue.appendChild(span);
-	        } else if ((typeof parent === 'undefined' ? 'undefined' : _typeof(parent)) === 'object') {
-	          for (var j in parent) {
-	            if (parent.hasOwnProperty(j)) {
-	              var _span = document.createElement('span');
-	              _span.className = 'js-checklist-tag';
-	              _span.textContent = '' + j;
-	              _span.dataset.parentValue = i;
-	              _span.dataset.value = j;
-
-	              var _del = document.createElement('i');
-	              _del.className = 'js-checklist-tag-delete';
-	              _span.appendChild(_del);
-
-	              listValue.appendChild(_span);
-	            }
-	          }
-	        }
-	      }
-	    }
-	  };
-
-	  deleteTag = function deleteTag(del) {
-	    var item = del.closest('.js-checklist-tag');
-	    var parentValue = item.dataset.parentValue;
-	    var value = item.dataset.value;
-
-	    if (!value) {
-	      delete list.value[parentValue];
 	    } else {
-	      delete list.value[parentValue][value];
-	    }
-
-	    item.parentNode.removeChild(item);
-	  };
-
-	  setValue = function setValue(item) {
-	    var isUpdate = false;
-	    var value = item.dataset.value;
-
-	    if (item.dataset.parentValue) {
-	      (function () {
-	        var parentValue = item.dataset.parentValue;
-
-	        if (list.value[parentValue] && list.value[parentValue] === 'select all') {
-	          loading = true;
-	          var data = {};
-	          data[keyForChilds] = parentValue;
-	          var options = window._getOptionsFetch(data);
-
-	          fetch(window.might.url + linkFroChilds, options).then(function (response) {
-	            return response.json();
-	          }).then(function (result) {
-	            if (result.error === false && result.result && Array.isArray(result.result.data)) {
-	              var res = result.result.data;
-	              list.value[parentValue] = {};
-	              item.classList.remove('is-select');
-	              var prev = item.closest('.js-checklist-items-group').previousSibling;
-
-	              if (prev) {
-	                prev.classList.remove('is-select');
-	              }
-
-	              res.forEach(function (i) {
-	                list.value[parentValue][i] = true;
-	              });
-	            }
-
-	            loading = false;
-	            drawTags();
-	          });
-	        } else {
-	          list.value[parentValue] = list.value[parentValue] || {};
-
-	          if (list.value[parentValue][value]) {
-	            delete list.value[parentValue][value];
-	            item.classList.remove('is-select');
-	          } else {
-	            list.value[parentValue][value] = true;
-	            item.classList.add('is-select');
-	          }
-
-	          drawTags();
-	        }
-	      })();
-	    } else {
-	      if (list.value[value] === 'select all') {
-	        delete list.value[value];
-	        item.classList.remove('is-select');
-
-	        var next = item.nextSibling;
-
-	        if (next.classList.contains('js-checklist-items-group')) {
-	          [].concat(_toConsumableArray(next.querySelectorAll('.js-checklist-item'))).forEach(function (el) {
-	            return el.classList.remove('is-select');
-	          });
-	        }
-	      } else {
-	        list.value[value] = 'select all';
-	        item.classList.add('is-select');
-
-	        var _next = item.nextSibling;
-
-	        if (_next.classList.contains('js-checklist-items-group')) {
-	          [].concat(_toConsumableArray(_next.querySelectorAll('.js-checklist-item'))).forEach(function (el) {
-	            return el.classList.add('is-select');
-	          });
-	        }
+	      if (Array.isArray(childsData)) {
+	        type = 'line';
+	      } else if (!childsData) {
+	        type = 'normal';
 	      }
-
-	      drawTags();
 	    }
-	  };
 
-	  list.value = {};
+	    if (type === 'tree') {
+	      isTree = true;
+	    } else {
+	      isLine = true;
+	    }
+	  } else {
+	    isNormal = true;
+	  }
+
+	  if (!isNormal) {
+	    list.innerHTML += '\n      <div class="checklist__dropdown">\n        <div class="checklist__items js-checklist-items"></div>\n      </div>';
+	  }
+
+	  var listValue = list.querySelector('.js-checklist-value');
+	  var listInput = list.querySelector('.js-checklist-input');
+	  var listItems = list.querySelector('.js-checklist-items');
+
+	  list.value = list.value || {};
 
 	  listValue.addEventListener('click', function () {
-	    if (list.classList.contains('is-open')) {
-	      close();
-	    } else {
+	    if (!list.classList.contains('is-open')) {
 	      open();
+	    } else {
+	      listInput.focus();
 	    }
 	  });
 
-	  var timeSearch = void 0;
+	  if (!isNormal) {
+	    listInput.addEventListener('keyup', filterItems);
+	    listInput.addEventListener('paste', filterItems);
+	  } else {
+	    listInput.addEventListener('keyup', function (event) {
+	      var code = event.keyCode;
 
-	  filterSearch = function filterSearch(event) {
-	    if (timeSearch) {
-	      clearTimeout(timeSearch);
-	    }
+	      if (code === 13) {
+	        var val = listInput.value.trim();
 
-	    timeSearch = setTimeout(updateItems, 300);
-	  };
-
-	  search.addEventListener('keyup', filterSearch);
-	  search.addEventListener('paste', filterSearch);
+	        if (val) {
+	          list.value[val] = true;
+	          listInput.value = '';
+	          drawTags();
+	        }
+	      }
+	    });
+	  }
 
 	  list.addEventListener('click', function (event) {
 	    var item = event.target.closest('.js-checklist-item');
@@ -6456,6 +6479,340 @@ webpackJsonp([0],[
 	      deleteTag(del);
 	    }
 	  });
+
+	  if (!isFetch && childsData) {
+	    drawItems(childsData);
+	  }
+
+	  drawTags(true);
+
+	  function open() {
+	    window.addEventListener('click', clickWindow);
+	    list.classList.add('is-open');
+	    listInput.value = '';
+	    listInput.focus();
+
+	    if (!isNormal) {
+	      updateItems();
+	    }
+	  }
+
+	  function clickWindow(event) {
+	    var closest = event.target.closest('.js-checklist');
+	    if (!closest || closest !== list) {
+	      close();
+	    }
+	  }
+
+	  function close() {
+	    window.removeEventListener('click', clickWindow);
+	    list.classList.remove('is-open');
+	    listInput.value = '';
+	  }
+
+	  function drawItems(data) {
+	    listItems.innerHTML = '';
+
+	    if (Array.isArray(data)) {
+	      data.forEach(function (item) {
+	        var classItem = list.value[item] ? ' is-select' : '';
+	        listItems.innerHTML += '<div\n          class="checklist__item js-checklist-item' + classItem + '"\n          data-value="' + item + '">\n          ' + item + '\n          </div>';
+	      });
+	    } else {
+	      var _loop = function _loop(item) {
+	        if (data.hasOwnProperty(item)) {
+	          var classItem = list.value[item] && list.value[item] === 'select all' ? ' is-select' : '';
+	          listItems.innerHTML += '<div\n            class="checklist__item js-checklist-item' + classItem + '"\n            data-value="' + item + '">\n            ' + item + '\n            </div>';
+
+	          var childs = data[item];
+	          var html = '';
+
+	          html += '<div class="checklist__items-group js-checklist-items-group">';
+
+	          if (Array.isArray(childs)) {
+	            childs.forEach(function (child) {
+	              var classChild = list.value[item] && (list.value[item][child] || list.value[item] === 'select all') ? ' is-select' : '';
+	              html += '<div\n                class="checklist__item js-checklist-item' + classChild + '"\n                data-value="' + child + '"\n                data-parent-value="' + item + '">\n                ' + child + '\n                </div>';
+	            });
+	          }
+
+	          html += '</div>';
+
+	          listItems.innerHTML += html;
+	        }
+	      };
+
+	      for (var item in data) {
+	        _loop(item);
+	      }
+	    }
+	  }
+
+	  function updateItems() {
+	    var val = listInput.value;
+
+	    if (isFetch) {
+	      if (!val || val.length < 3) {
+	        listItems.innerHTML = '';
+	        return;
+	      }
+
+	      var data = { search: val };
+	      var options = window._getOptionsFetch(data);
+
+	      fetch(window.might.url + searchLink, options).then(function (response) {
+	        return response.json();
+	      }).then(function (result) {
+	        if (result.error === false && result.result && _typeof(result.result.data) === 'object') {
+	          drawItems(result.result.data);
+	        }
+	      });
+	    } else {
+	      var items = listItems.querySelectorAll('.js-checklist-item');
+
+	      if (!val) {
+	        [].concat(_toConsumableArray(items)).forEach(function (item) {
+	          item.style.display = '';
+	        });
+	      } else {
+	        (function () {
+	          var reg = new RegExp(val, 'i');
+
+	          [].concat(_toConsumableArray(items)).forEach(function (item) {
+	            if (item.textContent.search(reg) === -1) {
+	              item.style.display = 'none';
+	            } else {
+	              item.style.display = '';
+	            }
+	          });
+	        })();
+	      }
+	    }
+	  }
+
+	  function filterItems(event) {
+	    if (timeSearch) {
+	      clearTimeout(timeSearch);
+	    }
+
+	    var timeout = isFetch ? 300 : 100;
+
+	    timeSearch = setTimeout(updateItems, timeout);
+	  }
+
+	  function drawTag(label, value, parentValue) {
+	    var span = document.createElement('span');
+	    span.className = 'js-checklist-tag';
+	    span.textContent = label;
+	    span.dataset.value = value || label;
+
+	    if (parentValue) {
+	      span.dataset.parentValue = parentValue;
+	    }
+
+	    var del = document.createElement('i');
+	    del.className = 'js-checklist-tag-delete';
+	    span.appendChild(del);
+
+	    listInput.insertBefore(span);
+	  }
+
+	  function drawTags(isInit) {
+	    [].concat(_toConsumableArray(listValue.querySelectorAll('.js-checklist-tag'))).forEach(function (el) {
+	      return el.parentNode.removeChild(el);
+	    });
+
+	    for (var i in list.value) {
+	      if (list.value.hasOwnProperty(i) && list.value[i]) {
+	        var st = list.value[i];
+
+	        if (isTree) {
+	          if (st === 'select all') {
+	            drawTag('All ' + i, null, i);
+	          } else if ((typeof st === 'undefined' ? 'undefined' : _typeof(st)) === 'object') {
+	            for (var j in st) {
+	              if (st.hasOwnProperty(j) && st[j]) {
+	                drawTag(j, j, i);
+	              }
+	            }
+	          }
+	        } else {
+	          drawTag(i, i);
+	        }
+	      }
+	    }
+
+	    if (!isInit) {
+	      list.triggerEvent('change');
+	    }
+	  }
+
+	  function deleteTag(del) {
+	    var item = del.closest('.js-checklist-tag');
+	    var childValue = void 0;
+	    var value = item.dataset.value;
+
+	    if (isTree) {
+	      childValue = value;
+	      value = item.dataset.parentValue;
+	    }
+
+	    if (!childValue) {
+	      delete list.value[value];
+	    } else {
+	      delete list.value[value][childValue];
+	    }
+
+	    item.parentNode.removeChild(item);
+
+	    if (!isFetch && !isNormal) {
+	      [].concat(_toConsumableArray(listItems.querySelectorAll('.js-checklist-item'))).forEach(function (el) {
+	        if (!childValue) {
+	          if (!el.dataset.parentValue && el.dataset.value === value) {
+	            el.classList.remove('is-select');
+	          }
+	        } else {
+	          if (el.dataset.parentValue && el.dataset.value === childValue) {
+	            el.classList.remove('is-select');
+	          }
+	        }
+	      });
+	    }
+
+	    list.triggerEvent('change');
+	  }
+
+	  function setValue(item) {
+	    var val = item.dataset.value;
+
+	    if (item.dataset.parentValue) {
+	      (function () {
+	        var group = item.closest('.js-checklist-items-group');
+	        var parentValue = item.dataset.parentValue;
+
+	        if (list.value[parentValue] && list.value[parentValue] === 'select all') {
+	          if (isFetch) {
+	            loading = true;
+	            var data = {};
+	            data[childsKey] = parentValue;
+	            var options = window._getOptionsFetch(data);
+
+	            fetch(window.might.url + childsLink, options).then(function (response) {
+	              return response.json();
+	            }).then(function (result) {
+	              if (result.error === false && result.result && Array.isArray(result.result.data)) {
+	                list.value[parentValue] = {};
+
+	                result.result.data.forEach(function (i) {
+	                  if (i !== val) {
+	                    list.value[parentValue][i] = true;
+	                  }
+	                });
+
+	                item.classList.remove('is-select');
+
+	                var prev = group.previousSibling;
+	                if (prev) {
+	                  prev.classList.remove('is-select');
+	                }
+	              }
+
+	              loading = false;
+	              drawTags();
+	            });
+	          } else {
+	            var prev = group.previousSibling;
+	            if (prev) {
+	              prev.classList.remove('is-select');
+	            }
+
+	            list.value[parentValue] = {};
+
+	            [].concat(_toConsumableArray(group.querySelectorAll('.js-checklist-item'))).forEach(function (el) {
+	              if (el !== item) {
+	                list.value[parentValue][el.dataset.value] = true;
+	              }
+	            });
+
+	            item.classList.remove('is-select');
+
+	            drawTags();
+	          }
+	        } else {
+	          list.value[parentValue] = list.value[parentValue] || {};
+
+	          if (list.value[parentValue][val]) {
+	            delete list.value[parentValue][val];
+	            item.classList.remove('is-select');
+	          } else {
+	            list.value[parentValue][val] = true;
+	            item.classList.add('is-select');
+	          }
+
+	          drawTags();
+	        }
+	      })();
+	    } else {
+	      if (isTree) {
+	        if (list.value[val] === 'select all') {
+	          delete list.value[val];
+	          item.classList.remove('is-select');
+
+	          var next = item.nextSibling;
+
+	          if (next.classList.contains('js-checklist-items-group')) {
+	            [].concat(_toConsumableArray(next.querySelectorAll('.js-checklist-item'))).forEach(function (el) {
+	              return el.classList.remove('is-select');
+	            });
+	          }
+	        } else {
+	          list.value[val] = 'select all';
+	          item.classList.add('is-select');
+
+	          var _next = item.nextSibling;
+
+	          if (_next.classList.contains('js-checklist-items-group')) {
+	            [].concat(_toConsumableArray(_next.querySelectorAll('.js-checklist-item'))).forEach(function (el) {
+	              return el.classList.add('is-select');
+	            });
+	          }
+	        }
+	      } else {
+	        if (list.value[val]) {
+	          delete list.value[val];
+	          item.classList.remove('is-select');
+	        } else {
+	          list.value[val] = true;
+	          item.classList.add('is-select');
+	        }
+	      }
+
+	      drawTags();
+	    }
+	  }
+
+	  list.updateValue = function (value) {
+	    list.value = value;
+	    drawTags(true);
+
+	    if (childsData) {
+	      [].concat(_toConsumableArray(listItems.querySelectorAll('.js-checklist-item'))).forEach(function (el) {
+	        if (el.dataset.parentValue) {
+	          if (list.value[el.dataset.parentValue] === 'select all' || list.value[el.dataset.parentValue] && list.value[el.dataset.parentValue][el.dataset.value]) {
+	            el.classList.add('is-select');
+	          } else {
+	            el.classList.remove('is-select');
+	          }
+	        } else {
+	          if (list.value[el.dataset.value]) {
+	            el.classList.add('is-select');
+	          } else {
+	            el.classList.remove('is-select');
+	          }
+	        }
+	      });
+	    }
+	  };
 	};
 
 	var _qs = __webpack_require__(14);
@@ -7333,7 +7690,7 @@ webpackJsonp([0],[
 	      i.className = 'js-form-ips-delete';
 	      span.appendChild(i);
 
-	      formInputIp.parentNode.insertBefore(span, formInputIp);
+	      formInputIp.insertBefore(span);
 	      formInputIp.value = '';
 	    }
 	  });
@@ -7838,7 +8195,7 @@ webpackJsonp([0],[
 	          var tr = createNode('tr', clsTr);
 
 	          if (nextRow) {
-	            table.insertBefore(tr, nextRow);
+	            nextRow.insertBefore(tr);
 	          } else {
 	            table.appendChild(tr);
 	          }

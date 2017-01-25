@@ -2864,6 +2864,9 @@ body.noscroll {
   width: 35%;
   padding-right: 30px;
 }
+.cc__left-wrap {
+  padding-left: 22px;
+}
 .cc__right {
   display: inline-block;
   width: 65%;
@@ -2877,13 +2880,20 @@ body.noscroll {
   display: table-cell;
   vertical-align: top;
 }
-.cc__col + .cc__col {
-  width: 120px;
-  padding: 0 10px;
+.cc__col-180 {
+  width: 180px;
 }
-.cc__col + .cc__col + .cc__col {
-  width: 50px;
-  padding: 0;
+.cc__col-140 {
+  width: 140px;
+}
+.cc__col-120 {
+  width: 120px;
+}
+.cc__col-50 {
+  width: 44px;
+}
+.cc__col-pad {
+  padding-left: 10px;
 }
 .cc__label {
   margin-bottom: 15px;
@@ -2958,10 +2968,10 @@ body.noscroll {
 .cc__hidden.is-show {
   visibility: visible;
 }
-.cc__path {
+.cc__element-item {
   position: relative;
   height: 34px;
-  margin-left: 10px;
+  margin-left: -12px;
   padding: 10px 10px 0 10px;
   line-height: 14px;
   font-size: 14px;
@@ -2969,36 +2979,18 @@ body.noscroll {
   transition: all 200ms ease;
   cursor: pointer;
 }
-.cc__path:hover,
-.cc__path.is-deleted {
+.cc__element-item:hover {
   border-left: 2px solid rgba(244,244,244,0.7);
   background-color: rgba(244,244,244,0.7);
 }
-.cc__path.is-select {
-  border-left: 2px solid #4f607a;
-  background-color: rgba(244,244,244,0.7);
-}
-.cc__path:hover:after {
-  content: '';
-  position: absolute;
-  width: 78px;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #fff;
-}
-.cc__path.is-deleted:hover:after {
-  display: none;
-}
-.cc__path-name {
+.cc__element-name {
   display: inline-block;
 }
-.cc__path-weight {
+.cc__element-weight {
   float: right;
-  line-height: 14px;
   font-size: 12px;
 }
-.cc__path-copy {
+.cc__element-copy {
   position: absolute;
   display: block;
   width: 34px;
@@ -3007,8 +2999,8 @@ body.noscroll {
   border: 1px solid #e4e5e9;
   cursor: pointer;
 }
-.cc__path-copy:before,
-.cc__path-copy:after {
+.cc__element-copy:before,
+.cc__element-copy:after {
   content: '';
   position: absolute;
   width: 10px;
@@ -3016,17 +3008,17 @@ body.noscroll {
   border: 1px solid #fff;
   background-color: #838fa2;
 }
-.cc__path-copy:before {
+.cc__element-copy:before {
   top: 8px;
   left: 12px;
   z-index: 1;
 }
-.cc__path-copy:after {
+.cc__element-copy:after {
   top: 12px;
   left: 8px;
   z-index: 2;
 }
-.cc__path-delete {
+.cc__element-delete {
   position: relative;
   display: inline-block;
   width: 34px;
@@ -3038,8 +3030,8 @@ body.noscroll {
   transition: all 200ms ease;
   right: 0;
 }
-.cc__path-delete:after,
-.cc__path-delete:before {
+.cc__element-delete:after,
+.cc__element-delete:before {
   content: '';
   position: absolute;
   width: 13px;
@@ -3048,29 +3040,29 @@ body.noscroll {
   left: 10px;
   border-bottom: 1px solid #54647e;
 }
-.cc__path-delete:after {
+.cc__element-delete:after {
   transform: rotate(-45deg);
 }
-.cc__path-delete:before {
+.cc__element-delete:before {
   transform: rotate(45deg);
 }
-.cc__path-delete:hover {
+.cc__element-delete:hover {
   background-color: rgba(244,244,244,0.7);
 }
-.cc__path-copy,
-.cc__path-delete {
+.cc__element-copy,
+.cc__element-delete {
   position: absolute;
   top: 0;
-  background-color: rgba(244,244,244,0.7);
+  background-color: #fff;
   transition: opacity 200ms ease;
   opacity: 0;
   z-index: -1;
 }
-.cc__path-copy:hover,
-.cc__path-delete:hover {
-  background-color: #fff;
+.cc__element-copy:hover,
+.cc__element-delete:hover {
+  background-color: rgba(244,244,244,0.7);
 }
-.cc__path-undo {
+.cc__element-undo {
   display: none;
   float: right;
   margin-right: 10px;
@@ -3078,38 +3070,45 @@ body.noscroll {
   font-size: 14px;
   color: #0182ec;
 }
-.cc__path-undo:hover {
+.cc__element-undo:hover {
   color: #3a62c6;
 }
-.cc__path-undo i {
+.cc__element-undo i {
   margin-right: 5px;
 }
-.cc__path.is-stoped .cc__path-name,
-.cc__path.is-stoped .cc__path-weight {
+.cc__element.is-select > .cc__element-item {
+  border-left: 2px solid #4f607a;
+  background-color: rgba(244,244,244,0.7);
+}
+.cc__element.is-deleted > .cc__element-item {
+  border-left: 2px solid rgba(244,244,244,0.7);
+  background-color: rgba(244,244,244,0.7);
+}
+.cc__element.is-stoped .cc__element-name,
+.cc__element.is-stoped .cc__element-weight {
   opacity: 0.5;
 }
-.cc__path:hover .cc__path-weight {
+.cc__element-item:hover .cc__element-weight {
   opacity: 0;
 }
-.cc__path:hover .cc__path-copy,
-.cc__path:hover .cc__path-delete {
+.cc__element-item:hover .cc__element-copy,
+.cc__element-item:hover .cc__element-delete {
   opacity: 1;
   z-index: 1;
 }
-.cc__path.is-deleted .cc__path-weight,
-.cc__path.is-deleted .cc__path-copy,
-.cc__path.is-deleted .cc__path-delete {
+.cc__element.is-deleted > .cc__element-item .cc__element-weight,
+.cc__element.is-deleted > .cc__element-item .cc__element-copy,
+.cc__element.is-deleted > .cc__element-item .cc__element-delete {
   display: none;
 }
-.cc__path.is-deleted .cc__path-undo {
+.cc__element.is-deleted > .cc__element-item .cc__element-undo {
   display: block;
 }
 .cc__added {
   position: relative;
   height: 34px;
-  margin-left: 10px;
-  margin-bottom: 20px;
-  padding: 10px 20px 10px 10px;
+  margin-bottom: 10px;
+  padding: 10px 0;
 }
 .cc__added span {
   position: relative;
@@ -3129,6 +3128,16 @@ body.noscroll {
 }
 .cc__added span:hover {
   color: #3a62c6;
+}
+.cc .list {
+  display: block;
+  margin: 0 0 15px;
+}
+.cc .list__wrap {
+  display: block;
+}
+.cc .list__dropdown {
+  right: 0;
 }
 .checkbox {
   position: relative;
@@ -3176,15 +3185,14 @@ body.noscroll {
 }
 .checklist {
   position: relative;
-  display: inline-block;
-  font-size: 14px;
+  display: block;
   vertical-align: top;
+  margin-bottom: 15px;
   background-color: #fff;
 }
 .checklist__value {
   position: relative;
   display: block;
-  width: 100%;
   min-height: 34px;
   padding: 5px 0 0 5px;
   background-color: #fff;
@@ -3201,12 +3209,13 @@ body.noscroll {
 }
 .checklist__value span {
   display: inline-block;
+  height: 24px;
   margin-right: 5px;
   margin-bottom: 5px;
-  padding: 5px;
+  padding: 6px;
   line-height: 1;
   font-size: 12px;
-  vertical-align: middle;
+  vertical-align: top;
   background-color: rgba(244,244,244,0.7);
   cursor: default;
 }
@@ -3232,6 +3241,17 @@ body.noscroll {
 }
 .checklist__value span i:before {
   transform: rotate(-45deg);
+}
+.checklist__value input {
+  display: none;
+  height: 24px;
+  padding: 5px 6px;
+  font-size: 14px;
+  border: 0;
+  background-color: transparent;
+}
+.checklist.is-open .checklist__value input {
+  display: inline-block;
 }
 .checklist.is-error .checklist__value:before {
   border: 1px solid #f55b63;
@@ -3262,32 +3282,6 @@ body.noscroll {
   height: auto;
   margin-bottom: 30px;
 }
-.checklist__search {
-  position: relative;
-  padding: 10px 15px 0;
-}
-.checklist__search i {
-  position: absolute;
-  top: 21px;
-  left: 15px;
-  font-size: 1em;
-  font-weight: 100;
-  color: #e4e5e9;
-  z-index: 1;
-}
-.checklist__search input {
-  width: 100%;
-  padding: 10px 0 10px 25px;
-  line-height: 16px;
-  font-size: 1em;
-  color: #54647e;
-  border: none;
-  border-bottom: 1px solid #e4e5e9;
-  transition: all 200ms ease;
-}
-.checklist__search input:focus {
-  border-bottom: 1px solid #838fa2;
-}
 .checklist__items {
   overflow: hidden;
   overflow-y: auto;
@@ -3303,7 +3297,7 @@ body.noscroll {
   padding-left: 40px;
   padding-right: 15px;
   line-height: 34px;
-  font-size: 1em;
+  font-size: 14px;
   color: #54647e;
   text-align: left;
   white-space: nowrap;
