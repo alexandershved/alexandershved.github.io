@@ -822,6 +822,7 @@ webpackJsonp([0],[
 	    }
 	  };
 
+	  list.close = close;
 	  list.haveValue = haveValue;
 	  list.updateValue = updateValue;
 	  list.setValue = setValue;
@@ -4927,19 +4928,19 @@ webpackJsonp([0],[
 
 	var _campaignAdd2 = _interopRequireDefault(_campaignAdd);
 
-	var _landerList = __webpack_require__(58);
+	var _landerList = __webpack_require__(60);
 
 	var _landerList2 = _interopRequireDefault(_landerList);
 
-	var _landerAdd = __webpack_require__(59);
+	var _landerAdd = __webpack_require__(56);
 
 	var _landerAdd2 = _interopRequireDefault(_landerAdd);
 
-	var _offerList = __webpack_require__(60);
+	var _offerList = __webpack_require__(61);
 
 	var _offerList2 = _interopRequireDefault(_offerList);
 
-	var _offerAdd = __webpack_require__(61);
+	var _offerAdd = __webpack_require__(57);
 
 	var _offerAdd2 = _interopRequireDefault(_offerAdd);
 
@@ -5040,14 +5041,10 @@ webpackJsonp([0],[
 	});
 
 	exports.default = function (title, editing) {
-	  if (document.querySelector('.js-popup')) {
-	    return false;
-	  }
-
 	  var popup = document.createElement('div');
 	  popup.className = 'popup js-popup';
 
-	  popup.innerHTML = '\n    <div class="popup__veil">\n    </div>\n    <div class="popup__win">\n      <div class="popup__wrap js-popup-wrap">\n        <div class="popup__headline">\n          <div class="popup__close js-popup-close"></div>\n          <div class="popup__title">' + title + '</div>\n        </div>\n        <div class="popup__body js-popup-body"></div>\n        <div class="popup__bottom">\n          <div class="poopup__bottom-error js-poopup-error"></div>\n          ' + (editing ? '<div class="btn-apply js-popup-save">Save</div>' : '') + '\n          <div class="btn-close js-popup-close">Close</div>\n        </div>\n      </div>\n    </div>';
+	  popup.innerHTML = '\n    <div class="popup__veil">\n    </div>\n    <div class="popup__win">\n      <div class="popup__wrap js-popup-wrap">\n        <div class="popup__headline">\n          <div class="popup__close js-popup-close"></div>\n          <div class="popup__title">' + title + '</div>\n        </div>\n        <div class="popup__body js-popup-body"></div>\n        <div class="popup__bottom">\n          <div class="poopup__bottom-error js-popup-error"></div>\n          ' + (editing ? '<div class="btn-apply js-popup-save">Save</div>' : '') + '\n          <div class="btn-close js-popup-close">Close</div>\n        </div>\n      </div>\n    </div>';
 
 	  document.body.appendChild(popup);
 
@@ -5342,6 +5339,10 @@ webpackJsonp([0],[
 	  (0, _listEvent2.default)(formDirectType);
 	  (0, _campaignAddChilds2.default)(createCampaign);
 
+	  formDirectType.addEventListener('change', function () {
+	    popupBody.querySelector('.js-path-redirect-mode').value = formDirectType.value;
+	  });
+
 	  popup.querySelector('.js-popup-save').addEventListener('click', function (event) {
 	    var name = formName.value.trim();
 	    var offerUrl = formUrl.value.trim();
@@ -5461,7 +5462,7 @@ webpackJsonp([0],[
 
 	var _campaignAddPath2 = _interopRequireDefault(_campaignAddPath);
 
-	var _campaignAddRule = __webpack_require__(56);
+	var _campaignAddRule = __webpack_require__(58);
 
 	var _campaignAddRule2 = _interopRequireDefault(_campaignAddRule);
 
@@ -5483,13 +5484,16 @@ webpackJsonp([0],[
 
 	  pathBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Name:</div></div>\n      <div class="cc__col cc__col-120 cc__col-pad"><div class="cc__label">Weight:</div></div>\n      <div class="cc__col cc__col-50 cc__col-pad"><div class="cc__label">Status:</div></div>\n    </div>\n\n    <div class="cc__line">\n      <div class="cc__col">\n        <div class="input">\n          <input class="js-path-name" type="text" placeholder="Path name">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-120 cc__col-pad">\n        <div class="input">\n          <input class="js-path-weight" type="text" placeholder="0">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-50 cc__col-pad">\n        <div class="cc__status js-path-status"></div>\n      </div>\n    </div>';
 
-	  pathBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Lander:</div></div>\n      <div class="cc__col cc__col-120 cc__col-pad"><div class="cc__label js-path-lander-label-weight"></div></div>\n      <div class="cc__col cc__col-50 cc__col-pad"></div>\n    </div>\n\n    <div class="cc__line js-path-lander-add">\n      <div class="cc__col">\n        <div class="list is-add js-list" data-placeholder="+ Add Lander">\n          <div class="list__wrap">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-120 cc__col-pad cc__hidden js-path-hidden">\n        <div class="input">\n          <input class="js-path-lander-weight" type="text" placeholder="0">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-50 cc__col-pad cc__hidden js-path-hidden">\n        <div class="cc__clear js-path-clear"></div>\n      </div>\n    </div>';
+	  pathBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Redirect mode:</div></div>\n    </div>\n\n    <div class="cc__line">\n      <div class="cc__col">\n        <div class="input">\n          <input class="js-path-redirect-mode" type="text" disabled="true">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-164 cc__col-pad">\n        <div class="checkbox js-checkbox js-path-direct-linking">Direct linking</div>\n      </div>\n    </div>';
 
-	  pathBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Offer:</div></div>\n      <div class="cc__col cc__col-120 cc__col-pad"><div class="cc__label js-path-offer-label-weight"></div></div>\n      <div class="cc__col cc__col-50 cc__col-pad"></div>\n    </div>\n\n    <div class="cc__line js-path-offer-add">\n      <div class="cc__col">\n        <div class="list is-add js-list" data-placeholder="+ Add Offer">\n          <div class="list__wrap">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-120 cc__col-pad cc__hidden js-path-hidden">\n        <div class="input">\n          <input class="js-path-offer-weight" type="text" placeholder="0">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-50 cc__col-pad cc__hidden js-path-hidden">\n        <div class="cc__clear js-path-clear"></div>\n      </div>\n    </div>';
+	  pathBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Lander:</div></div>\n      <div class="cc__col cc__col-120 cc__col-pad"><div class="cc__label js-path-lander-label-weight"></div></div>\n      <div class="cc__col cc__col-50 cc__col-pad"></div>\n    </div>\n\n    <div class="cc__line js-path-lander-add">\n      <div class="cc__col">\n        <div class="list is-add js-list" data-placeholder="+ Add Lander">\n          <div class="list__wrap">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown">\n              <div class="list__items js-list-items"></div>\n              <div class="list__control">\n                <div class="list__control-item">\n                  <span class="js-path-create-lander">Create new lander</span>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-120 cc__col-pad cc__hidden js-path-hidden">\n        <div class="input">\n          <input class="js-path-lander-weight" type="text" placeholder="0">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-50 cc__col-pad cc__hidden js-path-hidden">\n        <div class="cc__clear js-path-clear"></div>\n      </div>\n    </div>';
+
+	  pathBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Offer:</div></div>\n      <div class="cc__col cc__col-120 cc__col-pad"><div class="cc__label js-path-offer-label-weight"></div></div>\n      <div class="cc__col cc__col-50 cc__col-pad"></div>\n    </div>\n\n    <div class="cc__line js-path-offer-add">\n      <div class="cc__col">\n        <div class="list is-add js-list" data-placeholder="+ Add Offer">\n          <div class="list__wrap">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown">\n              <div class="list__items js-list-items"></div>\n              <div class="list__control">\n                <div class="list__control-item">\n                  <span class="js-path-use-url">Use URL</span>\n                </div>\n                <div class="list__control-item">\n                  <span class="js-path-create-offer">Create new offer</span>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-120 cc__col-pad cc__hidden js-path-hidden">\n        <div class="input">\n          <input class="js-path-offer-weight" type="text" placeholder="0">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-50 cc__col-pad cc__hidden js-path-hidden">\n        <div class="cc__clear js-path-clear"></div>\n      </div>\n    </div>';
 
 	  var pathName = pathBox.querySelector('.js-path-name');
 	  var pathWeight = pathBox.querySelector('.js-path-weight');
 	  var pathStatus = pathBox.querySelector('.js-path-status');
+	  var pathDirectLinking = pathBox.querySelector('.js-path-direct-linking');
 
 	  var add = {
 	    lander: {
@@ -5536,6 +5540,7 @@ webpackJsonp([0],[
 	        case 'lander_add':
 	        case 'offer_add':
 	        case 'status':
+	        case 'direct_linking':
 	          createPath();
 	          break;
 	        default:
@@ -5589,6 +5594,12 @@ webpackJsonp([0],[
 	        } else {
 	          path.classList.remove('is-stoped');
 	        }
+	        break;
+	      case 'direct_linking':
+	        path.value.direct_linking = obj.value;
+	        break;
+	      case 'use_url':
+	        path.value.offer_url[obj.position] = true;
 	        break;
 	      default:
 	        break;
@@ -5665,10 +5676,32 @@ webpackJsonp([0],[
 	          pathStatus.classList.add('is-stoped');
 	        }
 
+	        if (path.value.direct_linking) {
+	          pathDirectLinking.classList.add('is-select');
+	        }
+
 	        ['lander', 'offer'].forEach(function (type) {
 	          path.value[type].forEach(function (value, index) {
-	            add[type].list.setValue(value);
-	            pathBox.querySelectorAll('.js-path-' + type)[index].querySelector('.js-path-' + type + '-weight').value = path.value.lander_weight[index] || '';
+	            if (path.value.offer_url[index]) {
+	              add[type].list.value = '__temp__';
+	              newList(type);
+	              add[type].list.close();
+
+	              var parent = pathBox.querySelectorAll('.js-path-offer')[index].querySelector('.js-list').parentNode;
+
+	              parent.innerHTML = '\n                <div class="input">\n                  <input class="js-path-url" type="text" placeholder="Path URL" value="' + value + '">\n                  <span><span>\n                </div>';
+
+	              parent.querySelector('.js-path-url').addEventListener('change', function (ev) {
+	                updatePath({
+	                  field: 'offer_update',
+	                  value: ev.target.value.trim(),
+	                  position: position
+	                });
+	              });
+	            } else {
+	              add[type].list.setValue(value);
+	              pathBox.querySelectorAll('.js-path-' + type)[index].querySelector('.js-path-' + type + '-weight').value = path.value.lander_weight[index] || '';
+	            }
 	          });
 	        });
 
@@ -5713,6 +5746,7 @@ webpackJsonp([0],[
 	    pathName.value = '';
 	    pathWeight.value = '';
 	    pathStatus.classList.remove('is-stoped');
+	    pathDirectLinking.classList.remove('is-select');
 
 	    ['lander', 'offer'].forEach(function (type) {
 	      [].concat(_toConsumableArray(pathBox.querySelectorAll('.js-path-' + type))).forEach(function (wrap) {
@@ -5803,6 +5837,13 @@ webpackJsonp([0],[
 	    updatePath({
 	      field: 'status',
 	      value: pathStatus.classList.contains('is-stoped') ? 'off' : 'on'
+	    });
+	  });
+
+	  pathDirectLinking.addEventListener('change', function () {
+	    updatePath({
+	      field: 'direct_linking',
+	      value: pathDirectLinking.classList.contains('is-select')
 	    });
 	  });
 
@@ -5946,7 +5987,99 @@ webpackJsonp([0],[
 	    fillingAddLists('lander');
 	    fillingAddLists('offer');
 	  })();
+
+	  pathBox.addEventListener('click', function (event) {
+	    var createLander = event.target.closest('.js-path-create-lander');
+	    var createOffer = event.target.closest('.js-path-create-offer');
+	    var useUrl = event.target.closest('.js-path-use-url');
+
+	    if (createLander) {
+	      (function () {
+	        var list = createLander.closest('.js-list');
+	        var popup = createLander.closest('.js-popup');
+
+	        if (list && popup) {
+	          popup.style.display = 'none';
+
+	          (0, _landerAdd2.default)(function (data) {
+	            popup.style.display = '';
+	            list.querySelector('.js-list-items').innerHTML += '<div class="list__item js-list-item" data-value="' + data.id + '">' + data.name + '</div>';
+	            list.setValue(data.id);
+	          });
+	        }
+	      })();
+	    }
+
+	    if (createOffer) {
+	      (function () {
+	        var list = createLander.closest('.js-list');
+	        var popup = createLander.closest('.js-popup');
+
+	        if (list && popup) {
+	          popup.style.display = 'none';
+
+	          (0, _landerAdd2.default)(function (data) {
+	            popup.style.display = '';
+	            list.querySelector('.js-list-items').innerHTML += '<div class="list__item js-list-item" data-value="' + data.id + '">' + data.name + '</div>';
+	            list.setValue(data.id);
+	          });
+	        }
+	      })();
+	    }
+
+	    if (useUrl) {
+	      (function () {
+	        var list = useUrl.closest('.js-list');
+	        var _offerAdd = useUrl.closest('.js-path-offer-add');
+
+	        if (_offerAdd) {
+	          list.value = '__temp__';
+	          newList('offer');
+	          list.close();
+	          var _allOffers = pathBox.querySelectorAll('.js-path-offer');
+	          list = _allOffers[_allOffers.length - 1].querySelector('.js-list');
+	        }
+
+	        var wrap = list.closest('.js-path-offer');
+	        var parent = list.parentNode;
+	        var position = [].concat(_toConsumableArray(pathBox.querySelectorAll('.js-path-offer'))).indexOf(wrap);
+
+	        parent.innerHTML = '\n        <div class="input">\n          <input class="js-path-url" type="text" placeholder="Path URL">\n          <span><span>\n        </div>';
+
+	        var input = parent.querySelector('.js-path-url');
+
+	        input.addEventListener('change', function () {
+	          updatePath({
+	            field: 'offer_update',
+	            value: input.value.trim(),
+	            position: position
+	          });
+	        });
+
+	        updatePath({
+	          field: 'offer_update',
+	          value: '',
+	          position: position
+	        });
+
+	        updatePath({
+	          field: 'use_url',
+	          position: position
+	        });
+
+	        input.focus();
+	      })();
+	    }
+	  });
 	};
+
+	var _landerAdd = __webpack_require__(56);
+
+	var _landerAdd2 = _interopRequireDefault(_landerAdd);
+
+	var _offerAdd2 = __webpack_require__(57);
+
+	var _offerAdd3 = _interopRequireDefault(_offerAdd2);
 
 	var _listEvent = __webpack_require__(23);
 
@@ -5959,6 +6092,422 @@ webpackJsonp([0],[
 
 /***/ },
 /* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (callback) {
+	  var popup = (0, _createPopup2.default)('Creating new lander', true);
+
+	  if (!popup) {
+	    return;
+	  }
+
+	  var popupBody = popup.querySelector('.js-popup-body');
+
+	  if (!popupBody) {
+	    return;
+	  }
+
+	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new offer">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Offer URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" placeholder="Create a url">\n          <span><span>\n        </div>\n        <div class="tags js-form-tags" style="display: none;"></div>\n      </div>\n    </div>\n    </div>';
+
+	  var formName = popupBody.querySelector('.js-form-name');
+	  var formUrl = popupBody.querySelector('.js-form-url');
+	  var formUrlTags = popupBody.querySelector('.js-form-tags');
+
+	  '{country},{cost},{campaign_id},{trafficsource_id},{ip_id},{offer_id}'.split(',').forEach(function (tag) {
+	    var span = document.createElement('span');
+	    span.className = 'js-form-tag';
+	    span.textContent = tag;
+	    formUrlTags.appendChild(span);
+	  });
+
+	  formUrl.addEventListener('focus', function () {
+	    formUrlTags.style.display = '';
+	  });
+
+	  formUrl.addEventListener('blur', function () {
+	    setTimeout(function () {
+	      formUrlTags.style.display = 'none';
+	    }, 200);
+	  });
+
+	  var changeFormUrl = function changeFormUrl() {
+	    var val = formUrl.value;
+
+	    [].concat(_toConsumableArray(formUrlTags.querySelectorAll('span'))).forEach(function (span) {
+	      if (val.indexOf(span.textContent.trim()) !== -1) {
+	        span.classList.add('is-select');
+	      } else {
+	        span.classList.remove('is-select');
+	      }
+	    });
+	  };
+
+	  formUrl.addEventListener('change', changeFormUrl);
+	  formUrl.addEventListener('keyup', changeFormUrl);
+	  formUrl.addEventListener('paste', changeFormUrl);
+	  formUrl.addEventListener('cut', changeFormUrl);
+
+	  formUrlTags.addEventListener('mousedown', function (event) {
+	    var closest = event.target.closest('.js-form-tag');
+
+	    if (closest) {
+	      if (!closest.classList.contains('is-select')) {
+	        var tag = closest.textContent;
+	        formUrl.value += tag;
+	        closest.classList.add('is-select');
+	      }
+	    }
+
+	    formUrl.focus();
+	    event.preventDefault();
+	    event.stopPropagation();
+	  });
+
+	  popup.querySelector('.js-popup-save').addEventListener('click', function (event) {
+	    var name = formName.value.trim();
+	    var landerUrl = formUrl.value.trim();
+
+	    var focusFormName = function focusFormName() {
+	      var parentFormName = formName.parentNode;
+	      parentFormName.classList.remove('is-error');
+	      parentFormName.querySelector('span').textContent = '';
+	      formName.removeEventListener('focus', focusFormName);
+	    };
+
+	    if (!name) {
+	      var parentFormName = formName.parentNode;
+	      parentFormName.classList.add('is-error');
+	      parentFormName.querySelector('span').textContent = 'The field can not be empty';
+	      formName.addEventListener('focus', focusFormName);
+	      return;
+	    }
+
+	    var focusFormUrl = function focusFormUrl() {
+	      var parentFormUrl = formUrl.parentNode;
+	      parentFormUrl.classList.remove('is-error');
+	      parentFormUrl.querySelector('span').textContent = '';
+	      formUrl.removeEventListener('focus', focusFormUrl);
+	    };
+
+	    if (!landerUrl) {
+	      var parentFormUrl = formUrl.parentNode;
+	      parentFormUrl.classList.add('is-error');
+	      parentFormUrl.querySelector('span').textContent = 'The field can not be empty';
+	      formUrl.addEventListener('focus', focusFormUrl);
+	      return;
+	    }
+
+	    var options = window._getOptionsFetch({
+	      name: name,
+	      url: landerUrl
+	    });
+
+	    fetch(window.might.url + '/lander/create', options).then(function (response) {
+	      return response.json();
+	    }).then(function (result) {
+	      if (result.error) {
+	        if (result.result.msg) {
+	          popupBody.querySelector('.js-poopup-error').textContent = result.result.msg;
+	        }
+	      } else {
+	        popup.close();
+
+	        if (callback && typeof callback === 'function') {
+	          callback(result.result.data);
+	        }
+	      }
+	    });
+	  });
+	};
+
+	var _qs = __webpack_require__(14);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	var _createPopup = __webpack_require__(52);
+
+	var _createPopup2 = _interopRequireDefault(_createPopup);
+
+	var _listEvent = __webpack_require__(23);
+
+	var _listEvent2 = _interopRequireDefault(_listEvent);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
+
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (callback) {
+	  var popup = (0, _createPopup2.default)('Creating new offer', true);
+
+	  if (!popup) {
+	    return;
+	  }
+
+	  var popupBody = popup.querySelector('.js-popup-body');
+
+	  if (!popupBody) {
+	    return;
+	  }
+
+	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new offer">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Offer URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" placeholder="Create a url">\n          <span><span>\n        </div>\n        <div class="tags js-form-tags" style="display: none;"></div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Affiliate nework:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-affnet" style="display: block; margin: 0 0 15px;" data-placeholder="Select affiliate network">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Payout:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="radiobutton js-form-payout-auto">Auto</div>\n        <div class="radiobutton js-form-payout-manual is-select">Manual</div>\n        <div class="input" style="display: inline-block; width: 90px; margin-left: 30px; margin-right: 10px;">\n          <input class="js-form-payout-value" type="text" placeholder="0">\n          <span><span>\n        </div>\n        <div class="popup__currency js-form-payout-eur">\n          <i class="fa fa-euro"></i>\n        </div>\n        <div class="popup__currency js-form-payout-rub">\n          <i class="fa fa-ruble"></i>\n        </div>\n        <div class="popup__currency js-form-payout-usd is-select">\n          <i class="fa fa-dollar"></i>\n        </div>\n      </div>\n    </div>';
+
+	  var formName = popupBody.querySelector('.js-form-name');
+	  var formUrl = popupBody.querySelector('.js-form-url');
+	  var formUrlTags = popupBody.querySelector('.js-form-tags');
+	  var formAffNet = popupBody.querySelector('.js-form-affnet');
+	  var formPayoutAuto = popupBody.querySelector('.js-form-payout-auto');
+	  var formPayoutManual = popupBody.querySelector('.js-form-payout-manual');
+	  var formPayoutValue = popupBody.querySelector('.js-form-payout-value');
+	  var formPayoutEur = popupBody.querySelector('.js-form-payout-eur');
+	  var formPayoutRub = popupBody.querySelector('.js-form-payout-rub');
+	  var formPayoutUsd = popupBody.querySelector('.js-form-payout-usd');
+
+	  '{country},{cost},{campaign_id},{trafficsource_id},{ip_id},{offer_id}'.split(',').forEach(function (tag) {
+	    var span = document.createElement('span');
+	    span.className = 'js-form-tag';
+	    span.textContent = tag;
+	    formUrlTags.appendChild(span);
+	  });
+
+	  formUrl.addEventListener('focus', function () {
+	    formUrlTags.style.display = '';
+	  });
+
+	  formUrl.addEventListener('blur', function () {
+	    setTimeout(function () {
+	      formUrlTags.style.display = 'none';
+	    }, 200);
+	  });
+
+	  var changeFormUrl = function changeFormUrl() {
+	    var val = formUrl.value;
+
+	    [].concat(_toConsumableArray(formUrlTags.querySelectorAll('span'))).forEach(function (span) {
+	      if (val.indexOf(span.textContent.trim()) !== -1) {
+	        span.classList.add('is-select');
+	      } else {
+	        span.classList.remove('is-select');
+	      }
+	    });
+	  };
+
+	  formUrl.addEventListener('change', changeFormUrl);
+	  formUrl.addEventListener('keyup', changeFormUrl);
+	  formUrl.addEventListener('paste', changeFormUrl);
+	  formUrl.addEventListener('cut', changeFormUrl);
+
+	  formUrlTags.addEventListener('mousedown', function (event) {
+	    var closest = event.target.closest('.js-form-tag');
+
+	    if (closest) {
+	      if (!closest.classList.contains('is-select')) {
+	        var tag = closest.textContent;
+	        formUrl.value += tag;
+	        closest.classList.add('is-select');
+	      }
+	    }
+
+	    formUrl.focus();
+	    event.preventDefault();
+	    event.stopPropagation();
+	  });
+
+	  (function () {
+	    var options = window._getOptionsFetch({
+	      field: 'id,name',
+	      order: 'name'
+	    });
+
+	    fetch(window.might.url + '/affiliate_network/list', options).then(function (response) {
+	      return response.json();
+	    }).then(function (result) {
+	      var items = formAffNet.querySelector('.js-list-items');
+
+	      (result.result.data || []).forEach(function (item) {
+	        items.innerHTML += '<div class="list__item js-list-item" data-value="' + item.id + '">' + item.name + '</div>';
+	      });
+
+	      (0, _listEvent2.default)(formAffNet);
+	    });
+	  })();
+
+	  formPayoutAuto.addEventListener('click', function () {
+	    formPayoutAuto.classList.add('is-select');
+	    formPayoutManual.classList.remove('is-select');
+	  });
+
+	  formPayoutManual.addEventListener('click', function () {
+	    formPayoutAuto.classList.remove('is-select');
+	    formPayoutManual.classList.add('is-select');
+	  });
+
+	  formPayoutEur.addEventListener('click', function () {
+	    formPayoutEur.classList.add('is-select');
+	    formPayoutRub.classList.remove('is-select');
+	    formPayoutUsd.classList.remove('is-select');
+	  });
+
+	  formPayoutRub.addEventListener('click', function () {
+	    formPayoutEur.classList.remove('is-select');
+	    formPayoutRub.classList.add('is-select');
+	    formPayoutUsd.classList.remove('is-select');
+	  });
+
+	  formPayoutUsd.addEventListener('click', function () {
+	    formPayoutEur.classList.remove('is-select');
+	    formPayoutRub.classList.remove('is-select');
+	    formPayoutUsd.classList.add('is-select');
+	  });
+
+	  formPayoutValue.addEventListener('paste', function (event) {
+	    if (/^\d+$/.test(formPayoutValue.value.trim())) {
+	      formPayoutValue.value = '';
+	    }
+	  });
+
+	  formPayoutValue.addEventListener('keydown', function (event) {
+	    var code = event.keyCode;
+	    var char = String.fromCharCode(code);
+	    var key = '0123456789'.indexOf(char);
+	    var value = parseInt(event.target.value, 10);
+
+	    switch (code) {
+	      case 9:
+	      case 13:
+	      case 27:
+	        event.target.blur();
+	        break;
+	      case 8:
+	      case 46:
+	        break;
+	      default:
+	        if (key === -1) {
+	          event.preventDefault();
+	        }
+	    }
+	  });
+
+	  popup.querySelector('.js-popup-save').addEventListener('click', function (event) {
+	    var name = formName.value.trim();
+	    var offerUrl = formUrl.value.trim();
+	    var affNet = formAffNet.value;
+	    var payout = formPayoutAuto.classList.contains('is-select') ? 1 : 0;
+	    var currency = void 0;
+	    var payoutValue = formPayoutValue.value || 0;
+
+	    var focusFormName = function focusFormName() {
+	      var parentFormName = formName.parentNode;
+	      parentFormName.classList.remove('is-error');
+	      parentFormName.querySelector('span').textContent = '';
+	      formName.removeEventListener('focus', focusFormName);
+	    };
+
+	    if (!name) {
+	      var parentFormName = formName.parentNode;
+	      parentFormName.classList.add('is-error');
+	      parentFormName.querySelector('span').textContent = 'The field can not be empty';
+	      formName.addEventListener('focus', focusFormName);
+	      return;
+	    }
+
+	    var focusFormUrl = function focusFormUrl() {
+	      var parentFormUrl = formUrl.parentNode;
+	      parentFormUrl.classList.remove('is-error');
+	      parentFormUrl.querySelector('span').textContent = '';
+	      formUrl.removeEventListener('focus', focusFormUrl);
+	    };
+
+	    if (!offerUrl) {
+	      var parentFormUrl = formUrl.parentNode;
+	      parentFormUrl.classList.add('is-error');
+	      parentFormUrl.querySelector('span').textContent = 'The field can not be empty';
+	      formUrl.addEventListener('focus', focusFormUrl);
+	      return;
+	    }
+
+	    var clickFormAffNet = function clickFormAffNet() {
+	      formAffNet.classList.remove('is-error');
+	      formAffNet.removeEventListener('click', clickFormAffNet);
+	    };
+
+	    if (!affNet) {
+	      formAffNet.classList.add('is-error');
+	      formAffNet.addEventListener('click', clickFormAffNet);
+	      return;
+	    }
+
+	    if (formPayoutEur.classList.contains('is-select')) {
+	      currency = 'EUR';
+	    } else if (formPayoutRub.classList.contains('is-select')) {
+	      currency = 'RUB';
+	    } else {
+	      currency = 'USD';
+	    }
+
+	    var options = window._getOptionsFetch({
+	      name: name,
+	      url: offerUrl,
+	      affiliate_network: affNet,
+	      payout: payout,
+	      currency: currency,
+	      offer_type: 0,
+	      payout_value: payoutValue
+	    });
+
+	    fetch(window.might.url + '/offer/create', options).then(function (response) {
+	      return response.json();
+	    }).then(function (result) {
+	      if (result.error) {
+	        if (result.result.msg) {
+	          popupBody.querySelector('.js-poopup-error').textContent = result.result.msg;
+	        }
+	      } else {
+	        popup.close();
+
+	        if (callback && typeof callback === 'function') {
+	          callback(result.result.data);
+	        }
+	      }
+	    });
+	  });
+	};
+
+	var _qs = __webpack_require__(14);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	var _createPopup = __webpack_require__(52);
+
+	var _createPopup2 = _interopRequireDefault(_createPopup);
+
+	var _listEvent = __webpack_require__(23);
+
+	var _listEvent2 = _interopRequireDefault(_listEvent);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
+
+/***/ },
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6334,7 +6883,7 @@ webpackJsonp([0],[
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
-	var _checklistEvent = __webpack_require__(57);
+	var _checklistEvent = __webpack_require__(59);
 
 	var _checklistEvent2 = _interopRequireDefault(_checklistEvent);
 
@@ -6379,7 +6928,7 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 57 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -6833,7 +7382,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 58 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -6901,160 +7450,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 59 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function () {
-	  if (document.querySelector('.js-popup')) {
-	    return;
-	  }
-
-	  var popup = (0, _createPopup2.default)('Creating new lander', true);
-
-	  if (!popup) {
-	    return;
-	  }
-
-	  var popupBody = popup.querySelector('.js-popup-body');
-
-	  if (!popupBody) {
-	    return;
-	  }
-
-	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new offer">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Offer URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" placeholder="Create a url">\n          <span><span>\n        </div>\n        <div class="tags js-form-tags" style="display: none;"></div>\n      </div>\n    </div>\n    </div>';
-
-	  var formName = popupBody.querySelector('.js-form-name');
-	  var formUrl = popupBody.querySelector('.js-form-url');
-	  var formUrlTags = popupBody.querySelector('.js-form-tags');
-
-	  '{country},{cost},{campaign_id},{trafficsource_id},{ip_id},{offer_id}'.split(',').forEach(function (tag) {
-	    var span = document.createElement('span');
-	    span.className = 'js-form-tag';
-	    span.textContent = tag;
-	    formUrlTags.appendChild(span);
-	  });
-
-	  formUrl.addEventListener('focus', function () {
-	    formUrlTags.style.display = '';
-	  });
-
-	  formUrl.addEventListener('blur', function () {
-	    setTimeout(function () {
-	      formUrlTags.style.display = 'none';
-	    }, 200);
-	  });
-
-	  var changeFormUrl = function changeFormUrl() {
-	    var val = formUrl.value;
-
-	    [].concat(_toConsumableArray(formUrlTags.querySelectorAll('span'))).forEach(function (span) {
-	      if (val.indexOf(span.textContent.trim()) !== -1) {
-	        span.classList.add('is-select');
-	      } else {
-	        span.classList.remove('is-select');
-	      }
-	    });
-	  };
-
-	  formUrl.addEventListener('change', changeFormUrl);
-	  formUrl.addEventListener('keyup', changeFormUrl);
-	  formUrl.addEventListener('paste', changeFormUrl);
-	  formUrl.addEventListener('cut', changeFormUrl);
-
-	  formUrlTags.addEventListener('mousedown', function (event) {
-	    var closest = event.target.closest('.js-form-tag');
-
-	    if (closest) {
-	      if (!closest.classList.contains('is-select')) {
-	        var tag = closest.textContent;
-	        formUrl.value += tag;
-	        closest.classList.add('is-select');
-	      }
-	    }
-
-	    formUrl.focus();
-	    event.preventDefault();
-	    event.stopPropagation();
-	  });
-
-	  popup.querySelector('.js-popup-save').addEventListener('click', function (event) {
-	    var name = formName.value.trim();
-	    var landerUrl = formUrl.value.trim();
-
-	    var focusFormName = function focusFormName() {
-	      var parentFormName = formName.parentNode;
-	      parentFormName.classList.remove('is-error');
-	      parentFormName.querySelector('span').textContent = '';
-	      formName.removeEventListener('focus', focusFormName);
-	    };
-
-	    if (!name) {
-	      var parentFormName = formName.parentNode;
-	      parentFormName.classList.add('is-error');
-	      parentFormName.querySelector('span').textContent = 'The field can not be empty';
-	      formName.addEventListener('focus', focusFormName);
-	      return;
-	    }
-
-	    var focusFormUrl = function focusFormUrl() {
-	      var parentFormUrl = formUrl.parentNode;
-	      parentFormUrl.classList.remove('is-error');
-	      parentFormUrl.querySelector('span').textContent = '';
-	      formUrl.removeEventListener('focus', focusFormUrl);
-	    };
-
-	    if (!landerUrl) {
-	      var parentFormUrl = formUrl.parentNode;
-	      parentFormUrl.classList.add('is-error');
-	      parentFormUrl.querySelector('span').textContent = 'The field can not be empty';
-	      formUrl.addEventListener('focus', focusFormUrl);
-	      return;
-	    }
-
-	    var options = window._getOptionsFetch({
-	      name: name,
-	      url: landerUrl
-	    });
-
-	    fetch(window.might.url + '/lander/create', options).then(function (response) {
-	      return response.json();
-	    }).then(function (result) {
-	      if (result.error) {
-	        if (result.result.msg) {
-	          popupBody.querySelector('.js-poopup-error').textContent = result.result.msg;
-	        }
-	      } else {
-	        popup.close();
-	      }
-	    });
-	  });
-	};
-
-	var _qs = __webpack_require__(14);
-
-	var _qs2 = _interopRequireDefault(_qs);
-
-	var _createPopup = __webpack_require__(52);
-
-	var _createPopup2 = _interopRequireDefault(_createPopup);
-
-	var _listEvent = __webpack_require__(23);
-
-	var _listEvent2 = _interopRequireDefault(_listEvent);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
-
-/***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -7119,269 +7515,6 @@ webpackJsonp([0],[
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
-
-/***/ },
-/* 61 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function () {
-	  if (document.querySelector('.js-popup')) {
-	    return;
-	  }
-
-	  var popup = (0, _createPopup2.default)('Creating new offer', true);
-
-	  if (!popup) {
-	    return;
-	  }
-
-	  var popupBody = popup.querySelector('.js-popup-body');
-
-	  if (!popupBody) {
-	    return;
-	  }
-
-	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new offer">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Offer URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" placeholder="Create a url">\n          <span><span>\n        </div>\n        <div class="tags js-form-tags" style="display: none;"></div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Affiliate nework:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-affnet" style="display: block; margin: 0 0 15px;" data-placeholder="Select affiliate network">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Payout:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="radiobutton js-form-payout-auto">Auto</div>\n        <div class="radiobutton js-form-payout-manual is-select">Manual</div>\n        <div class="input" style="display: inline-block; width: 90px; margin-left: 30px; margin-right: 10px;">\n          <input class="js-form-payout-value" type="text" placeholder="0">\n          <span><span>\n        </div>\n        <div class="popup__currency js-form-payout-eur">\n          <i class="fa fa-euro"></i>\n        </div>\n        <div class="popup__currency js-form-payout-rub">\n          <i class="fa fa-ruble"></i>\n        </div>\n        <div class="popup__currency js-form-payout-usd is-select">\n          <i class="fa fa-dollar"></i>\n        </div>\n      </div>\n    </div>';
-
-	  var formName = popupBody.querySelector('.js-form-name');
-	  var formUrl = popupBody.querySelector('.js-form-url');
-	  var formUrlTags = popupBody.querySelector('.js-form-tags');
-	  var formAffNet = popupBody.querySelector('.js-form-affnet');
-	  var formPayoutAuto = popupBody.querySelector('.js-form-payout-auto');
-	  var formPayoutManual = popupBody.querySelector('.js-form-payout-manual');
-	  var formPayoutValue = popupBody.querySelector('.js-form-payout-value');
-	  var formPayoutEur = popupBody.querySelector('.js-form-payout-eur');
-	  var formPayoutRub = popupBody.querySelector('.js-form-payout-rub');
-	  var formPayoutUsd = popupBody.querySelector('.js-form-payout-usd');
-
-	  '{country},{cost},{campaign_id},{trafficsource_id},{ip_id},{offer_id}'.split(',').forEach(function (tag) {
-	    var span = document.createElement('span');
-	    span.className = 'js-form-tag';
-	    span.textContent = tag;
-	    formUrlTags.appendChild(span);
-	  });
-
-	  formUrl.addEventListener('focus', function () {
-	    formUrlTags.style.display = '';
-	  });
-
-	  formUrl.addEventListener('blur', function () {
-	    setTimeout(function () {
-	      formUrlTags.style.display = 'none';
-	    }, 200);
-	  });
-
-	  var changeFormUrl = function changeFormUrl() {
-	    var val = formUrl.value;
-
-	    [].concat(_toConsumableArray(formUrlTags.querySelectorAll('span'))).forEach(function (span) {
-	      if (val.indexOf(span.textContent.trim()) !== -1) {
-	        span.classList.add('is-select');
-	      } else {
-	        span.classList.remove('is-select');
-	      }
-	    });
-	  };
-
-	  formUrl.addEventListener('change', changeFormUrl);
-	  formUrl.addEventListener('keyup', changeFormUrl);
-	  formUrl.addEventListener('paste', changeFormUrl);
-	  formUrl.addEventListener('cut', changeFormUrl);
-
-	  formUrlTags.addEventListener('mousedown', function (event) {
-	    var closest = event.target.closest('.js-form-tag');
-
-	    if (closest) {
-	      if (!closest.classList.contains('is-select')) {
-	        var tag = closest.textContent;
-	        formUrl.value += tag;
-	        closest.classList.add('is-select');
-	      }
-	    }
-
-	    formUrl.focus();
-	    event.preventDefault();
-	    event.stopPropagation();
-	  });
-
-	  (function () {
-	    var options = window._getOptionsFetch({
-	      field: 'id,name',
-	      order: 'name'
-	    });
-
-	    fetch(window.might.url + '/affiliate_network/list', options).then(function (response) {
-	      return response.json();
-	    }).then(function (result) {
-	      var items = formAffNet.querySelector('.js-list-items');
-
-	      (result.result.data || []).forEach(function (item) {
-	        items.innerHTML += '<div class="list__item js-list-item" data-value="' + item.id + '">' + item.name + '</div>';
-	      });
-
-	      (0, _listEvent2.default)(formAffNet);
-	    });
-	  })();
-
-	  formPayoutAuto.addEventListener('click', function () {
-	    formPayoutAuto.classList.add('is-select');
-	    formPayoutManual.classList.remove('is-select');
-	  });
-
-	  formPayoutManual.addEventListener('click', function () {
-	    formPayoutAuto.classList.remove('is-select');
-	    formPayoutManual.classList.add('is-select');
-	  });
-
-	  formPayoutEur.addEventListener('click', function () {
-	    formPayoutEur.classList.add('is-select');
-	    formPayoutRub.classList.remove('is-select');
-	    formPayoutUsd.classList.remove('is-select');
-	  });
-
-	  formPayoutRub.addEventListener('click', function () {
-	    formPayoutEur.classList.remove('is-select');
-	    formPayoutRub.classList.add('is-select');
-	    formPayoutUsd.classList.remove('is-select');
-	  });
-
-	  formPayoutUsd.addEventListener('click', function () {
-	    formPayoutEur.classList.remove('is-select');
-	    formPayoutRub.classList.remove('is-select');
-	    formPayoutUsd.classList.add('is-select');
-	  });
-
-	  formPayoutValue.addEventListener('paste', function (event) {
-	    if (/^\d+$/.test(formPayoutValue.value.trim())) {
-	      formPayoutValue.value = '';
-	    }
-	  });
-
-	  formPayoutValue.addEventListener('keydown', function (event) {
-	    var code = event.keyCode;
-	    var char = String.fromCharCode(code);
-	    var key = '0123456789'.indexOf(char);
-	    var value = parseInt(event.target.value, 10);
-
-	    switch (code) {
-	      case 9:
-	      case 13:
-	      case 27:
-	        event.target.blur();
-	        break;
-	      case 8:
-	      case 46:
-	        break;
-	      default:
-	        if (key === -1) {
-	          event.preventDefault();
-	        }
-	    }
-	  });
-
-	  popup.querySelector('.js-popup-save').addEventListener('click', function (event) {
-	    var name = formName.value.trim();
-	    var offerUrl = formUrl.value.trim();
-	    var affNet = formAffNet.value;
-	    var payout = formPayoutAuto.classList.contains('is-select') ? 1 : 0;
-	    var currency = void 0;
-	    var payoutValue = formPayoutValue.value || 0;
-
-	    var focusFormName = function focusFormName() {
-	      var parentFormName = formName.parentNode;
-	      parentFormName.classList.remove('is-error');
-	      parentFormName.querySelector('span').textContent = '';
-	      formName.removeEventListener('focus', focusFormName);
-	    };
-
-	    if (!name) {
-	      var parentFormName = formName.parentNode;
-	      parentFormName.classList.add('is-error');
-	      parentFormName.querySelector('span').textContent = 'The field can not be empty';
-	      formName.addEventListener('focus', focusFormName);
-	      return;
-	    }
-
-	    var focusFormUrl = function focusFormUrl() {
-	      var parentFormUrl = formUrl.parentNode;
-	      parentFormUrl.classList.remove('is-error');
-	      parentFormUrl.querySelector('span').textContent = '';
-	      formUrl.removeEventListener('focus', focusFormUrl);
-	    };
-
-	    if (!offerUrl) {
-	      var parentFormUrl = formUrl.parentNode;
-	      parentFormUrl.classList.add('is-error');
-	      parentFormUrl.querySelector('span').textContent = 'The field can not be empty';
-	      formUrl.addEventListener('focus', focusFormUrl);
-	      return;
-	    }
-
-	    var clickFormAffNet = function clickFormAffNet() {
-	      formAffNet.classList.remove('is-error');
-	      formAffNet.removeEventListener('click', clickFormAffNet);
-	    };
-
-	    if (!affNet) {
-	      formAffNet.classList.add('is-error');
-	      formAffNet.addEventListener('click', clickFormAffNet);
-	      return;
-	    }
-
-	    if (formPayoutEur.classList.contains('is-select')) {
-	      currency = 'EUR';
-	    } else if (formPayoutRub.classList.contains('is-select')) {
-	      currency = 'RUB';
-	    } else {
-	      currency = 'USD';
-	    }
-
-	    var options = window._getOptionsFetch({
-	      name: name,
-	      url: offerUrl,
-	      affiliate_network: affNet,
-	      payout: payout,
-	      currency: currency,
-	      offer_type: 0,
-	      payout_value: payoutValue
-	    });
-
-	    fetch(window.might.url + '/offer/create', options).then(function (response) {
-	      return response.json();
-	    }).then(function (result) {
-	      if (result.error) {
-	        if (result.result.msg) {
-	          popupBody.querySelector('.js-poopup-error').textContent = result.result.msg;
-	        }
-	      } else {
-	        popup.close();
-	      }
-	    });
-	  });
-	};
-
-	var _qs = __webpack_require__(14);
-
-	var _qs2 = _interopRequireDefault(_qs);
-
-	var _createPopup = __webpack_require__(52);
-
-	var _createPopup2 = _interopRequireDefault(_createPopup);
-
-	var _listEvent = __webpack_require__(23);
-
-	var _listEvent2 = _interopRequireDefault(_listEvent);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
