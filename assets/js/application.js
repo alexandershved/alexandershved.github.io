@@ -774,7 +774,7 @@ webpackJsonp([0],[
 	      label = document.createElement('div');
 	      label.className = 'list__label';
 	      label.textContent = lbl;
-	      list.firstChild.insertBefore(label);
+	      list.children[0].insertBefore(label);
 	    }
 
 	    return isUpdate;
@@ -2131,7 +2131,7 @@ webpackJsonp([0],[
 	      label = document.createElement('div');
 	      label.className = 'list__label';
 	      label.textContent = (0, _fieldName2.default)(fld);
-	      list.firstChild.insertBefore(label);
+	      list.children[0].insertBefore(label);
 	    }
 
 	    return isUpdate;
@@ -4053,11 +4053,11 @@ webpackJsonp([0],[
 	      columnsControl.addEventListener('change', function () {
 	        var cols = {};
 
-	        statParams.columns = {};
+	        statParams.columns = [];
 
 	        columnsControl.value.forEach(function (val) {
 	          cols[val] = 1;
-	          statParams.columns[val] = 1;
+	          statParams.columns.push(val);
 	        });
 
 	        var options = window._getOptionsFetch(cols);
@@ -4819,9 +4819,9 @@ webpackJsonp([0],[
 
 	        case 'table_columns':
 	          if (Array.isArray(obj.table_columns)) {
-	            params.columns = {};
+	            params.columns = [];
 	            obj.table_columns.forEach(function (col) {
-	              params.columns[col] = true;
+	              params.columns.push(col);
 	            });
 	            isUpdate = true;
 	            isRefresh = true;
@@ -5044,7 +5044,7 @@ webpackJsonp([0],[
 	  var popup = document.createElement('div');
 	  popup.className = 'popup js-popup';
 
-	  popup.innerHTML = '\n    <div class="popup__veil">\n    </div>\n    <div class="popup__win">\n      <div class="popup__wrap js-popup-wrap">\n        <div class="popup__headline">\n          <div class="popup__close js-popup-close"></div>\n          <div class="popup__title">' + title + '</div>\n        </div>\n        <div class="popup__body js-popup-body"></div>\n        <div class="popup__bottom">\n          <div class="poopup__bottom-error js-popup-error"></div>\n          ' + (editing ? '<div class="btn-apply js-popup-save">Save</div>' : '') + '\n          <div class="btn-close js-popup-close">Close</div>\n        </div>\n      </div>\n    </div>';
+	  popup.innerHTML = '\n    <div class="popup__veil">\n    </div>\n    <div class="popup__win">\n      <div class="popup__wrap js-popup-wrap">\n        <div class="popup__headline">\n          <div class="popup__close js-popup-close"></div>\n          <div class="popup__title">' + title + '</div>\n        </div>\n        <div class="popup__body js-popup-body"></div>\n        <div class="popup__bottom">\n          <div class="popup__bottom-error js-popup-error"></div>\n          ' + (editing ? '<div class="btn-apply js-popup-save">Save and close</div>' : '') + '\n          <div class="btn-close js-popup-close">Close</div>\n        </div>\n      </div>\n    </div>';
 
 	  document.body.appendChild(popup);
 
@@ -5089,6 +5089,8 @@ webpackJsonp([0],[
 	  value: true
 	});
 
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 	exports.default = function () {
 	  if (document.querySelector('.js-popup')) {
 	    return;
@@ -5108,12 +5110,12 @@ webpackJsonp([0],[
 
 	  popup.querySelector('.js-popup-wrap').style.width = '1000px';
 
-	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for campaign">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Domain:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-domain" style="display: block; margin: 0 0 15px;" data-placeholder="Select domain">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Campaign URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" readonly="true">\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Traffic Source:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-traffic-source" style="display: block; margin: 0 0 15px;" data-placeholder="Select traffic source">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Payout:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="radiobutton js-form-cost-donottrack">Do not track</div>\n        <div class="radiobutton js-form-cost-cpc is-select">CPC</div>\n        <div class="radiobutton js-form-cost-cpa">CPA</div>\n        <div class="popup__line-lbl" style="margin-left: 80px;"><span>Cost click:</span><div class="info"></div></div>\n        <div class="input" style="display: inline-block; width: 90px; margin-left: 10px; margin-right: 10px;">\n          <input class="js-form-cost-click" type="text" placeholder="0">\n          <span><span>\n        </div>\n        <div class="popup__currency js-form-cost-eur">\n          <i class="fa fa-euro"></i>\n        </div>\n        <div class="popup__currency js-form-cost-rub">\n          <i class="fa fa-ruble"></i>\n        </div>\n        <div class="popup__currency js-form-cost-usd is-select">\n          <i class="fa fa-dollar"></i>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Postback URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="js-form-input-parent">\n          <div class="input is-with-plus">\n            <input class="js-form-postbackurl" type="text" placeholder="Postback URL">\n            <div class="input__plus js-form-postbackurl-add"></div>\n            <span><span>\n          </div>\n          <div class="tags js-form-tags" style="display: none;"></div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Redirect mode:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-directtype" style="display: block; margin: 0 0 15px;" data-placeholder="Select redirect mode">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items">\n                <div class="list__item js-list-item" data-value="301">301</div>\n                <div class="list__item js-list-item" data-value="302">302</div>\n                <div class="list__item js-list-item" data-value="js">js</div>\n                <div class="list__item js-list-item" data-value="double_js">double_js</div>\n                <div class="list__item js-list-item" data-value="meta_refresh">meta_refresh</div>\n                <div class="list__item js-list-item" data-value="double_meta_refresh">double_meta_refresh</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="cc js-create-campaign"></div>';
+	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for campaign">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Domain:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-domain" style="display: block; margin: 0 0 15px;" data-placeholder="Select domain">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Campaign URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" readonly="true">\n        </div>\n      </div>\n      <div class="popup__line-btn">\n        <div class="btn-copy js-form-url-copy">Clipboard</div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Traffic Source:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-traffic-source" style="display: block; margin: 0 0 15px;" data-placeholder="Select traffic source">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Payout:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="radiobutton js-form-cost-donottrack">Do not track</div>\n        <div class="radiobutton js-form-cost-cpc is-select">CPC</div>\n        <div class="radiobutton js-form-cost-cpa">CPA</div>\n        <div class="popup__line-lbl" style="margin-left: 80px;"><span>Cost click:</span><div class="info"></div></div>\n        <div class="input" style="display: inline-block; width: 90px; margin-left: 10px; margin-right: 10px;">\n          <input class="js-form-cost-click" type="text" placeholder="0">\n          <span><span>\n        </div>\n        <div class="popup__currency js-form-cost-eur">\n          <i class="fa fa-euro"></i>\n        </div>\n        <div class="popup__currency js-form-cost-rub">\n          <i class="fa fa-ruble"></i>\n        </div>\n        <div class="popup__currency js-form-cost-usd is-select">\n          <i class="fa fa-dollar"></i>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Postback URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="js-form-input-parent">\n          <div class="input is-with-plus">\n            <input class="js-form-postback-url" type="text" placeholder="Postback URL">\n            <div class="input__plus js-form-postback-url-add"></div>\n            <span><span>\n          </div>\n          <div class="tags js-form-postback-tags" style="display: none;"></div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Redirect mode:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-directtype" style="display: block; margin: 0 0 15px;" data-placeholder="Select redirect mode">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items">\n                <div class="list__item js-list-item" data-value="301">301</div>\n                <div class="list__item js-list-item" data-value="302">302</div>\n                <div class="list__item js-list-item" data-value="js">js</div>\n                <div class="list__item js-list-item" data-value="double_js">double_js</div>\n                <div class="list__item js-list-item" data-value="meta_refresh">meta_refresh</div>\n                <div class="list__item js-list-item" data-value="double_meta_refresh">double_meta_refresh</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="cc js-create-campaign"></div>';
 
 	  var formName = popupBody.querySelector('.js-form-name');
 	  var formDomain = popupBody.querySelector('.js-form-domain');
 	  var formUrl = popupBody.querySelector('.js-form-url');
-	  var formUrlTags = popupBody.querySelector('.js-form-tags');
+	  var formUrlCopy = popupBody.querySelector('.js-form-url-copy');
 	  var formTrafficSource = popupBody.querySelector('.js-form-traffic-source');
 	  var formCostDoNotTrack = popupBody.querySelector('.js-form-cost-donottrack');
 	  var formCostCPC = popupBody.querySelector('.js-form-cost-cpc');
@@ -5122,10 +5124,33 @@ webpackJsonp([0],[
 	  var formCostEur = popupBody.querySelector('.js-form-cost-eur');
 	  var formCostRub = popupBody.querySelector('.js-form-cost-rub');
 	  var formCostUsd = popupBody.querySelector('.js-form-cost-usd');
-	  var formPostbackUrl = popupBody.querySelector('.js-form-postbackurl');
-	  var formPostbackUrlAdd = popupBody.querySelector('.js-form-postbackurl-add');
-	  var formDirectType = popupBody.querySelector('.js-form-directtype');
+	  var formPostbackUrl = popupBody.querySelector('.js-form-postback-url');
+	  var formPostbackUrlTags = popupBody.querySelector('.js-form-postback-tags');
+	  var formPostbackUrlAdd = popupBody.querySelector('.js-form-postback-url-add');
+	  var formReirectType = popupBody.querySelector('.js-form-directtype');
 	  var createCampaign = popupBody.querySelector('.js-create-campaign');
+
+	  formUrlCopy.addEventListener('click', function () {
+	    if (formUrl.value) {
+	      formUrl.select();
+
+	      try {
+	        var successful = document.execCommand('copy');
+
+	        if (successful) {
+	          formUrl.classList.add('is-copy');
+
+	          setTimeout(function () {
+	            return formUrl.classList.remove('is-copy');
+	          }, 500);
+	        }
+	      } catch (err) {
+	        throw new Error(err);
+	      }
+
+	      formUrl.blur();
+	    }
+	  });
 
 	  (function () {
 	    var options = window._getOptionsFetch({
@@ -5240,7 +5265,7 @@ webpackJsonp([0],[
 	    var span = document.createElement('span');
 	    span.className = 'js-form-tag';
 	    span.textContent = tag;
-	    formUrlTags.appendChild(span);
+	    formPostbackUrlTags.appendChild(span);
 	  });
 
 	  var _removePostbackUrl = void 0;
@@ -5271,13 +5296,13 @@ webpackJsonp([0],[
 	      el.removeEventListener('click', _dublicatePostbackUrl);
 	      el.addEventListener('click', _removePostbackUrl);
 
-	      initTags(clone.querySelector('.js-form-postbackurl'));
+	      initTags(clone.querySelector('.js-form-postback-url'));
 	    }
 	  };
 
 	  initTags = function initTags(el) {
 	    var parent = el.closest('.js-form-input-parent');
-	    var tags = parent.querySelector('.js-form-tags');
+	    var tags = parent.querySelector('.js-form-postback-tags');
 	    var tag = tags.querySelectorAll('.js-form-tag');
 
 	    el.value = '';
@@ -5326,7 +5351,7 @@ webpackJsonp([0],[
 	      event.stopPropagation();
 	    });
 
-	    parent.querySelector('.js-form-postbackurl-add').addEventListener('click', _dublicatePostbackUrl);
+	    parent.querySelector('.js-form-postback-url-add').addEventListener('click', _dublicatePostbackUrl);
 
 	    var allParent = parent.parentNode.querySelectorAll('.js-form-input-parent');
 
@@ -5336,20 +5361,53 @@ webpackJsonp([0],[
 	  };
 
 	  initTags(formPostbackUrl);
-	  (0, _listEvent2.default)(formDirectType);
+	  (0, _listEvent2.default)(formReirectType);
 	  (0, _campaignAddChilds2.default)(createCampaign);
 
-	  formDirectType.addEventListener('change', function () {
-	    popupBody.querySelector('.js-path-redirect-mode').value = formDirectType.value;
+	  formReirectType.addEventListener('change', function () {
+	    popupBody.querySelector('.js-path-redirect-mode').value = formReirectType.value;
 	  });
 
-	  popup.querySelector('.js-popup-save').addEventListener('click', function (event) {
+	  var saveBtn = document.createElement('div');
+	  saveBtn.className = 'btn-apply js-popup-save';
+	  saveBtn.textContent = 'Save';
+	  popup.querySelector('.js-popup-save').insertBefore(saveBtn);
+
+	  saveBtn.addEventListener('click', function () {
+	    return saveCampaign(true);
+	  });
+	  popup.querySelector('.js-popup-save').addEventListener('click', function () {
+	    return saveCampaign(true);
+	  });
+
+	  function saveCampaign(isClose) {
+	    var formPostbackUrlAll = document.querySelectorAll('.js-form-postback-url');
+
 	    var name = formName.value.trim();
-	    var offerUrl = formUrl.value.trim();
-	    var affNet = formAffNet.value;
-	    var payout = formPayoutAuto.classList.contains('is-select') ? 1 : 0;
-	    var currency = void 0;
-	    var payoutValue = formPayoutValue.value || 0;
+	    var campaignType = 'redirect';
+	    var domain = formDomain.value;
+	    var trafficSource = formTrafficSource.value;
+	    var costClick = formCostClick.value;
+	    var currency = 'USD';
+
+	    if (formCostEur.classList.contains('is-select')) {
+	      currency = 'EUR';
+	    } else if (formCostRub.classList.contains('is-select')) {
+	      currency = 'RUB';
+	    }
+
+	    var doublePostback = void 0;
+
+	    if (formPostbackUrlAll.length > 1) {
+	      doublePostback = [];
+	      [].concat(_toConsumableArray(formPostbackUrlAll)).forEach(function (el) {
+	        doublePostback.push(el.value);
+	      });
+	    } else {
+	      doublePostback = formPostbackUrlAll[0].value;
+	    }
+
+	    var redirectType = formReirectType.value;
 
 	    var focusFormName = function focusFormName() {
 	      var parentFormName = formName.parentNode;
@@ -5366,48 +5424,124 @@ webpackJsonp([0],[
 	      return;
 	    }
 
-	    var focusFormUrl = function focusFormUrl() {
-	      var parentFormUrl = formUrl.parentNode;
-	      parentFormUrl.classList.remove('is-error');
-	      parentFormUrl.querySelector('span').textContent = '';
-	      formUrl.removeEventListener('focus', focusFormUrl);
-	    };
+	    var defaultPath = [];
 
-	    if (!offerUrl) {
-	      var parentFormUrl = formUrl.parentNode;
-	      parentFormUrl.classList.add('is-error');
-	      parentFormUrl.querySelector('span').textContent = 'The field can not be empty';
-	      formUrl.addEventListener('focus', focusFormUrl);
-	      return;
-	    }
+	    [].concat(_toConsumableArray(createCampaign.querySelector('.js-pathes-default').querySelectorAll('.js-path'))).forEach(function (el) {
+	      var path = {};
+	      var val = el.value;
 
-	    var clickFormAffNet = function clickFormAffNet() {
-	      formAffNet.classList.remove('is-error');
-	      formAffNet.removeEventListener('click', clickFormAffNet);
-	    };
+	      path.name = val.name || '';
+	      path.checkbox = val.checkbox ? 'on' : 'off';
+	      path.direct_linking_checkbox = Number(!!val.direct_linking);
+	      path.weight = val.weight || '';
+	      path.lander = [];
+	      path.lander_weight = [];
+	      path.offer = [];
+	      path.offer_weight = [];
+	      path.offer_use_url = [];
 
-	    if (!affNet) {
-	      formAffNet.classList.add('is-error');
-	      formAffNet.addEventListener('click', clickFormAffNet);
-	      return;
-	    }
+	      val.lander.forEach(function (l, index) {
+	        path.lander[index] = l;
+	        path.lander_weight[index] = val.lander_weight[index];
+	      });
 
-	    if (formPayoutEur.classList.contains('is-select')) {
-	      currency = 'EUR';
-	    } else if (formPayoutRub.classList.contains('is-select')) {
-	      currency = 'RUB';
-	    } else {
-	      currency = 'USD';
-	    }
+	      val.offer.forEach(function (l, index) {
+	        path.offer[index] = l;
+	        path.offer_weight[index] = val.offer_weight[index];
+	        path.offer_use_url[index] = val.offer_url[index];
+	      });
+
+	      defaultPath.push(path);
+	    });
+
+	    var rules = [];
+
+	    [].concat(_toConsumableArray(createCampaign.querySelectorAll('.js-rule'))).forEach(function (el) {
+	      var val = el.value;
+
+	      var rule = {
+	        rules: {},
+	        checkbox: val.checkbox ? 'on' : 'off',
+	        weight: val.weight || ''
+	      };
+
+	      val.rules.forEach(function (i) {
+	        rule.rules[i.name] = {};
+
+	        if (i.condition) {
+	          rule.rules[i.name].checkbox = i.condition;
+	        }
+
+	        if (i.set && _typeof(i.set) === 'object') {
+	          var isTree = false;
+
+	          for (var j in i.set) {
+	            if (i.set.hasOwnProperty(j) && i.set[j] && ((typeof j === 'undefined' ? 'undefined' : _typeof(j)) === 'object' || j === 'select all')) {
+	              isTree = true;
+	            }
+	          }
+
+	          if (isTree) {
+	            rule.rules[i.name].value = {};
+
+	            for (var _j in i.set) {
+	              if (i.set.hasOwnProperty(_j)) {
+	                rule.rules[i.name].value[_j] = Object.keys(i.set[_j]);
+	              }
+	            }
+	          } else {
+	            rule.rules[i.name].value = Object.keys(i.set);
+	          }
+	        }
+	      });
+
+	      [].concat(_toConsumableArray(el.querySelectorAll('.js-rule'))).forEach(function (e) {
+	        rule.path = rule.path || [];
+
+	        var path = {};
+	        var v = e.value;
+
+	        path.name = v.name || '';
+	        path.checkbox = v.checkbox ? 'on' : 'off';
+	        path.direct_linking_checkbox = Number(!!v.direct_linking);
+	        path.weight = v.weight;
+	        path.lander = [];
+	        path.lander_weight = [];
+	        path.offer = [];
+	        path.offer_weight = [];
+	        path.offer_use_url = [];
+
+	        v.lander.forEach(function (l, index) {
+	          path.lander[index] = l;
+	          path.lander_weight[index] = v.lander_weight[index];
+	        });
+
+	        v.offer.forEach(function (l, index) {
+	          path.offer[index] = l;
+	          path.offer_weight[index] = v.offer_weight[index];
+	          path.offer_use_url[index] = v.offer_url[index];
+	        });
+
+	        rule.path.push(path);
+	      });
+
+	      rules.push(rule);
+	    });
 
 	    var options = window._getOptionsFetch({
 	      name: name,
-	      url: offerUrl,
-	      affiliate_network: affNet,
-	      payout: payout,
-	      currency: currency,
-	      offer_type: 0,
-	      payout_value: payoutValue
+	      campaign_type: campaignType || '',
+	      domain: {
+	        name: domain || '',
+	        path: ''
+	      },
+	      traffic_source: trafficSource || '',
+	      cost_click: costClick || '',
+	      currency: currency || '',
+	      double_postback: doublePostback || '',
+	      redirect_type: redirectType || '',
+	      default_path: defaultPath || [],
+	      rule: rules || []
 	    });
 
 	    fetch(window.might.url + '/offer/create', options).then(function (response) {
@@ -5415,13 +5549,15 @@ webpackJsonp([0],[
 	    }).then(function (result) {
 	      if (result.error) {
 	        if (result.result.msg) {
-	          popupBody.querySelector('.js-poopup-error').textContent = result.result.msg;
+	          popup.querySelector('.js-popup-error').textContent = result.result.msg;
 	        }
 	      } else {
-	        popup.close();
+	        if (isClose) {
+	          popup.close();
+	        }
 	      }
 	    });
-	  });
+	  }
 	};
 
 	var _createPopup = __webpack_require__(52);
@@ -6213,7 +6349,7 @@ webpackJsonp([0],[
 	    }).then(function (result) {
 	      if (result.error) {
 	        if (result.result.msg) {
-	          popupBody.querySelector('.js-poopup-error').textContent = result.result.msg;
+	          popup.querySelector('.js-popup-error').textContent = result.result.msg;
 	        }
 	      } else {
 	        popup.close();
@@ -6476,7 +6612,7 @@ webpackJsonp([0],[
 	    }).then(function (result) {
 	      if (result.error) {
 	        if (result.result.msg) {
-	          popupBody.querySelector('.js-poopup-error').textContent = result.result.msg;
+	          popup.querySelector('.js-popup-error').textContent = result.result.msg;
 	        }
 	      } else {
 	        popup.close();
@@ -6520,12 +6656,13 @@ webpackJsonp([0],[
 	  var pathBox = box.querySelector('.js-path-box');
 	  var ruleBox = box.querySelector('.js-rule-box');
 
-	  ruleBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Name:</div></div>\n      <div class="cc__col cc__col-120 cc__col-pad"><div class="cc__label">Weight:</div></div>\n    </div>\n\n    <div class="cc__line">\n      <div class="cc__col">\n        <div class="input">\n          <input class="js-rule-name" type="text" placeholder="Rule name">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-120 cc__col-pad">\n        <div class="input">\n          <input class="js-rule-weight" type="text" placeholder="0">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="cc__line js-rule-line-add">\n      <div class="list is-add js-list" data-placeholder="+ Add Rule">\n        <div class="list__wrap">\n          <div class="list__value js-list-value"></div>\n          <div class="list__dropdown">\n            <div class="list__items js-list-items"></div>\n          </div>\n        </div>\n      </div>\n    </div>';
+	  ruleBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Name:</div></div>\n      <div class="cc__col cc__col-120 cc__col-pad"><div class="cc__label">Weight:</div></div>\n    </div>\n\n    <div class="cc__line">\n      <div class="cc__col">\n        <div class="input">\n          <input class="js-rule-name" type="text" placeholder="Rule name">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-120 cc__col-pad">\n        <div class="input">\n          <input class="js-rule-weight" type="text" placeholder="0">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-50 cc__col-pad">\n        <div class="cc__status js-rule-status"></div>\n      </div>\n    </div>\n\n    <div class="cc__line js-rule-line-add">\n      <div class="list is-add js-list" data-placeholder="+ Add Rule">\n        <div class="list__wrap">\n          <div class="list__value js-list-value"></div>\n          <div class="list__dropdown">\n            <div class="list__items js-list-items"></div>\n          </div>\n        </div>\n      </div>\n    </div>';
 
 	  var allRules = box.querySelector('.js-rules');
 
 	  var ruleName = ruleBox.querySelector('.js-rule-name');
 	  var ruleWeight = ruleBox.querySelector('.js-rule-weight');
+	  var ruleStatus = ruleBox.querySelector('.js-rule-status');
 	  var ruleAddWrap = ruleBox.querySelector('.js-rule-line-add');
 	  var ruleAddList = ruleAddWrap.querySelector('.js-list');
 
@@ -6558,6 +6695,7 @@ webpackJsonp([0],[
 	      switch (obj.field) {
 	        case 'name':
 	        case 'weight':
+	        case 'status':
 	        case 'rule_add':
 	          createRule();
 	          break;
@@ -6588,6 +6726,14 @@ webpackJsonp([0],[
 	      case 'set':
 	        rule.value.rules[obj.position] = rule.value.rules[obj.position] || {};
 	        rule.value.rules[obj.position].set = obj.value;
+	        break;
+	      case 'status':
+	        rule.value.checkbox = obj.value;
+	        if (rule.value.checkbox === 'off') {
+	          rule.classList.add('is-stoped');
+	        } else {
+	          rule.classList.remove('is-stoped');
+	        }
 	        break;
 	      default:
 	        break;
@@ -6641,6 +6787,10 @@ webpackJsonp([0],[
 	        ruleName.value = rule.value.name || '';
 	        ruleWeight.value = rule.value.weight || '';
 
+	        if (rule.value.checkbox === 'off') {
+	          ruleStatus.classList.add('is-stoped');
+	        }
+
 	        rule.value.rules.forEach(function (i, index) {
 	          ruleAddList.setValue(i.name);
 
@@ -6686,6 +6836,7 @@ webpackJsonp([0],[
 	  function clearForm() {
 	    ruleName.value = '';
 	    ruleWeight.value = '';
+	    ruleStatus.classList.remove('is-stoped');
 	    [].concat(_toConsumableArray(ruleBox.querySelectorAll('.js-rule-line'))).forEach(function (el) {
 	      return el.parentNode.removeChild(el);
 	    });
@@ -6714,6 +6865,14 @@ webpackJsonp([0],[
 	    updateRule({
 	      field: 'name',
 	      value: value
+	    });
+	  });
+
+	  ruleStatus.addEventListener('click', function () {
+	    ruleStatus.classList.toggle('is-stoped');
+	    updateRule({
+	      field: 'status',
+	      value: ruleStatus.classList.contains('is-stoped') ? 'off' : 'on'
 	    });
 	  });
 
@@ -7064,8 +7223,19 @@ webpackJsonp([0],[
 
 	    if (Array.isArray(data)) {
 	      data.forEach(function (item) {
-	        var classItem = list.value[item] ? ' is-select' : '';
-	        listItems.innerHTML += '<div\n          class="checklist__item js-checklist-item' + classItem + '"\n          data-value="' + item + '">\n          ' + item + '\n          </div>';
+	        var name = void 0;
+	        var value = void 0;
+
+	        if (typeof item === 'string') {
+	          name = item;
+	          value = item;
+	        } else if ((typeof item === 'undefined' ? 'undefined' : _typeof(item)) === 'object') {
+	          value = item.value;
+	          name = item.name || value;
+	        }
+
+	        var classItem = list.value[value] ? ' is-select' : '';
+	        listItems.innerHTML += '<div\n          class="checklist__item js-checklist-item' + classItem + '"\n          data-value="' + value + '">\n          ' + name + '\n          </div>';
 	      });
 	    } else {
 	      var _loop = function _loop(item) {
@@ -7080,8 +7250,19 @@ webpackJsonp([0],[
 
 	          if (Array.isArray(childs)) {
 	            childs.forEach(function (child) {
-	              var classChild = list.value[item] && (list.value[item][child] || list.value[item] === 'select all') ? ' is-select' : '';
-	              html += '<div\n                class="checklist__item js-checklist-item' + classChild + '"\n                data-value="' + child + '"\n                data-parent-value="' + item + '">\n                ' + child + '\n                </div>';
+	              var name = void 0;
+	              var value = void 0;
+
+	              if (typeof child === 'string') {
+	                name = child;
+	                value = child;
+	              } else if ((typeof child === 'undefined' ? 'undefined' : _typeof(child)) === 'object') {
+	                value = child.value;
+	                name = child.name || value;
+	              }
+
+	              var classChild = list.value[item] && (list.value[item][value] || list.value[item] === 'select all') ? ' is-select' : '';
+	              html += '<div\n                class="checklist__item js-checklist-item' + classChild + '"\n                data-value="' + value + '"\n                data-parent-value="' + item + '">\n                ' + name + '\n                </div>';
 	            });
 	          }
 
@@ -7589,7 +7770,7 @@ webpackJsonp([0],[
 /* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -7612,12 +7793,13 @@ webpackJsonp([0],[
 	    return;
 	  }
 
-	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new offer">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Postback URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" placeholder="Create a url">\n          <span><span>\n        </div>\n        <div class="tags js-form-tags" style="display: none;"></div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Loading settings from:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-loading" style="display: block; margin: 0 0 15px;" data-placeholder="Select affiliate network">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items">\n                <div class="list__item js-list-item" data-value="0">test</div>\n              </div>\n            </div>\n          </div>\n        </div>\n\n        <div class="popup__inputs">\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-field"><div class="popup__inputs-title">Parameter<div class="info"></div></div></div>\n            <div class="popup__inputs-field"><div class="popup__inputs-title">Placeholder<div class="info"></div></div></div>\n            <div class="popup__inputs-field"><div class="popup__inputs-title">Name<div class="info"></div></div></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">External ID:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Cost:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 1:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 2:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 3:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 4:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 5:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 6:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 7:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 8:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 9:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 10:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 11:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 12:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 13:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 14:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-label">Custom variable 15:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n        </div>\n      </div>\n    </div>';
+	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new offer">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Postback URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" placeholder="Create a url">\n          <span><span>\n        </div>\n        <div class="tags js-form-tags" style="display: none;"></div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Loading settings from:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-loading" style="display: block; margin: 0 0 15px;" data-placeholder="Select affiliate network">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items">\n                <div class="list__item js-list-item" data-value="0">test</div>\n              </div>\n            </div>\n          </div>\n        </div>\n\n        <div class="popup__inputs">\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-field"><div class="popup__inputs-title">Parameter<div class="info"></div></div></div>\n            <div class="popup__inputs-field"><div class="popup__inputs-title">Placeholder<div class="info"></div></div></div>\n            <div class="popup__inputs-field"><div class="popup__inputs-title">Name<div class="info"></div></div></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">External ID:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Cost:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 1:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 2:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 3:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 4:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 5:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 6:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 7:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 8:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 9:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 10:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 11:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 12:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 13:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 14:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 15:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n        </div>\n      </div>\n    </div>';
 
 	  var formName = popupBody.querySelector('.js-form-name');
 	  var formUrl = popupBody.querySelector('.js-form-url');
 	  var formUrlTags = popupBody.querySelector('.js-form-tags');
 	  var formLoading = popupBody.querySelector('.js-form-loading');
+	  var formInputs = popupBody.querySelectorAll('.js-form-inputs');
 
 	  '{country},{cost},{campaign_id},{trafficsource_id},{ip_id},{offer_id}'.split(',').forEach(function (tag) {
 	    var span = document.createElement('span');
@@ -7670,6 +7852,75 @@ webpackJsonp([0],[
 	  });
 
 	  (0, _listEvent2.default)(formLoading);
+
+	  [].concat(_toConsumableArray(formInputs)).forEach(function (inputs) {
+	    inputs.querySelectorAll('input')[0].addEventListener('change', function (event) {
+	      var val = event.target.value.toLowerCase().replace(/\s+/g, '_');
+
+	      if (val && !inputs.querySelectorAll('input')[1].value) {
+	        inputs.querySelectorAll('input')[1].value = val;
+	      }
+
+	      if (val && !inputs.querySelectorAll('input')[2].value) {
+	        inputs.querySelectorAll('input')[2].value = '{' + val + '}';
+	      }
+	    });
+	  });
+
+	  popup.querySelector('.js-popup-save').addEventListener('click', function (event) {
+	    var name = formName.value.trim();
+	    var affilateNetwork = formLoading.value;
+	    var postbackUrl = formUrl.value;
+
+	    var paramInputs = [];
+	    var valueInputs = [];
+	    var nameInputs = [];
+
+	    [].concat(_toConsumableArray(formInputs)).forEach(function (inputs) {
+	      paramInputs.push(inputs.querySelectorAll('input')[0].value || '');
+	      valueInputs.push(inputs.querySelectorAll('input')[1].value || '');
+	      nameInputs.push(inputs.querySelectorAll('input')[2].value || '');
+	    });
+
+	    var focusFormName = function focusFormName() {
+	      var parentFormName = formName.parentNode;
+	      parentFormName.classList.remove('is-error');
+	      parentFormName.querySelector('span').textContent = '';
+	      formName.removeEventListener('focus', focusFormName);
+	    };
+
+	    if (!name) {
+	      var parentFormName = formName.parentNode;
+	      parentFormName.classList.add('is-error');
+	      parentFormName.querySelector('span').textContent = 'The field can not be empty';
+	      formName.addEventListener('focus', focusFormName);
+	      return;
+	    }
+
+	    var options = window._getOptionsFetch({
+	      name: name,
+	      affilate_network: affilateNetwork || '',
+	      postback_url: postbackUrl || '',
+	      is_active: 1,
+	      params: {
+	        param: paramInputs,
+	        value: valueInputs,
+	        name: nameInputs
+	      }
+	    });
+
+	    fetch(window.might.url + '/traffic/sources/create', options).then(function (response) {
+	      return response.json();
+	    }).then(function (result) {
+	      if (result.error) {
+	        if (result.result.msg) {
+	          popup.querySelector('.js-popup-error').textContent = result.result.msg;
+	        }
+	      } else {
+	        popup.close();
+	      }
+	    });
+	  });
 	};
 
 	var _qs = __webpack_require__(14);
@@ -7687,6 +7938,7 @@ webpackJsonp([0],[
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
 /* 64 */
@@ -7891,7 +8143,7 @@ webpackJsonp([0],[
 	    }).then(function (result) {
 	      if (result.error) {
 	        if (result.result.msg) {
-	          popupBody.querySelector('.js-poopup-error').textContent = result.result.msg;
+	          popup.querySelector('.js-popup-error').textContent = result.result.msg;
 	        }
 	      } else {
 	        popup.close();
@@ -7941,14 +8193,6 @@ webpackJsonp([0],[
 	    }
 
 	    var data = {};
-
-	    if (window.might.hasOwnProperty('auth_key')) {
-	      data.auth_key = window.might.auth_key;
-	    }
-
-	    if (window.might.hasOwnProperty('all_fields')) {
-	      data.all_fields = window.might.all_fields;
-	    }
 
 	    data.draw = params.draw;
 	    if (params.level === 1 || !params.is_tree) {
@@ -8124,7 +8368,7 @@ webpackJsonp([0],[
 	  return el;
 	};
 
-	var columns = void 0;
+	var columns = [];
 
 	var renderRows = function renderRows(tr, record, response) {
 	  if (response.is_tree) {
@@ -8215,17 +8459,12 @@ webpackJsonp([0],[
 	          var params = window.might.stat.params;
 	          var keys = {};
 
-	          data.forEach(function (record) {
-	            if ((typeof record === 'undefined' ? 'undefined' : _typeof(record)) === 'object' && !Array.isArray(record)) {
-	              Object.keys(record).forEach(function (k) {
-	                if (params.columns.hasOwnProperty(k)) {
-	                  keys[k] = true;
-	                }
-	              });
-	            }
+	          columns = [];
+
+	          params.columns.forEach(function (col) {
+	            return columns.push(col);
 	          });
 
-	          columns = Object.keys(keys);
 	          response.field.split(',').reverse().forEach(function (f) {
 	            columns.unshift(f);
 	          });
@@ -8589,14 +8828,6 @@ webpackJsonp([0],[
 	    }
 
 	    var data = {};
-
-	    if (window.might.hasOwnProperty('auth_key')) {
-	      data.auth_key = window.might.auth_key;
-	    }
-
-	    if (window.might.hasOwnProperty('auth_key')) {
-	      data.auth_key = window.might.auth_key;
-	    }
 
 	    data.draw = params.draw;
 	    data.start = (params.page - 1) * params.length;

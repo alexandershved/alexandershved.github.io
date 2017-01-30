@@ -2463,8 +2463,9 @@ body.noscroll {
   vertical-align: top;
   cursor: pointer;
   transition: all 200ms ease;
+  min-width: 85px;
   margin-right: 10px;
-  width: 85px;
+  padding: 0 15px;
   color: #fff;
   background-color: #3ac675;
 }
@@ -2492,13 +2493,54 @@ body.noscroll {
   vertical-align: top;
   cursor: pointer;
   transition: all 200ms ease;
-  width: 85px;
+  min-width: 85px;
   margin-right: 0;
+  padding: 0 15px;
   color: #fff;
   background-color: #0182ec;
 }
 .btn-close:hover {
   background-color: #3a62c6;
+}
+.btn-copy {
+  position: relative;
+  position: relative;
+  display: inline-block;
+  height: 34px;
+  line-height: 34px;
+  font-size: 1em;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: top;
+  cursor: pointer;
+  transition: all 200ms ease;
+  min-width: 85px;
+  margin-right: 0;
+  padding: 0 15px 0 30px;
+  color: #fff;
+  background-color: #0182ec;
+}
+.btn-copy:hover {
+  background-color: #3a62c6;
+}
+.btn-copy:before,
+.btn-copy:after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 1px solid #0182ec;
+  background-color: #fff;
+}
+.btn-copy:before {
+  top: 9px;
+  left: 12px;
+  z-index: 1;
+}
+.btn-copy:after {
+  top: 13px;
+  left: 8px;
+  z-index: 2;
 }
 .btn-icon {
   display: inline-block;
@@ -3548,6 +3590,10 @@ body.noscroll {
 .input input:disabled {
   opacity: 0.5;
 }
+.input input.is-copy {
+  transition: none;
+  border: 1px solid #3ac675;
+}
 .input.is-with-plus input {
   padding-right: 44px;
 }
@@ -4289,6 +4335,10 @@ input:focus + .input__plus {
   display: table-cell;
   width: 99%;
 }
+.popup__line-btn {
+  display: table-cell;
+  padding-left: 20px;
+}
 .popup__line-box {
   margin-bottom: 15px;
 }
@@ -4326,9 +4376,9 @@ input:focus + .input__plus {
 .popup__bottom-error {
   width: 60%;
   float: left;
-  font-size: 12px;
+  font-size: 14px;
   color: #f55b63;
-  text-align: right;
+  text-align: left;
 }
 .popup__list {
   width: 100%;
@@ -4412,7 +4462,7 @@ input:focus + .input__plus {
   width: 100%;
   height: 34px;
   padding: 0 10px;
-  font-size: 1em;
+  font-size: 14px;
   color: #54647e;
   border: 1px solid #e4e5e9;
   background-color: #fff;
