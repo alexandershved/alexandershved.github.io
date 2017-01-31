@@ -120,16 +120,14 @@ webpackJsonp([0],[
 	      var next = this.nextSibling;
 
 	      if (next) {
-	        parent.insertBefore(elem, next);
+	        parent.inserBefore(elem, next);
 	      } else {
 	        parent.appendChild(elem);
 	      }
 	    };
 
-	    proto._insertBefore = proto.insertBefore;
-
-	    proto.insertBefore = function (elem) {
-	      this.parentNode._insertBefore(elem, this);
+	    proto._inserBefore = function (elem) {
+	      this.parentNode.insertBefore(elem, this);
 	    };
 	  })(Element.prototype);
 
@@ -774,7 +772,7 @@ webpackJsonp([0],[
 	      label = document.createElement('div');
 	      label.className = 'list__label';
 	      label.textContent = lbl;
-	      list.children[0].insertBefore(label);
+	      list.children[0]._inserBefore(label);
 	    }
 
 	    return isUpdate;
@@ -2131,7 +2129,7 @@ webpackJsonp([0],[
 	      label = document.createElement('div');
 	      label.className = 'list__label';
 	      label.textContent = (0, _fieldName2.default)(fld);
-	      list.children[0].insertBefore(label);
+	      list.children[0]._inserBefore(label);
 	    }
 
 	    return isUpdate;
@@ -3850,7 +3848,7 @@ webpackJsonp([0],[
 
 	    var segment = segmentAdd.cloneNode(true);
 	    segment.classList.remove('is-open', 'is-add', 'js-stat-add-segment');
-	    segmentAdd.insertBefore(segment);
+	    segmentAdd._inserBefore(segment);
 	    (0, _listEvent2.default)(segment);
 	    segment.updateValue(value, null, true);
 	    segment.addEventListener('change', segmentChange);
@@ -5369,12 +5367,12 @@ webpackJsonp([0],[
 	  });
 
 	  var saveBtn = document.createElement('div');
-	  saveBtn.className = 'btn-apply js-popup-save';
+	  saveBtn.className = 'btn-apply js-popup-only-save';
 	  saveBtn.textContent = 'Save';
-	  popup.querySelector('.js-popup-save').insertBefore(saveBtn);
+	  popup.querySelector('.js-popup-save')._inserBefore(saveBtn);
 
 	  saveBtn.addEventListener('click', function () {
-	    return saveCampaign(true);
+	    return saveCampaign();
 	  });
 	  popup.querySelector('.js-popup-save').addEventListener('click', function () {
 	    return saveCampaign(true);
@@ -5462,7 +5460,8 @@ webpackJsonp([0],[
 	      var rule = {
 	        rules: {},
 	        checkbox: val.checkbox ? 'on' : 'off',
-	        weight: val.weight || ''
+	        weight: val.weight || '',
+	        path: []
 	      };
 
 	      val.rules.forEach(function (i) {
@@ -5495,9 +5494,7 @@ webpackJsonp([0],[
 	        }
 	      });
 
-	      [].concat(_toConsumableArray(el.querySelectorAll('.js-rule'))).forEach(function (e) {
-	        rule.path = rule.path || [];
-
+	      [].concat(_toConsumableArray(el.querySelectorAll('.js-path'))).forEach(function (e) {
 	        var path = {};
 	        var v = e.value;
 
@@ -5544,7 +5541,7 @@ webpackJsonp([0],[
 	      rule: rules || []
 	    });
 
-	    fetch(window.might.url + '/offer/create', options).then(function (response) {
+	    fetch(window.might.url + '/campaign/create', options).then(function (response) {
 	      return response.json();
 	    }).then(function (result) {
 	      if (result.error) {
@@ -5618,18 +5615,20 @@ webpackJsonp([0],[
 	  var pathBox = box.querySelector('.js-path-box');
 	  var ruleBox = box.querySelector('.js-rule-box');
 
-	  pathBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Name:</div></div>\n      <div class="cc__col cc__col-120 cc__col-pad"><div class="cc__label">Weight:</div></div>\n      <div class="cc__col cc__col-50 cc__col-pad"><div class="cc__label">Status:</div></div>\n    </div>\n\n    <div class="cc__line">\n      <div class="cc__col">\n        <div class="input">\n          <input class="js-path-name" type="text" placeholder="Path name">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-120 cc__col-pad">\n        <div class="input">\n          <input class="js-path-weight" type="text" placeholder="0">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-50 cc__col-pad">\n        <div class="cc__status js-path-status"></div>\n      </div>\n    </div>';
+	  pathBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Name:</div></div>\n      <div class="cc__col cc__col-120 cc__col-pad"><div class="cc__label">Weight:</div></div>\n      <div class="cc__col cc__col-50 cc__col-pad"><div class="cc__label">Status:</div></div>\n    </div>\n\n    <div class="cc__line">\n      <div class="cc__col">\n        <div class="input">\n          <input class="js-path-name" type="text" placeholder="Path name">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-120 cc__col-pad">\n        <div class="input">\n          <input class="js-path-weight" type="text" placeholder="0" value="1">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-50 cc__col-pad">\n        <div class="cc__status js-path-status"></div>\n      </div>\n    </div>';
 
 	  pathBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Redirect mode:</div></div>\n    </div>\n\n    <div class="cc__line">\n      <div class="cc__col">\n        <div class="input">\n          <input class="js-path-redirect-mode" type="text" disabled="true">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-164 cc__col-pad">\n        <div class="checkbox js-checkbox js-path-direct-linking">Direct linking</div>\n      </div>\n    </div>';
 
-	  pathBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Lander:</div></div>\n      <div class="cc__col cc__col-120 cc__col-pad"><div class="cc__label js-path-lander-label-weight"></div></div>\n      <div class="cc__col cc__col-50 cc__col-pad"></div>\n    </div>\n\n    <div class="cc__line js-path-lander-add">\n      <div class="cc__col">\n        <div class="list is-add js-list" data-placeholder="+ Add Lander">\n          <div class="list__wrap">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown">\n              <div class="list__items js-list-items"></div>\n              <div class="list__control">\n                <div class="list__control-item">\n                  <span class="js-path-create-lander">Create new lander</span>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-120 cc__col-pad cc__hidden js-path-hidden">\n        <div class="input">\n          <input class="js-path-lander-weight" type="text" placeholder="0">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-50 cc__col-pad cc__hidden js-path-hidden">\n        <div class="cc__clear js-path-clear"></div>\n      </div>\n    </div>';
+	  pathBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Lander:</div></div>\n      <div class="cc__col cc__col-120 cc__col-pad"><div class="cc__label js-path-lander-label-weight"></div></div>\n      <div class="cc__col cc__col-50 cc__col-pad"></div>\n    </div>\n\n    <div class="cc__line js-path-lander-add">\n      <div class="cc__col">\n        <div class="list is-add js-list" data-placeholder="+ Add Lander">\n          <div class="list__wrap">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown">\n              <div class="list__items js-list-items"></div>\n              <div class="list__control">\n                <div class="list__control-item">\n                  <span class="js-path-create-lander">Create new lander</span>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-120 cc__col-pad cc__hidden js-path-hidden">\n        <div class="input">\n          <input class="js-path-lander-weight" type="text" placeholder="0" value="1">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-50 cc__col-pad cc__hidden js-path-hidden">\n        <div class="cc__clear js-path-clear"></div>\n      </div>\n    </div>';
 
-	  pathBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Offer:</div></div>\n      <div class="cc__col cc__col-120 cc__col-pad"><div class="cc__label js-path-offer-label-weight"></div></div>\n      <div class="cc__col cc__col-50 cc__col-pad"></div>\n    </div>\n\n    <div class="cc__line js-path-offer-add">\n      <div class="cc__col">\n        <div class="list is-add js-list" data-placeholder="+ Add Offer">\n          <div class="list__wrap">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown">\n              <div class="list__items js-list-items"></div>\n              <div class="list__control">\n                <div class="list__control-item">\n                  <span class="js-path-use-url">Use URL</span>\n                </div>\n                <div class="list__control-item">\n                  <span class="js-path-create-offer">Create new offer</span>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-120 cc__col-pad cc__hidden js-path-hidden">\n        <div class="input">\n          <input class="js-path-offer-weight" type="text" placeholder="0">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-50 cc__col-pad cc__hidden js-path-hidden">\n        <div class="cc__clear js-path-clear"></div>\n      </div>\n    </div>';
+	  pathBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Offer:</div></div>\n      <div class="cc__col cc__col-120 cc__col-pad"><div class="cc__label js-path-offer-label-weight"></div></div>\n      <div class="cc__col cc__col-50 cc__col-pad"></div>\n    </div>\n\n    <div class="cc__line js-path-offer-add">\n      <div class="cc__col">\n        <div class="list is-add js-list" data-placeholder="+ Add Offer">\n          <div class="list__wrap">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown">\n              <div class="list__items js-list-items"></div>\n              <div class="list__control">\n                <div class="list__control-item">\n                  <span class="js-path-use-url">Use URL</span>\n                </div>\n                <div class="list__control-item">\n                  <span class="js-path-create-offer">Create new offer</span>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-120 cc__col-pad cc__hidden js-path-hidden">\n        <div class="input">\n          <input class="js-path-offer-weight" type="text" placeholder="0" value="1">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-50 cc__col-pad cc__hidden js-path-hidden">\n        <div class="cc__clear js-path-clear"></div>\n      </div>\n    </div>';
 
 	  var pathName = pathBox.querySelector('.js-path-name');
 	  var pathWeight = pathBox.querySelector('.js-path-weight');
 	  var pathStatus = pathBox.querySelector('.js-path-status');
 	  var pathDirectLinking = pathBox.querySelector('.js-path-direct-linking');
+
+	  var defaultPathCount = 1;
 
 	  var add = {
 	    lander: {
@@ -5677,7 +5676,8 @@ webpackJsonp([0],[
 	        case 'offer_add':
 	        case 'status':
 	        case 'direct_linking':
-	          createPath();
+	          var name = obj.field === 'name' ? obj.value : null;
+	          createPath(name);
 	          break;
 	        default:
 	          break;
@@ -5846,10 +5846,12 @@ webpackJsonp([0],[
 	    });
 	  }
 
-	  function createPath() {
+	  function createPath(name) {
 	    var pathElement = document.createElement('div');
+	    var newName = name || 'Path ' + defaultPathCount;
+
 	    pathElement.className = 'cc__element is-select js-path';
-	    pathElement.innerHTML = '\n      <div class="cc__element-item js-path-item">\n        <div class="cc__element-name js-path-name">[path unnamed]</div>\n        <div class="cc__element-weight js-path-weight">0 (0%)</div>\n        <div class="cc__element-copy js-path-copy"></div>\n        <div class="cc__element-delete js-path-delete"></div>\n        <div class="cc__element-undo js-path-undo"><i class="fa fa-undo"></i>Undo</div>\n      </div>';
+	    pathElement.innerHTML = '\n      <div class="cc__element-item js-path-item">\n        <div class="cc__element-name js-path-name">' + newName + '</div>\n        <div class="cc__element-weight js-path-weight"></div>\n        <div class="cc__element-copy js-path-copy"></div>\n        <div class="cc__element-delete js-path-delete"></div>\n        <div class="cc__element-undo js-path-undo"><i class="fa fa-undo"></i>Undo</div>\n      </div>';
 
 	    var rule = box.querySelector('.js-rule.is-select');
 
@@ -5860,8 +5862,8 @@ webpackJsonp([0],[
 	    }
 
 	    pathElement.value = {
-	      name: '',
-	      weight: 0,
+	      name: newName,
+	      weight: 1,
 	      checkbox: 'on',
 	      lander: [],
 	      lander_weight: [],
@@ -5871,6 +5873,13 @@ webpackJsonp([0],[
 	    };
 
 	    eventPath(pathElement);
+	    updatePathWeight(pathElement.parentNode);
+
+	    if (!name) {
+	      pathName.value = newName;
+	    }
+
+	    defaultPathCount++;
 	  }
 
 	  function showForm() {
@@ -5880,7 +5889,7 @@ webpackJsonp([0],[
 
 	  function clearForm() {
 	    pathName.value = '';
-	    pathWeight.value = '';
+	    pathWeight.value = 1;
 	    pathStatus.classList.remove('is-stoped');
 	    pathDirectLinking.classList.remove('is-select');
 
@@ -6012,17 +6021,23 @@ webpackJsonp([0],[
 	    var clear = event.target;
 
 	    var wrap = clear.closest('.js-path-' + type);
-	    var list = wrap.querySelector('.js-list');
 	    var wraps = pathBox.querySelectorAll('.js-path-' + type);
-	    var lists = pathBox.querySelectorAll('.js-path-' + type + ' .js-list');
-
-	    var value = list.value;
 	    var position = [].concat(_toConsumableArray(wraps)).indexOf(wrap);
 
-	    add[type].list.unsetDisabled(value);
-	    [].concat(_toConsumableArray(lists)).forEach(function (el) {
-	      return el.unsetDisabled(value);
-	    });
+	    var list = wrap.querySelector('.js-list');
+
+	    if (list) {
+	      (function () {
+	        var lists = pathBox.querySelectorAll('.js-path-' + type + ' .js-list');
+	        var value = list.value;
+
+	        add[type].list.unsetDisabled(value);
+	        [].concat(_toConsumableArray(lists)).forEach(function (el) {
+	          return el.unsetDisabled(value);
+	        });
+	      })();
+	    }
+
 	    wrap.parentNode.removeChild(wrap);
 
 	    if (!pathBox.querySelectorAll('.js-path-' + type).length) {
@@ -6062,7 +6077,7 @@ webpackJsonp([0],[
 	    cloneList.classList.remove('is-open', 'is-add');
 
 	    add[type].labelWeight.textContent = 'Weight:';
-	    wrap.insertBefore(cloneWrap);
+	    wrap._inserBefore(cloneWrap);
 	    (0, _listEvent2.default)(cloneList);
 	    cloneWrap.querySelector('.js-path-clear').addEventListener('click', function (event) {
 	      return removeList(event, type);
@@ -6148,13 +6163,13 @@ webpackJsonp([0],[
 
 	    if (createOffer) {
 	      (function () {
-	        var list = createLander.closest('.js-list');
-	        var popup = createLander.closest('.js-popup');
+	        var list = createOffer.closest('.js-list');
+	        var popup = createOffer.closest('.js-popup');
 
 	        if (list && popup) {
 	          popup.style.display = 'none';
 
-	          (0, _landerAdd2.default)(function (data) {
+	          (0, _offerAdd3.default)(function (data) {
 	            popup.style.display = '';
 	            list.querySelector('.js-list-items').innerHTML += '<div class="list__item js-list-item" data-value="' + data.id + '">' + data.name + '</div>';
 	            list.setValue(data.id);
@@ -6174,6 +6189,15 @@ webpackJsonp([0],[
 	          list.close();
 	          var _allOffers = pathBox.querySelectorAll('.js-path-offer');
 	          list = _allOffers[_allOffers.length - 1].querySelector('.js-list');
+	        } else {
+	          (function () {
+	            var value = list.value;
+
+	            pathBox.querySelector('.js-path-offer-add .js-list').unsetDisabled(value);
+	            [].concat(_toConsumableArray(pathBox.querySelectorAll('.js-path-offer .js-list'))).forEach(function (el) {
+	              return el.unsetDisabled(value);
+	            });
+	          })();
 	        }
 
 	        var wrap = list.closest('.js-path-offer');
@@ -6667,6 +6691,7 @@ webpackJsonp([0],[
 	  var ruleAddList = ruleAddWrap.querySelector('.js-list');
 
 	  var checkSelect = false;
+	  var defaultRuleCount = 1;
 
 	  function updateRuleWeight() {
 	    var count = 0;
@@ -6697,7 +6722,8 @@ webpackJsonp([0],[
 	        case 'weight':
 	        case 'status':
 	        case 'rule_add':
-	          createRule();
+	          var name = obj.field === 'name' ? obj.value : null;
+	          createRule(name);
 	          break;
 	        default:
 	          break;
@@ -6811,21 +6837,29 @@ webpackJsonp([0],[
 	    });
 	  }
 
-	  function createRule() {
+	  function createRule(name) {
 	    var ruleElement = document.createElement('div');
+	    var newName = name || 'Rule ' + defaultRuleCount;
 
 	    ruleElement.className = 'cc__element is-select js-rule';
-	    ruleElement.innerHTML = '\n      <div class="cc__element-item js-rule-item">\n        <div class="cc__element-name js-rule-name">[rule unnamed]</div>\n        <div class="cc__element-weight js-rule-weight">0 (0%)</div>\n        <div class="cc__element-delete js-rule-delete"></div>\n        <div class="cc__element-undo js-rule-undo"><i class="fa fa-undo"></i>Undo</div>\n      </div>\n      <div class="cc__left-wrap">\n        <div class="js-pathes"></div>\n        <div class="cc__added"><span class="js-path-add">+ Add new Path</span></div>\n      </div>';
+	    ruleElement.innerHTML = '\n      <div class="cc__element-item js-rule-item">\n        <div class="cc__element-name js-rule-name">' + newName + '</div>\n        <div class="cc__element-weight js-rule-weight"></div>\n        <div class="cc__element-delete js-rule-delete"></div>\n        <div class="cc__element-undo js-rule-undo"><i class="fa fa-undo"></i>Undo</div>\n      </div>\n      <div class="cc__left-wrap">\n        <div class="js-pathes"></div>\n        <div class="cc__added"><span class="js-path-add">+ Add new Path</span></div>\n      </div>';
 
 	    allRules.appendChild(ruleElement);
 
 	    ruleElement.value = {
-	      name: '',
-	      weight: 0,
+	      name: newName,
+	      weight: 1,
 	      rules: []
 	    };
 
 	    eventRule(ruleElement);
+	    updateRuleWeight();
+
+	    if (!name) {
+	      ruleName.value = newName;
+	    }
+
+	    defaultRuleCount++;
 	  }
 
 	  function showForm() {
@@ -6835,7 +6869,7 @@ webpackJsonp([0],[
 
 	  function clearForm() {
 	    ruleName.value = '';
-	    ruleWeight.value = '';
+	    ruleWeight.value = 1;
 	    ruleStatus.classList.remove('is-stoped');
 	    [].concat(_toConsumableArray(ruleBox.querySelectorAll('.js-rule-line'))).forEach(function (el) {
 	      return el.parentNode.removeChild(el);
@@ -7014,7 +7048,7 @@ webpackJsonp([0],[
 
 	    var newWrapList = document.createElement('div');
 	    newWrapList.className = 'cc__line js-rule-line';
-	    ruleAddWrap.insertBefore(newWrapList);
+	    ruleAddWrap._inserBefore(newWrapList);
 
 	    fillingLine(newWrapList, value);
 	  }
@@ -7344,7 +7378,7 @@ webpackJsonp([0],[
 	    del.className = 'js-checklist-tag-delete';
 	    span.appendChild(del);
 
-	    listInput.insertBefore(span);
+	    listInput._inserBefore(span);
 	  }
 
 	  function drawTags(isInit) {
@@ -8075,7 +8109,7 @@ webpackJsonp([0],[
 	      i.className = 'js-form-ips-delete';
 	      span.appendChild(i);
 
-	      formInputIp.insertBefore(span);
+	      formInputIp._inserBefore(span);
 	      formInputIp.value = '';
 	    }
 	  });
@@ -8567,7 +8601,7 @@ webpackJsonp([0],[
 	          var tr = createNode('tr', clsTr);
 
 	          if (nextRow) {
-	            nextRow.insertBefore(tr);
+	            nextRow._inserBefore(tr);
 	          } else {
 	            table.appendChild(tr);
 	          }
