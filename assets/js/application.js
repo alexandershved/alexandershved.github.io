@@ -820,6 +820,30 @@ webpackJsonp([0],[
 	    }
 	  };
 
+	  if (list.value || list.value === 0) {
+	    (function () {
+	      var value = String(list.value);
+	      var selectItem = getItemByValue(value);
+	      var text = void 0;
+
+	      if (selectItem) {
+	        text = selectItem.innerHTML;
+	      } else {
+	        text = value;
+	      }
+
+	      [].concat(_toConsumableArray(list.querySelectorAll('.js-list-item'))).forEach(function (item) {
+	        if (item.dataset.value === value) {
+	          item.classList.add('is-select');
+	        } else {
+	          item.classList.remove('is-select');
+	        }
+	      });
+
+	      listValue.textContent = text;
+	    })();
+	  }
+
 	  list.close = close;
 	  list.haveValue = haveValue;
 	  list.updateValue = updateValue;
@@ -4359,11 +4383,11 @@ webpackJsonp([0],[
 
 	var _createControls2 = _interopRequireDefault(_createControls);
 
-	var _table = __webpack_require__(66);
+	var _table = __webpack_require__(67);
 
 	var _table2 = _interopRequireDefault(_table);
 
-	var _graph = __webpack_require__(69);
+	var _graph = __webpack_require__(70);
 
 	var _graph2 = _interopRequireDefault(_graph);
 
@@ -4922,39 +4946,39 @@ webpackJsonp([0],[
 
 	var _campaignList2 = _interopRequireDefault(_campaignList);
 
-	var _campaignAdd = __webpack_require__(53);
+	var _campaignAdd = __webpack_require__(54);
 
 	var _campaignAdd2 = _interopRequireDefault(_campaignAdd);
 
-	var _landerList = __webpack_require__(60);
+	var _landerList = __webpack_require__(61);
 
 	var _landerList2 = _interopRequireDefault(_landerList);
 
-	var _landerAdd = __webpack_require__(56);
+	var _landerAdd = __webpack_require__(57);
 
 	var _landerAdd2 = _interopRequireDefault(_landerAdd);
 
-	var _offerList = __webpack_require__(61);
+	var _offerList = __webpack_require__(62);
 
 	var _offerList2 = _interopRequireDefault(_offerList);
 
-	var _offerAdd = __webpack_require__(57);
+	var _offerAdd = __webpack_require__(58);
 
 	var _offerAdd2 = _interopRequireDefault(_offerAdd);
 
-	var _trafficSourceList = __webpack_require__(62);
+	var _trafficSourceList = __webpack_require__(63);
 
 	var _trafficSourceList2 = _interopRequireDefault(_trafficSourceList);
 
-	var _trafficSourceAdd = __webpack_require__(63);
+	var _trafficSourceAdd = __webpack_require__(64);
 
 	var _trafficSourceAdd2 = _interopRequireDefault(_trafficSourceAdd);
 
-	var _affiliateNetworkList = __webpack_require__(64);
+	var _affiliateNetworkList = __webpack_require__(65);
 
 	var _affiliateNetworkList2 = _interopRequireDefault(_affiliateNetworkList);
 
-	var _affiliateNetworkAdd = __webpack_require__(65);
+	var _affiliateNetworkAdd = __webpack_require__(66);
 
 	var _affiliateNetworkAdd2 = _interopRequireDefault(_affiliateNetworkAdd);
 
@@ -4969,6 +4993,8 @@ webpackJsonp([0],[
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 	exports.default = function () {
 	  if (document.querySelector('.js-popup')) {
@@ -5006,12 +5032,55 @@ webpackJsonp([0],[
 	            var name = item.name;
 	            var id = item.id;
 	            var tr = document.createElement('tr');
+	            tr.className = 'js-campaign-row';
 
-	            tr.innerHTML = '\n            <td data-id="' + id + '"><span>' + name + '</span></td>\n            <td><span>Copy</span></td>\n            <td><span>Edit</span></td>\n            <td><span>Update cost</span></td>\n            <td><span>Links</span></td>\n          ';
+	            tr.innerHTML = '\n            <td class="js-campaign-name" data-id="' + id + '"><span>' + name + '</span></td>\n            <td><span class="js-campaign-copy">Copy</span></td>\n            <td><span class="js-campaign-edit">Edit</span></td>\n            <td><span class="js-campaign-update-cost">Update cost</span></td>\n            <td><span class="js-campaign-links">Links</span></td>\n          ';
 
 	            table.appendChild(tr);
+
+	            popupBody.addEventListener('click', listClick);
 	          });
 	        })();
+	      }
+	    });
+	  }
+
+	  function listClick(event) {
+	    var target = event.target;
+
+	    var copyBtn = target.closest('.js-campaign-copy');
+	    var editBtn = target.closest('.js-campaign-edit');
+	    var updateCostBtn = target.closest('.js-campaign-copy');
+	    var linksBtn = target.closest('.js-campaign-links');
+
+	    if (copyBtn) {
+	      var id = copyBtn.closest('.js-campaign-row').querySelector('.js-campaign-name').dataset.id;
+
+	      if (id) {
+	        openEdit(id);
+	      }
+	    }
+
+	    if (editBtn) {
+	      var _id = editBtn.closest('.js-campaign-row').querySelector('.js-campaign-name').dataset.id;
+
+	      if (_id) {
+	        openEdit(_id, true);
+	      }
+	    }
+	  }
+
+	  function openEdit(id, hasEdit) {
+	    var options = window._getOptionsFetch({
+	      id: id
+	    });
+
+	    fetch(window.might.url + '/campaign/get', options).then(function (response) {
+	      return response.json();
+	    }).then(function (result) {
+	      if (!result.error && result.result && result.result.data && _typeof(result.result.data) === 'object') {
+	        popup.close();
+	        (0, _campaignEdit2.default)(result.result.data, hasEdit || false);
 	      }
 	    });
 	  }
@@ -5024,6 +5093,10 @@ webpackJsonp([0],[
 	var _createPopup = __webpack_require__(52);
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
+
+	var _campaignEdit = __webpack_require__(53);
+
+	var _campaignEdit2 = _interopRequireDefault(_campaignEdit);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
@@ -5081,6 +5154,145 @@ webpackJsonp([0],[
 /* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (data, hasEdit) {
+	  var popupBody = (0, _campaignAdd2.default)();
+
+	  if (hasEdit) {
+	    popupBody.currentCampaignId = data.id;
+	  }
+
+	  var formName = popupBody.querySelector('.js-form-name');
+	  var formDomain = popupBody.querySelector('.js-form-domain');
+	  var formUrl = popupBody.querySelector('.js-form-url');
+	  var formTrafficSource = popupBody.querySelector('.js-form-traffic-source');
+	  var formCostDoNotTrack = popupBody.querySelector('.js-form-cost-donottrack');
+	  var formCostCPC = popupBody.querySelector('.js-form-cost-cpc');
+	  var formCostCPA = popupBody.querySelector('.js-form-cost-cpa');
+	  var formCostClick = popupBody.querySelector('.js-form-cost-click');
+	  var formCostEur = popupBody.querySelector('.js-form-cost-eur');
+	  var formCostRub = popupBody.querySelector('.js-form-cost-rub');
+	  var formCostUsd = popupBody.querySelector('.js-form-cost-usd');
+	  var formPostbackUrl = popupBody.querySelector('.js-form-postback-url');
+	  var formReirectType = popupBody.querySelector('.js-form-directtype');
+
+	  formName.value = data.name || '';
+
+	  if (!hasEdit) {
+	    if (!/ \(copy\)$/.test(data.name)) {
+	      formName.value += ' copy';
+	    }
+	  }
+
+	  if (String(data.domain)) {
+	    if (formDomain.setValue) {
+	      formDomain.setValue(data.domain);
+	    } else {
+	      formDomain.value = data.domain;
+	    }
+	  }
+
+	  formUrl.value = data.link || '';
+
+	  if (String(data.traffic_source_id)) {
+	    if (formTrafficSource.setValue) {
+	      formTrafficSource.setValue(data.traffic_source_id);
+	    } else {
+	      formTrafficSource.value = data.traffic_source_id;
+	    }
+	  }
+
+	  formCostClick.value = data.cost_click || '';
+
+	  formCostEur.classList.remove('is-select');
+	  formCostRub.classList.remove('is-select');
+	  formCostUsd.classList.remove('is-select');
+
+	  switch (data.currency) {
+	    case 'EUR':
+	      formCostEur.classList.add('is-select');
+	      break;
+	    case 'RUB':
+	      formCostRub.classList.add('is-select');
+	      break;
+	    case 'USD':
+	    default:
+	      formCostUsd.classList.add('is-select');
+	      break;
+	  }
+
+	  switch (data.cost_mode) {
+	    case 'cpa':
+	      formCostCPA.classList.add('is-select');
+	      break;
+	    case 'not_track':
+	      formCostDoNotTrack.classList.add('is-select');
+	      break;
+	    case 'cpc':
+	    default:
+	      formCostCPC.classList.add('is-select');
+	      break;
+	  }
+
+	  if (Array.isArray(data.double_postback)) {
+	    formPostbackUrl.value = data.double_postback[0] || '';
+
+	    for (var i = 0; i < data.double_postback.length - 1; i++) {
+	      var addBtns = popupBody.querySelectorAll('.js-form-postback-url-add');
+	      addBtns[addBtns.length - 1].eventTrigger('click');
+
+	      var inputs = popupBody.querySelector('.js-form-postback-url');
+	      inputs[inputs.length - 1].value = data.double_postback[i + 1] || '';
+	    }
+	  } else if (typeof data.double_postback === 'string') {
+	    formPostbackUrl.value = data.double_postback || '';
+	  }
+
+	  if (String(data.redirect_mode)) {
+	    if (formReirectType.setValue) {
+	      formReirectType.setValue(data.redirect_mode);
+	    } else {
+	      formReirectType.value = data.redirect_mode;
+	    }
+	  }
+
+	  var defaultPathes = JSON.parse(data.default_path_obj);
+	  var rules = JSON.parse(data.rules_obj);
+
+	  defaultPathes.forEach(function (path) {
+	    popupBody.pathFunctions.createPath(path.name, path);
+	  });
+
+	  rules.forEach(function (rule) {
+	    popupBody.ruleFunctions.createRule(rule.name, rule);
+
+	    if (Array.isArray(rule.path)) {
+	      rule.path.forEach(function (path) {
+	        popupBody.pathFunctions.createPath(path.name, path);
+	      });
+	    }
+	  });
+	};
+
+	var _qs = __webpack_require__(14);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	var _campaignAdd = __webpack_require__(54);
+
+	var _campaignAdd2 = _interopRequireDefault(_campaignAdd);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -5091,19 +5303,19 @@ webpackJsonp([0],[
 
 	exports.default = function () {
 	  if (document.querySelector('.js-popup')) {
-	    return;
+	    return null;
 	  }
 
 	  var popup = (0, _createPopup2.default)('Creating new campaign', true);
 
 	  if (!popup) {
-	    return;
+	    return null;
 	  }
 
 	  var popupBody = popup.querySelector('.js-popup-body');
 
 	  if (!popupBody) {
-	    return;
+	    return null;
 	  }
 
 	  popup.querySelector('.js-popup-wrap').style.width = '1000px';
@@ -5360,7 +5572,7 @@ webpackJsonp([0],[
 
 	  initTags(formPostbackUrl);
 	  (0, _listEvent2.default)(formReirectType);
-	  (0, _campaignAddChilds2.default)(createCampaign);
+	  (0, _campaignAddChilds2.default)(createCampaign, popupBody);
 
 	  formReirectType.addEventListener('change', function () {
 	    popupBody.querySelector('.js-path-redirect-mode').value = formReirectType.value;
@@ -5379,12 +5591,21 @@ webpackJsonp([0],[
 	  });
 
 	  function saveCampaign(isClose) {
+	    popup.querySelector('.js-popup-error').textContent = '';
+
 	    var formPostbackUrlAll = document.querySelectorAll('.js-form-postback-url');
 
 	    var name = formName.value.trim();
-	    var campaignType = 'redirect';
 	    var domain = formDomain.value;
 	    var trafficSource = formTrafficSource.value;
+	    var costMode = 'cpc';
+
+	    if (formCostCPA.classList.contains('is-select')) {
+	      currency = 'cpa';
+	    } else if (formCostClick.classList.contains('is-select')) {
+	      currency = 'not_track';
+	    }
+
 	    var costClick = formCostClick.value;
 	    var currency = 'USD';
 
@@ -5407,21 +5628,6 @@ webpackJsonp([0],[
 
 	    var redirectType = formReirectType.value;
 
-	    var focusFormName = function focusFormName() {
-	      var parentFormName = formName.parentNode;
-	      parentFormName.classList.remove('is-error');
-	      parentFormName.querySelector('span').textContent = '';
-	      formName.removeEventListener('focus', focusFormName);
-	    };
-
-	    if (!name) {
-	      var parentFormName = formName.parentNode;
-	      parentFormName.classList.add('is-error');
-	      parentFormName.querySelector('span').textContent = 'The field can not be empty';
-	      formName.addEventListener('focus', focusFormName);
-	      return;
-	    }
-
 	    var defaultPath = [];
 
 	    [].concat(_toConsumableArray(createCampaign.querySelector('.js-pathes-default').querySelectorAll('.js-path'))).forEach(function (el) {
@@ -5429,7 +5635,7 @@ webpackJsonp([0],[
 	      var val = el.value;
 
 	      path.name = val.name || '';
-	      path.checkbox = val.checkbox ? 'on' : 'off';
+	      path.checkbox = val.checkbox || 'on';
 	      path.direct_linking_checkbox = Number(!!val.direct_linking);
 	      path.weight = val.weight || '';
 	      path.lander = [];
@@ -5446,7 +5652,7 @@ webpackJsonp([0],[
 	      val.offer.forEach(function (l, index) {
 	        path.offer[index] = l;
 	        path.offer_weight[index] = val.offer_weight[index];
-	        path.offer_use_url[index] = val.offer_url[index];
+	        path.offer_use_url[index] = val.offer_url[index] || '';
 	      });
 
 	      defaultPath.push(path);
@@ -5458,8 +5664,9 @@ webpackJsonp([0],[
 	      var val = el.value;
 
 	      var rule = {
+	        name: val.name,
 	        rules: {},
-	        checkbox: val.checkbox ? 'on' : 'off',
+	        checkbox: val.checkbox || 'on',
 	        weight: val.weight || '',
 	        path: []
 	      };
@@ -5499,7 +5706,7 @@ webpackJsonp([0],[
 	        var v = e.value;
 
 	        path.name = v.name || '';
-	        path.checkbox = v.checkbox ? 'on' : 'off';
+	        path.checkbox = v.checkbox || 'on';
 	        path.direct_linking_checkbox = Number(!!v.direct_linking);
 	        path.weight = v.weight;
 	        path.lander = [];
@@ -5516,7 +5723,7 @@ webpackJsonp([0],[
 	        v.offer.forEach(function (l, index) {
 	          path.offer[index] = l;
 	          path.offer_weight[index] = v.offer_weight[index];
-	          path.offer_use_url[index] = v.offer_url[index];
+	          path.offer_use_url[index] = v.offer_url[index] || '';
 	        });
 
 	        rule.path.push(path);
@@ -5525,9 +5732,9 @@ webpackJsonp([0],[
 	      rules.push(rule);
 	    });
 
-	    var options = window._getOptionsFetch({
+	    var data = {
 	      name: name,
-	      campaign_type: campaignType || '',
+	      campaign_type: 'redirect',
 	      domain: {
 	        name: domain || '',
 	        path: ''
@@ -5539,7 +5746,13 @@ webpackJsonp([0],[
 	      redirect_type: redirectType || '',
 	      default_path: defaultPath || [],
 	      rule: rules || []
-	    });
+	    };
+
+	    if (popupBody.currentCampaignId || popupBody.currentCampaignId === 0) {
+	      data.id = popupBody.currentCampaignId;
+	    }
+
+	    var options = window._getOptionsFetch(data);
 
 	    fetch(window.might.url + '/campaign/create', options).then(function (response) {
 	      return response.json();
@@ -5549,12 +5762,17 @@ webpackJsonp([0],[
 	          popup.querySelector('.js-popup-error').textContent = result.result.msg;
 	        }
 	      } else {
+	        if (result.result && result.result.data && result.result.data.link) {
+	          popupBody.querySelector('.js-form-url').value = result.result.data.link;
+	        }
 	        if (isClose) {
 	          popup.close();
 	        }
 	      }
 	    });
 	  }
+
+	  return popupBody;
 	};
 
 	var _createPopup = __webpack_require__(52);
@@ -5565,7 +5783,7 @@ webpackJsonp([0],[
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
-	var _campaignAddChilds = __webpack_require__(54);
+	var _campaignAddChilds = __webpack_require__(55);
 
 	var _campaignAddChilds2 = _interopRequireDefault(_campaignAddChilds);
 
@@ -5575,7 +5793,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5584,25 +5802,25 @@ webpackJsonp([0],[
 	  value: true
 	});
 
-	exports.default = function (box) {
+	exports.default = function (box, popupBody) {
 	  box.innerHTML = '\n    <div class="cc__left">\n      <div class="cc__label">Default paths:</div>\n\n      <div class="cc__left-wrap">\n        <div class="js-pathes-default"></div>\n        <div class="cc__added"><span class="js-path-add">+ Add new Path</span></div>\n      </div>\n\n      <div class="js-rules"></div>\n      <div class="cc__added"><span class="js-rule-add">+ Add new Rule</span></div>\n    </div>\n\n    <div class="cc__right">\n      <div class="js-path-box"></div>\n      <div class="js-rule-box" style="display: none;"></div>\n    </div>\n  ';
 
-	  (0, _campaignAddPath2.default)(box);
-	  (0, _campaignAddRule2.default)(box);
+	  popupBody.pathFunctions = (0, _campaignAddPath2.default)(box);
+	  popupBody.ruleFunctions = (0, _campaignAddRule2.default)(box);
 	};
 
-	var _campaignAddPath = __webpack_require__(55);
+	var _campaignAddPath = __webpack_require__(56);
 
 	var _campaignAddPath2 = _interopRequireDefault(_campaignAddPath);
 
-	var _campaignAddRule = __webpack_require__(58);
+	var _campaignAddRule = __webpack_require__(59);
 
 	var _campaignAddRule2 = _interopRequireDefault(_campaignAddRule);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -5697,7 +5915,7 @@ webpackJsonp([0],[
 	        break;
 	      case 'lander_add':
 	        path.value.lander.push(obj.value);
-	        path.value.lander_weight.push(0);
+	        path.value.lander_weight.push(1);
 	        break;
 	      case 'lander_update':
 	        path.value.lander[obj.position] = obj.value;
@@ -5711,7 +5929,8 @@ webpackJsonp([0],[
 	        break;
 	      case 'offer_add':
 	        path.value.offer.push(obj.value);
-	        path.value.offer_weight.push(0);
+	        path.value.offer_weight.push(1);
+	        path.value.offer_url.push('');
 	        break;
 	      case 'offer_update':
 	        path.value.offer[obj.position] = obj.value;
@@ -5816,29 +6035,33 @@ webpackJsonp([0],[
 	          pathDirectLinking.classList.add('is-select');
 	        }
 
-	        ['lander', 'offer'].forEach(function (type) {
-	          path.value[type].forEach(function (value, index) {
-	            if (path.value.offer_url[index]) {
-	              add[type].list.value = '__temp__';
-	              newList(type);
-	              add[type].list.close();
+	        path.value.offer.forEach(function (value, index) {
+	          if (path.value.offer_url[index]) {
+	            add.offer.list.value = '__temp__';
+	            newList('offer');
+	            add.offer.list.close();
 
-	              var parent = pathBox.querySelectorAll('.js-path-offer')[index].querySelector('.js-list').parentNode;
+	            var parent = pathBox.querySelectorAll('.js-path-offer')[index].querySelector('.js-list').parentNode;
 
-	              parent.innerHTML = '\n                <div class="input">\n                  <input class="js-path-url" type="text" placeholder="Path URL" value="' + value + '">\n                  <span><span>\n                </div>';
+	            parent.innerHTML = '\n              <div class="input">\n                <input class="js-path-url" type="text" placeholder="Path URL" value="' + value + '">\n                <span><span>\n              </div>';
 
-	              parent.querySelector('.js-path-url').addEventListener('change', function (ev) {
-	                updatePath({
-	                  field: 'offer_update',
-	                  value: ev.target.value.trim(),
-	                  position: position
-	                });
+	            parent.querySelector('.js-path-url').addEventListener('change', function (ev) {
+	              updatePath({
+	                field: 'offer_update',
+	                value: ev.target.value.trim(),
+	                position: position
 	              });
-	            } else {
-	              add[type].list.setValue(value);
-	              pathBox.querySelectorAll('.js-path-' + type)[index].querySelector('.js-path-' + type + '-weight').value = path.value.lander_weight[index] || '';
-	            }
-	          });
+	            });
+	          } else {
+	            add.offer.list.setValue(value);
+	          }
+
+	          pathBox.querySelectorAll('.js-path-offer')[index].querySelector('.js-path-offer-weight').value = path.value.offer_weight[index] || 1;
+	        });
+
+	        path.value.lander.forEach(function (value, index) {
+	          add.lander.list.setValue(value);
+	          pathBox.querySelectorAll('.js-path-lander')[index].querySelector('.js-path-lander-weight').value = path.value.lander_weight[index] || 1;
 	        });
 
 	        checkSelect = false;
@@ -5846,14 +6069,22 @@ webpackJsonp([0],[
 	    });
 	  }
 
-	  function createPath(name) {
+	  function createPath(name, obj) {
+	    var data = obj || {};
 	    var pathElement = document.createElement('div');
 	    var newName = name || 'Path ' + defaultPathCount;
 
 	    pathElement.className = 'cc__element is-select js-path';
 	    pathElement.innerHTML = '\n      <div class="cc__element-item js-path-item">\n        <div class="cc__element-name js-path-name">' + newName + '</div>\n        <div class="cc__element-weight js-path-weight"></div>\n        <div class="cc__element-copy js-path-copy"></div>\n        <div class="cc__element-delete js-path-delete"></div>\n        <div class="cc__element-undo js-path-undo"><i class="fa fa-undo"></i>Undo</div>\n      </div>';
 
-	    var rule = box.querySelector('.js-rule.is-select');
+	    var rule = void 0;
+
+	    if (obj) {
+	      var allRules = box.querySelectorAll('.js-rule');
+	      rule = allRules[allRules.length - 1];
+	    } else {
+	      rule = box.querySelector('.js-rule.is-select');
+	    }
 
 	    if (rule) {
 	      rule.querySelector('.js-pathes').appendChild(pathElement);
@@ -5861,16 +6092,44 @@ webpackJsonp([0],[
 	      box.querySelector('.js-pathes-default').appendChild(pathElement);
 	    }
 
+	    if (obj) {
+	      pathElement.classList.remove('is-select');
+	    }
+
 	    pathElement.value = {
 	      name: newName,
 	      weight: 1,
-	      checkbox: 'on',
+	      checkbox: data.checkbox || 'on',
 	      lander: [],
 	      lander_weight: [],
 	      offer: [],
 	      offer_weight: [],
-	      offer_url: []
+	      offer_url: [],
+	      direct_linking: Number(data.direct_linking_checkbox) ? true : false
 	    };
+
+	    if (data.checkbox === 'off') {
+	      pathElement.classList.add('is-stoped');
+	    }
+
+	    if (data.weight || data.weight === 0) {
+	      pathElement.value.weight = Number(data.weight);
+	    }
+
+	    if (data.lander) {
+	      data.lander.forEach(function (o, index) {
+	        pathElement.value.lander.push(o);
+	        pathElement.value.lander_weight[index] = Number(data.lander_weight[index]) || 1;
+	      });
+	    }
+
+	    if (data.offer) {
+	      data.offer.forEach(function (o, index) {
+	        pathElement.value.offer.push(o);
+	        pathElement.value.offer_weight[index] = Number(data.offer_weight[index]) || 1;
+	        pathElement.value.offer_url[index] = data.offer_use_url[index] || '';
+	      });
+	    }
 
 	    eventPath(pathElement);
 	    updatePathWeight(pathElement.parentNode);
@@ -6231,13 +6490,17 @@ webpackJsonp([0],[
 	      })();
 	    }
 	  });
+
+	  return {
+	    createPath: createPath
+	  };
 	};
 
-	var _landerAdd = __webpack_require__(56);
+	var _landerAdd = __webpack_require__(57);
 
 	var _landerAdd2 = _interopRequireDefault(_landerAdd);
 
-	var _offerAdd2 = __webpack_require__(57);
+	var _offerAdd2 = __webpack_require__(58);
 
 	var _offerAdd3 = _interopRequireDefault(_offerAdd2);
 
@@ -6251,7 +6514,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -6404,7 +6667,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -6667,7 +6930,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 58 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6837,7 +7100,8 @@ webpackJsonp([0],[
 	    });
 	  }
 
-	  function createRule(name) {
+	  function createRule(name, obj) {
+	    var data = obj || {};
 	    var ruleElement = document.createElement('div');
 	    var newName = name || 'Rule ' + defaultRuleCount;
 
@@ -6846,11 +7110,20 @@ webpackJsonp([0],[
 
 	    allRules.appendChild(ruleElement);
 
+	    if (obj) {
+	      ruleElement.classList.remove('is-select');
+	    }
+
 	    ruleElement.value = {
 	      name: newName,
-	      weight: 1,
-	      rules: []
+	      weight: Number(data.weight) || 1,
+	      rules: [],
+	      checkbox: data.checkbox || 'on'
 	    };
+
+	    if (data.checkbox === 'off') {
+	      ruleElement.classList.add('is-stoped');
+	    }
 
 	    eventRule(ruleElement);
 	    updateRuleWeight();
@@ -7066,6 +7339,10 @@ webpackJsonp([0],[
 
 	    ruleAddList.addEventListener('change', addLine);
 	  })();
+
+	  return {
+	    createRule: createRule
+	  };
 	};
 
 	var _qs = __webpack_require__(14);
@@ -7076,7 +7353,7 @@ webpackJsonp([0],[
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
-	var _checklistEvent = __webpack_require__(59);
+	var _checklistEvent = __webpack_require__(60);
 
 	var _checklistEvent2 = _interopRequireDefault(_checklistEvent);
 
@@ -7121,7 +7398,7 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -7597,7 +7874,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -7665,7 +7942,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 61 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -7733,7 +8010,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 62 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -7801,7 +8078,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 63 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -7975,7 +8252,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -8043,7 +8320,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 65 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -8200,7 +8477,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 66 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -8347,11 +8624,11 @@ webpackJsonp([0],[
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _tableRender = __webpack_require__(67);
+	var _tableRender = __webpack_require__(68);
 
 	var _tableRender2 = _interopRequireDefault(_tableRender);
 
-	var _tableEvent = __webpack_require__(68);
+	var _tableEvent = __webpack_require__(69);
 
 	var _tableEvent2 = _interopRequireDefault(_tableEvent);
 
@@ -8359,7 +8636,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 67 */
+/* 68 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8614,7 +8891,7 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 68 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8831,7 +9108,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 69 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -8956,7 +9233,7 @@ webpackJsonp([0],[
 
 	var _update2 = _interopRequireDefault(_update);
 
-	var _graphRender = __webpack_require__(70);
+	var _graphRender = __webpack_require__(71);
 
 	var _graphRender2 = _interopRequireDefault(_graphRender);
 
@@ -8964,7 +9241,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 70 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9111,7 +9388,7 @@ webpackJsonp([0],[
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _highcharts = __webpack_require__(71);
+	var _highcharts = __webpack_require__(72);
 
 	var _highcharts2 = _interopRequireDefault(_highcharts);
 
