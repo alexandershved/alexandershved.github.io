@@ -3017,7 +3017,7 @@ body.noscroll {
   position: relative;
   height: 34px;
   margin-left: -12px;
-  padding: 10px 10px 0 10px;
+  padding: 10px 80px 0 10px;
   line-height: 14px;
   font-size: 14px;
   border-left: 2px solid transparent;
@@ -3110,7 +3110,7 @@ body.noscroll {
 .cc__element-undo {
   display: none;
   float: right;
-  margin-right: 10px;
+  margin-right: -70px;
   line-height: 14px;
   font-size: 14px;
   color: #0182ec;
@@ -3133,9 +3133,8 @@ body.noscroll {
 .cc__element.is-stoped .cc__element-weight {
   opacity: 0.5;
 }
-.cc__element-item:hover .cc__element-weight {
-  opacity: 0;
-}
+.cc__element.is-select > .cc__element-item .cc__element-copy,
+.cc__element.is-select > .cc__element-item .cc__element-delete,
 .cc__element-item:hover .cc__element-copy,
 .cc__element-item:hover .cc__element-delete {
   opacity: 1;
