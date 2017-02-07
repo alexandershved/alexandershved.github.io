@@ -94,31 +94,20 @@
 /******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(28);
-	__webpack_require__(72);
-	__webpack_require__(73);
+	__webpack_require__(76);
+	__webpack_require__(77);
 	module.exports = __webpack_require__(14);
 
 
 /***/ },
-/* 1 */,
-/* 2 */,
-/* 3 */,
-/* 4 */,
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */,
-/* 11 */,
-/* 12 */,
-/* 13 */,
-/* 14 */
+
+/***/ 14:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -135,7 +124,8 @@
 
 
 /***/ },
-/* 15 */
+
+/***/ 15:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -328,7 +318,8 @@
 
 
 /***/ },
-/* 16 */
+
+/***/ 16:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -514,7 +505,8 @@
 
 
 /***/ },
-/* 17 */
+
+/***/ 17:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -538,7 +530,8 @@
 
 
 /***/ },
-/* 18 */
+
+/***/ 18:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -710,16 +703,8 @@
 
 
 /***/ },
-/* 19 */,
-/* 20 */,
-/* 21 */,
-/* 22 */,
-/* 23 */,
-/* 24 */,
-/* 25 */,
-/* 26 */,
-/* 27 */,
-/* 28 */
+
+/***/ 28:
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -951,12 +936,8 @@
 
 
 /***/ },
-/* 29 */,
-/* 30 */,
-/* 31 */,
-/* 32 */,
-/* 33 */,
-/* 34 */
+
+/***/ 34:
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -1142,13 +1123,8 @@
 
 
 /***/ },
-/* 35 */,
-/* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */,
-/* 40 */,
-/* 41 */
+
+/***/ 41:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -1461,7 +1437,8 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(34)))
 
 /***/ },
-/* 42 */
+
+/***/ 42:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -1528,7 +1505,8 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(34)))
 
 /***/ },
-/* 43 */
+
+/***/ 43:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -1586,7 +1564,8 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(34)))
 
 /***/ },
-/* 44 */
+
+/***/ 44:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1657,7 +1636,8 @@
 	};
 
 /***/ },
-/* 45 */
+
+/***/ 45:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1714,7 +1694,8 @@
 	};
 
 /***/ },
-/* 46 */
+
+/***/ 46:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -1798,7 +1779,8 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(34)))
 
 /***/ },
-/* 47 */
+
+/***/ 47:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1807,7 +1789,8 @@
 	var canUseDOM = exports.canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
 /***/ },
-/* 48 */
+
+/***/ 48:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1856,30 +1839,8 @@
 	};
 
 /***/ },
-/* 49 */,
-/* 50 */,
-/* 51 */,
-/* 52 */,
-/* 53 */,
-/* 54 */,
-/* 55 */,
-/* 56 */,
-/* 57 */,
-/* 58 */,
-/* 59 */,
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */,
-/* 64 */,
-/* 65 */,
-/* 66 */,
-/* 67 */,
-/* 68 */,
-/* 69 */,
-/* 70 */,
-/* 71 */,
-/* 72 */
+
+/***/ 76:
 /***/ function(module, exports) {
 
 	/*
@@ -2268,7 +2229,8 @@
 
 
 /***/ },
-/* 73 */
+
+/***/ 77:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2310,11 +2272,11 @@
 
 	var _createBrowserHistory3 = _interopRequireDefault(_createBrowserHistory2);
 
-	var _createHashHistory2 = __webpack_require__(74);
+	var _createHashHistory2 = __webpack_require__(78);
 
 	var _createHashHistory3 = _interopRequireDefault(_createHashHistory2);
 
-	var _createMemoryHistory2 = __webpack_require__(75);
+	var _createMemoryHistory2 = __webpack_require__(79);
 
 	var _createMemoryHistory3 = _interopRequireDefault(_createMemoryHistory2);
 
@@ -2325,7 +2287,8 @@
 	exports.createMemoryHistory = _createMemoryHistory3.default;
 
 /***/ },
-/* 74 */
+
+/***/ 78:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -2651,7 +2614,8 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(34)))
 
 /***/ },
-/* 75 */
+
+/***/ 79:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -2822,5 +2786,6 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(34)))
 
 /***/ }
-/******/ ]);
+
+/******/ });
 //# sourceMappingURL=vendors.js.map

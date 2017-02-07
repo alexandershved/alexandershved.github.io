@@ -2872,7 +2872,6 @@ body.noscroll {
 }
 .calendar__bottom {
   position: relative;
-  overflow: hidden;
   padding: 15px 0 20px;
   border-top: solid 1px #e4e5e9;
 }
@@ -3289,6 +3288,7 @@ body.noscroll {
 .checklist__value input {
   display: none;
   height: 24px;
+  margin-bottom: 5px;
   padding: 5px 6px;
   font-size: 14px;
   border: 0;
@@ -3657,25 +3657,37 @@ input:focus + .input__plus {
   margin-top: 15px;
 }
 .inputs__wrap {
+  position: relative;
+  display: block;
   min-height: 34px;
-  padding: 5px;
-  font-size: 14px;
-  border: 1px solid #e4e5e9;
+  padding: 5px 0 0 5px;
   background-color: #fff;
-  transition: all 200ms ease;
+  cursor: pointer;
 }
-.inputs__wrap.is-focus {
+.inputs__wrap:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid #e4e5e9;
+}
+.inputs__wrap.is-focus:before {
   border: 1px solid #838fa2;
 }
 .inputs__wrap span {
   display: inline-block;
+  height: 24px;
   margin-right: 5px;
-  padding: 5px;
-  color: #fff;
+  margin-bottom: 5px;
+  padding: 6px;
   line-height: 1;
   font-size: 12px;
-  vertical-align: middle;
+  color: #fff;
+  vertical-align: top;
   background-color: #0182ec;
+  cursor: default;
 }
 .inputs__wrap span i {
   position: relative;
@@ -3701,14 +3713,16 @@ input:focus + .input__plus {
   transform: rotate(-45deg);
 }
 .inputs__wrap input {
-  display: inline-block;
-  padding: 5px;
-  color: #54647e;
-  line-height: 1;
-  font-size: 12px;
+  display: none;
+  height: 24px;
+  margin-bottom: 5px;
+  padding: 5px 6px;
+  font-size: 14px;
   border: 0;
-  vertical-align: middle;
-  background-color: #fff;
+  background-color: transparent;
+}
+.inputs__wrap.is-focus input {
+  display: inline-block;
 }
 .inputs__error {
   display: none;
