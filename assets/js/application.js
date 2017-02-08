@@ -5045,6 +5045,43 @@ webpackJsonp([0],[
 	        }
 	      } else {
 	        (function () {
+	          var search = document.createElement('div');
+	          search.className = 'popup__list-search';
+	          search.innerHTML = '\n          <i class="fa fa-search"></i>\n          <input class="js-popup-list-search" type="text" placeholder="Enter to search">';
+	          popupBody.appendChild(search);
+
+	          var timeForSearch = void 0;
+	          var inputSearch = search.querySelector('.js-popup-list-search');
+	          var filterRows = function filterRows() {
+	            if (timeForSearch) {
+	              clearTimeout(timeForSearch);
+	            }
+
+	            timeForSearch = setTimeout(function () {
+	              var val = inputSearch.value.trim();
+	              var reg = new RegExp(val, 'i');
+	              var names = popupBody.querySelectorAll('.js-popup-list-name');
+
+	              if (val) {
+	                [].concat(_toConsumableArray(names)).forEach(function (el) {
+	                  if (el.textContent.search(reg) === -1) {
+	                    el.closest('.js-popup-row').style.display = 'none';
+	                  } else {
+	                    el.closest('.js-popup-row').style.display = '';
+	                  }
+	                });
+	              } else {
+	                [].concat(_toConsumableArray(names)).forEach(function (el) {
+	                  el.closest('.js-popup-row').style.display = '';
+	                });
+	              }
+	            }, 200);
+	          };
+
+	          inputSearch.addEventListener('keyup', filterRows);
+	          inputSearch.addEventListener('paste', filterRows);
+	          inputSearch.addEventListener('change', filterRows);
+
 	          var table = document.createElement('table');
 	          table.className = 'popup__list';
 	          popupBody.appendChild(table);
@@ -5053,9 +5090,9 @@ webpackJsonp([0],[
 	            var name = item.name;
 	            var id = item.id;
 	            var tr = document.createElement('tr');
-	            tr.className = 'js-campaign-row';
+	            tr.className = 'js-campaign-row js-popup-row';
 
-	            tr.innerHTML = '\n            <td class="js-campaign-name" data-id="' + id + '"><span>' + name + '</span></td>\n            <td><span class="js-campaign-copy">Copy</span></td>\n            <td><span class="js-campaign-edit">Edit</span></td>\n            <td><span class="js-campaign-update-cost">Update cost</span></td>\n            <td><span class="js-campaign-links">Links</span></td>\n          ';
+	            tr.innerHTML = '\n            <td class="js-campaign-name" data-id="' + id + '">\n              <span class="js-campaign-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-campaign-copy">Copy</span></td>\n            <td><span class="js-campaign-edit">Edit</span></td>\n            <td><span class="js-campaign-update-cost">Update cost</span></td>\n            <td><span class="js-campaign-links">Links</span></td>\n          ';
 
 	            table.appendChild(tr);
 
@@ -5068,22 +5105,24 @@ webpackJsonp([0],[
 
 	  function listClick(event) {
 	    var target = event.target;
-
 	    var copyBtn = target.closest('.js-campaign-copy');
 	    var editBtn = target.closest('.js-campaign-edit');
 	    var updateCostBtn = target.closest('.js-campaign-copy');
 	    var linksBtn = target.closest('.js-campaign-links');
-	    var id = target.closest('.js-campaign-row').querySelector('.js-campaign-name').dataset.id;
 
-	    if (copyBtn) {
-	      if (id) {
-	        openEdit(id);
+	    if (copyBtn || editBtn) {
+	      var id = target.closest('.js-traffic-row').querySelector('.js-traffic-name').dataset.id;
+
+	      if (copyBtn) {
+	        if (id) {
+	          openEdit(id);
+	        }
 	      }
-	    }
 
-	    if (editBtn) {
-	      if (id) {
-	        openEdit(id, true);
+	      if (editBtn) {
+	        if (id) {
+	          openEdit(id, true);
+	        }
 	      }
 	    }
 	  }
@@ -5117,6 +5156,8 @@ webpackJsonp([0],[
 	var _campaignEdit2 = _interopRequireDefault(_campaignEdit);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
@@ -5344,7 +5385,7 @@ webpackJsonp([0],[
 
 	  popup.querySelector('.js-popup-wrap').style.width = '1000px';
 
-	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for campaign">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Domain:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-domain" style="display: block; margin: 0 0 15px;" data-placeholder="Select domain">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Campaign URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" readonly="true">\n        </div>\n      </div>\n      <div class="popup__line-btn">\n        <div class="btn-copy js-form-url-copy">Clipboard</div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Traffic Source:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-traffic-source" style="display: block; margin: 0 0 15px;" data-placeholder="Select traffic source">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Payout:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="radiobutton js-form-cost-donottrack">Do not track</div>\n        <div class="radiobutton js-form-cost-cpc is-select">CPC</div>\n        <div class="radiobutton js-form-cost-cpa">CPA</div>\n        <div class="popup__line-lbl" style="margin-left: 80px;"><span>Cost click:</span><div class="info"></div></div>\n        <div class="input" style="display: inline-block; width: 90px; margin-left: 10px; margin-right: 10px;">\n          <input class="js-form-cost-click" type="text" placeholder="0">\n          <span><span>\n        </div>\n        <div class="popup__currency js-form-cost-eur">\n          <i class="fa fa-euro"></i>\n        </div>\n        <div class="popup__currency js-form-cost-rub">\n          <i class="fa fa-ruble"></i>\n        </div>\n        <div class="popup__currency js-form-cost-usd is-select">\n          <i class="fa fa-dollar"></i>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Postback URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="js-form-input-parent">\n          <div class="input is-with-plus">\n            <input class="js-form-postback-url" type="text" placeholder="Postback URL">\n            <div class="input__plus js-form-postback-url-add"></div>\n            <span><span>\n          </div>\n          <div class="tags js-form-postback-tags" style="display: none;"></div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Redirect mode:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-directtype" style="display: block; margin: 0 0 15px;" data-placeholder="Select redirect mode">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items">\n                <div class="list__item js-list-item" data-value="301">301</div>\n                <div class="list__item js-list-item" data-value="302">302</div>\n                <div class="list__item js-list-item" data-value="js">js</div>\n                <div class="list__item js-list-item" data-value="double_js">double_js</div>\n                <div class="list__item js-list-item" data-value="meta_refresh">meta_refresh</div>\n                <div class="list__item js-list-item" data-value="double_meta_refresh">double_meta_refresh</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="cc js-create-campaign"></div>';
+	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for campaign">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Domain:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-domain" style="display: block; margin: 0 0 15px;" data-placeholder="Select domain">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Traffic Source:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-traffic-source" style="display: block; margin: 0 0 15px;" data-placeholder="Select traffic source">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Payout:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="radiobutton js-form-cost-donottrack">Do not track</div>\n        <div class="radiobutton js-form-cost-cpc is-select">CPC</div>\n        <div class="radiobutton js-form-cost-cpa">CPA</div>\n        <div class="popup__line-lbl" style="margin-left: 80px;"><span>Cost click:</span><div class="info"></div></div>\n        <div class="input" style="display: inline-block; width: 90px; margin-left: 10px; margin-right: 10px;">\n          <input class="js-form-cost-click" type="text" placeholder="0">\n          <span><span>\n        </div>\n        <div class="popup__currency js-form-cost-eur">\n          <i class="fa fa-euro"></i>\n        </div>\n        <div class="popup__currency js-form-cost-rub">\n          <i class="fa fa-ruble"></i>\n        </div>\n        <div class="popup__currency js-form-cost-usd is-select">\n          <i class="fa fa-dollar"></i>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Postback URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="js-form-input-parent">\n          <div class="input is-with-plus">\n            <input class="js-form-postback-url" type="text" placeholder="Postback URL">\n            <div class="input__plus js-form-postback-url-add"></div>\n            <span><span>\n          </div>\n          <div class="tags js-form-postback-tags" style="display: none;"></div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Redirect mode:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-directtype" style="display: block; margin: 0 0 15px;" data-placeholder="Select redirect mode">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items">\n                <div class="list__item js-list-item" data-value="301">301</div>\n                <div class="list__item js-list-item" data-value="302">302</div>\n                <div class="list__item js-list-item" data-value="js">js</div>\n                <div class="list__item js-list-item" data-value="double_js">double_js</div>\n                <div class="list__item js-list-item" data-value="meta_refresh">meta_refresh</div>\n                <div class="list__item js-list-item" data-value="double_meta_refresh">double_meta_refresh</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="cc js-create-campaign"></div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Campaign URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" readonly="true">\n        </div>\n      </div>\n      <div class="popup__line-btn">\n        <div class="btn-copy js-form-url-copy">Clipboard</div>\n      </div>\n    </div>';
 
 	  var formName = popupBody.querySelector('.js-form-name');
 	  var formDomain = popupBody.querySelector('.js-form-domain');
@@ -8013,6 +8054,43 @@ webpackJsonp([0],[
 	        }
 	      } else {
 	        (function () {
+	          var search = document.createElement('div');
+	          search.className = 'popup__list-search';
+	          search.innerHTML = '\n          <i class="fa fa-search"></i>\n          <input class="js-popup-list-search" type="text" placeholder="Enter to search">';
+	          popupBody.appendChild(search);
+
+	          var timeForSearch = void 0;
+	          var inputSearch = search.querySelector('.js-popup-list-search');
+	          var filterRows = function filterRows() {
+	            if (timeForSearch) {
+	              clearTimeout(timeForSearch);
+	            }
+
+	            timeForSearch = setTimeout(function () {
+	              var val = inputSearch.value.trim();
+	              var reg = new RegExp(val, 'i');
+	              var names = popupBody.querySelectorAll('.js-popup-list-name');
+
+	              if (val) {
+	                [].concat(_toConsumableArray(names)).forEach(function (el) {
+	                  if (el.textContent.search(reg) === -1) {
+	                    el.closest('.js-popup-row').style.display = 'none';
+	                  } else {
+	                    el.closest('.js-popup-row').style.display = '';
+	                  }
+	                });
+	              } else {
+	                [].concat(_toConsumableArray(names)).forEach(function (el) {
+	                  el.closest('.js-popup-row').style.display = '';
+	                });
+	              }
+	            }, 200);
+	          };
+
+	          inputSearch.addEventListener('keyup', filterRows);
+	          inputSearch.addEventListener('paste', filterRows);
+	          inputSearch.addEventListener('change', filterRows);
+
 	          var table = document.createElement('table');
 	          table.className = 'popup__list';
 	          popupBody.appendChild(table);
@@ -8021,9 +8099,9 @@ webpackJsonp([0],[
 	            var name = item.name;
 	            var id = item.id;
 	            var tr = document.createElement('tr');
-	            tr.className = 'js-lander-row';
+	            tr.className = 'js-lander-row js-popup-row';
 
-	            tr.innerHTML = '\n            <td class="js-lander-name" data-id="' + id + '"><span>' + name + '</span></td>\n            <td><span class="js-lander-copy">Copy</span></td>\n            <td><span class="js-lander-edit">Edit</span></td>\n          ';
+	            tr.innerHTML = '\n            <td class="js-lander-name" data-id="' + id + '">\n              <span class="js-lander-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-lander-copy">Copy</span></td>\n            <td><span class="js-lander-edit">Edit</span></td>\n          ';
 
 	            table.appendChild(tr);
 
@@ -8036,20 +8114,22 @@ webpackJsonp([0],[
 
 	  function listClick(event) {
 	    var target = event.target;
-
 	    var copyBtn = target.closest('.js-lander-copy');
 	    var editBtn = target.closest('.js-lander-edit');
-	    var id = target.closest('.js-lander-row').querySelector('.js-lander-name').dataset.id;
 
-	    if (copyBtn) {
-	      if (id) {
-	        openEdit(id);
+	    if (copyBtn || editBtn) {
+	      var id = target.closest('.js-traffic-row').querySelector('.js-traffic-name').dataset.id;
+
+	      if (copyBtn) {
+	        if (id) {
+	          openEdit(id);
+	        }
 	      }
-	    }
 
-	    if (editBtn) {
-	      if (id) {
-	        openEdit(id, true);
+	      if (editBtn) {
+	        if (id) {
+	          openEdit(id, true);
+	        }
 	      }
 	    }
 	  }
@@ -8083,6 +8163,8 @@ webpackJsonp([0],[
 	var _landerEdit2 = _interopRequireDefault(_landerEdit);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
@@ -8177,6 +8259,43 @@ webpackJsonp([0],[
 	        }
 	      } else {
 	        (function () {
+	          var search = document.createElement('div');
+	          search.className = 'popup__list-search';
+	          search.innerHTML = '\n          <i class="fa fa-search"></i>\n          <input class="js-popup-list-search" type="text" placeholder="Enter to search">';
+	          popupBody.appendChild(search);
+
+	          var timeForSearch = void 0;
+	          var inputSearch = search.querySelector('.js-popup-list-search');
+	          var filterRows = function filterRows() {
+	            if (timeForSearch) {
+	              clearTimeout(timeForSearch);
+	            }
+
+	            timeForSearch = setTimeout(function () {
+	              var val = inputSearch.value.trim();
+	              var reg = new RegExp(val, 'i');
+	              var names = popupBody.querySelectorAll('.js-popup-list-name');
+
+	              if (val) {
+	                [].concat(_toConsumableArray(names)).forEach(function (el) {
+	                  if (el.textContent.search(reg) === -1) {
+	                    el.closest('.js-popup-row').style.display = 'none';
+	                  } else {
+	                    el.closest('.js-popup-row').style.display = '';
+	                  }
+	                });
+	              } else {
+	                [].concat(_toConsumableArray(names)).forEach(function (el) {
+	                  el.closest('.js-popup-row').style.display = '';
+	                });
+	              }
+	            }, 200);
+	          };
+
+	          inputSearch.addEventListener('keyup', filterRows);
+	          inputSearch.addEventListener('paste', filterRows);
+	          inputSearch.addEventListener('change', filterRows);
+
 	          var table = document.createElement('table');
 	          table.className = 'popup__list';
 	          popupBody.appendChild(table);
@@ -8185,9 +8304,9 @@ webpackJsonp([0],[
 	            var name = item.name;
 	            var id = item.id;
 	            var tr = document.createElement('tr');
-	            tr.className = 'js-offer-row';
+	            tr.className = 'js-offer-row js-popup-row';
 
-	            tr.innerHTML = '\n            <td class="js-offer-name" data-id="' + id + '"><span>' + name + '</span></td>\n            <td><span class="js-offer-copy">Copy</span></td>\n            <td><span class="js-offer-edit">Edit</span></td>\n          ';
+	            tr.innerHTML = '\n            <td class="js-offer-name" data-id="' + id + '">\n              <span class="js-offer-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-offer-copy">Copy</span></td>\n            <td><span class="js-offer-edit">Edit</span></td>\n          ';
 
 	            table.appendChild(tr);
 
@@ -8200,20 +8319,22 @@ webpackJsonp([0],[
 
 	  function listClick(event) {
 	    var target = event.target;
-
 	    var copyBtn = target.closest('.js-offer-copy');
 	    var editBtn = target.closest('.js-offer-edit');
-	    var id = target.closest('.js-offer-row').querySelector('.js-offer-name').dataset.id;
 
-	    if (copyBtn) {
-	      if (id) {
-	        openEdit(id);
+	    if (copyBtn || editBtn) {
+	      var id = target.closest('.js-traffic-row').querySelector('.js-traffic-name').dataset.id;
+
+	      if (copyBtn) {
+	        if (id) {
+	          openEdit(id);
+	        }
 	      }
-	    }
 
-	    if (editBtn) {
-	      if (id) {
-	        openEdit(id, true);
+	      if (editBtn) {
+	        if (id) {
+	          openEdit(id, true);
+	        }
 	      }
 	    }
 	  }
@@ -8247,6 +8368,8 @@ webpackJsonp([0],[
 	var _offerEdit2 = _interopRequireDefault(_offerEdit);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
@@ -8388,6 +8511,43 @@ webpackJsonp([0],[
 	        }
 	      } else {
 	        (function () {
+	          var search = document.createElement('div');
+	          search.className = 'popup__list-search';
+	          search.innerHTML = '\n          <i class="fa fa-search"></i>\n          <input class="js-popup-list-search" type="text" placeholder="Enter to search">';
+	          popupBody.appendChild(search);
+
+	          var timeForSearch = void 0;
+	          var inputSearch = search.querySelector('.js-popup-list-search');
+	          var filterRows = function filterRows() {
+	            if (timeForSearch) {
+	              clearTimeout(timeForSearch);
+	            }
+
+	            timeForSearch = setTimeout(function () {
+	              var val = inputSearch.value.trim();
+	              var reg = new RegExp(val, 'i');
+	              var names = popupBody.querySelectorAll('.js-popup-list-name');
+
+	              if (val) {
+	                [].concat(_toConsumableArray(names)).forEach(function (el) {
+	                  if (el.textContent.search(reg) === -1) {
+	                    el.closest('.js-popup-row').style.display = 'none';
+	                  } else {
+	                    el.closest('.js-popup-row').style.display = '';
+	                  }
+	                });
+	              } else {
+	                [].concat(_toConsumableArray(names)).forEach(function (el) {
+	                  el.closest('.js-popup-row').style.display = '';
+	                });
+	              }
+	            }, 200);
+	          };
+
+	          inputSearch.addEventListener('keyup', filterRows);
+	          inputSearch.addEventListener('paste', filterRows);
+	          inputSearch.addEventListener('change', filterRows);
+
 	          var table = document.createElement('table');
 	          table.className = 'popup__list';
 	          popupBody.appendChild(table);
@@ -8396,9 +8556,9 @@ webpackJsonp([0],[
 	            var name = item.name;
 	            var id = item.id;
 	            var tr = document.createElement('tr');
-	            tr.className = 'js-traffic-row';
+	            tr.className = 'js-traffic-row js-popup-row';
 
-	            tr.innerHTML = '\n            <td class="js-traffic-name" data-id="' + id + '"><span>' + name + '</span></td>\n            <td><span class="js-traffic-copy">Copy</span></td>\n            <td><span class="js-traffic-edit">Edit</span></td>\n          ';
+	            tr.innerHTML = '\n            <td class="js-traffic-name" data-id="' + id + '">\n              <span class="js-traffic-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-traffic-copy">Copy</span></td>\n            <td><span class="js-traffic-edit">Edit</span></td>\n          ';
 
 	            table.appendChild(tr);
 
@@ -8411,20 +8571,22 @@ webpackJsonp([0],[
 
 	  function listClick(event) {
 	    var target = event.target;
-
 	    var copyBtn = target.closest('.js-traffic-copy');
 	    var editBtn = target.closest('.js-traffic-edit');
-	    var id = target.closest('.js-traffic-row').querySelector('.js-traffic-name').dataset.id;
 
-	    if (copyBtn) {
-	      if (id) {
-	        openEdit(id);
+	    if (copyBtn || editBtn) {
+	      var id = target.closest('.js-traffic-row').querySelector('.js-traffic-name').dataset.id;
+
+	      if (copyBtn) {
+	        if (id) {
+	          openEdit(id);
+	        }
 	      }
-	    }
 
-	    if (editBtn) {
-	      if (id) {
-	        openEdit(id, true);
+	      if (editBtn) {
+	        if (id) {
+	          openEdit(id, true);
+	        }
 	      }
 	    }
 	  }
@@ -8458,6 +8620,8 @@ webpackJsonp([0],[
 	var _trafficSourceEdit2 = _interopRequireDefault(_trafficSourceEdit);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
@@ -8748,6 +8912,43 @@ webpackJsonp([0],[
 	        }
 	      } else {
 	        (function () {
+	          var search = document.createElement('div');
+	          search.className = 'popup__list-search';
+	          search.innerHTML = '\n          <i class="fa fa-search"></i>\n          <input class="js-popup-list-search" type="text" placeholder="Enter to search">';
+	          popupBody.appendChild(search);
+
+	          var timeForSearch = void 0;
+	          var inputSearch = search.querySelector('.js-popup-list-search');
+	          var filterRows = function filterRows() {
+	            if (timeForSearch) {
+	              clearTimeout(timeForSearch);
+	            }
+
+	            timeForSearch = setTimeout(function () {
+	              var val = inputSearch.value.trim();
+	              var reg = new RegExp(val, 'i');
+	              var names = popupBody.querySelectorAll('.js-popup-list-name');
+
+	              if (val) {
+	                [].concat(_toConsumableArray(names)).forEach(function (el) {
+	                  if (el.textContent.search(reg) === -1) {
+	                    el.closest('.js-popup-row').style.display = 'none';
+	                  } else {
+	                    el.closest('.js-popup-row').style.display = '';
+	                  }
+	                });
+	              } else {
+	                [].concat(_toConsumableArray(names)).forEach(function (el) {
+	                  el.closest('.js-popup-row').style.display = '';
+	                });
+	              }
+	            }, 200);
+	          };
+
+	          inputSearch.addEventListener('keyup', filterRows);
+	          inputSearch.addEventListener('paste', filterRows);
+	          inputSearch.addEventListener('change', filterRows);
+
 	          var table = document.createElement('table');
 	          table.className = 'popup__list';
 	          popupBody.appendChild(table);
@@ -8756,9 +8957,9 @@ webpackJsonp([0],[
 	            var name = item.name;
 	            var id = item.id;
 	            var tr = document.createElement('tr');
-	            tr.className = 'js-affiliate-row';
+	            tr.className = 'js-affiliate-row js-popup-row';
 
-	            tr.innerHTML = '\n            <td class="js-affiliate-name" data-id="' + id + '"><span>' + name + '</span></td>\n            <td><span class="js-affiliate-copy">Copy</span></td>\n            <td><span class="js-affiliate-edit">Edit</span></td>\n          ';
+	            tr.innerHTML = '\n            <td class="js-affiliate-name" data-id="' + id + '">\n              <span class="js-affiliate-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-affiliate-copy">Copy</span></td>\n            <td><span class="js-affiliate-edit">Edit</span></td>\n          ';
 
 	            table.appendChild(tr);
 
@@ -8771,20 +8972,22 @@ webpackJsonp([0],[
 
 	  function listClick(event) {
 	    var target = event.target;
-
 	    var copyBtn = target.closest('.js-affiliate-copy');
 	    var editBtn = target.closest('.js-affiliate-edit');
-	    var id = target.closest('.js-affiliate-row').querySelector('.js-affiliate-name').dataset.id;
 
-	    if (copyBtn) {
-	      if (id) {
-	        openEdit(id);
+	    if (copyBtn || editBtn) {
+	      var id = target.closest('.js-traffic-row').querySelector('.js-traffic-name').dataset.id;
+
+	      if (copyBtn) {
+	        if (id) {
+	          openEdit(id);
+	        }
 	      }
-	    }
 
-	    if (editBtn) {
-	      if (id) {
-	        openEdit(id, true);
+	      if (editBtn) {
+	        if (id) {
+	          openEdit(id, true);
+	        }
 	      }
 	    }
 	  }
@@ -8818,6 +9021,8 @@ webpackJsonp([0],[
 	var _affiliateNetworkEdit2 = _interopRequireDefault(_affiliateNetworkEdit);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
