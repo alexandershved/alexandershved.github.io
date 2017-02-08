@@ -489,7 +489,7 @@ webpackJsonp([0],[
 	        }
 
 	        input.value = chunks.join(':');
-	        input.triggerEvent('chage');
+	        input.triggerEvent('change');
 
 	        selectRange();
 	      }
@@ -528,7 +528,9 @@ webpackJsonp([0],[
 	      chunks[1] = minutes < 10 ? '0' + minutes : minutes;
 
 	      input.value = chunks.join(':');
-	      input.triggerEvent('chage');
+	      input.triggerEvent('change');
+
+	      selectRange();
 	    };
 
 	    input.addEventListener('focus', function () {
@@ -564,6 +566,7 @@ webpackJsonp([0],[
 	        case 13:
 	        case 27:
 	          event.target.blur();
+	          input.triggerEvent('change');
 	          break;
 	        case 37:
 	          event.preventDefault();
@@ -1088,21 +1091,28 @@ webpackJsonp([0],[
 	    }
 
 	    if (Array.isArray(param)) {
-	      param.forEach(function (par) {
-	        var p = String(par);
+	      (function () {
+	        param.forEach(function (par) {
+	          var p = String(par);
 
-	        if (select.value.indexOf(p) === -1) {
-	          select.value.push(p);
-	          isUpdate = true;
-	        }
-	      });
+	          if (select.value.indexOf(p) === -1) {
+	            select.value.push(p);
+	            isUpdate = true;
+	          }
+	        });
 
-	      select.value.forEach(function (par, i) {
-	        if (param.indexOf(par) === -1) {
-	          select.value.splice(i, 1);
-	          isUpdate = true;
-	        }
-	      });
+	        var tempSelectValue = [];
+
+	        select.value.forEach(function (par, i) {
+	          if (param.indexOf(par) === -1) {
+	            isUpdate = true;
+	          } else {
+	            tempSelectValue.push(par);
+	          }
+	        });
+
+	        select.value = tempSelectValue;
+	      })();
 	    }
 
 	    return isUpdate;
@@ -1677,9 +1687,9 @@ webpackJsonp([0],[
 	        to = (0, _dateformat2.default)(to, 'mmmm dd, yyyy');
 
 	        if (from === to) {
-	          labelControl.textContent = from;
+	          labelControl.innerHTML = from;
 	        } else {
-	          labelControl.textContent = from + ' — ' + to;
+	          labelControl.innerHTML = from + ' &mdash; ' + to;
 	        }
 	      }
 	    };
@@ -4347,6 +4357,8 @@ webpackJsonp([0],[
 
 	            (0, _update2.default)({ table_columns: columns });
 	          })();
+	        } else {
+	          (0, _update2.default)({ table_columns: [] });
 	        }
 	      }
 
@@ -4840,8 +4852,8 @@ webpackJsonp([0],[
 	          break;
 
 	        case 'table_columns':
+	          params.columns = [];
 	          if (Array.isArray(obj.table_columns)) {
-	            params.columns = [];
 	            obj.table_columns.forEach(function (col) {
 	              params.columns.push(col);
 	            });
@@ -4951,6 +4963,10 @@ webpackJsonp([0],[
 	    if (firstPath) {
 	      popupBody.pathFunctions.selectPath(firstPath);
 	    }
+
+	    setTimeout(function () {
+	      return popupBody.querySelector('.js-form-name').focus();
+	    }, 100);
 	  });
 
 	  stat.querySelector('.js-stat-lander-list').addEventListener('click', _landerList2.default);
@@ -5111,7 +5127,7 @@ webpackJsonp([0],[
 	    var linksBtn = target.closest('.js-campaign-links');
 
 	    if (copyBtn || editBtn) {
-	      var id = target.closest('.js-traffic-row').querySelector('.js-traffic-name').dataset.id;
+	      var id = target.closest('.js-campaign-row').querySelector('.js-campaign-name').dataset.id;
 
 	      if (copyBtn) {
 	        if (id) {
@@ -5327,21 +5343,24 @@ webpackJsonp([0],[
 	  }
 
 	  var defaultPathes = JSON.parse(data.default_path_obj);
-	  var rules = JSON.parse(data.rules_obj);
 
 	  defaultPathes.forEach(function (path) {
 	    popupBody.pathFunctions.createPath(path.name, path);
 	  });
 
-	  rules.forEach(function (rule) {
-	    popupBody.ruleFunctions.createRule(rule.name, rule);
+	  if (typeof data.rules_obj === 'string') {
+	    var rules = JSON.parse(data.rules_obj);
 
-	    if (Array.isArray(rule.path)) {
-	      rule.path.forEach(function (path) {
-	        popupBody.pathFunctions.createPath(path.name, path);
-	      });
-	    }
-	  });
+	    rules.forEach(function (rule) {
+	      popupBody.ruleFunctions.createRule(rule.name, rule);
+
+	      if (Array.isArray(rule.path)) {
+	        rule.path.forEach(function (path) {
+	          popupBody.pathFunctions.createPath(path.name, path);
+	        });
+	      }
+	    });
+	  }
 	};
 
 	var _qs = __webpack_require__(14);
@@ -7221,49 +7240,51 @@ webpackJsonp([0],[
 	      ruleElement.classList.add('is-stoped');
 	    }
 
-	    var objRules = JSON.parse(obj.obj);
+	    if (typeof data.obj === 'string') {
+	      var objRules = JSON.parse(data.obj);
 
-	    for (var i in objRules) {
-	      if (objRules.hasOwnProperty(i)) {
-	        (function () {
-	          var o = { name: i };
+	      for (var i in objRules) {
+	        if (objRules.hasOwnProperty(i)) {
+	          (function () {
+	            var o = { name: i };
 
-	          if (objRules[i].checkbox) {
-	            o.condition = objRules[i].checkbox;
-	          }
+	            if (objRules[i].checkbox) {
+	              o.condition = objRules[i].checkbox;
+	            }
 
-	          if (objRules[i].value) {
-	            if (Array.isArray(objRules[i].value)) {
-	              o.set = {};
+	            if (objRules[i].value) {
+	              if (Array.isArray(objRules[i].value)) {
+	                o.set = {};
 
-	              objRules[i].value.forEach(function (j) {
-	                o.set[j] = true;
-	              });
-	            } else if (objRules[i].value && _typeof(objRules[i].value) === 'object') {
-	              o.set = {};
+	                objRules[i].value.forEach(function (j) {
+	                  o.set[j] = true;
+	                });
+	              } else if (objRules[i].value && _typeof(objRules[i].value) === 'object') {
+	                o.set = {};
 
-	              var _loop = function _loop(j) {
-	                if (objRules[i].value.hasOwnProperty(j)) {
-	                  if (objRules[i].value[j] === 'select all') {
-	                    o.set[j] = 'select all';
-	                  } else if (Array.isArray(objRules[i].value[j])) {
-	                    o.set[j] = {};
+	                var _loop = function _loop(j) {
+	                  if (objRules[i].value.hasOwnProperty(j)) {
+	                    if (objRules[i].value[j] === 'select all') {
+	                      o.set[j] = 'select all';
+	                    } else if (Array.isArray(objRules[i].value[j])) {
+	                      o.set[j] = {};
 
-	                    objRules[i].value[j].forEach(function (h) {
-	                      o.set[j][h] = true;
-	                    });
+	                      objRules[i].value[j].forEach(function (h) {
+	                        o.set[j][h] = true;
+	                      });
+	                    }
 	                  }
-	                }
-	              };
+	                };
 
-	              for (var j in objRules[i].value) {
-	                _loop(j);
+	                for (var j in objRules[i].value) {
+	                  _loop(j);
+	                }
 	              }
 	            }
-	          }
 
-	          ruleElement.value.rules.push(o);
-	        })();
+	            ruleElement.value.rules.push(o);
+	          })();
+	        }
 	      }
 	    }
 
@@ -9452,12 +9473,15 @@ webpackJsonp([0],[
 	  return el;
 	};
 
-	var columns = [];
+	var columns = void 0;
 
 	var renderRows = function renderRows(tr, record, response) {
 	  if (response.is_tree) {
 	    tr.level = response.level;
-	    tr.filter = response.filter || [];
+	    tr.filter = [];
+	    (response.filter || []).forEach(function (el) {
+	      tr.filter.push(el);
+	    });
 	    tr.filter.push({ field: response.field, value: record[response.field] });
 	    tr.thisFilter = { field: response.field, value: record[response.field] };
 	  }
@@ -9545,9 +9569,11 @@ webpackJsonp([0],[
 
 	          columns = [];
 
-	          params.columns.forEach(function (col) {
-	            return columns.push(col);
-	          });
+	          for (var col in params.all_columns) {
+	            if (params.all_columns.hasOwnProperty(col) && params.columns.indexOf(col) !== -1) {
+	              columns.push(col);
+	            }
+	          }
 
 	          response.field.split(',').reverse().forEach(function (f) {
 	            columns.unshift(f);
@@ -10051,7 +10077,7 @@ webpackJsonp([0],[
 
 	            if (result.start && result.step) {
 	              result.values[i].forEach(function (value, j) {
-	                ser.data[j] = [+new Date(result.step * j + result.start), value];
+	                ser.data[j] = [+new Date(result.step * j * 1000 + result.start * 1000), value];
 	              });
 	            }
 
@@ -10064,6 +10090,10 @@ webpackJsonp([0],[
 	      });
 	    })();
 	  }
+
+	  _highcharts2.default.setOptions({
+	    timezone: 'Africa/Abidjan'
+	  });
 
 	  _highcharts2.default.chart('stat-graph', {
 	    chart: {
