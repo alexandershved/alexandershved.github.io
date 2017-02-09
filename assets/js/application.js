@@ -1605,6 +1605,7 @@ webpackJsonp([0],[
 	    clickRange = function clickRange(f, t) {
 	      var from = f;
 	      var to = t || from;
+	      var periodTimezone = period.timezone;
 
 	      period = {
 	        from: {
@@ -1618,7 +1619,8 @@ webpackJsonp([0],[
 	          date: to.getDate()
 	        },
 	        start_time: '00:00',
-	        end_time: '23:59'
+	        end_time: '23:59',
+	        timezone: periodTimezone
 	      };
 
 	      renderDefault();
@@ -10063,7 +10065,14 @@ webpackJsonp([0],[
 	  canvas.style.display = '';
 	  canvas.innerHTML = '';
 
-	  if (Array.isArray(result.names)) {
+	  if (res.result && res.result.msg && typeof res.result.msg === 'string') {
+	    statGraph.querySelector('#stat-graph').style.display = 'none';
+	    return;
+	  }
+
+	  statGraph.querySelector('#stat-graph').style.display = '';
+
+	  if (Array.isArray(res.names)) {
 	    (function () {
 	      var i = 0;
 
@@ -10075,9 +10084,9 @@ webpackJsonp([0],[
 	              data: []
 	            };
 
-	            if (result.start && result.step) {
-	              result.values[i].forEach(function (value, j) {
-	                ser.data[j] = [+new Date(result.step * j * 1000 + result.start * 1000), value];
+	            if (res.start && res.step) {
+	              res.values[i].forEach(function (value, j) {
+	                ser.data[j] = [+new Date(res.step * j * 1000 + res.start * 1000), value];
 	              });
 	            }
 
