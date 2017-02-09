@@ -2097,12 +2097,8 @@ webpackJsonp([0],[
 	        result.data.forEach(function (item) {
 	          var name = void 0;
 
-	          if (list.field === 'campaign_id') {
-	            if (item.title) {
-	              name = item.title;
-	            } else {
-	              name = '[id: ' + (item.campaign_id || item.v) + ']';
-	            }
+	          if (item.title) {
+	            name = item.title;
 	          } else {
 	            name = item[list.field] || item.v;
 	          }
@@ -8141,7 +8137,7 @@ webpackJsonp([0],[
 	    var editBtn = target.closest('.js-lander-edit');
 
 	    if (copyBtn || editBtn) {
-	      var id = target.closest('.js-traffic-row').querySelector('.js-traffic-name').dataset.id;
+	      var id = target.closest('.js-lander-row').querySelector('.js-lander-name').dataset.id;
 
 	      if (copyBtn) {
 	        if (id) {
@@ -8346,7 +8342,7 @@ webpackJsonp([0],[
 	    var editBtn = target.closest('.js-offer-edit');
 
 	    if (copyBtn || editBtn) {
-	      var id = target.closest('.js-traffic-row').querySelector('.js-traffic-name').dataset.id;
+	      var id = target.closest('.js-offer-row').querySelector('.js-offer-name').dataset.id;
 
 	      if (copyBtn) {
 	        if (id) {
@@ -8999,7 +8995,7 @@ webpackJsonp([0],[
 	    var editBtn = target.closest('.js-affiliate-edit');
 
 	    if (copyBtn || editBtn) {
-	      var id = target.closest('.js-traffic-row').querySelector('.js-traffic-name').dataset.id;
+	      var id = target.closest('.js-affiliate-row').querySelector('.js-affiliate-name').dataset.id;
 
 	      if (copyBtn) {
 	        if (id) {
@@ -9495,20 +9491,10 @@ webpackJsonp([0],[
 
 	    var k = fields[j] || key;
 
-	    if (k === 'campaign_id') {
-	      if (record.label && record.label.name) {
-	        name = record.label.name;
-	      } else if (record[k] || record[k] === 0) {
-	        name = '[id: ' + record[k] + ']';
-	      } else {
-	        name = '[empty value]';
-	      }
-	    } else {
-	      if (record[k] || record[k] === 0) {
-	        name = record[k];
-	      } else {
-	        name = '';
-	      }
+	    if (response.result.names && response.result.names[k] && response.result.names[k][record[k]]) {
+	      name = response.result.names[k][record[k]];
+	    } else if (record[k] || record[k] === 0) {
+	      name = record[k];
 	    }
 
 	    var span = createNode('span', null, name);
