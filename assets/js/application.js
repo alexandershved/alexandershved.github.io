@@ -4393,11 +4393,11 @@ webpackJsonp([0],[
 
 	var _createControls2 = _interopRequireDefault(_createControls);
 
-	var _table = __webpack_require__(71);
+	var _table = __webpack_require__(74);
 
 	var _table2 = _interopRequireDefault(_table);
 
-	var _graph = __webpack_require__(74);
+	var _graph = __webpack_require__(77);
 
 	var _graph2 = _interopRequireDefault(_graph);
 
@@ -4668,14 +4668,12 @@ webpackJsonp([0],[
 	    if (obj.hasOwnProperty(param)) {
 	      switch (param) {
 	        case 'postback_date':
+	        case 'currency':
 	          if (params.postback_date !== !!obj.postback_date) {
 	            params.postback_date = !!obj.postback_date;
 	            isUpdate = true;
 	          }
-	          break;
-
-	        case 'currency':
-	          if (params.currency !== obj.currency && ['usd', 'eur', 'rub'].indexOf(obj.currency) !== -1) {
+	          if (params.currency !== obj.currency && ['USD', 'EUR', 'RUB'].indexOf(obj.currency) !== -1) {
 	            params.currency = obj.currency;
 	            isUpdate = true;
 	          }
@@ -4981,39 +4979,39 @@ webpackJsonp([0],[
 
 	var _campaignList2 = _interopRequireDefault(_campaignList);
 
-	var _campaignAdd = __webpack_require__(54);
+	var _campaignAdd = __webpack_require__(55);
 
 	var _campaignAdd2 = _interopRequireDefault(_campaignAdd);
 
-	var _landerList = __webpack_require__(61);
+	var _landerList = __webpack_require__(64);
 
 	var _landerList2 = _interopRequireDefault(_landerList);
 
-	var _landerAdd = __webpack_require__(57);
+	var _landerAdd = __webpack_require__(58);
 
 	var _landerAdd2 = _interopRequireDefault(_landerAdd);
 
-	var _offerList = __webpack_require__(63);
+	var _offerList = __webpack_require__(66);
 
 	var _offerList2 = _interopRequireDefault(_offerList);
 
-	var _offerAdd = __webpack_require__(58);
+	var _offerAdd = __webpack_require__(59);
 
 	var _offerAdd2 = _interopRequireDefault(_offerAdd);
 
-	var _trafficSourceList = __webpack_require__(65);
+	var _trafficSourceList = __webpack_require__(68);
 
 	var _trafficSourceList2 = _interopRequireDefault(_trafficSourceList);
 
-	var _trafficSourceAdd = __webpack_require__(67);
+	var _trafficSourceAdd = __webpack_require__(70);
 
 	var _trafficSourceAdd2 = _interopRequireDefault(_trafficSourceAdd);
 
-	var _affiliateNetworkList = __webpack_require__(68);
+	var _affiliateNetworkList = __webpack_require__(71);
 
 	var _affiliateNetworkList2 = _interopRequireDefault(_affiliateNetworkList);
 
-	var _affiliateNetworkAdd = __webpack_require__(70);
+	var _affiliateNetworkAdd = __webpack_require__(73);
 
 	var _affiliateNetworkAdd2 = _interopRequireDefault(_affiliateNetworkAdd);
 
@@ -5028,8 +5026,6 @@ webpackJsonp([0],[
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 	exports.default = function () {
 	  if (document.querySelector('.js-popup')) {
@@ -5105,53 +5101,14 @@ webpackJsonp([0],[
 	            var id = item.id;
 	            var tr = document.createElement('tr');
 	            tr.className = 'js-campaign-row js-popup-row';
+	            tr.dataset.id = id;
 
-	            tr.innerHTML = '\n            <td class="js-campaign-name" data-id="' + id + '">\n              <span class="js-campaign-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-campaign-copy">Copy</span></td>\n            <td><span class="js-campaign-edit">Edit</span></td>\n            <td><span class="js-campaign-update-cost">Update cost</span></td>\n            <td><span class="js-campaign-links">Links</span></td>\n          ';
+	            tr.innerHTML = '\n            <td><span class="js-campaign-name js-popup-list-name">' + name + '</span></td>\n            <td><span class="js-campaign-copy">Copy</span></td>\n            <td><span class="js-campaign-edit">Edit</span></td>\n            <td><span class="js-campaign-update-cost">Update cost</span></td>\n            <td><span class="js-campaign-links">Links</span></td>\n          ';
 
 	            table.appendChild(tr);
-
-	            popupBody.addEventListener('click', listClick);
+	            popupBody.addEventListener('click', _forCampaignEdit2.default);
 	          });
 	        })();
-	      }
-	    });
-	  }
-
-	  function listClick(event) {
-	    var target = event.target;
-	    var copyBtn = target.closest('.js-campaign-copy');
-	    var editBtn = target.closest('.js-campaign-edit');
-	    var updateCostBtn = target.closest('.js-campaign-copy');
-	    var linksBtn = target.closest('.js-campaign-links');
-
-	    if (copyBtn || editBtn) {
-	      var id = target.closest('.js-campaign-row').querySelector('.js-campaign-name').dataset.id;
-
-	      if (copyBtn) {
-	        if (id) {
-	          openEdit(id);
-	        }
-	      }
-
-	      if (editBtn) {
-	        if (id) {
-	          openEdit(id, true);
-	        }
-	      }
-	    }
-	  }
-
-	  function openEdit(id, hasEdit) {
-	    var options = window._getOptionsFetch({
-	      id: id
-	    });
-
-	    fetch(window.might.url + '/campaign/get', options).then(function (response) {
-	      return response.json();
-	    }).then(function (result) {
-	      if (!result.error && result.result && result.result.data && _typeof(result.result.data) === 'object') {
-	        popup.close();
-	        (0, _campaignEdit2.default)(result.result.data, hasEdit || false);
 	      }
 	    });
 	  }
@@ -5165,9 +5122,9 @@ webpackJsonp([0],[
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _campaignEdit = __webpack_require__(53);
+	var _forCampaignEdit = __webpack_require__(53);
 
-	var _campaignEdit2 = _interopRequireDefault(_campaignEdit);
+	var _forCampaignEdit2 = _interopRequireDefault(_forCampaignEdit);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5233,6 +5190,89 @@ webpackJsonp([0],[
 /* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	exports.default = function (event) {
+	  var target = event.target;
+	  var copyBtn = target.closest('.js-campaign-copy');
+	  var editBtn = target.closest('.js-campaign-edit');
+	  var updateCostBtn = target.closest('.js-campaign-update-cost');
+	  var linksBtn = target.closest('.js-campaign-links');
+
+	  if (copyBtn || editBtn || linksBtn || updateCostBtn) {
+	    var row = target.closest('.js-campaign-row');
+	    var id = row.dataset.id;
+
+	    if (copyBtn) {
+	      if (id) {
+	        openEdit(id);
+	      }
+	    }
+
+	    if (editBtn) {
+	      if (id) {
+	        openEdit(id, true);
+	      }
+	    }
+
+	    if (updateCostBtn) {
+	      if (id) {
+	        var name = row.querySelector('.js-campaign-name').textContent;
+	        (0, _campaignCosts2.default)(id, name);
+	      }
+	    }
+
+	    if (linksBtn) {
+	      if (id) {
+	        var _name = row.querySelector('.js-campaign-name').textContent;
+	        (0, _campaignLinks2.default)(id, _name);
+	      }
+	    }
+	  }
+	};
+
+	var _campaignEdit = __webpack_require__(54);
+
+	var _campaignEdit2 = _interopRequireDefault(_campaignEdit);
+
+	var _campaignCosts = __webpack_require__(62);
+
+	var _campaignCosts2 = _interopRequireDefault(_campaignCosts);
+
+	var _campaignLinks = __webpack_require__(63);
+
+	var _campaignLinks2 = _interopRequireDefault(_campaignLinks);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function openEdit(id, hasEdit) {
+	  var options = window._getOptionsFetch({
+	    id: id
+	  });
+
+	  fetch(window.might.url + '/campaign/get', options).then(function (response) {
+	    return response.json();
+	  }).then(function (result) {
+	    if (!result.error && result.result && result.result.data && _typeof(result.result.data) === 'object') {
+	      if (document.querySelector('.js-popup')) {
+	        document.querySelector('.js-popup').close();
+	      }
+	      (0, _campaignEdit2.default)(result.result.data, hasEdit || false);
+	    }
+	  });
+	}
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
+
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -5276,7 +5316,9 @@ webpackJsonp([0],[
 	    }
 	  }
 
-	  formUrl.value = data.link || '';
+	  if (hasEdit) {
+	    formUrl.value = data.link || '';
+	  }
 
 	  if (String(data.traffic_source_id)) {
 	    if (formTrafficSource.setValue) {
@@ -5365,14 +5407,14 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _campaignAdd = __webpack_require__(54);
+	var _campaignAdd = __webpack_require__(55);
 
 	var _campaignAdd2 = _interopRequireDefault(_campaignAdd);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -5892,7 +5934,7 @@ webpackJsonp([0],[
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
-	var _campaignAddChilds = __webpack_require__(55);
+	var _campaignAddChilds = __webpack_require__(56);
 
 	var _campaignAddChilds2 = _interopRequireDefault(_campaignAddChilds);
 
@@ -5902,7 +5944,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5918,18 +5960,18 @@ webpackJsonp([0],[
 	  popupBody.ruleFunctions = (0, _campaignAddRule2.default)(box);
 	};
 
-	var _campaignAddPath = __webpack_require__(56);
+	var _campaignAddPath = __webpack_require__(57);
 
 	var _campaignAddPath2 = _interopRequireDefault(_campaignAddPath);
 
-	var _campaignAddRule = __webpack_require__(59);
+	var _campaignAddRule = __webpack_require__(60);
 
 	var _campaignAddRule2 = _interopRequireDefault(_campaignAddRule);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -6616,11 +6658,11 @@ webpackJsonp([0],[
 	  };
 	};
 
-	var _landerAdd = __webpack_require__(57);
+	var _landerAdd = __webpack_require__(58);
 
 	var _landerAdd2 = _interopRequireDefault(_landerAdd);
 
-	var _offerAdd2 = __webpack_require__(58);
+	var _offerAdd2 = __webpack_require__(59);
 
 	var _offerAdd3 = _interopRequireDefault(_offerAdd2);
 
@@ -6634,7 +6676,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -6780,7 +6822,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 58 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -7025,7 +7067,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7514,7 +7556,7 @@ webpackJsonp([0],[
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
-	var _checklistEvent = __webpack_require__(60);
+	var _checklistEvent = __webpack_require__(61);
 
 	var _checklistEvent2 = _interopRequireDefault(_checklistEvent);
 
@@ -7559,7 +7601,7 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -8035,7 +8077,156 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 61 */
+/* 62 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	exports.default = function (id, name) {
+	  var options = window._getOptionsFetch({
+	    id: id
+	  });
+
+	  fetch(window.might.url + '/campaign/cost/get', options).then(function (response) {
+	    return response.json();
+	  }).then(render);
+
+	  function render(result) {
+	    if (result.error || !result.result || !result.result.data || _typeof(result.result.data) !== 'object') {
+	      return;
+	    }
+
+	    if (document.querySelector('.js-popup')) {
+	      document.querySelector('.js-popup').close();
+	    }
+
+	    var popup = (0, _createPopup2.default)('Manual cost updating for campaign \'' + name + '\'');
+
+	    if (!popup) {
+	      return;
+	    }
+
+	    var popupBody = popup.querySelector('.js-popup-body');
+
+	    if (!popupBody) {
+	      return;
+	    }
+
+	    var data = result.result.data;
+
+	    popupBody.innerHTML = '';
+	  }
+	};
+
+	var _qs = __webpack_require__(14);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	var _createPopup = __webpack_require__(52);
+
+	var _createPopup2 = _interopRequireDefault(_createPopup);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	exports.default = function (id, name) {
+	  var options = window._getOptionsFetch({
+	    id: id
+	  });
+
+	  fetch(window.might.url + '/campaign/get/links', options).then(function (response) {
+	    return response.json();
+	  }).then(render);
+
+	  function render(result) {
+	    if (result.error || !result.result || !result.result.data || _typeof(result.result.data) !== 'object') {
+	      return;
+	    }
+
+	    if (document.querySelector('.js-popup')) {
+	      document.querySelector('.js-popup').close();
+	    }
+
+	    var popup = (0, _createPopup2.default)('Links for campaign \'' + name + '\'');
+
+	    if (!popup) {
+	      return;
+	    }
+
+	    var popupBody = popup.querySelector('.js-popup-body');
+
+	    if (!popupBody) {
+	      return;
+	    }
+
+	    var data = result.result.data;
+
+	    popupBody.innerHTML = '\n      <div class="popup__line js-form-line">\n        <div class="popup__line-label">\n          <span>Campaign URL:</span>\n          <div class="info"></div>\n        </div>\n        <div class="popup__line-body">\n          <div class="input">\n            <input class="js-form-url" type="text" readonly="true" value="' + data.campaign + '">\n          </div>\n        </div>\n        <div class="popup__line-btn">\n          <div class="btn-copy js-form-url-copy">Clipboard</div>\n        </div>\n      </div>\n\n      <div class="popup__line js-form-line">\n        <div class="popup__line-label">\n          <span>Postback URL:</span>\n          <div class="info"></div>\n        </div>\n        <div class="popup__line-body">\n          <div class="input">\n            <input class="js-form-url" type="text" readonly="true" value="' + data.postback + '">\n          </div>\n        </div>\n        <div class="popup__line-btn">\n          <div class="btn-copy js-form-url-copy">Clipboard</div>\n        </div>\n      </div>\n\n      <div class="popup__line js-form-line">\n        <div class="popup__line-label">\n          <span>Confirmed URL:</span>\n          <div class="info"></div>\n        </div>\n        <div class="popup__line-body">\n          <div class="input">\n            <input class="js-form-url" type="text" readonly="true" value="' + data.confirmed + '">\n          </div>\n        </div>\n        <div class="popup__line-btn">\n          <div class="btn-copy js-form-url-copy">Clipboard</div>\n        </div>\n      </div>\n\n      <div class="popup__line js-form-line">\n        <div class="popup__line-label">\n          <span>Unconfirmed URL:</span>\n          <div class="info"></div>\n        </div>\n        <div class="popup__line-body">\n          <div class="input">\n            <input class="js-form-url" type="text" readonly="true" value="' + data.unconfirmed + '">\n          </div>\n        </div>\n        <div class="popup__line-btn">\n          <div class="btn-copy js-form-url-copy">Clipboard</div>\n        </div>\n      </div>\n\n      <div class="popup__line js-form-line">\n        <div class="popup__line-label">\n          <span>Processed URL:</span>\n          <div class="info"></div>\n        </div>\n        <div class="popup__line-body">\n          <div class="input">\n            <input class="js-form-url" type="text" readonly="true" value="' + data.processed + '">\n          </div>\n        </div>\n        <div class="popup__line-btn">\n          <div class="btn-copy js-form-url-copy">Clipboard</div>\n        </div>\n      </div>';
+
+	    popupBody.addEventListener('click', function (event) {
+	      var copy = event.target.closest('.js-form-url-copy');
+
+	      if (copy) {
+	        (function () {
+	          var line = event.target.closest('.js-form-line');
+	          var input = line.querySelector('.js-form-url');
+
+	          if (input.value) {
+	            input.select();
+
+	            try {
+	              var successful = document.execCommand('copy');
+
+	              if (successful) {
+	                input.classList.add('is-copy');
+
+	                setTimeout(function () {
+	                  return input.classList.remove('is-copy');
+	                }, 500);
+	              }
+	            } catch (err) {
+	              throw new Error(err);
+	            }
+
+	            input.blur();
+	          }
+	        })();
+	      }
+	    });
+	  }
+	};
+
+	var _qs = __webpack_require__(14);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	var _createPopup = __webpack_require__(52);
+
+	var _createPopup2 = _interopRequireDefault(_createPopup);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
+
+/***/ },
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -8177,7 +8368,7 @@ webpackJsonp([0],[
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _landerEdit = __webpack_require__(62);
+	var _landerEdit = __webpack_require__(65);
 
 	var _landerEdit2 = _interopRequireDefault(_landerEdit);
 
@@ -8187,7 +8378,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 62 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8230,7 +8421,7 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _landerAdd = __webpack_require__(57);
+	var _landerAdd = __webpack_require__(58);
 
 	var _landerAdd2 = _interopRequireDefault(_landerAdd);
 
@@ -8239,7 +8430,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 63 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -8382,7 +8573,7 @@ webpackJsonp([0],[
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _offerEdit = __webpack_require__(64);
+	var _offerEdit = __webpack_require__(67);
 
 	var _offerEdit2 = _interopRequireDefault(_offerEdit);
 
@@ -8392,7 +8583,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 64 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8482,7 +8673,7 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _offerAdd = __webpack_require__(58);
+	var _offerAdd = __webpack_require__(59);
 
 	var _offerAdd2 = _interopRequireDefault(_offerAdd);
 
@@ -8491,7 +8682,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 65 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -8634,7 +8825,7 @@ webpackJsonp([0],[
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _trafficSourceEdit = __webpack_require__(66);
+	var _trafficSourceEdit = __webpack_require__(69);
 
 	var _trafficSourceEdit2 = _interopRequireDefault(_trafficSourceEdit);
 
@@ -8644,7 +8835,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 66 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8705,7 +8896,7 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _trafficSourceAdd = __webpack_require__(67);
+	var _trafficSourceAdd = __webpack_require__(70);
 
 	var _trafficSourceAdd2 = _interopRequireDefault(_trafficSourceAdd);
 
@@ -8714,7 +8905,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 67 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -8892,7 +9083,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 68 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -9035,7 +9226,7 @@ webpackJsonp([0],[
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _affiliateNetworkEdit = __webpack_require__(69);
+	var _affiliateNetworkEdit = __webpack_require__(72);
 
 	var _affiliateNetworkEdit2 = _interopRequireDefault(_affiliateNetworkEdit);
 
@@ -9045,7 +9236,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 69 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9104,14 +9295,14 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _affiliateNetworkAdd = __webpack_require__(70);
+	var _affiliateNetworkAdd = __webpack_require__(73);
 
 	var _affiliateNetworkAdd2 = _interopRequireDefault(_affiliateNetworkAdd);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 70 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -9269,7 +9460,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 71 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -9416,11 +9607,11 @@ webpackJsonp([0],[
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _tableRender = __webpack_require__(72);
+	var _tableRender = __webpack_require__(75);
 
 	var _tableRender2 = _interopRequireDefault(_tableRender);
 
-	var _tableEvent = __webpack_require__(73);
+	var _tableEvent = __webpack_require__(76);
 
 	var _tableEvent2 = _interopRequireDefault(_tableEvent);
 
@@ -9428,8 +9619,8 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 72 */
-/***/ function(module, exports) {
+/* 75 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -9438,6 +9629,12 @@ webpackJsonp([0],[
 	});
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	var _forCampaignEdit = __webpack_require__(53);
+
+	var _forCampaignEdit2 = _interopRequireDefault(_forCampaignEdit);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var createNode = function createNode(tag, cls, txt) {
 	  var el = document.createElement(tag);
@@ -9484,6 +9681,11 @@ webpackJsonp([0],[
 	    tr.thisFilter = { field: response.field, value: record[response.field] };
 	  }
 
+	  if (response.field === 'campaign_id') {
+	    tr.classList.add('js-campaign-row');
+	    tr.dataset.id = record.campaign_id;
+	  }
+
 	  columns.forEach(function (key, j) {
 	    var td = void 0;
 	    var name = void 0;
@@ -9498,6 +9700,10 @@ webpackJsonp([0],[
 	    }
 
 	    var span = createNode('span', null, name);
+
+	    if (response.field === 'campaign_id') {
+	      span.classList.add('js-campaign-name');
+	    }
 
 	    if (response.is_tree && fields[j]) {
 	      span.classList.add('is-clickable');
@@ -9524,7 +9730,7 @@ webpackJsonp([0],[
 
 	      if (k === 'campaign_id') {
 	        var helper = createNode('div', ['helper', 'js-helper']);
-	        helper.innerHTML = '<div class="helper__cloud">' + '<div class="helper__link"><span>Edit</span></div>' + '<div class="helper__link"><span>Copy</span></div>' + '<div class="helper__link"><span>Update cost</span></div>' + '<div class="helper__link"><span>Links</span></div>' + '</div>';
+	        helper.innerHTML = '<div class="helper__cloud">' + '<div class="helper__link"><span class="js-campaign-copy">Copy</span></div>' + '<div class="helper__link"><span class="js-campaign-edit">Edit</span></div>' + '<div class="helper__link"><span class="js-campaign-update-cost">Update cost</span></div>' + '<div class="helper__link"><span class="js-campaign-links">Links</span></div>' + '</div>';
 	        main.appendChild(helper);
 	        main.classList.add('is-with-helper');
 	      }
@@ -9637,6 +9843,8 @@ webpackJsonp([0],[
 	      }
 	    }
 
+	    table.addEventListener('click', _forCampaignEdit2.default);
+
 	    document.querySelector('.js-canvas').innerHTML = '';
 	    document.querySelector('.js-canvas').appendChild(div);
 
@@ -9678,7 +9886,7 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 73 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9895,7 +10103,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 74 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -9987,6 +10195,7 @@ webpackJsonp([0],[
 	    if (!vis) {
 	      statGraphCanvas.innerHTML = '';
 	      statGraphCanvas.style.display = 'none';
+	      statGraph.style.display = '';
 	      return;
 	    }
 
@@ -10020,7 +10229,7 @@ webpackJsonp([0],[
 
 	var _update2 = _interopRequireDefault(_update);
 
-	var _graphRender = __webpack_require__(75);
+	var _graphRender = __webpack_require__(78);
 
 	var _graphRender2 = _interopRequireDefault(_graphRender);
 
@@ -10028,7 +10237,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 75 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10052,11 +10261,11 @@ webpackJsonp([0],[
 	  canvas.innerHTML = '';
 
 	  if (res.result && res.result.msg && typeof res.result.msg === 'string') {
-	    statGraph.querySelector('#stat-graph').style.display = 'none';
+	    canvas.style.display = 'none';
 	    return;
 	  }
 
-	  statGraph.querySelector('#stat-graph').style.display = '';
+	  canvas.style.display = '';
 
 	  if (Array.isArray(res.names)) {
 	    (function () {
@@ -10186,7 +10395,7 @@ webpackJsonp([0],[
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _highcharts = __webpack_require__(76);
+	var _highcharts = __webpack_require__(79);
 
 	var _highcharts2 = _interopRequireDefault(_highcharts);
 

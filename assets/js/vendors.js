@@ -100,8 +100,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(28);
-	__webpack_require__(76);
-	__webpack_require__(77);
+	__webpack_require__(79);
+	__webpack_require__(80);
 	module.exports = __webpack_require__(14);
 
 
@@ -1840,7 +1840,7 @@
 
 /***/ },
 
-/***/ 76:
+/***/ 79:
 /***/ function(module, exports) {
 
 	/*
@@ -2230,7 +2230,7 @@
 
 /***/ },
 
-/***/ 77:
+/***/ 80:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2272,11 +2272,11 @@
 
 	var _createBrowserHistory3 = _interopRequireDefault(_createBrowserHistory2);
 
-	var _createHashHistory2 = __webpack_require__(78);
+	var _createHashHistory2 = __webpack_require__(81);
 
 	var _createHashHistory3 = _interopRequireDefault(_createHashHistory2);
 
-	var _createMemoryHistory2 = __webpack_require__(79);
+	var _createMemoryHistory2 = __webpack_require__(82);
 
 	var _createMemoryHistory3 = _interopRequireDefault(_createMemoryHistory2);
 
@@ -2288,7 +2288,7 @@
 
 /***/ },
 
-/***/ 78:
+/***/ 81:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -2615,7 +2615,7 @@
 
 /***/ },
 
-/***/ 79:
+/***/ 82:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
