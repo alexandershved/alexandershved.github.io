@@ -8264,6 +8264,8 @@ webpackJsonp([0],[
 
 	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Time range:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        ' + calendarHTML + '\n        ' + timesHTML + '\n        <span style="display: inline-block; padding-top: 10px">&nbsp;&nbsp;-&nbsp;&nbsp;</span>\n        ' + calendarHTML + '\n        ' + timesHTML + '\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Time zone:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-costs-timezone" style="display: block; margin: 0 0 15px;">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Cost:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div>\n          <div class="input" style="display: inline-block; width: 90px; margin-right: 10px;">\n            <input class="js-costs-value" type="text" placeholder="0">\n            <span><span>\n          </div>\n          <div class="popup__currency js-costs-eur">\n            <i class="fa fa-euro"></i>\n          </div>\n          <div class="popup__currency js-costs-rub">\n            <i class="fa fa-ruble"></i>\n          </div>\n          <div class="popup__currency js-costs-usd is-select">\n            <i class="fa fa-dollar"></i>\n          </div>\n        </div>\n        <div class="checkbox js-checkbox js-costs-restore">Restore cost</div>\n      </div>\n    </div>';
 
+	  var params = window.might.stat.params;
+	  var stat = document.querySelector('.js-stat');
 	  var dateFrom = popupBody.querySelectorAll('.js-costs-date')[0];
 	  var dateTo = popupBody.querySelectorAll('.js-costs-date')[1];
 	  var timeFrom = popupBody.querySelectorAll('.js-costs-time')[0];
@@ -8279,8 +8281,19 @@ webpackJsonp([0],[
 	  (0, _calendarLiteEvent2.default)(dateTo);
 	  (0, _listEvent2.default)(timeFrom);
 	  (0, _listEvent2.default)(timeTo);
-	  timeFrom.updateValue(0);
-	  timeTo.updateValue(23);
+
+	  dateFrom.updateValue({
+	    year: params.date_from.year,
+	    month: params.date_from.month,
+	    date: params.date_from.date
+	  });
+	  dateTo.updateValue({
+	    year: params.date_to.year,
+	    month: params.date_to.month,
+	    date: params.date_to.date
+	  });
+	  timeFrom.updateValue(Number(params.start_time.split(':')[0]));
+	  timeTo.updateValue(Number(params.end_time.split(':')[0]));
 
 	  dateFrom.addEventListener('change', updateDateTime);
 	  dateTo.addEventListener('change', updateDateTime);
@@ -8296,7 +8309,7 @@ webpackJsonp([0],[
 	  });
 
 	  (0, _listEvent2.default)(timezone);
-	  timezone.updateValue('+03:00|Europe/Moscow');
+	  timezone.updateValue(params.timezone);
 
 	  costEur.addEventListener('click', function () {
 	    costEur.classList.add('is-select');
@@ -8355,12 +8368,12 @@ webpackJsonp([0],[
 	    var tF = Number(timeFrom.value);
 	    var tT = Number(timeTo.value);
 
-	    dF = dateToString(dF.year, dF.month, dF.date);
-	    dT = dateToString(dT.year, dT.month, dT.date);
-	    tF = '' + (tF < 10 ? '0' : '') + tF + ':00';
-	    tT = '' + (tT < 10 ? '0' : '') + tT + ':00';
+	    var _dF = dateToString(dF.year, dF.month, dF.date);
+	    var _dT = dateToString(dT.year, dT.month, dT.date);
+	    var _tF = '' + (tF < 10 ? '0' : '') + tF + ':00';
+	    var _tT = '' + (tT < 10 ? '0' : '') + tT + ':00';
 
-	    data.time = dF + ' ' + tF + ' - ' + dT + ' ' + tT;
+	    data.time = _dF + ' ' + _tF + ' - ' + _dT + ' ' + _tT;
 	    data.timezone = timezone.value;
 	    data.cost = costValue.value;
 
@@ -8376,6 +8389,8 @@ webpackJsonp([0],[
 
 	    if (restore.classList.contains('is-select')) {
 	      data.cost_type = 'all';
+	    } else {
+	      data.cost_type = 'visit';
 	    }
 
 	    if (popupBody.currentCampaignId || popupBody.currentCampaignId === 0) {
@@ -8395,6 +8410,15 @@ webpackJsonp([0],[
 	        }
 	      } else {
 	        popup.close();
+
+	        var _dateFormSample = new Date(dF.year, dF.month, dF.date, tF);
+	        var _dateToSample = new Date(dT.year, dT.month, dT.date, tT);
+	        var _dateFromCalendar = new Date(params.date_from.year, params.date_from.month, params.date_from.date, Number(params.start_time.split(':')[0]), Number(params.start_time.split(':')[1]));
+	        var _dateToCalendar = new Date(params.date_to.year, params.date_to.month, params.date_to.date, Number(params.end_time.split(':')[0]), Number(params.end_time.split(':')[1]));
+
+	        if (_dateFormSample < _dateToCalendar && _dateToSample > _dateFromCalendar) {
+	          stat.triggerEvent('drawtable');
+	        }
 	      }
 	    });
 	  });
