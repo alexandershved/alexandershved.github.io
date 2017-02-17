@@ -7732,16 +7732,57 @@ webpackJsonp([0],[
 	      type: 'tree',
 	      search_link: '/rules/brand_and_model/search',
 	      childs_link: '/rules/model/list',
-	      childs_key: 'brand' }
+	      childs_key: 'brand'
+	    }
 	  },
 	  week: {
 	    name: 'Days of week',
 	    childs: {
 	      type: 'line',
-	      data: ['Monday', 'Tuesday', 'Wednesday'] }
+	      data: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] }
 	  },
 	  ips: {
 	    name: 'IP addresses',
+	    childs: {
+	      type: 'normal'
+	    }
+	  },
+	  isp: {
+	    name: 'ISP',
+	    childs: {
+	      type: 'line',
+	      search_link: '/rules/isp/search'
+	    },
+	    conditions: [{
+	      name: 'Is any of',
+	      slug: 'is_any_of'
+	    }, {
+	      name: 'Is not any of',
+	      slug: 'is_not_any_of'
+	    }]
+	  },
+	  browser: {
+	    name: 'Browser',
+	    childs: {
+	      type: 'line',
+	      data: ['360 Phone Browser', '360 Browser', 'Avant Browser', 'ABrowse', 'ANT Fresco', 'ANTGalio', 'Amaya', 'Amigo', 'Android Browser', 'Arora', 'Amiga Voyager', 'Amiga Aweb', 'Atomic Web Browser', 'BlackBerry Browser', 'Baidu Browser', 'Baidu Spark', 'Beonex', 'Bunjalloo', 'Brave', 'BrowseX', 'Camino', 'Coc Coc', 'Comodo Dragon', 'Charon', 'Chrome Frame', 'Chrome', 'Chrome Mobile iOS', 'Conkeror', 'Chrome Mobile', 'CoolNovo', 'CometBird', 'ChromePlus', 'Chromium', 'Cheshire', 'Deepnet Explorer', 'Dolphin', 'Dillo', 'Elinks', 'Element Browser', 'Epiphany', 'Espial TV Browser', 'Firebird', 'Fluid', 'Fennec', 'Firefox', 'Flock', 'Fireweb', 'Fireweb Navigator', 'Galeon', 'Google Earth', 'HotJava', 'Iceape', 'IBrowse', 'iCab', 'IceDragon', 'Iceweasel', 'Internet Explorer', 'IE Mobile', 'Iron', 'Jasmine', 'Jig Browser', 'Kindle Browser', 'K-meleon', 'Konqueror', 'Kapiko', 'Kylo', 'Kazehakase', 'Liebao', 'LG Browser', 'Links', 'LuaKit', 'Lunascape', 'Lynx', 'MicroB', 'NCSA Mosaic', 'Mercury', 'Mobile Safari', 'Midori', 'MIUI Browser', 'Mobile Silk', 'Maxthon', 'Nokia Browser', 'Nokia OSS Browser', 'Nokia Ovi Browser', 'NetFront', 'NetFront Life', 'NetPositive', 'Netscape', 'Obigo', 'Odyssey Web Browser', 'Off By One', 'ONE Browser', 'Opera Mini', 'Opera Mobile', 'Opera', 'Opera Next', 'Oregano', 'Openwave Mobile Browser', 'OmniWeb', 'Otter Browser', 'Palm Blazer', 'Pale Moon', 'Palm Pre', 'Puffin', 'Palm WebPro', 'Palmscape', 'Phoenix', 'Polaris', 'Microsoft Edge', 'QQ Browser', 'Rekonq', 'RockMelt', 'Samsung Browser', 'Sailfish Browser', 'SEMC-Browser', 'Sogou Explorer', 'Safari', 'Shiira', 'Skyfire', 'Seraphic Sraf', 'Sleipnir', 'SeaMonkey', 'Snowshoe', 'Sunrise', 'SuperBird', 'Swiftfox', 'Tizen Browser', 'TweakStyle', 'UC Browser', 'Vivaldi', 'Vision Mobile Browser', 'WebPositive', 'wOSBrowser', 'WeTab Browser', 'Yandex Browser', 'Xiino']
+	    },
+	    conditions: [{
+	      name: 'Is any of',
+	      slug: 'is_any_of'
+	    }, {
+	      name: 'Is not any of',
+	      slug: 'is_not_any_of'
+	    }]
+	  },
+	  browser_language: {
+	    name: 'Browser language',
+	    childs: {
+	      type: 'normal'
+	    }
+	  },
+	  get_param: {
+	    name: 'GET param',
 	    childs: {
 	      type: 'normal'
 	    }

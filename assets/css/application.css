@@ -2519,6 +2519,7 @@ body.noscroll {
   padding: 0 15px 0 30px;
   color: #fff;
   background-color: #0182ec;
+  z-index: 1;
 }
 .btn-copy:hover {
   background-color: #3a62c6;
