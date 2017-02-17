@@ -8303,7 +8303,7 @@ webpackJsonp([0],[
 
 	  var timesHTML = '\n    <div class="list is-short js-list js-costs-time" style="margin: 0 0 15px;">\n      <div class="list__wrap">\n        <div class="list__value js-list-value"></div>\n        <div class="list__dropdown">\n          <div class="list__items">\n            <div class="list__item js-list-item" data-value="0">00:00</div>\n            <div class="list__item js-list-item" data-value="1">01:00</div>\n            <div class="list__item js-list-item" data-value="2">02:00</div>\n            <div class="list__item js-list-item" data-value="3">03:00</div>\n            <div class="list__item js-list-item" data-value="4">04:00</div>\n            <div class="list__item js-list-item" data-value="5">05:00</div>\n            <div class="list__item js-list-item" data-value="6">06:00</div>\n            <div class="list__item js-list-item" data-value="7">07:00</div>\n            <div class="list__item js-list-item" data-value="8">08:00</div>\n            <div class="list__item js-list-item" data-value="9">09:00</div>\n            <div class="list__item js-list-item" data-value="10">10:00</div>\n            <div class="list__item js-list-item" data-value="11">11:00</div>\n            <div class="list__item js-list-item" data-value="12">12:00</div>\n            <div class="list__item js-list-item" data-value="13">13:00</div>\n            <div class="list__item js-list-item" data-value="14">14:00</div>\n            <div class="list__item js-list-item" data-value="15">15:00</div>\n            <div class="list__item js-list-item" data-value="16">16:00</div>\n            <div class="list__item js-list-item" data-value="17">17:00</div>\n            <div class="list__item js-list-item" data-value="18">18:00</div>\n            <div class="list__item js-list-item" data-value="19">19:00</div>\n            <div class="list__item js-list-item" data-value="20">20:00</div>\n            <div class="list__item js-list-item" data-value="21">21:00</div>\n            <div class="list__item js-list-item" data-value="22">22:00</div>\n            <div class="list__item js-list-item" data-value="23">23:00</div>\n          </div>\n        </div>\n      </div>\n    </div>\n  ';
 
-	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Time range:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        ' + calendarHTML + '\n        ' + timesHTML + '\n        <span style="display: inline-block; padding-top: 10px">&nbsp;&nbsp;-&nbsp;&nbsp;</span>\n        ' + calendarHTML + '\n        ' + timesHTML + '\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Time zone:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-costs-timezone" style="display: block; margin: 0 0 15px;">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Cost:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div>\n          <div class="input" style="display: inline-block; width: 90px; margin-right: 10px;">\n            <input class="js-costs-value" type="text" placeholder="0">\n            <span><span>\n          </div>\n          <div class="popup__currency js-costs-eur">\n            <i class="fa fa-euro"></i>\n          </div>\n          <div class="popup__currency js-costs-rub">\n            <i class="fa fa-ruble"></i>\n          </div>\n          <div class="popup__currency js-costs-usd is-select">\n            <i class="fa fa-dollar"></i>\n          </div>\n        </div>\n        <div class="checkbox js-checkbox js-costs-restore">Restore cost</div>\n      </div>\n    </div>';
+	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Time range:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        ' + calendarHTML + '\n        ' + timesHTML + '\n        <span style="display: inline-block; padding-top: 10px">&nbsp;&nbsp;-&nbsp;&nbsp;</span>\n        ' + calendarHTML + '\n        ' + timesHTML + '\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Time zone:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-costs-timezone" style="display: block; margin: 0 0 15px;">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Cost:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input" style="display: inline-block; width: 90px; margin-right: 10px;">\n          <input class="js-costs-value" type="text" placeholder="0">\n          <span><span>\n        </div>\n        <div class="popup__currency js-costs-eur">\n          <i class="fa fa-euro"></i>\n        </div>\n        <div class="popup__currency js-costs-rub">\n          <i class="fa fa-ruble"></i>\n        </div>\n        <div class="popup__currency js-costs-usd is-select">\n          <i class="fa fa-dollar"></i>\n        </div>\n        <div class="radiobutton js-costs-click is-select">Click cost</div>\n        <div class="radiobutton js-costs-all">All spend</div>\n      </div>\n    </div>';
 
 	  var params = window.might.stat.params;
 	  var stat = document.querySelector('.js-stat');
@@ -8316,7 +8316,8 @@ webpackJsonp([0],[
 	  var costEur = popupBody.querySelector('.js-costs-eur');
 	  var costRub = popupBody.querySelector('.js-costs-rub');
 	  var costUsd = popupBody.querySelector('.js-costs-usd');
-	  var restore = popupBody.querySelector('.js-costs-restore');
+	  var costClick = popupBody.querySelector('.js-costs-click');
+	  var costAll = popupBody.querySelector('.js-costs-all');
 
 	  (0, _calendarLiteEvent2.default)(dateFrom);
 	  (0, _calendarLiteEvent2.default)(dateTo);
@@ -8401,6 +8402,16 @@ webpackJsonp([0],[
 	    }
 	  });
 
+	  costClick.addEventListener('click', function () {
+	    costClick.classList.add('is-select');
+	    costAll.classList.remove('is-select');
+	  });
+
+	  costAll.addEventListener('click', function () {
+	    costClick.classList.remove('is-select');
+	    costAll.classList.add('is-select');
+	  });
+
 	  popup.querySelector('.js-popup-save').addEventListener('click', function (event) {
 	    var data = {};
 
@@ -8428,10 +8439,10 @@ webpackJsonp([0],[
 
 	    data.currency = currency;
 
-	    if (restore.classList.contains('is-select')) {
-	      data.cost_type = 'all';
-	    } else {
+	    if (costClick.classList.contains('is-select')) {
 	      data.cost_type = 'visit';
+	    } else {
+	      data.cost_type = 'all';
 	    }
 
 	    if (popupBody.currentCampaignId || popupBody.currentCampaignId === 0) {
