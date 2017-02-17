@@ -2695,8 +2695,7 @@ body.noscroll {
 .calendar {
   position: absolute;
   display: none;
-  width: 710px;
-  top: 0;
+  top: 100%;
   right: 0;
   padding: 0 20px;
   background: #fff;
@@ -2872,6 +2871,7 @@ body.noscroll {
 }
 .calendar__bottom {
   position: relative;
+  width: 670px;
   padding: 15px 0 20px;
   border-top: solid 1px #e4e5e9;
 }
@@ -4340,6 +4340,7 @@ input:focus + .input__plus {
 }
 .popup__line-label {
   display: table-cell;
+  min-width: 130px;
   padding-right: 20px;
   padding-top: 10px;
   white-space: nowrap;
@@ -4350,6 +4351,7 @@ input:focus + .input__plus {
 .popup__line-body {
   display: table-cell;
   width: 99%;
+  font-size: 14px;
 }
 .popup__line-btn {
   display: table-cell;

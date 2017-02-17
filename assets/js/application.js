@@ -4404,11 +4404,11 @@ webpackJsonp([0],[
 
 	var _createControls2 = _interopRequireDefault(_createControls);
 
-	var _table = __webpack_require__(75);
+	var _table = __webpack_require__(77);
 
 	var _table2 = _interopRequireDefault(_table);
 
-	var _graph = __webpack_require__(78);
+	var _graph = __webpack_require__(80);
 
 	var _graph2 = _interopRequireDefault(_graph);
 
@@ -4958,6 +4958,11 @@ webpackJsonp([0],[
 
 	  var resetVariables = function resetVariables() {
 	    var segmentVariables = stat.querySelector('.js-stat-list-segment-variables');
+
+	    if (!segmentVariables) {
+	      return;
+	    }
+
 	    var segmentVariablesItems = segmentVariables.querySelector('.js-list-items');
 
 	    segmentVariables.style.display = 'none';
@@ -4986,14 +4991,19 @@ webpackJsonp([0],[
 	    resetVariables();
 
 	    var segmentVariables = stat.querySelector('.js-stat-list-segment-variables');
+
+	    if (!segmentVariables) {
+	      return;
+	    }
+
 	    var segmentVariablesItems = segmentVariables.querySelector('.js-list-items');
 	    var addSegmentsList = stat.querySelector('.js-stat-add-segment').querySelector('.js-list-items');
 
 	    segmentVariables.style.display = '';
 
-	    values.forEach(function (val) {
-	      addSegmentsList.innerHTML += '<div class="list__item js-list-item" data-value="' + val.param + '">variable: ' + val.name + '</div>';
-	      segmentVariablesItems.innerHTML += '<div class="list__item js-list-item" data-value="' + val.param + '">' + val.name + '</div>';
+	    values.forEach(function (val, index) {
+	      addSegmentsList.innerHTML += '<div class="list__item js-list-item" data-value="p' + index + '">variable: ' + val.name + '</div>';
+	      segmentVariablesItems.innerHTML += '<div class="list__item js-list-item" data-value="p' + index + '">' + val.name + '</div>';
 	    });
 	  };
 
@@ -5121,7 +5131,7 @@ webpackJsonp([0],[
 
 	var _campaignAdd2 = _interopRequireDefault(_campaignAdd);
 
-	var _landerList = __webpack_require__(65);
+	var _landerList = __webpack_require__(67);
 
 	var _landerList2 = _interopRequireDefault(_landerList);
 
@@ -5129,7 +5139,7 @@ webpackJsonp([0],[
 
 	var _landerAdd2 = _interopRequireDefault(_landerAdd);
 
-	var _offerList = __webpack_require__(67);
+	var _offerList = __webpack_require__(69);
 
 	var _offerList2 = _interopRequireDefault(_offerList);
 
@@ -5137,19 +5147,19 @@ webpackJsonp([0],[
 
 	var _offerAdd2 = _interopRequireDefault(_offerAdd);
 
-	var _trafficSourceList = __webpack_require__(69);
+	var _trafficSourceList = __webpack_require__(71);
 
 	var _trafficSourceList2 = _interopRequireDefault(_trafficSourceList);
 
-	var _trafficSourceAdd = __webpack_require__(71);
+	var _trafficSourceAdd = __webpack_require__(73);
 
 	var _trafficSourceAdd2 = _interopRequireDefault(_trafficSourceAdd);
 
-	var _affiliateNetworkList = __webpack_require__(72);
+	var _affiliateNetworkList = __webpack_require__(74);
 
 	var _affiliateNetworkList2 = _interopRequireDefault(_affiliateNetworkList);
 
-	var _affiliateNetworkAdd = __webpack_require__(74);
+	var _affiliateNetworkAdd = __webpack_require__(76);
 
 	var _affiliateNetworkAdd2 = _interopRequireDefault(_affiliateNetworkAdd);
 
@@ -5383,7 +5393,7 @@ webpackJsonp([0],[
 
 	var _campaignCosts2 = _interopRequireDefault(_campaignCosts);
 
-	var _campaignLinks = __webpack_require__(64);
+	var _campaignLinks = __webpack_require__(66);
 
 	var _campaignLinks2 = _interopRequireDefault(_campaignLinks);
 
@@ -8224,41 +8234,203 @@ webpackJsonp([0],[
 	  value: true
 	});
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 	exports.default = function (id, name) {
-	  var options = window._getOptionsFetch({
-	    id: id
+	  if (document.querySelector('.js-popup')) {
+	    document.querySelector('.js-popup').close();
+	  }
+
+	  var popup = (0, _createPopup2.default)('Manual cost updating for campaign \'' + name + '\'', true);
+
+	  if (!popup) {
+	    return;
+	  }
+
+	  var popupBody = popup.querySelector('.js-popup-body');
+
+	  if (!popupBody) {
+	    return;
+	  }
+
+	  var dateToString = function dateToString(y, m, d) {
+	    var date = new Date(y, m, d);
+	    return (0, _dateformat2.default)(date, 'yyyy-mm-dd');
+	  };
+
+	  popupBody.currentCampaignId = id;
+
+	  var calendarHTML = '\n    <div class="list is-calendar js-calendar-lite js-costs-date"style="margin: 0 0 15px;">\n    <div class="list__wrap">\n      <div class="list__value js-calendar-value">\n      </div>\n      <div class="calendar js-calendar-popup">\n        <div class="calendar__body">\n          <div class="calendar__month js-calendar-box">\n            <div class="calendar__selectors">\n              <div class="btn-prev js-calendar-prev"></div>\n              <div class="btn-next js-calendar-next"></div>\n              <div class="list is-short js-list js-calendar-month">\n                <div class="list__wrap">\n                  <div class="list__value js-list-value"></div>\n                  <div class="list__dropdown">\n                    <div class="list__items">\n                      <div class="list__item js-list-item" data-value="0">Jan</div>\n                      <div class="list__item js-list-item" data-value="1">Feb</div>\n                      <div class="list__item js-list-item" data-value="2">Mar</div>\n                      <div class="list__item js-list-item" data-value="3">Apr</div>\n                      <div class="list__item js-list-item" data-value="4">May</div>\n                      <div class="list__item js-list-item" data-value="5">Jun</div>\n                      <div class="list__item js-list-item" data-value="6">Jul</div>\n                      <div class="list__item js-list-item" data-value="7">Aug</div>\n                      <div class="list__item js-list-item" data-value="8">Sept</div>\n                      <div class="list__item js-list-item" data-value="9">Oct</div>\n                      <div class="list__item js-list-item" data-value="10">Nov</div>\n                      <div class="list__item js-list-item" data-value="11">Dec</div>\n                    </div>\n                  </div>\n                </div>\n              </div>\n              <div class="list is-short js-list js-calendar-year">\n                <div class="list__wrap">\n                  <div class="list__value js-list-value"></div>\n                  <div class="list__dropdown">\n                    <div class="list__items">\n                      <div class="list__item js-list-item" data-value="2012">2012</div>\n                      <div class="list__item js-list-item" data-value="2013">2013</div>\n                      <div class="list__item js-list-item" data-value="2014">2014</div>\n                      <div class="list__item js-list-item" data-value="2015">2015</div>\n                      <div class="list__item js-list-item" data-value="2016">2016</div>\n                    </div>\n                  </div>\n                </div>\n              </div>\n            </div>\n            <div class="calendar__days js-calendar-days"></div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>';
+
+	  var timesHTML = '\n    <div class="list is-short js-list js-costs-time" style="margin: 0 0 15px;">\n      <div class="list__wrap">\n        <div class="list__value js-list-value"></div>\n        <div class="list__dropdown">\n          <div class="list__items">\n            <div class="list__item js-list-item" data-value="0">00:00</div>\n            <div class="list__item js-list-item" data-value="1">01:00</div>\n            <div class="list__item js-list-item" data-value="2">02:00</div>\n            <div class="list__item js-list-item" data-value="3">03:00</div>\n            <div class="list__item js-list-item" data-value="4">04:00</div>\n            <div class="list__item js-list-item" data-value="5">05:00</div>\n            <div class="list__item js-list-item" data-value="6">06:00</div>\n            <div class="list__item js-list-item" data-value="7">07:00</div>\n            <div class="list__item js-list-item" data-value="8">08:00</div>\n            <div class="list__item js-list-item" data-value="9">09:00</div>\n            <div class="list__item js-list-item" data-value="10">10:00</div>\n            <div class="list__item js-list-item" data-value="11">11:00</div>\n            <div class="list__item js-list-item" data-value="12">12:00</div>\n            <div class="list__item js-list-item" data-value="13">13:00</div>\n            <div class="list__item js-list-item" data-value="14">14:00</div>\n            <div class="list__item js-list-item" data-value="15">15:00</div>\n            <div class="list__item js-list-item" data-value="16">16:00</div>\n            <div class="list__item js-list-item" data-value="17">17:00</div>\n            <div class="list__item js-list-item" data-value="18">18:00</div>\n            <div class="list__item js-list-item" data-value="19">19:00</div>\n            <div class="list__item js-list-item" data-value="20">20:00</div>\n            <div class="list__item js-list-item" data-value="21">21:00</div>\n            <div class="list__item js-list-item" data-value="22">22:00</div>\n            <div class="list__item js-list-item" data-value="23">23:00</div>\n          </div>\n        </div>\n      </div>\n    </div>\n  ';
+
+	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Time range:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        ' + calendarHTML + '\n        ' + timesHTML + '\n        <span style="display: inline-block; padding-top: 10px">&nbsp;&nbsp;-&nbsp;&nbsp;</span>\n        ' + calendarHTML + '\n        ' + timesHTML + '\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Time zone:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-costs-timezone" style="display: block; margin: 0 0 15px;">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Cost:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div>\n          <div class="input" style="display: inline-block; width: 90px; margin-right: 10px;">\n            <input class="js-costs-value" type="text" placeholder="0">\n            <span><span>\n          </div>\n          <div class="popup__currency js-costs-eur">\n            <i class="fa fa-euro"></i>\n          </div>\n          <div class="popup__currency js-costs-rub">\n            <i class="fa fa-ruble"></i>\n          </div>\n          <div class="popup__currency js-costs-usd is-select">\n            <i class="fa fa-dollar"></i>\n          </div>\n        </div>\n        <div class="checkbox js-checkbox js-costs-restore">Restore cost</div>\n      </div>\n    </div>';
+
+	  var dateFrom = popupBody.querySelectorAll('.js-costs-date')[0];
+	  var dateTo = popupBody.querySelectorAll('.js-costs-date')[1];
+	  var timeFrom = popupBody.querySelectorAll('.js-costs-time')[0];
+	  var timeTo = popupBody.querySelectorAll('.js-costs-time')[1];
+	  var timezone = popupBody.querySelector('.js-costs-timezone');
+	  var costValue = popupBody.querySelector('.js-costs-value');
+	  var costEur = popupBody.querySelector('.js-costs-eur');
+	  var costRub = popupBody.querySelector('.js-costs-rub');
+	  var costUsd = popupBody.querySelector('.js-costs-usd');
+	  var restore = popupBody.querySelector('.js-costs-restore');
+
+	  (0, _calendarLiteEvent2.default)(dateFrom);
+	  (0, _calendarLiteEvent2.default)(dateTo);
+	  (0, _listEvent2.default)(timeFrom);
+	  (0, _listEvent2.default)(timeTo);
+	  timeFrom.updateValue(0);
+	  timeTo.updateValue(23);
+
+	  dateFrom.addEventListener('change', updateDateTime);
+	  dateTo.addEventListener('change', updateDateTime);
+	  timeFrom.addEventListener('change', updateDateTime);
+	  timeTo.addEventListener('change', updateDateTime);
+
+	  updateDateTime();
+
+	  var timezoneItems = timezone.querySelector('.js-list-items');
+	  _timezone2.default.forEach(function (el) {
+	    var n = el.split('|');
+	    timezoneItems.innerHTML += '<div class="list__item js-list-item" data-value="' + el + '">' + n[1] + ' ' + n[0] + '</div>';
 	  });
 
-	  fetch(window.might.url + '/campaign/cost/get', options).then(function (response) {
-	    return response.json();
-	  }).then(render);
+	  (0, _listEvent2.default)(timezone);
+	  timezone.updateValue('+03:00|Europe/Moscow');
 
-	  function render(result) {
-	    if (result.error || !result.result || !result.result.data || _typeof(result.result.data) !== 'object') {
+	  costEur.addEventListener('click', function () {
+	    costEur.classList.add('is-select');
+	    costRub.classList.remove('is-select');
+	    costUsd.classList.remove('is-select');
+	  });
+
+	  costRub.addEventListener('click', function () {
+	    costEur.classList.remove('is-select');
+	    costRub.classList.add('is-select');
+	    costUsd.classList.remove('is-select');
+	  });
+
+	  costUsd.addEventListener('click', function () {
+	    costEur.classList.remove('is-select');
+	    costRub.classList.remove('is-select');
+	    costUsd.classList.add('is-select');
+	  });
+
+	  costValue.addEventListener('paste', function (event) {
+	    if (/^\d*.?\d+$/.test(costValue.value.trim())) {
+	      costValue.value = '';
+	    }
+	  });
+
+	  costValue.addEventListener('keydown', function (event) {
+	    var code = event.keyCode;
+	    var char = String.fromCharCode(code);
+	    var key = '¾.0123456789'.indexOf(char);
+	    var value = parseInt(event.target.value, 10);
+
+	    switch (code) {
+	      case 9:
+	      case 13:
+	      case 27:
+	        event.target.blur();
+	        break;
+	      case 8:
+	      case 46:
+	      case 37:
+	      case 39:
+	      case 190:
+	        break;
+	      default:
+	        if (key === -1) {
+	          event.preventDefault();
+	        }
+	    }
+	  });
+
+	  popup.querySelector('.js-popup-save').addEventListener('click', function (event) {
+	    var data = {};
+
+	    var dF = dateFrom.value;
+	    var dT = dateTo.value;
+	    var tF = Number(timeFrom.value);
+	    var tT = Number(timeTo.value);
+
+	    dF = dateToString(dF.year, dF.month, dF.date);
+	    dT = dateToString(dT.year, dT.month, dT.date);
+	    tF = '' + (tF < 10 ? '0' : '') + tF + ':00';
+	    tT = '' + (tT < 10 ? '0' : '') + tT + ':00';
+
+	    data.time = dF + ' ' + tF + ' - ' + dT + ' ' + tT;
+	    data.timezone = timezone.value;
+	    data.cost = costValue.value;
+
+	    var currency = 'USD';
+
+	    if (costEur.classList.contains('is-select')) {
+	      currency = 'EUR';
+	    } else if (costRub.classList.contains('is-select')) {
+	      currency = 'RUB';
+	    }
+
+	    data.currency = currency;
+
+	    if (restore.classList.contains('is-select')) {
+	      data.cost_type = 'all';
+	    }
+
+	    if (popupBody.currentCampaignId || popupBody.currentCampaignId === 0) {
+	      data.id = popupBody.currentCampaignId;
+	    } else {
 	      return;
 	    }
 
-	    if (document.querySelector('.js-popup')) {
-	      document.querySelector('.js-popup').close();
+	    var options = window._getOptionsFetch(data);
+
+	    fetch(window.might.url + '/campaign/cost/save', options).then(function (response) {
+	      return response.json();
+	    }).then(function (result) {
+	      if (result.error) {
+	        if (result.result.msg) {
+	          popup.querySelector('.js-popup-error').textContent = result.result.msg;
+	        }
+	      } else {
+	        popup.close();
+	      }
+	    });
+	  });
+
+	  function updateDateTime() {
+	    var dF = dateFrom.value;
+	    var dT = dateTo.value;
+	    var tF = Number(timeFrom.value);
+	    var tT = Number(timeTo.value);
+
+	    timeFrom.unsetDisabled();
+	    timeTo.unsetDisabled();
+
+	    if (dF.year === dT.year && dF.month === dT.month && dF.date === dT.date) {
+	      for (var i = 0; i <= 23; i++) {
+	        if (i < tF) {
+	          timeTo.setDisabled(i);
+	        }
+
+	        if (i > tT) {
+	          timeFrom.setDisabled(i);
+	        }
+	      }
 	    }
 
-	    var popup = (0, _createPopup2.default)('Manual cost updating for campaign \'' + name + '\'');
+	    dateFrom.setDisabled({ to: {
+	        year: dT.year,
+	        month: dT.month,
+	        date: dT.date
+	      } });
 
-	    if (!popup) {
-	      return;
-	    }
-
-	    var popupBody = popup.querySelector('.js-popup-body');
-
-	    if (!popupBody) {
-	      return;
-	    }
-
-	    var data = result.result.data;
-
-	    popupBody.innerHTML = '';
+	    dateTo.setDisabled({ from: {
+	        year: dF.year,
+	        month: dF.month,
+	        date: dF.date + (tF > tT ? 1 : 0)
+	      } });
 	  }
 	};
 
@@ -8266,15 +8438,337 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
+	var _dateformat = __webpack_require__(28);
+
+	var _dateformat2 = _interopRequireDefault(_dateformat);
+
 	var _createPopup = __webpack_require__(53);
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
+
+	var _calendarLiteEvent = __webpack_require__(64);
+
+	var _calendarLiteEvent2 = _interopRequireDefault(_calendarLiteEvent);
+
+	var _listEvent = __webpack_require__(23);
+
+	var _listEvent2 = _interopRequireDefault(_listEvent);
+
+	var _timezone = __webpack_require__(65);
+
+	var _timezone2 = _interopRequireDefault(_timezone);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
 /* 64 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	exports.default = function (control) {
+	  var calendar = control.querySelector('.js-calendar-popup');
+
+	  if (!calendar) {
+	    return;
+	  }
+
+	  var currentDatetime = window.might.current_datetime;
+
+	  var available = {
+	    to: {
+	      year: currentDatetime.getFullYear(),
+	      month: currentDatetime.getMonth(),
+	      date: currentDatetime.getDate()
+	    }
+	  };
+
+	  var selected = void 0;
+
+	  var labelControl = control.querySelector('.js-calendar-value');
+	  var box = calendar.querySelector('.js-calendar-box');
+	  var next = box.querySelector('.js-calendar-next');
+	  var prev = box.querySelector('.js-calendar-prev');
+	  var monthSelect = box.querySelector('.js-calendar-month');
+	  var yearSelect = box.querySelector('.js-calendar-year');
+
+	  (0, _listEvent2.default)(monthSelect);
+	  (0, _listEvent2.default)(yearSelect);
+
+	  var clickWindow = void 0;
+	  var _open = void 0;
+	  var close = void 0;
+	  var resetSelected = void 0;
+	  var renderDefault = void 0;
+	  var renderDays = void 0;
+	  var updateSelects = void 0;
+	  var clickDay = void 0;
+	  var eventBox = void 0;
+	  var setLabelControl = void 0;
+	  var updateValue = void 0;
+	  var setValue = void 0;
+	  var setDisabled = void 0;
+
+	  clickWindow = function clickWindow(event) {
+	    var closest = event.target.closest('.js-calendar-lite');
+
+	    if (!closest || closest !== control) {
+	      resetSelected();
+	      close(event);
+	    }
+	  };
+
+	  _open = function open(event) {
+	    resetSelected();
+	    renderDefault();
+
+	    calendar.classList.add('is-open');
+	    control.removeEventListener('click', _open);
+	    window.addEventListener('click', clickWindow);
+	  };
+
+	  close = function close(event) {
+	    event.stopPropagation();
+	    calendar.classList.remove('is-open');
+	    control.addEventListener('click', _open);
+	    window.removeEventListener('click', clickWindow);
+	  };
+
+	  resetSelected = function resetSelected() {
+	    selected = {
+	      year: control.value.year,
+	      month: control.value.month,
+	      date: control.value.date
+	    };
+	  };
+
+	  renderDefault = function renderDefault() {
+	    box.current.year = selected.year;
+	    box.current.month = selected.month;
+
+	    updateSelects();
+	    renderDays();
+	  };
+
+	  renderDays = function renderDays(b) {
+	    var days = box.querySelector('.js-calendar-days');
+
+	    var month = box.current.month;
+	    var year = box.current.year;
+	    var count = new Date(year, month + 1, 0).getDate();
+	    var first = new Date(year, month, 1).getDay() - 1;
+
+	    if (first === -1) {
+	      first = 6;
+	    }
+
+	    var tsDate = +new Date(selected.year, selected.month, selected.date);
+	    var tsFrom = void 0;
+	    var tsTo = +new Date(available.to.year, available.to.month, available.to.date);
+
+	    if (available.from) {
+	      tsFrom = +new Date(available.from.year, available.from.month, available.from.date);
+	    }
+
+	    days.innerHTML = '';
+	    box.days_scope = {};
+
+	    for (var i = 1 - first; i <= count; i++) {
+	      var span = document.createElement('span');
+	      var day = void 0;
+
+	      if (i > 0) {
+	        span.textContent = i;
+	        day = +new Date(year, month, i);
+
+	        if (tsDate === day) {
+	          span.classList.add('is-start');
+	          span.classList.add('is-end');
+	        }
+
+	        if (tsFrom && tsFrom > day || tsTo < day) {
+	          span.classList.add('is-future');
+	        } else {
+	          span.dataset.value = day;
+	          span.addEventListener('click', clickDay);
+	          box.days_scope[day] = span;
+	        }
+	      } else {
+	        span.classList.add('is-empty');
+	      }
+
+	      days.appendChild(span);
+	    }
+	  };
+
+	  updateSelects = function updateSelects() {
+	    try {
+	      monthSelect.updateValue(box.current.month);
+	      yearSelect.updateValue(box.current.year);
+	    } catch (err) {
+	      throw new Error(err);
+	    }
+	  };
+
+	  clickDay = function clickDay(event) {
+	    event.stopPropagation();
+
+	    var valueDate = new Date(parseInt(this.dataset.value, 10));
+
+	    selected.year = valueDate.getFullYear();
+	    selected.month = valueDate.getMonth();
+	    selected.date = valueDate.getDate();
+
+	    setValue();
+	    close(event);
+	  };
+
+	  eventBox = function eventBox() {
+	    box.current = {};
+
+	    prev.addEventListener('click', function () {
+	      box.current.month--;
+
+	      if (box.current.month < 0) {
+	        box.current.month = 11;
+	        box.current.year--;
+	      }
+
+	      updateSelects();
+	      renderDays();
+	    });
+
+	    next.addEventListener('click', function () {
+	      box.current.month++;
+
+	      if (box.current.month > 11) {
+	        box.current.month = 0;
+	        box.current.year++;
+	      }
+
+	      updateSelects();
+	      renderDays();
+	    });
+
+	    monthSelect.addEventListener('change', function () {
+	      try {
+	        box.current.month = parseInt(monthSelect.value, 10);
+	        renderDays();
+	      } catch (err) {
+	        throw new Error(err);
+	      }
+	    });
+
+	    yearSelect.addEventListener('change', function () {
+	      try {
+	        box.current.year = parseInt(yearSelect.value, 10);
+	        renderDays();
+	      } catch (err) {
+	        throw new Error(err);
+	      }
+	    });
+	  };
+
+	  setLabelControl = function setLabelControl() {
+	    if (labelControl) {
+	      var value = control.value;
+	      var date = new Date(value.year, value.month, value.date);
+	      labelControl.innerHTML = (0, _dateformat2.default)(date, 'mmmm dd, yyyy');
+	    }
+	  };
+
+	  updateValue = function updateValue(obj) {
+	    var value = control.value;
+	    var newValue = obj || selected;
+	    var isUpdate = false;
+
+	    for (var i in value) {
+	      if (value.hasOwnProperty(i) && newValue.hasOwnProperty(i)) {
+	        if (value[i] !== newValue[i]) {
+	          value[i] = newValue[i];
+	          isUpdate = true;
+	        }
+	      }
+	    }
+
+	    setLabelControl();
+
+	    return isUpdate;
+	  };
+
+	  setValue = function setValue(obj) {
+	    if (updateValue(obj)) {
+	      control.triggerEvent('change');
+	    }
+	  };
+
+	  setDisabled = function setDisabled(obj) {
+	    var newAvailable = obj || {};
+
+	    for (var i in newAvailable) {
+	      if (newAvailable.hasOwnProperty(i)) {
+	        if (_typeof(newAvailable[i]) === 'object') {
+	          available[i] = available[i] || {};
+	          for (var j in newAvailable[i]) {
+	            if (newAvailable[i].hasOwnProperty(j)) {
+	              available[i][j] = newAvailable[i][j];
+	            }
+	          }
+	        }
+	      }
+	    }
+
+	    if (calendar.classList.contains('is-open')) {
+	      renderDays();
+	    }
+	  };
+
+	  control.addEventListener('click', _open);
+
+	  control.value = {
+	    year: available.to.year,
+	    month: available.to.month,
+	    date: available.to.date
+	  };
+
+	  eventBox();
+	  setLabelControl();
+
+	  control.updateValue = updateValue;
+	  control.setValue = setValue;
+	  control.setDisabled = setDisabled;
+	};
+
+	var _dateformat = __webpack_require__(28);
+
+	var _dateformat2 = _interopRequireDefault(_dateformat);
+
+	var _listEvent = __webpack_require__(23);
+
+	var _listEvent2 = _interopRequireDefault(_listEvent);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 65 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = ['+00:00|Africa/Abidjan', '+00:00|Africa/Accra', '+00:00|Africa/Bamako', '+00:00|Africa/Banjul', '+00:00|Africa/Bissau', '+00:00|Africa/Casablanca', '+00:00|Africa/Conakry', '+00:00|Africa/Dakar', '+00:00|Africa/El Aaiun', '+00:00|Africa/Freetown', '+00:00|Africa/Lome', '+00:00|Africa/Monrovia', '+00:00|Africa/Nouakchott', '+00:00|Africa/Ouagadougou', '+00:00|Africa/Sao Tome', '+01:00|Africa/Algiers', '+01:00|Africa/Bangui', '+01:00|Africa/Brazzaville', '+01:00|Africa/Douala', '+01:00|Africa/Kinshasa', '+01:00|Africa/Lagos', '+01:00|Africa/Libreville', '+01:00|Africa/Luanda', '+01:00|Africa/Malabo', '+01:00|Africa/Ndjamena', '+01:00|Africa/Niamey', '+01:00|Africa/Porto-Novo', '+01:00|Africa/Tunis', '+01:00|Africa/Windhoek', '+02:00|Africa/Blantyre', '+02:00|Africa/Bujumbura', '+02:00|Africa/Cairo', '+02:00|Africa/Ceuta', '+02:00|Africa/Gaborone', '+02:00|Africa/Harare', '+02:00|Africa/Johannesburg', '+02:00|Africa/Kigali', '+02:00|Africa/Lubumbashi', '+02:00|Africa/Lusaka', '+02:00|Africa/Maputo', '+02:00|Africa/Maseru', '+02:00|Africa/Mbabane', '+02:00|Africa/Tripoli', '+03:00|Africa/Addis Ababa', '+03:00|Africa/Asmara', '+03:00|Africa/Dar es Salaam', '+03:00|Africa/Djibouti', '+03:00|Africa/Juba', '+03:00|Africa/Kampala', '+03:00|Africa/Khartoum', '+03:00|Africa/Mogadishu', '+03:00|Africa/Nairobi', '-09:00|America/Adak', '-08:00|America/Anchorage', '-08:00|America/Juneau', '-08:00|America/Metlakatla', '-08:00|America/Nome', '-08:00|America/Sitka', '-08:00|America/Yakutat', '-07:00|America/Creston', '-07:00|America/Dawson', '-07:00|America/Dawson Creek', '-07:00|America/Hermosillo', '-07:00|America/Los Angeles', '-07:00|America/Phoenix', '-07:00|America/Santa Isabel', '-07:00|America/Tijuana', '-07:00|America/Vancouver', '-07:00|America/Whitehorse', '-06:00|America/Belize', '-06:00|America/Boise', '-06:00|America/Cambridge Bay', '-06:00|America/Chihuahua', '-06:00|America/Costa Rica', '-06:00|America/Denver', '-06:00|America/Edmonton', '-06:00|America/El Salvador', '-06:00|America/Guatemala', '-06:00|America/Inuvik', '-06:00|America/Managua', '-06:00|America/Mazatlan', '-06:00|America/Ojinaga', '-06:00|America/Regina', '-06:00|America/Swift Current', '-06:00|America/Tegucigalpa', '-06:00|America/Yellowknife', '-05:00|America/Atikokan', '-05:00|America/Bahia Banderas', '-05:00|America/Bogota', '-05:00|America/Cancun', '-05:00|America/Cayman', '-05:00|America/Chicago', '-05:00|America/Eirunepe', '-05:00|America/Guayaquil', '-05:00|America/Indiana/Knox', '-05:00|America/Indiana/Tell City', '-05:00|America/Jamaica', '-05:00|America/Lima', '-05:00|America/Matamoros', '-05:00|America/Menominee', '-05:00|America/Merida', '-05:00|America/Mexico City', '-05:00|America/Monterrey', '-05:00|America/North Dakota/Beulah', '-05:00|America/North Dakota/Center', '-05:00|America/North Dakota/New Salem', '-05:00|America/Panama', '-05:00|America/Rainy River', '-05:00|America/Rankin Inlet', '-05:00|America/Resolute', '-05:00|America/Rio Branco', '-05:00|America/Winnipeg', '-04:30|America/Caracas', '-04:00|America/Anguilla', '-04:00|America/Antigua', '-04:00|America/Aruba', '-04:00|America/Asuncion', '-04:00|America/Barbados', '-04:00|America/Blanc-Sablon', '-04:00|America/Boa Vista', '-04:00|America/Campo Grande', '-04:00|America/Cuiaba', '-04:00|America/Curacao', '-04:00|America/Detroit', '-04:00|America/Dominica', '-04:00|America/Grand Turk', '-04:00|America/Grenada', '-04:00|America/Guadeloupe', '-04:00|America/Guyana', '-04:00|America/Havana', '-04:00|America/Indiana/Indianapolis', '-04:00|America/Indiana/Marengo', '-04:00|America/Indiana/Petersburg', '-04:00|America/Indiana/Vevay', '-04:00|America/Indiana/Vincennes', '-04:00|America/Indiana/Winamac', '-04:00|America/Iqaluit', '-04:00|America/Kentucky/Louisville', '-04:00|America/Kentucky/Monticello', '-04:00|America/Kralendijk', '-04:00|America/La Paz', '-04:00|America/Lower Princes', '-04:00|America/Manaus', '-04:00|America/Marigot', '-04:00|America/Martinique', '-04:00|America/Montserrat', '-04:00|America/Nassau', '-04:00|America/New York', '-04:00|America/Nipigon', '-04:00|America/Pangnirtung', '-04:00|America/Port-au-Prince', '-04:00|America/Port of Spain', '-04:00|America/Porto Velho', '-04:00|America/Puerto Rico', '-04:00|America/Santiago', '-04:00|America/Santo Domingo', '-04:00|America/St Barthelemy', '-04:00|America/St Kitts', '-04:00|America/St Lucia', '-04:00|America/St Thomas', '-04:00|America/St Vincent', '-04:00|America/Thunder Bay', '-04:00|America/Toronto', '-04:00|America/Tortola', '-03:00|America/Araguaina', '-03:00|America/Argentina/Buenos Aires', '-03:00|America/Argentina/Catamarca', '-03:00|America/Argentina/Cordoba', '-03:00|America/Argentina/Jujuy', '-03:00|America/Argentina/La Rioja', '-03:00|America/Argentina/Mendoza', '-03:00|America/Argentina/Rio Gallegos', '-03:00|America/Argentina/Salta', '-03:00|America/Argentina/San Juan', '-03:00|America/Argentina/San Luis', '-03:00|America/Argentina/Tucuman', '-03:00|America/Argentina/Ushuaia', '-03:00|America/Bahia', '-03:00|America/Belem', '-03:00|America/Cayenne', '-03:00|America/Fortaleza', '-03:00|America/Glace Bay', '-03:00|America/Goose Bay', '-03:00|America/Halifax', '-03:00|America/Maceio', '-03:00|America/Moncton', '-03:00|America/Montevideo', '-03:00|America/Paramaribo', '-03:00|America/Recife', '-03:00|America/Santarem', '-03:00|America/Sao Paulo', '-03:00|America/Thule', '-02:00|America/Godthab', '-02:00|America/Miquelon', '-02:00|America/Noronha', '-02:30|America/St Johns', '+00:00|America/Danmarkshavn', '+00:00|America/Scoresbysund', '-04:00|Antarctica/Palmer', '-03:00|Antarctica/Rothera', '+02:00|Antarctica/Troll', '+03:00|Antarctica/Syowa', '+05:00|Antarctica/Mawson', '+06:00|Antarctica/Vostok', '+07:00|Antarctica/Davis', '+08:00|Antarctica/Casey', '+10:00|Antarctica/DumontDUrville', '+11:00|Antarctica/Macquarie', '+12:00|Antarctica/McMurdo', '+03:00|Asia/Aden', '+03:00|Asia/Amman', '+03:00|Asia/Baghdad', '+03:00|Asia/Bahrain', '+03:00|Asia/Beirut', '+03:00|Asia/Damascus', '+03:00|Asia/Gaza', '+03:00|Asia/Hebron', '+03:00|Asia/Jerusalem', '+03:00|Asia/Kuwait', '+03:00|Asia/Nicosia', '+03:00|Asia/Qatar', '+03:00|Asia/Riyadh', '+04:30|Asia/Kabul', '+04:30|Asia/Tehran', '+04:00|Asia/Dubai', '+04:00|Asia/Muscat', '+04:00|Asia/Tbilisi', '+04:00|Asia/Yerevan', '+05:45|Asia/Kathmandu', '+05:30|Asia/Colombo', '+05:30|Asia/Kolkata', '+05:00|Asia/Aqtau', '+05:00|Asia/Aqtobe', '+05:00|Asia/Ashgabat', '+05:00|Asia/Baku', '+05:00|Asia/Dushanbe', '+05:00|Asia/Karachi', '+05:00|Asia/Oral', '+05:00|Asia/Samarkand', '+05:00|Asia/Tashkent', '+05:00|Asia/Yekaterinburg', '+06:00|Asia/Almaty', '+06:00|Asia/Bishkek', '+06:00|Asia/Dhaka', '+06:00|Asia/Novosibirsk', '+06:00|Asia/Omsk', '+06:00|Asia/Qyzylorda', '+06:00|Asia/Thimphu', '+06:00|Asia/Urumqi', '+06:30|Asia/Rangoon', '+07:00|Asia/Bangkok', '+07:00|Asia/Ho Chi Minh', '+07:00|Asia/Hovd', '+07:00|Asia/Jakarta', '+07:00|Asia/Krasnoyarsk', '+07:00|Asia/Novokuznetsk', '+07:00|Asia/Phnom Penh', '+07:00|Asia/Pontianak', '+07:00|Asia/Vientiane', '+08:00|Asia/Brunei', '+08:00|Asia/Chita', '+08:00|Asia/Choibalsan', '+08:00|Asia/Hong Kong', '+08:00|Asia/Irkutsk', '+08:00|Asia/Kuala Lumpur', '+08:00|Asia/Kuching', '+08:00|Asia/Macau', '+08:00|Asia/Makassar', '+08:00|Asia/Manila', '+08:00|Asia/Shanghai', '+08:00|Asia/Singapore', '+08:00|Asia/Taipei', '+08:00|Asia/Ulaanbaatar', '+09:00|Asia/Dili', '+09:00|Asia/Jayapura', '+09:00|Asia/Khandyga', '+09:00|Asia/Pyongyang', '+09:00|Asia/Seoul', '+09:00|Asia/Tokyo', '+09:00|Asia/Yakutsk', '+10:00|Asia/Magadan', '+10:00|Asia/Sakhalin', '+10:00|Asia/Ust-Nera', '+10:00|Asia/Vladivostok', '+11:00|Asia/Srednekolymsk', '+12:00|Asia/Anadyr', '+12:00|Asia/Kamchatka', '-03:00|Atlantic/Bermuda', '-03:00|Atlantic/Stanley', '-02:00|Atlantic/South Georgia', '-01:00|Atlantic/Cape Verde', '+00:00|Atlantic/Azores', '+00:00|Atlantic/Reykjavik', '+00:00|Atlantic/St Helena', '+01:00|Atlantic/Canary', '+01:00|Atlantic/Faroe', '+01:00|Atlantic/Madeira', '+01:00|Europe/Dublin', '+01:00|Europe/Guernsey', '+01:00|Europe/Isle of Man', '+01:00|Europe/Jersey', '+01:00|Europe/Lisbon', '+01:00|Europe/London', '+02:00|Europe/Amsterdam', '+02:00|Europe/Andorra', '+02:00|Europe/Belgrade', '+02:00|Europe/Berlin', '+02:00|Europe/Bratislava', '+02:00|Europe/Brussels', '+02:00|Europe/Budapest', '+02:00|Europe/Busingen', '+02:00|Europe/Copenhagen', '+02:00|Europe/Gibraltar', '+02:00|Europe/Kaliningrad', '+02:00|Europe/Ljubljana', '+02:00|Europe/Luxembourg', '+02:00|Europe/Madrid', '+02:00|Europe/Malta', '+02:00|Europe/Monaco', '+02:00|Europe/Oslo', '+02:00|Europe/Paris', '+02:00|Europe/Podgorica', '+02:00|Europe/Prague', '+02:00|Europe/Rome', '+02:00|Europe/San Marino', '+02:00|Europe/Sarajevo', '+02:00|Europe/Skopje', '+02:00|Europe/Stockholm', '+02:00|Europe/Tirane', '+02:00|Europe/Vaduz', '+02:00|Europe/Vatican', '+02:00|Europe/Vienna', '+02:00|Europe/Warsaw', '+02:00|Europe/Zagreb', '+02:00|Europe/Zurich', '+03:00|Europe/Athens', '+03:00|Europe/Bucharest', '+03:00|Europe/Chisinau', '+03:00|Europe/Helsinki', '+03:00|Europe/Istanbul', '+03:00|Europe/Kiev', '+03:00|Europe/Mariehamn', '+03:00|Europe/Minsk', '+03:00|Europe/Moscow', '+03:00|Europe/Riga', '+03:00|Europe/Simferopol', '+03:00|Europe/Sofia', '+03:00|Europe/Tallinn', '+03:00|Europe/Uzhgorod', '+03:00|Europe/Vilnius', '+03:00|Europe/Volgograd', '+03:00|Europe/Zaporozhye', '+04:00|Europe/Samara', '+03:00|Indian/Antananarivo', '+03:00|Indian/Comoro', '+03:00|Indian/Mayotte', '+04:00|Indian/Mahe', '+04:00|Indian/Mauritius', '+04:00|Indian/Reunion', '+05:00|Indian/Kerguelen', '+05:00|Indian/Maldives', '+06:30|Indian/Cocos', '+06:00|Indian/Chagos', '+07:00|Indian/Christmas', '-11:00|Pacific/Midway', '-11:00|Pacific/Niue', '-11:00|Pacific/Pago Pago', '-10:00|Pacific/Honolulu', '-10:00|Pacific/Johnston', '-10:00|Pacific/Rarotonga', '-10:00|Pacific/Tahiti', '-09:30|Pacific/Marquesas', '-09:00|Pacific/Gambier', '-08:00|Pacific/Pitcairn', '-06:00|Pacific/Easter', '-06:00|Pacific/Galapagos', '+09:00|Pacific/Palau', '+10:00|Pacific/Chuuk', '+10:00|Pacific/Guam', '+10:00|Pacific/Port Moresby', '+10:00|Pacific/Saipan', '+11:30|Pacific/Norfolk', '+11:00|Pacific/Bougainville', '+11:00|Pacific/Efate', '+11:00|Pacific/Guadalcanal', '+11:00|Pacific/Kosrae', '+11:00|Pacific/Noumea', '+11:00|Pacific/Pohnpei', '+12:00|Pacific/Auckland', '+12:00|Pacific/Fiji', '+12:00|Pacific/Funafuti', '+12:00|Pacific/Kwajalein', '+12:00|Pacific/Majuro', '+12:00|Pacific/Nauru', '+12:00|Pacific/Tarawa', '+12:00|Pacific/Wake', '+12:00|Pacific/Wallis', '+12:45|Pacific/Chatham', '+13:00|Pacific/Apia', '+13:00|Pacific/Enderbury', '+13:00|Pacific/Fakaofo', '+13:00|Pacific/Tongatapu'];
+
+/***/ },
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -8364,7 +8858,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 65 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -8506,7 +9000,7 @@ webpackJsonp([0],[
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _landerEdit = __webpack_require__(66);
+	var _landerEdit = __webpack_require__(68);
 
 	var _landerEdit2 = _interopRequireDefault(_landerEdit);
 
@@ -8516,7 +9010,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 66 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8568,7 +9062,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 67 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -8711,7 +9205,7 @@ webpackJsonp([0],[
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _offerEdit = __webpack_require__(68);
+	var _offerEdit = __webpack_require__(70);
 
 	var _offerEdit2 = _interopRequireDefault(_offerEdit);
 
@@ -8721,7 +9215,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 68 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8820,7 +9314,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 69 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -8963,7 +9457,7 @@ webpackJsonp([0],[
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _trafficSourceEdit = __webpack_require__(70);
+	var _trafficSourceEdit = __webpack_require__(72);
 
 	var _trafficSourceEdit2 = _interopRequireDefault(_trafficSourceEdit);
 
@@ -8973,7 +9467,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 70 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9034,7 +9528,7 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _trafficSourceAdd = __webpack_require__(71);
+	var _trafficSourceAdd = __webpack_require__(73);
 
 	var _trafficSourceAdd2 = _interopRequireDefault(_trafficSourceAdd);
 
@@ -9043,7 +9537,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 71 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -9221,7 +9715,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 72 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -9364,7 +9858,7 @@ webpackJsonp([0],[
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _affiliateNetworkEdit = __webpack_require__(73);
+	var _affiliateNetworkEdit = __webpack_require__(75);
 
 	var _affiliateNetworkEdit2 = _interopRequireDefault(_affiliateNetworkEdit);
 
@@ -9374,7 +9868,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 73 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9433,14 +9927,14 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _affiliateNetworkAdd = __webpack_require__(74);
+	var _affiliateNetworkAdd = __webpack_require__(76);
 
 	var _affiliateNetworkAdd2 = _interopRequireDefault(_affiliateNetworkAdd);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 74 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -9598,7 +10092,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 75 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -9745,11 +10239,11 @@ webpackJsonp([0],[
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _tableRender = __webpack_require__(76);
+	var _tableRender = __webpack_require__(78);
 
 	var _tableRender2 = _interopRequireDefault(_tableRender);
 
-	var _tableEvent = __webpack_require__(77);
+	var _tableEvent = __webpack_require__(79);
 
 	var _tableEvent2 = _interopRequireDefault(_tableEvent);
 
@@ -9757,7 +10251,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 76 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10024,7 +10518,7 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 77 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10241,7 +10735,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 78 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -10367,7 +10861,7 @@ webpackJsonp([0],[
 
 	var _update2 = _interopRequireDefault(_update);
 
-	var _graphRender = __webpack_require__(79);
+	var _graphRender = __webpack_require__(81);
 
 	var _graphRender2 = _interopRequireDefault(_graphRender);
 
@@ -10375,7 +10869,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
-/* 79 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10533,7 +11027,7 @@ webpackJsonp([0],[
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _highcharts = __webpack_require__(80);
+	var _highcharts = __webpack_require__(82);
 
 	var _highcharts2 = _interopRequireDefault(_highcharts);
 
