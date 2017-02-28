@@ -3958,6 +3958,8 @@ webpackJsonp([0],[
 	      datetime.addEventListener('change', function (event) {
 	        var value = datetime.value;
 
+	        stat.graph_zoom = null;
+
 	        (0, _update2.default)({
 	          date_from: {
 	            year: value.from.year,
@@ -4455,6 +4457,7 @@ webpackJsonp([0],[
 
 	    is_tree: true,
 	    show_graph: false,
+	    graph_zoom: null,
 
 	    segments: ['campaign_id'],
 	    level: 1,
@@ -4755,6 +4758,10 @@ webpackJsonp([0],[
 	          if (params.show_graph !== !!obj.show_graph) {
 	            params.show_graph = !!obj.show_graph;
 	            isUpdateGraph = true;
+
+	            if (!params.show_graph) {
+	              params.graph_zoom = null;
+	            }
 	          }
 	          break;
 
@@ -6846,11 +6853,12 @@ webpackJsonp([0],[
 	    return null;
 	  }
 
-	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new offer">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Offer URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" placeholder="Create a url">\n          <span><span>\n        </div>\n        <div class="tags js-form-tags" style="display: none;"></div>\n      </div>\n    </div>\n    </div>';
+	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new offer">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Offer URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" placeholder="Create a url">\n          <span><span>\n        </div>\n        <div class="tags js-form-tags" style="display: none;"></div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Post id:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-post-id" type="text" placeholder="0">\n          <span></span>\n        </div>\n      </div>\n    </div>';
 
 	  var formName = popupBody.querySelector('.js-form-name');
 	  var formUrl = popupBody.querySelector('.js-form-url');
 	  var formUrlTags = popupBody.querySelector('.js-form-tags');
+	  var formPostUrl = popupBody.querySelector('.js-form-post-id');
 
 	  '{country},{cost},{campaign_id},{trafficsource_id},{ip_id},{offer_id}'.split(',').forEach(function (tag) {
 	    var span = document.createElement('span');
@@ -6905,6 +6913,7 @@ webpackJsonp([0],[
 	  popup.querySelector('.js-popup-save').addEventListener('click', function (event) {
 	    var name = formName.value.trim();
 	    var landerUrl = formUrl.value.trim();
+	    var postID = formPostUrl.value.trim();
 
 	    var focusFormName = function focusFormName() {
 	      var parentFormName = formName.parentNode;
@@ -6923,7 +6932,8 @@ webpackJsonp([0],[
 
 	    var data = {
 	      name: name,
-	      url: landerUrl
+	      url: landerUrl,
+	      post_id: postID
 	    };
 
 	    if (popupBody.currentLanderId || popupBody.currentLanderId === 0) {
@@ -9105,6 +9115,7 @@ webpackJsonp([0],[
 	  var formName = popupBody.querySelector('.js-form-name');
 	  var formUrl = popupBody.querySelector('.js-form-url');
 	  var formUrlTags = popupBody.querySelector('.js-form-tags');
+	  var formPostID = popupBody.querySelector('.js-form-post-id');
 
 	  formName.value = data.name || '';
 
@@ -9115,6 +9126,7 @@ webpackJsonp([0],[
 	  }
 
 	  formUrl.value = data.url || '';
+	  formPostID.value = data.post_id || '';
 
 	  [].concat(_toConsumableArray(formUrlTags.querySelectorAll('span'))).forEach(function (span) {
 	    if (formUrl.value.indexOf(span.textContent.trim()) !== -1) {
@@ -10887,8 +10899,16 @@ webpackJsonp([0],[
 	  stat.addEventListener('drawgraph', function () {
 	    var params = window.might.stat.params;
 
+	    if (stat.graph_zoom) {
+	      return;
+	    }
+
 	    if (!params.show_graph) {
 	      statGraph.style.display = 'none';
+	      return;
+	    }
+
+	    if (statGraphCanvas.resetDate) {
 	      return;
 	    }
 
@@ -10956,6 +10976,7 @@ webpackJsonp([0],[
 
 	exports.default = function (result) {
 	  var stat = document.querySelector('.js-stat');
+	  var datetime = stat.querySelector('.js-stat-datetime');
 	  var statGraph = stat.querySelector('.js-stat-graph');
 	  var canvas = stat.querySelector('#stat-graph');
 	  var res = result || {};
@@ -10966,6 +10987,7 @@ webpackJsonp([0],[
 
 	  statGraph.style.display = '';
 	  canvas.style.display = '';
+
 	  canvas.innerHTML = '';
 
 	  if (res.result && res.result.msg && typeof res.result.msg === 'string') {
@@ -11025,6 +11047,61 @@ webpackJsonp([0],[
 	              style: {
 	                color: '#ffffff'
 	              }
+	            }
+	          }
+	        }
+	      },
+	      events: {
+	        selection: function selection(event) {
+	          if (!event.resetSelection) {
+	            var f = new Date(event.xAxis[0].min);
+	            var t = new Date(event.xAxis[0].max);
+
+	            if (!stat.graph_zoom) {
+	              stat.graph_zoom = {};
+	              stat.graph_zoom.from = Object.assign({}, datetime.value.from);
+	              stat.graph_zoom.to = Object.assign({}, datetime.value.to);
+	              stat.graph_zoom.start_time = datetime.value.start_time;
+	              stat.graph_zoom.end_time = datetime.value.end_time;
+	            }
+
+	            datetime.updateValue({
+	              from: {
+	                year: f.getFullYear(),
+	                month: f.getMonth(),
+	                date: f.getDate()
+	              },
+	              to: {
+	                year: t.getFullYear(),
+	                month: t.getMonth(),
+	                date: t.getDate()
+	              },
+	              start_time: _highcharts2.default.dateFormat('%H:%M', event.xAxis[0].min),
+	              end_time: _highcharts2.default.dateFormat('%H:%M', event.xAxis[0].max)
+	            });
+
+	            (0, _update2.default)({
+	              date_from: datetime.value.from,
+	              date_to: datetime.value.to,
+	              start_time: datetime.value.start_time,
+	              end_time: datetime.value.end_time
+	            });
+	          } else {
+	            if (stat.graph_zoom) {
+	              datetime.updateValue(stat.graph_zoom);
+
+	              (0, _update2.default)({
+	                date_from: datetime.value.from,
+	                date_to: datetime.value.to,
+	                start_time: datetime.value.start_time,
+	                end_time: datetime.value.end_time
+	              });
+
+	              setTimeout(function () {
+	                return stat.graph_zoom = null;
+	              }, 500);
+	            } else {
+	              window.location.reload();
 	            }
 	          }
 	        }
@@ -11106,6 +11183,10 @@ webpackJsonp([0],[
 	var _highcharts = __webpack_require__(82);
 
 	var _highcharts2 = _interopRequireDefault(_highcharts);
+
+	var _update = __webpack_require__(49);
+
+	var _update2 = _interopRequireDefault(_update);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
