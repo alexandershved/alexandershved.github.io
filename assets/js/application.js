@@ -5196,6 +5196,8 @@ webpackJsonp([0],[
 	  var popupBody = popup.querySelector('.js-popup-body');
 
 	  if (popupBody) {
+	    popup.querySelector('.js-popup-wrap').style.width = '600px';
+
 	    var options = window._getOptionsFetch({
 	      field: 'id,name',
 	      order: 'name'
@@ -5835,10 +5837,14 @@ webpackJsonp([0],[
 	      var closest = event.target.closest('.js-form-tag');
 
 	      if (closest) {
+	        var val = closest.textContent;
 	        if (!closest.classList.contains('is-select')) {
-	          var val = closest.textContent;
 	          el.value += val;
 	          closest.classList.add('is-select');
+	        } else {
+	          var reg = new RegExp(val, 'g');
+	          el.value = el.value.replace(reg, '');
+	          closest.classList.remove('is-select');
 	        }
 	      }
 
@@ -6898,10 +6904,15 @@ webpackJsonp([0],[
 	    var closest = event.target.closest('.js-form-tag');
 
 	    if (closest) {
+	      var val = closest.textContent;
+
 	      if (!closest.classList.contains('is-select')) {
-	        var tag = closest.textContent;
-	        formUrl.value += tag;
+	        formUrl.value += val;
 	        closest.classList.add('is-select');
+	      } else {
+	        var reg = new RegExp(val, 'g');
+	        el.value = el.value.replace(reg, '');
+	        closest.classList.remove('is-select');
 	      }
 	    }
 
@@ -7053,10 +7064,15 @@ webpackJsonp([0],[
 	    var closest = event.target.closest('.js-form-tag');
 
 	    if (closest) {
+	      var val = closest.textContent;
+
 	      if (!closest.classList.contains('is-select')) {
-	        var tag = closest.textContent;
-	        formUrl.value += tag;
+	        formUrl.value += val;
 	        closest.classList.add('is-select');
+	      } else {
+	        var reg = new RegExp(val, 'g');
+	        el.value = el.value.replace(reg, '');
+	        closest.classList.remove('is-select');
 	      }
 	    }
 
@@ -7864,8 +7880,13 @@ webpackJsonp([0],[
 	    if (!list.classList.contains('is-open')) {
 	      open();
 	    } else {
+	      listValue.classList.add('is-focus');
 	      listInput.focus();
 	    }
+	  });
+
+	  listInput.addEventListener('blur', function () {
+	    return listValue.classList.remove('is-focus');
 	  });
 
 	  if (!isNormal) {
@@ -7911,6 +7932,7 @@ webpackJsonp([0],[
 	    window.addEventListener('click', clickWindow);
 	    list.classList.add('is-open');
 	    listInput.value = '';
+	    listValue.classList.add('is-focus');
 	    listInput.focus();
 
 	    if (!isNormal) {
@@ -8969,6 +8991,8 @@ webpackJsonp([0],[
 	  var popupBody = popup.querySelector('.js-popup-body');
 
 	  if (popupBody) {
+	    popup.querySelector('.js-popup-wrap').style.width = '600px';
+
 	    var options = window._getOptionsFetch({
 	      name: name
 	    });
@@ -9175,6 +9199,8 @@ webpackJsonp([0],[
 	  var popupBody = popup.querySelector('.js-popup-body');
 
 	  if (popupBody) {
+	    popup.querySelector('.js-popup-wrap').style.width = '600px';
+
 	    var options = window._getOptionsFetch({
 	      field: 'id,name',
 	      order: 'name'
@@ -9427,6 +9453,8 @@ webpackJsonp([0],[
 	  var popupBody = popup.querySelector('.js-popup-body');
 
 	  if (popupBody) {
+	    popup.querySelector('.js-popup-wrap').style.width = '600px';
+
 	    var options = window._getOptionsFetch({
 	      field: 'id,name',
 	      order: 'name'
@@ -9693,10 +9721,15 @@ webpackJsonp([0],[
 	    var closest = event.target.closest('.js-form-tag');
 
 	    if (closest) {
+	      var val = closest.textContent;
+
 	      if (!closest.classList.contains('is-select')) {
-	        var tag = closest.textContent;
-	        formUrl.value += tag;
+	        formUrl.value += val;
 	        closest.classList.add('is-select');
+	      } else {
+	        var reg = new RegExp(val, 'g');
+	        el.value = el.value.replace(reg, '');
+	        closest.classList.remove('is-select');
 	      }
 	    }
 
@@ -9828,6 +9861,8 @@ webpackJsonp([0],[
 	  var popupBody = popup.querySelector('.js-popup-body');
 
 	  if (popupBody) {
+	    popup.querySelector('.js-popup-wrap').style.width = '600px';
+
 	    var options = window._getOptionsFetch({
 	      field: 'id,name',
 	      order: 'name'
@@ -10044,7 +10079,7 @@ webpackJsonp([0],[
 	    return null;
 	  }
 
-	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new affiliate network">\n          <span>sadfsadf<span>\n        </div>\n        <div class="checkbox js-checkbox js-form-duplicate-postbacks">Accept dublicated post backs</div>\n        <div class="checkbox js-checkbox js-form-list-ips">Accept postbacks from white-listed IPs</div>\n        <div class="inputs js-form-ips" style="display: none;">\n          <div class="inputs__wrap">\n            <input class="js-form-input-ip" type="text">\n          </div>\n          <div class="inputs__error js-inputs-error"></div>\n        </div>\n      </div>\n    </div>';
+	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new affiliate network">\n          <span>sadfsadf<span>\n        </div>\n        <div class="checkbox js-checkbox js-form-duplicate-postbacks">Accept dublicated post backs</div>\n        <div class="checkbox js-checkbox js-form-list-ips">Accept postbacks from white-listed IPs</div>\n        <div class="checklist js-form-ips" style="display: none; margin-top: 15px">\n          <div class="checklist__value">\n            <input class="checklist__input js-form-input-ip" type="text">\n          </div>\n          <div class="checklist__error js-inputs-error"></div>\n        </div>\n      </div>\n    </div>';
 
 	  var formName = popupBody.querySelector('.js-form-name');
 	  var formDuplicatePostbacks = popupBody.querySelector('.js-form-duplicate-postbacks');
@@ -11032,7 +11067,14 @@ webpackJsonp([0],[
 	  _highcharts2.default.chart('stat-graph', {
 	    chart: {
 	      zoomType: 'x',
+	      spacingLeft: 5,
+	      spacingRight: 0,
+	      spacingBottom: 0,
 	      resetZoomButton: {
+	        position: {
+	          x: 0,
+	          y: 10
+	        },
 	        theme: {
 	          fill: '#0182ec',
 	          stroke: '#0182ec',
