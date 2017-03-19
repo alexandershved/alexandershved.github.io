@@ -778,6 +778,14 @@ webpackJsonp([0],[
 	      list.children[0]._inserBefore(label);
 	    }
 
+	    [].concat(_toConsumableArray(list.querySelectorAll('.js-list-item'))).forEach(function (item) {
+	      if (item.dataset.value === val) {
+	        item.classList.add('is-select');
+	      } else {
+	        item.classList.remove('is-select');
+	      }
+	    });
+
 	    return isUpdate;
 	  };
 
@@ -2033,6 +2041,7 @@ webpackJsonp([0],[
 	  var listValue = list.querySelector('.js-list-fetch-value');
 	  var search = list.querySelector('.js-list-fetch-search');
 	  var itemsWrap = list.querySelector('.js-list-fetch-items');
+	  var placeholder = list.dataset.placeholder;
 
 	  var clickWindow = void 0;
 	  var open = void 0;
@@ -2117,6 +2126,10 @@ webpackJsonp([0],[
 	        list.value = null;
 	        list.title = null;
 	        isUpdate = true;
+	      }
+
+	      if (placeholder) {
+	        listValue.textContent = placeholder;
 	      }
 	    } else {
 	      (function () {
@@ -2206,6 +2219,10 @@ webpackJsonp([0],[
 	      close();
 	    }
 	  });
+
+	  if (!listValue.textContent && placeholder) {
+	    listValue.textContent = placeholder;
+	  }
 	};
 
 	var _qs = __webpack_require__(14);
@@ -3754,6 +3771,7 @@ webpackJsonp([0],[
 
 	exports.default = function () {
 	  var stat = document.querySelector('.js-stat');
+	  var statControls = document.querySelector('.js-stat-controls');
 
 	  if (!stat) {
 	    return;
@@ -3769,6 +3787,7 @@ webpackJsonp([0],[
 	  var segmentBtns = void 0;
 	  var segmentLists = void 0;
 	  var segmentAdd = stat.querySelector('.js-stat-add-segment');
+	  var cohortFilterAdd = stat.querySelector('.js-cohort-add-filter');
 	  var graphBtn = stat.querySelector('.js-stat-show-graph');
 	  var treeBtn = stat.querySelector('.js-stat-is-tree');
 	  var postbackControl = stat.querySelector('.js-stat-postback');
@@ -3776,6 +3795,8 @@ webpackJsonp([0],[
 	  var refreshBtn = stat.querySelector('.js-stat-refresh');
 	  var columnsControl = stat.querySelector('.js-stat-columns');
 	  var statGraphFields = stat.querySelector('.js-stat-graph-fields');
+	  var cohortSize = stat.querySelector('.js-stat-cohort-size');
+	  var cohortMetric = stat.querySelector('.js-stat-cohort-metric');
 
 	  var createControls = {
 	    campaign_id: {
@@ -3801,41 +3822,46 @@ webpackJsonp([0],[
 	  };
 
 	  var updateCreateControls = function updateCreateControls() {
-	    for (var i in createControls) {
-	      if (createControls.hasOwnProperty(i)) {
-	        var item = createControls[i];
+	    if (statControls) {
+	      for (var i in createControls) {
+	        if (createControls.hasOwnProperty(i)) {
+	          var item = createControls[i];
 
-	        if (i !== statParams.segments[0]) {
-	          item.list.style.display = 'none';
-	          item.add.style.display = 'none';
-	        } else {
-	          item.list.style.display = '';
-	          item.add.style.display = '';
+	          if (i !== statParams.segments[0]) {
+	            item.list.style.display = 'none';
+	            item.add.style.display = 'none';
+	          } else {
+	            item.list.style.display = '';
+	            item.add.style.display = '';
+	          }
 	        }
 	      }
 	    }
 	  };
 
 	  var updateFilterStock = function updateFilterStock() {
-	    filterControl.style.display = 'none';
-	    filterControl.innerHTML = '';
+	    if (filterControl) {
+	      filterControl.style.display = 'none';
+	      filterControl.innerHTML = '';
 
-	    statParams.filters_stock.forEach(function (filter) {
-	      var filterEl = document.createElement('div');
-	      filterEl.className = 'list js-list-fetch is-margin-top';
-	      filterEl.innerHTML = '\n        <div class="list__wrap">\n          <div class="list__value js-list-fetch-value"></div>\n          <div class="list__dropdown">\n            <div class="list__search">\n              <i class="fa fa-search"></i>\n              <input class="js-list-fetch-search" type="text">\n            </div>\n            <div class="list__items js-list-fetch-items"></div>\n          </div>\n        </div>';
-	      filterControl.appendChild(filterEl);
-	      (0, _listFetchEvent2.default)(filterEl);
+	      statParams.filters_stock.forEach(function (filter) {
+	        var filterEl = document.createElement('div');
+	        filterEl.className = 'list js-list-fetch is-margin-top';
+	        filterEl.dataset.placeholder = 'Select filter';
+	        filterEl.innerHTML = '\n          <div class="list__wrap">\n            <div class="list__value js-list-fetch-value"></div>\n            <div class="list__dropdown">\n              <div class="list__search">\n                <i class="fa fa-search"></i>\n                <input class="js-list-fetch-search" type="text">\n              </div>\n              <div class="list__items js-list-fetch-items"></div>\n            </div>\n          </div>';
+	        filterControl.appendChild(filterEl);
+	        (0, _listFetchEvent2.default)(filterEl);
 
-	      filterEl.updateValue(filter.value, filter.title, filter.field, true);
+	        filterEl.updateValue(filter.value, filter.title, filter.field, true);
 
-	      filterEl.addEventListener('change:list', function (event) {
-	        (0, _update2.default)({ filter_stock: { field: filter.field, value: filterEl.value, title: filterEl.title } });
-	        updateFilterStock();
+	        filterEl.addEventListener('change:list', function (event) {
+	          (0, _update2.default)({ filter_stock: { field: filter.field, value: filterEl.value, title: filterEl.title } });
+	          updateFilterStock();
+	        });
+
+	        filterControl.style.display = '';
 	      });
-
-	      filterControl.style.display = '';
-	    });
+	    }
 	  };
 
 	  var segmentChange = function segmentChange(event) {
@@ -4042,6 +4068,16 @@ webpackJsonp([0],[
 	      });
 	    }
 
+	    if (cohortFilterAdd) {
+	      cohortFilterAdd.addEventListener('change', function (event) {
+	        var value = cohortFilterAdd.value;
+	        if (value) {
+	          (0, _update2.default)({ filter_stock: { field: value } });
+	          cohortFilterAdd.updateValue();
+	        }
+	      });
+	    }
+
 	    if (graphBtn) {
 	      graphBtn.addEventListener('click', function () {
 	        if (statParams.show_graph) {
@@ -4114,6 +4150,18 @@ webpackJsonp([0],[
 	      for (var i = 0; i < 5; i++) {
 	        addGraphFilter(i);
 	      }
+	    }
+
+	    if (cohortSize) {
+	      cohortSize.addEventListener('change', function () {
+	        (0, _update2.default)({ cohort_size: cohortSize.value });
+	      });
+	    }
+
+	    if (cohortMetric) {
+	      cohortMetric.addEventListener('change', function () {
+	        (0, _update2.default)({ cohort_metric: cohortMetric.value });
+	      });
 	    }
 	  };
 
@@ -4232,6 +4280,14 @@ webpackJsonp([0],[
 	        });
 	      })();
 	    }
+
+	    if (cohortSize) {
+	      cohortSize.updateValue(statParams.cohort_size);
+	    }
+
+	    if (cohortMetric) {
+	      cohortMetric.updateValue(statParams.cohort_metric);
+	    }
 	  };
 
 	  (0, _init2.default)();
@@ -4239,6 +4295,7 @@ webpackJsonp([0],[
 	  (0, _createControls2.default)();
 	  (0, _table2.default)();
 	  (0, _graph2.default)();
+	  (0, _tableCohort2.default)();
 
 	  statParams = window.might.stat.params;
 
@@ -4250,9 +4307,16 @@ webpackJsonp([0],[
 	    return response.json();
 	  }).then(function (result) {
 	    if (result) {
-	      if (Array.isArray(result.segments) && segmentAdd) {
+	      if (Array.isArray(result.segments) && (segmentAdd || cohortFilterAdd)) {
 	        (function () {
-	          var itemsWrap = segmentAdd.querySelector('.js-list-items');
+	          var itemsWrap = void 0;
+
+	          if (segmentAdd) {
+	            itemsWrap = segmentAdd.querySelector('.js-list-items');
+	          } else {
+	            itemsWrap = cohortFilterAdd.querySelector('.js-list-items');
+	          }
+
 	          itemsWrap.innerHTML = '';
 
 	          result.segments.forEach(function (segment) {
@@ -4264,6 +4328,10 @@ webpackJsonp([0],[
 	              itemsWrap.appendChild(item);
 	            }
 	          });
+
+	          if (cohortFilterAdd) {
+	            cohortFilterAdd.style.display = '';
+	          }
 	        })();
 	      }
 
@@ -4352,7 +4420,7 @@ webpackJsonp([0],[
 	          statParams.timezone = result.user.timezone;
 	        }
 
-	        if (result.user.columns) {
+	        if (result.user.columns && columnsControl) {
 	          (function () {
 	            var arr = result.user.columns.split(',');
 	            var columns = [];
@@ -4414,6 +4482,10 @@ webpackJsonp([0],[
 
 	var _graph2 = _interopRequireDefault(_graph);
 
+	var _tableCohort = __webpack_require__(83);
+
+	var _tableCohort2 = _interopRequireDefault(_tableCohort);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -4469,7 +4541,10 @@ webpackJsonp([0],[
 
 	    sort: null,
 	    columns: {},
-	    all_columns: {}
+	    all_columns: {},
+
+	    cohort_size: 'month',
+	    cohort_metric: 'leads'
 	  };
 
 	  var stat = document.querySelector('.js-stat');
@@ -4540,6 +4615,9 @@ webpackJsonp([0],[
 	    } else {
 	      params.sort = null;
 	    }
+
+	    params.cohort_size = query.cs || 'month';
+	    params.cohort_metric = query.cm || 'leads';
 	  };
 
 	  var pushHistroy = function pushHistroy() {
@@ -4608,6 +4686,14 @@ webpackJsonp([0],[
 	    if (params.sort) {
 	      query.scol = params.sort.column;
 	      query.sdir = params.sort.direction;
+	    }
+
+	    if (params.cohort_size !== 'month') {
+	      query.cs = params.cohort_size;
+	    }
+
+	    if (params.cohort_metric !== 'leads') {
+	      query.cm = params.cohort_metric;
 	    }
 
 	    history.push({
@@ -4794,26 +4880,37 @@ webpackJsonp([0],[
 	          if (obj.filter_stock && _typeof(obj.filter_stock) === 'object') {
 	            (function () {
 	              var f = obj.filter_stock;
-	              if (f.hasOwnProperty('title') && f.hasOwnProperty('value') && f.hasOwnProperty('field')) {
+	              if (f.hasOwnProperty('field')) {
 	                var pos = -1;
 	                params.filters_stock.forEach(function (filter, i) {
 	                  if (filter.field === f.field) {
 	                    pos = i;
 	                  }
 	                });
-	                if (pos !== -1) {
-	                  if (!f.value || !f.title) {
-	                    params.filters_stock.splice(pos, 1);
-	                  } else {
-	                    params.filters_stock[pos].value = f.value;
-	                    params.filters_stock[pos].title = f.title;
+	                if (f.hasOwnProperty('title') && f.hasOwnProperty('value')) {
+	                  if (pos !== -1) {
+	                    if (!f.value || !f.title) {
+	                      params.filters_stock.splice(pos, 1);
+	                    } else {
+	                      params.filters_stock[pos].value = f.value;
+	                      params.filters_stock[pos].title = f.title;
+	                    }
+	                    isUpdateStock = true;
+	                    isUpdate = true;
+	                  } else if (f.value && f.title) {
+	                    params.filters_stock.push(f);
+	                    isUpdateStock = true;
+	                    isUpdate = true;
 	                  }
-	                  isUpdateStock = true;
-	                  isUpdate = true;
-	                } else if (f.value && f.title) {
-	                  params.filters_stock.push(f);
-	                  isUpdateStock = true;
-	                  isUpdate = true;
+	                } else {
+	                  if (pos === -1) {
+	                    params.filters_stock.push(f);
+	                    isUpdateStock = true;
+	                    isUpdate = true;
+	                  } else {
+	                    params.filters_stock.push(params.filters_stock.splice(pos, 1)[0]);
+	                    isUpdateStock = true;
+	                  }
 	                }
 	              }
 	            })();
@@ -4884,6 +4981,20 @@ webpackJsonp([0],[
 	              params.fields_graph[fg.pos].visible = fg.visible;
 	              isUpdateGraph = true;
 	            }
+	          }
+	          break;
+
+	        case 'cohort_size':
+	          if (params.cohort_size !== obj.cohort_size) {
+	            params.cohort_size = obj.cohort_size;
+	            isUpdate = true;
+	          }
+	          break;
+
+	        case 'cohort_metric':
+	          if (params.cohort_metric !== obj.cohort_metric) {
+	            params.cohort_metric = obj.cohort_metric;
+	            isUpdate = true;
 	          }
 	          break;
 
@@ -5089,7 +5200,7 @@ webpackJsonp([0],[
 	exports.default = function () {
 	  var stat = document.querySelector('.js-stat');
 
-	  if (!stat) {
+	  if (!stat || !document.querySelector('.js-stat-controls')) {
 	    return;
 	  }
 
@@ -10228,6 +10339,10 @@ webpackJsonp([0],[
 	  var stat = document.querySelector('.js-stat');
 	  var navControl = document.querySelector('.js-stat-nav');
 
+	  if (stat.classList.contains('is-cohort')) {
+	    return;
+	  }
+
 	  var dateToString = function dateToString(y, m, d) {
 	    var date = new Date(y, m, d);
 	    return (0, _dateformat2.default)(date, 'yyyy-mm-dd');
@@ -10320,29 +10435,31 @@ webpackJsonp([0],[
 	        obj.result = result;
 
 	        if (obj.level === 1) {
-	          var yPosNav = navControl.getBoundingClientRect().top;
-	          var xScrollWindow = window.scrollX;
-	          var visibleNav = window.scrollY > 0 && yPosNav < window.innerHeight;
-
 	          (0, _tableEvent2.default)(_tableRender2.default.render(obj));
 
-	          if (params.total !== parseInt(result.recordsTotal, 10)) {
-	            params.total = parseInt(result.recordsTotal, 10);
-	            navControl.updateValue({
-	              total: params.total
-	            });
-	          }
+	          if (navControl) {
+	            var yPosNav = navControl.getBoundingClientRect().top;
+	            var xScrollWindow = window.scrollX;
+	            var visibleNav = window.scrollY > 0 && yPosNav < window.innerHeight;
 
-	          if (visibleNav) {
-	            var t = 0;
-	            var o = navControl;
-	            while (o) {
-	              if (o.offsetParent) {
-	                t += o.offsetTop;
-	              }
-	              o = o.offsetParent;
+	            if (params.total !== parseInt(result.recordsTotal, 10)) {
+	              params.total = parseInt(result.recordsTotal, 10);
+	              navControl.updateValue({
+	                total: params.total
+	              });
 	            }
-	            window.scrollTo(xScrollWindow, t - yPosNav);
+
+	            if (visibleNav) {
+	              var t = 0;
+	              var o = navControl;
+	              while (o) {
+	                if (o.offsetParent) {
+	                  t += o.offsetTop;
+	                }
+	                o = o.offsetParent;
+	              }
+	              window.scrollTo(xScrollWindow, t - yPosNav);
+	            }
 	          }
 
 	          stat.triggerEvent('drawgraph');
@@ -11231,6 +11348,296 @@ webpackJsonp([0],[
 	var _update2 = _interopRequireDefault(_update);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 82 */,
+/* 83 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  var stat = document.querySelector('.js-stat');
+	  var navControl = document.querySelector('.js-stat-nav');
+	  if (!stat.classList.contains('is-cohort')) {
+	    return;
+	  }
+
+	  var dateToString = function dateToString(y, m, d) {
+	    var date = new Date(y, m, d);
+	    return (0, _dateformat2.default)(date, 'yyyy-mm-dd');
+	  };
+
+	  var getFormData = function getFormData() {
+	    var params = window.might.stat.params;
+	    var data = {};
+
+	    data.draw = params.draw;
+	    data.start = (params.page - 1) * params.length;
+	    data.length = params.length;
+	    data.order = false;
+	    data.currency = params.currency.toUpperCase();
+	    data.currency_type = params.currency_type;
+	    data.currency_date = params.currency_date;
+	    var from = dateToString(params.date_from.year, params.date_from.month, params.date_from.date);
+	    var to = dateToString(params.date_to.year, params.date_to.month, params.date_to.date);
+	    data.date_filter = from + ' - ' + to;
+	    data.start_time = params.start_time;
+	    data.end_time = params.end_time;
+	    data.timezone = params.timezone;
+
+	    data.group = 'campaign_id';
+	    data.field1 = 'clicks';
+	    data.field2 = params.cohort_metric;
+	    data.interval = params.cohort_size;
+
+	    var filter = [];
+	    params.filters_stock.forEach(function (f) {
+	      filter.push(f);
+	    });
+	    params.filter.forEach(function (f) {
+	      filter.push(f);
+	    });
+	    data.filter = JSON.stringify(filter);
+
+	    return data;
+	  };
+
+	  stat.addEventListener('drawtable', function () {
+	    var obj = getFormData();
+
+	    if (obj) {
+	      var options = window._getOptionsFetch(obj);
+
+	      fetch(window.might.url + '/cohort/data', options).then(function (response) {
+	        return response.json();
+	      }).then(function (result) {
+	        var params = window.might.stat.params;
+
+	        if (result.error) {
+	          return;
+	        }
+
+	        _tableCohortRender2.default.render(result);
+
+	        if (navControl) {
+	          var yPosNav = navControl.getBoundingClientRect().top;
+	          var xScrollWindow = window.scrollX;
+	          var visibleNav = window.scrollY > 0 && yPosNav < window.innerHeight;
+
+	          if (params.total !== parseInt(result.recordsTotal, 10)) {
+	            params.total = parseInt(result.recordsTotal, 10);
+	            navControl.updateValue({
+	              total: params.total
+	            });
+	          }
+
+	          if (visibleNav) {
+	            var t = 0;
+	            var o = navControl;
+	            while (o) {
+	              if (o.offsetParent) {
+	                t += o.offsetTop;
+	              }
+	              o = o.offsetParent;
+	            }
+	            window.scrollTo(xScrollWindow, t - yPosNav);
+	          }
+	        }
+
+	        stat.triggerEvent('drawgraph');
+	      });
+	    }
+	  });
+	};
+
+	var _qs = __webpack_require__(14);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	var _dateformat = __webpack_require__(28);
+
+	var _dateformat2 = _interopRequireDefault(_dateformat);
+
+	var _tableCohortRender = __webpack_require__(84);
+
+	var _tableCohortRender2 = _interopRequireDefault(_tableCohortRender);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
+
+/***/ },
+/* 84 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	var _forCampaignEdit = __webpack_require__(54);
+
+	var _forCampaignEdit2 = _interopRequireDefault(_forCampaignEdit);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var createNode = function createNode(tag, cls, txt) {
+	  var el = document.createElement(tag);
+	  var classes = cls || [];
+	  var _iteratorNormalCompletion = true;
+	  var _didIteratorError = false;
+	  var _iteratorError = undefined;
+
+	  try {
+	    for (var _iterator = classes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	      var c = _step.value;
+
+	      if (c) el.classList.add(c);
+	    }
+	  } catch (err) {
+	    _didIteratorError = true;
+	    _iteratorError = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion && _iterator.return) {
+	        _iterator.return();
+	      }
+	    } finally {
+	      if (_didIteratorError) {
+	        throw _iteratorError;
+	      }
+	    }
+	  }
+
+	  if (txt || txt === 0) el.innerHTML = txt;
+	  return el;
+	};
+
+	exports.default = {
+	  render: function render(response) {
+	    var data = response.result.data;
+	    var sum = data.sum;
+	    var values = data.values;
+
+	    var div = createNode('div', ['table-cohort']);
+	    var table = createNode('table');
+
+	    div.appendChild(table);
+
+	    if ((typeof sum === 'undefined' ? 'undefined' : _typeof(sum)) === 'object' && (typeof values === 'undefined' ? 'undefined' : _typeof(values)) === 'object') {
+
+	      var columnsCount = 0;
+	      var metric = window.might.stat.params.cohort_metric;
+
+	      for (var i in values) {
+	        if (values.hasOwnProperty(i) && Array.isArray(values[i])) {
+	          columnsCount = Math.max(values[i].length, columnsCount);
+	        }
+	      }
+
+	      var thead = createNode('tr');
+	      table.appendChild(thead);
+
+	      var th = createNode('th', ['is-left'], 'Daily Cohorts');
+	      thead.appendChild(th);
+
+	      th = createNode('th', null, 'Clicks');
+	      thead.appendChild(th);
+
+	      for (var _i = 0; _i < columnsCount; _i++) {
+	        th = createNode('th', null, _i + 1);
+	        thead.appendChild(th);
+	      }
+
+	      var tdMedian = [];
+	      var clicksMedian = 0;
+	      var fragment = document.createDocumentFragment();
+
+	      for (var _i2 in values) {
+	        if (values.hasOwnProperty(_i2)) {
+	          var tr = createNode('tr');
+	          fragment.appendChild(tr);
+
+	          var _td = createNode('td', ['is-left', 'is-bold'], _i2);
+	          tr.appendChild(_td);
+
+	          var counClicks = Number(sum[_i2] && sum[_i2].clicks) || 0;
+	          clicksMedian += counClicks;
+	          _td = createNode('td', null, counClicks);
+	          tr.appendChild(_td);
+
+	          var isArray = Array.isArray(values[_i2]);
+	          var val = values[_i2];
+	          var txt = void 0;
+	          var backgroundColor = void 0;
+	          var opacity = void 0;
+	          var color = void 0;
+
+	          for (var j = 0; j < columnsCount; j++) {
+	            tdMedian[j] = tdMedian[j] || 0;
+
+	            if (isArray && val[j]) {
+	              if (counClicks) {
+	                txt = Math.round(100 * val[j][metric] / counClicks) / 100 + '%';
+	              } else {
+	                txt = '0%';
+	              }
+	              _td = createNode('td', null, txt);
+	              tdMedian[j] += val[j].clicks || 0;
+
+	              if (val[j].roi < 0) {
+	                backgroundColor = '245,91,99';
+	              } else {
+	                backgroundColor = '35,160,87';
+	              }
+
+	              opacity = Math.abs(val[j].roi) / 300;
+	              _td.style.backgroundColor = 'rgba(' + backgroundColor + ',' + opacity + ')';
+
+	              if (opacity > 0.6) {
+	                _td.style.color = '#ffffff';
+	              }
+	            } else {
+	              _td = createNode('td');
+	            }
+
+	            tr.appendChild(_td);
+	          }
+	        }
+	      }
+
+	      var trMedian = createNode('tr');
+	      table.appendChild(trMedian);
+
+	      var td = createNode('td', ['is-left', 'is-bold'], 'Median');
+	      trMedian.appendChild(td);
+
+	      td = createNode('td', ['is-bold'], clicksMedian);
+	      trMedian.appendChild(td);
+
+	      for (var _j = 0; _j < columnsCount; _j++) {
+	        td = createNode('td', ['is-bold'], tdMedian[_j]);
+	        trMedian.appendChild(td);
+	      }
+
+	      table.appendChild(fragment);
+	    }
+
+	    table.addEventListener('click', _forCampaignEdit2.default);
+
+	    document.querySelector('.js-canvas').innerHTML = '';
+	    document.querySelector('.js-canvas').appendChild(div);
+
+	    return div;
+	  }
+	};
 
 /***/ }
 ]);

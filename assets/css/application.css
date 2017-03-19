@@ -210,6 +210,9 @@ body.noscroll {
 #stat-graph {
   margin-top: 15px;
 }
+.is-inline {
+  display: inline-block;
+}
 /*
  *  Font Awesome 4.6.3 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
@@ -3717,6 +3720,9 @@ input:focus + .input__plus {
 .list.is-margin-top {
   margin-top: 10px;
 }
+.list.is-margin-bottom {
+  margin-bottom: 10px;
+}
 .list.is-calendar {
   margin: 0;
 }
@@ -4687,6 +4693,49 @@ input:focus + .input__plus {
   right: 0;
   bottom: 0;
   border: 1px solid #e4e5e9;
+}
+.table-cohort {
+  overflow: hidden;
+  overflow-x: auto;
+}
+.table-cohort table {
+  min-width: 100%;
+  margin-top: 15px;
+}
+.table-cohort th {
+  padding: 10px 15px 10px 0;
+  font-size: 13px;
+  color: #4f607a;
+  text-align: center;
+  vertical-align: top;
+  white-space: nowrap;
+  border-bottom: 1px solid #7f7f7f;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.table-cohort th + th {
+  padding: 10px 15px;
+}
+.table-cohort td {
+  padding: 10px 15px 10px 0;
+  font-size: 11px;
+  color: #4f607a;
+  text-align: center;
+  vertical-align: top;
+  white-space: nowrap;
+  border-top: 1px solid #e9e9e9;
+  background-color: transparent;
+  transition: all 200ms ease;
+}
+.table-cohort td + td {
+  padding: 10px 15px;
+  border-left: 1px solid #e9e9e9;
+}
+.table-cohort .is-bold {
+  font-weight: bold;
+}
+.table-cohort .is-left {
+  text-align: left;
 }
 .table {
   overflow: hidden;
