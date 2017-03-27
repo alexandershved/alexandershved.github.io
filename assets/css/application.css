@@ -4703,7 +4703,7 @@ input:focus + .input__plus {
   margin-top: 15px;
 }
 .table-cohort th {
-  padding: 10px 15px 10px 0;
+  padding: 10px 15px 10px 10px;
   font-size: 13px;
   color: #4f607a;
   text-align: center;
@@ -4717,7 +4717,7 @@ input:focus + .input__plus {
   padding: 10px 15px;
 }
 .table-cohort td {
-  padding: 10px 15px 10px 0;
+  padding: 10px 15px 10px 10px;
   font-size: 11px;
   color: #4f607a;
   text-align: center;
@@ -4726,16 +4726,41 @@ input:focus + .input__plus {
   border-top: 1px solid #e9e9e9;
   background-color: transparent;
   transition: all 200ms ease;
+  cursor: pointer;
 }
 .table-cohort td + td {
   padding: 10px 15px;
   border-left: 1px solid #e9e9e9;
+  cursor: default;
 }
 .table-cohort .is-bold {
   font-weight: bold;
 }
 .table-cohort .is-left {
   text-align: left;
+}
+.table-cohort .is-clickable {
+  position: relative;
+  display: inline-block;
+  transition: all 200ms ease;
+}
+.table-cohort .is-clickable:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  border-bottom: 1px solid rgba(79,96,122,0.4);
+}
+.table-cohort tr.is-select .is-clickable {
+  color: #000;
+}
+.table-cohort:not(.is-no-click) tr:not(.is-select) td:hover .is-clickable {
+  color: #0182ec;
+}
+.table-cohort.is-show-graph tr:not(.is-select) td {
+  color: rgba(79,96,122,0.5);
+  background-color: #fff !important;
 }
 .table {
   overflow: hidden;

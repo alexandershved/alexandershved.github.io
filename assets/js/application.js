@@ -171,7 +171,8 @@ webpackJsonp([0],[
 	    var options = {
 	      method: 'post',
 	      mode: 'cors',
-	      headers: headers
+	      headers: headers,
+	      credentials: 'same-origin'
 	    };
 
 	    var data = obj || {};
@@ -4552,7 +4553,7 @@ webpackJsonp([0],[
 	  var currentDate = might.current_datetime;
 
 	  var regTime = new RegExp(/^([0,1][0-9]|2[0-3]):[0-5][0-9]$/);
-	  var regDate = new RegExp(/^\d{4}-(0[1-9]|1[0-2])-([0-1][0-9]|3[0-1])$/);
+	  var regDate = new RegExp(/^\d{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])$/);
 
 	  var dateToString = function dateToString(y, m, d) {
 	    var date = new Date(y, m, d);
@@ -4595,7 +4596,9 @@ webpackJsonp([0],[
 	    params.postback_date = !!parseInt(query.pd, 10);
 	    params.segments = query.seg || ['campaign_id'];
 	    params.is_tree = query.hasOwnProperty('it') ? !!parseInt(query.it, 10) : true;
-	    params.show_graph = !!parseInt(query.sg, 10);
+	    if (!stat.classList.contains('is-cohort')) {
+	      params.show_graph = !!parseInt(query.sg, 10);
+	    }
 	    params.filters_stock = query.fs || [];
 
 	    var lines = void 0;
@@ -4664,7 +4667,7 @@ webpackJsonp([0],[
 	      query.it = 0;
 	    }
 
-	    if (params.show_graph) {
+	    if (!stat.classList.contains('is-cohort') && params.show_graph) {
 	      query.sg = 1;
 	    }
 
@@ -10989,6 +10992,10 @@ webpackJsonp([0],[
 	  var statGraph = stat.querySelector('.js-stat-graph');
 	  var statGraphCanvas = stat.querySelector('#stat-graph');
 
+	  if (stat.classList.contains('is-cohort')) {
+	    return;
+	  }
+
 	  if (!statGraph || !statGraphCanvas) {
 	    return;
 	  }
@@ -11363,6 +11370,7 @@ webpackJsonp([0],[
 	exports.default = function () {
 	  var stat = document.querySelector('.js-stat');
 	  var navControl = document.querySelector('.js-stat-nav');
+
 	  if (!stat.classList.contains('is-cohort')) {
 	    return;
 	  }
@@ -11422,7 +11430,7 @@ webpackJsonp([0],[
 	          return;
 	        }
 
-	        _tableCohortRender2.default.render(result);
+	        (0, _tableCohortEvent2.default)(_tableCohortRender2.default.render(result));
 
 	        if (navControl) {
 	          var yPosNav = navControl.getBoundingClientRect().top;
@@ -11467,12 +11475,16 @@ webpackJsonp([0],[
 
 	var _tableCohortRender2 = _interopRequireDefault(_tableCohortRender);
 
+	var _tableCohortEvent = __webpack_require__(85);
+
+	var _tableCohortEvent2 = _interopRequireDefault(_tableCohortEvent);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
 /* 84 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	'use strict';
 
@@ -11481,12 +11493,6 @@ webpackJsonp([0],[
 	});
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-	var _forCampaignEdit = __webpack_require__(54);
-
-	var _forCampaignEdit2 = _interopRequireDefault(_forCampaignEdit);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var createNode = function createNode(tag, cls, txt) {
 	  var el = document.createElement(tag);
@@ -11565,7 +11571,9 @@ webpackJsonp([0],[
 	          var tr = createNode('tr');
 	          fragment.appendChild(tr);
 
-	          var _td = createNode('td', ['is-left', 'is-bold'], _i2);
+	          var _td = createNode('td', ['is-left', 'is-bold', 'js-table-cohort-graph']);
+	          var span = createNode('span', ['is-clickable'], _i2);
+	          _td.appendChild(span);
 	          tr.appendChild(_td);
 
 	          var counClicks = Number(sum[_i2] && sum[_i2].clicks) || 0;
@@ -11630,14 +11638,263 @@ webpackJsonp([0],[
 	      table.appendChild(fragment);
 	    }
 
-	    table.addEventListener('click', _forCampaignEdit2.default);
-
 	    document.querySelector('.js-canvas').innerHTML = '';
 	    document.querySelector('.js-canvas').appendChild(div);
 
 	    return div;
 	  }
 	};
+
+/***/ },
+/* 85 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (table) {
+	  var colors = window.might.graph_colors;
+	  var selectColor = [];
+
+	  for (var i = 0; i < colors.length; i++) {
+	    selectColor.push(false);
+	  }
+
+	  table.addEventListener('click', function (event) {
+	    var clickable = event.target.closest('.js-table-cohort-graph');
+
+	    if (clickable) {
+	      var tr = clickable.closest('tr');
+
+	      if (!tr.classList.contains('is-select')) {
+	        if (table.classList.contains('is-no-click')) {
+	          return;
+	        }
+
+	        var color = getColor();
+
+	        tr.querySelectorAll('td')[0].style.backgroundColor = color;
+	        tr.dataset.color = color;
+	        tr.classList.add('is-select');
+	        table.classList.add('is-show-graph');
+	      } else {
+	        (function () {
+	          tr.classList.remove('is-select');
+	          tr.querySelectorAll('td')[0].style.backgroundColor = '';
+	          unselectColor(tr.dataset.color);
+	          tr.dataset.color = null;
+
+	          var noGraph = true;
+
+	          [].concat(_toConsumableArray(table.querySelectorAll('tr'))).forEach(function (el) {
+	            if (el.classList.contains('is-select') && noGraph) {
+	              noGraph = false;
+	            }
+	          });
+
+	          if (noGraph) {
+	            table.classList.remove('is-show-graph');
+	          }
+	        })();
+	      }
+
+	      if (table.classList.contains('is-show-graph')) {
+	        if (table.querySelectorAll('tr.is-select').length === 5) {
+	          table.classList.add('is-no-click');
+	        } else {
+	          table.classList.remove('is-no-click');
+	        }
+	      }
+
+	      render();
+	    }
+	  });
+
+	  function render() {
+	    var res = [];
+	    var color = [];
+
+	    [].concat(_toConsumableArray(table.querySelectorAll('tr.is-select'))).forEach(function (tr) {
+	      var line = {
+	        data: []
+	      };
+
+	      color.push(tr.dataset.color);
+
+	      [].concat(_toConsumableArray(tr.querySelectorAll('td'))).forEach(function (td, i) {
+	        if (i === 0) {
+	          line.name = td.textContent;
+	        } else if (i > 1 && td.textContent) {
+	          line.data.push(Number(td.textContent.replace('%', ''), 10));
+	        }
+	      });
+
+	      res.push(line);
+	    });
+
+	    (0, _graphCohortRender2.default)(res, color);
+	  }
+
+	  function getColor() {
+	    var color = void 0;
+
+	    for (var _i = 0; _i < selectColor.length; _i++) {
+	      if (!selectColor[_i]) {
+	        color = colors[_i];
+	        selectColor[_i] = true;
+	        break;
+	      }
+	    }
+
+	    return color;
+	  }
+
+	  function unselectColor(color) {
+	    for (var _i2 = 0; _i2 < colors.length; _i2++) {
+	      if (colors[_i2] === color) {
+	        selectColor[_i2] = false;
+	      }
+	    }
+	  }
+	};
+
+	var _update = __webpack_require__(49);
+
+	var _update2 = _interopRequireDefault(_update);
+
+	var _graphCohortRender = __webpack_require__(86);
+
+	var _graphCohortRender2 = _interopRequireDefault(_graphCohortRender);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
+/* 86 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (result, color) {
+	  var stat = document.querySelector('.js-stat');
+	  var statGraph = stat.querySelector('.js-stat-graph');
+	  var canvas = stat.querySelector('#stat-graph');
+
+	  if (result.length) {
+	    statGraph.style.display = '';
+	    canvas.style.display = '';
+	  } else {
+	    statGraph.style.display = 'none';
+	    canvas.style.display = 'none';
+	  }
+
+	  canvas.innerHTML = '';
+
+	  _highcharts2.default.setOptions({
+	    timezone: 'Africa/Abidjan'
+	  });
+
+	  _highcharts2.default.chart('stat-graph', {
+	    chart: {
+	      zoomType: 'x',
+	      spacingLeft: 5,
+	      spacingRight: 0,
+	      spacingBottom: 0,
+	      resetZoomButton: {
+	        position: {
+	          x: 0,
+	          y: 10
+	        },
+	        theme: {
+	          fill: '#0182ec',
+	          stroke: '#0182ec',
+	          style: {
+	            color: '#ffffff'
+	          },
+	          r: 0,
+	          states: {
+	            hover: {
+	              fill: '#3a62c6',
+	              stroke: '#3a62c6',
+	              style: {
+	                color: '#ffffff'
+	              }
+	            }
+	          }
+	        }
+	      }
+	    },
+	    title: {
+	      text: null
+	    },
+	    credits: {
+	      enabled: false
+	    },
+	    xAxis: {
+	      type: 'linear'
+	    },
+	    yAxis: {
+	      title: {
+	        text: null
+	      },
+	      plotLines: [{
+	        value: 0,
+	        width: 1,
+	        color: '#808080'
+	      }]
+	    },
+	    legend: {
+	      enabled: false
+	    },
+	    tooltip: {
+	      shared: true,
+	      padding: 15,
+	      borderRadius: 0,
+	      borderColor: '#3a62c6',
+	      backgroundColor: '#ffffff',
+	      style: {
+	        color: '#54647e',
+	        fontSize: '14px',
+	        lineHeight: '20px'
+	      },
+	      headerFormat: '<span style="font-weight: bold; font-size: 14px;">{point.key}</span><br/><br/>'
+	    },
+	    plotOptions: {
+	      series: {
+	        marker: {
+	          symbol: 'circle',
+	          radius: 2
+	        },
+	        pointStart: 1
+	      }
+	    },
+
+	    colors: color,
+	    series: result
+	  });
+	};
+
+	var _dateformat = __webpack_require__(28);
+
+	var _dateformat2 = _interopRequireDefault(_dateformat);
+
+	var _highcharts = __webpack_require__(82);
+
+	var _highcharts2 = _interopRequireDefault(_highcharts);
+
+	var _update = __webpack_require__(49);
+
+	var _update2 = _interopRequireDefault(_update);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }
 ]);
