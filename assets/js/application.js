@@ -172,7 +172,7 @@ webpackJsonp([0],[
 	      method: 'post',
 	      mode: 'cors',
 	      headers: headers,
-	      credentials: 'same-origin'
+	      credentials: 'include'
 	    };
 
 	    var data = obj || {};
