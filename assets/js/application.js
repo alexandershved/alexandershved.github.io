@@ -50,6 +50,10 @@ webpackJsonp([0],[
 
 	var _index2 = _interopRequireDefault(_index);
 
+	var _index3 = __webpack_require__(87);
+
+	var _index4 = _interopRequireDefault(_index3);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	(0, _reset2.default)();
@@ -65,6 +69,7 @@ webpackJsonp([0],[
 	(0, _listFetch2.default)();
 
 	(0, _index2.default)();
+	(0, _index4.default)();
 
 /***/ },
 /* 1 */
@@ -171,9 +176,12 @@ webpackJsonp([0],[
 	    var options = {
 	      method: 'post',
 	      mode: 'cors',
-	      headers: headers,
-	      credentials: 'include'
+	      headers: headers
 	    };
+
+	    if (true) {
+	      options.credentials = 'include';
+	    }
 
 	    var data = obj || {};
 
@@ -5715,7 +5723,7 @@ webpackJsonp([0],[
 
 	  popup.querySelector('.js-popup-wrap').style.width = '1000px';
 
-	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for campaign">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Domain:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-domain" style="display: block; margin: 0 0 15px;" data-placeholder="Select domain">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Traffic Source:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-traffic-source" style="display: block; margin: 0 0 15px;" data-placeholder="Select traffic source">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Payout:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="radiobutton js-form-cost-donottrack">Do not track</div>\n        <div class="radiobutton js-form-cost-cpc is-select">CPC</div>\n        <div class="radiobutton js-form-cost-cpa">CPA</div>\n        <div class="popup__line-lbl" style="margin-left: 80px;"><span>Cost click:</span><div class="info"></div></div>\n        <div class="input" style="display: inline-block; width: 90px; margin-left: 10px; margin-right: 10px;">\n          <input class="js-form-cost-click" type="text" placeholder="0">\n          <span><span>\n        </div>\n        <div class="popup__currency js-form-cost-eur">\n          <i class="fa fa-euro"></i>\n        </div>\n        <div class="popup__currency js-form-cost-rub">\n          <i class="fa fa-ruble"></i>\n        </div>\n        <div class="popup__currency js-form-cost-usd is-select">\n          <i class="fa fa-dollar"></i>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Postback URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="js-form-input-parent">\n          <div class="input is-with-plus">\n            <input class="js-form-postback-url" type="text" placeholder="Postback URL">\n            <div class="input__plus js-form-postback-url-add"></div>\n            <span><span>\n          </div>\n          <div class="tags js-form-postback-tags" style="display: none;"></div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Redirect mode:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-directtype" style="display: block; margin: 0 0 15px;" data-placeholder="Select redirect mode">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items">\n                <div class="list__item js-list-item" data-value="301">301</div>\n                <div class="list__item js-list-item" data-value="302">302</div>\n                <div class="list__item js-list-item" data-value="js">js</div>\n                <div class="list__item js-list-item" data-value="double_js">double_js</div>\n                <div class="list__item js-list-item" data-value="meta_refresh">meta_refresh</div>\n                <div class="list__item js-list-item" data-value="double_meta_refresh">double_meta_refresh</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="cc js-create-campaign"></div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Campaign URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" readonly="true">\n        </div>\n      </div>\n      <div class="popup__line-btn">\n        <div class="btn-copy js-form-url-copy">Clipboard</div>\n      </div>\n    </div>';
+	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for campaign">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Domain:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-domain" style="display: block; margin: 0 0 10px;" data-placeholder="Select domain">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Traffic Source:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-traffic-source" style="display: block; margin: 0 0 10px;" data-placeholder="Select traffic source">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Payout:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="radiobutton js-form-cost-donottrack">Do not track</div>\n        <div class="radiobutton js-form-cost-cpc is-select">CPC</div>\n        <div class="radiobutton js-form-cost-cpa">CPA</div>\n        <div class="popup__line-lbl" style="margin-left: 80px;"><span>Cost click:</span><div class="info"></div></div>\n        <div class="input" style="display: inline-block; width: 90px; margin-left: 10px; margin-right: 10px;">\n          <input class="js-form-cost-click" type="text" placeholder="0">\n          <span><span>\n        </div>\n        <div class="popup__currency js-form-cost-eur">\n          <i class="fa fa-euro"></i>\n        </div>\n        <div class="popup__currency js-form-cost-rub">\n          <i class="fa fa-ruble"></i>\n        </div>\n        <div class="popup__currency js-form-cost-usd is-select">\n          <i class="fa fa-dollar"></i>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Postback URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="js-form-input-parent">\n          <div class="input is-with-plus">\n            <input class="js-form-postback-url" type="text" placeholder="Postback URL">\n            <div class="input__plus js-form-postback-url-add"></div>\n            <span><span>\n          </div>\n          <div class="tags js-form-postback-tags" style="display: none;"></div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Redirect mode:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-directtype" style="display: block; margin: 0 0 10px;" data-placeholder="Select redirect mode">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items">\n                <div class="list__item js-list-item" data-value="301">301</div>\n                <div class="list__item js-list-item" data-value="302">302</div>\n                <div class="list__item js-list-item" data-value="js">js</div>\n                <div class="list__item js-list-item" data-value="double_js">double_js</div>\n                <div class="list__item js-list-item" data-value="meta_refresh">meta_refresh</div>\n                <div class="list__item js-list-item" data-value="double_meta_refresh">double_meta_refresh</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="cc js-create-campaign"></div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Campaign URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" readonly="true">\n        </div>\n      </div>\n      <div class="popup__line-btn">\n        <div class="btn-copy js-form-url-copy">Clipboard</div>\n      </div>\n    </div>';
 
 	  var formName = popupBody.querySelector('.js-form-name');
 	  var formDomain = popupBody.querySelector('.js-form-domain');
@@ -11895,6 +11903,325 @@ webpackJsonp([0],[
 	var _update2 = _interopRequireDefault(_update);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 87 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  var settings = document.querySelector('.js-settings');
+
+	  if (!settings) {
+	    return;
+	  }
+
+	  var tags = document.querySelector('.js-settings-tags');
+	  var allTags = document.querySelectorAll('.js-settings-tag');
+	  var allTabs = document.querySelectorAll('.js-settings-tab');
+
+	  tags.addEventListener('click', function (event) {
+	    var tag = event.target.closest('.js-settings-tag');
+
+	    if (tag) {
+	      var index = [].concat(_toConsumableArray(allTags)).indexOf(tag);
+
+	      [].concat(_toConsumableArray(allTags)).forEach(function (el) {
+	        return el.classList.remove('is-active');
+	      });
+	      allTags[index].classList.add('is-active');
+
+	      [].concat(_toConsumableArray(allTabs)).forEach(function (el) {
+	        return el.classList.remove('is-show');
+	      });
+	      allTabs[index].classList.add('is-show');
+	    }
+	  });
+
+	  (0, _settingsProfile2.default)();
+	  (0, _settingsDomain2.default)();
+	};
+
+	var _settingsProfile = __webpack_require__(88);
+
+	var _settingsProfile2 = _interopRequireDefault(_settingsProfile);
+
+	var _settingsDomain = __webpack_require__(89);
+
+	var _settingsDomain2 = _interopRequireDefault(_settingsDomain);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
+/* 88 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	exports.default = function () {
+	  var settings = document.querySelector('.js-settings');
+	  var defaultOptions = void 0;
+
+	  var profile = settings.querySelector('.js-settings-profile');
+	  var name = settings.querySelector('.js-settings-profile-name');
+	  var surname = settings.querySelector('.js-settings-profile-surname');
+	  var email = settings.querySelector('.js-settings-profile-email');
+	  var eur = settings.querySelector('.js-settings-profile-eur');
+	  var rub = settings.querySelector('.js-settings-profile-rub');
+	  var usd = settings.querySelector('.js-settings-profile-usd');
+	  var balance = settings.querySelector('.js-settings-profile-balance');
+	  var timezone = settings.querySelector('.js-settings-profile-timezone');
+	  var oldPswd = settings.querySelector('.js-settings-profile-old-pswd');
+	  var newPswd = settings.querySelector('.js-settings-profile-new-pswd');
+	  var confirmPswd = settings.querySelector('.js-settings-profile-confirm-pswd');
+	  var message = settings.querySelector('.js-settings-profile-message');
+	  var error = settings.querySelector('.js-settings-profile-error');
+
+	  var resetMessages = function resetMessages() {
+	    message.textContent = '';
+	    error.textContent = '';
+	  };
+
+	  var options = window._getOptionsFetch();
+	  fetch(window.might.url + '/user/profile/get', options).then(function (response) {
+	    return response.json();
+	  }).then(function (res) {
+	    if (res.error) {
+	      if (res.result.msg) {
+	        error.textContent = res.result.msg;
+	      }
+	      return;
+	    }
+
+	    if (res.result && _typeof(res.result) === 'object') {
+	      if (!res.result.data || _typeof(res.result.data) !== 'object') {
+	        error.textContent = 'Error';
+	        return;
+	      }
+
+	      defaultOptions = res.result.data;
+
+	      name.value = defaultOptions.name || '';
+	      surname.value = defaultOptions.surname || '';
+	      email.value = defaultOptions.email || '';
+	      balance.value = defaultOptions.balance || 0;
+
+	      switch (defaultOptions.default_currency.toLowerCase()) {
+	        case 'eur':
+	          eur.classList.add('is-select');
+	          break;
+	        case 'rub':
+	          rub.classList.add('is-select');
+	          break;
+	        default:
+	          usd.classList.add('is-select');
+	      }
+
+	      if (defaultOptions.default_timezone) {
+	        timezone.updateValue(defaultOptions.default_timezone);
+	      }
+	    }
+	  });
+
+	  profile.addEventListener('mousedown', resetMessages);
+	  name.addEventListener('focus', resetMessages);
+	  surname.addEventListener('focus', resetMessages);
+	  email.addEventListener('focus', resetMessages);
+	  oldPswd.addEventListener('focus', resetMessages);
+	  newPswd.addEventListener('focus', resetMessages);
+	  confirmPswd.addEventListener('focus', resetMessages);
+
+	  eur.addEventListener('click', function () {
+	    eur.classList.add('is-select');
+	    rub.classList.remove('is-select');
+	    usd.classList.remove('is-select');
+	  });
+
+	  rub.addEventListener('click', function () {
+	    eur.classList.remove('is-select');
+	    rub.classList.add('is-select');
+	    usd.classList.remove('is-select');
+	  });
+
+	  usd.addEventListener('click', function () {
+	    eur.classList.remove('is-select');
+	    rub.classList.remove('is-select');
+	    usd.classList.add('is-select');
+	  });
+
+	  settings.querySelector('.js-settings-profile-save').addEventListener('click', function () {
+	    var nameVal = name.value;
+	    var surnameVal = surname.value;
+	    var emailVal = email.value;
+	    var timezoneVal = timezone.value;
+
+	    var currencyVal = 'USD';
+
+	    if (eur.classList.contains('is-select')) {
+	      currencyVal = 'EUR';
+	    } else if (rub.classList.contains('is-select')) {
+	      currencyVal = 'RUB';
+	    }
+
+	    var oldPswdVal = oldPswd.value;
+	    var newPswdVal = newPswd.value;
+	    var confirmPswdVal = confirmPswd.value;
+
+	    var toSave = false;
+	    var opt = {};
+
+	    var reg = /.+@.+\..+/i;
+	    if (!reg.test(emailVal)) {
+	      var _ret = function () {
+	        email.parentNode.classList.add('is-error');
+	        error.textContent = 'Invalid email';
+
+	        var focusEmail = function focusEmail() {
+	          email.parentNode.classList.remove('is-error');
+	          email.removeEventListener('focus', focusEmail);
+	        };
+
+	        email.addEventListener('focus', focusEmail);
+
+	        return {
+	          v: void 0
+	        };
+	      }();
+
+	      if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+	    } else if (nameVal !== defaultOptions.name) {
+	      opt.name = nameVal;
+	      toSave = true;
+	    }
+
+	    if (oldPswdVal || newPswdVal || confirmPswdVal) {
+	      var _ret2 = function () {
+	        var focusPswd = function focusPswd() {
+	          oldPswd.parentNode.classList.remove('is-error');
+	          oldPswd.removeEventListener('focus', focusPswd);
+	        };
+
+	        var focusNewPswd = function focusNewPswd() {
+	          newPswd.value = '';
+	          confirmPswd.value = '';
+	          newPswd.parentNode.classList.remove('is-error');
+	          confirmPswd.parentNode.classList.remove('is-error');
+	          newPswd.removeEventListener('focus', focusNewPswd);
+	          confirmPswd.removeEventListener('focus', focusNewPswd);
+	        };
+
+	        if (!oldPswdVal) {
+	          error.textContent = 'You must enter the old password';
+	          oldPswd.parentNode.classList.add('is-error');
+	          oldPswd.addEventListener('focus', focusPswd);
+	          return {
+	            v: void 0
+	          };
+	        } else if (oldPswdVal === newPswdVal) {
+	          error.textContent = 'The new password must be different';
+	          newPswd.parentNode.classList.add('is-error');
+	          newPswd.addEventListener('focus', focusNewPswd);
+	          return {
+	            v: void 0
+	          };
+	        }if (newPswdVal !== confirmPswdVal) {
+	          error.textContent = 'Entered passwords do not match';
+	          newPswd.parentNode.classList.add('is-error');
+	          confirmPswd.parentNode.classList.add('is-error');
+	          newPswd.addEventListener('focus', focusNewPswd);
+	          confirmPswd.addEventListener('focus', focusNewPswd);
+	          return {
+	            v: void 0
+	          };
+	        }
+
+	        opt.old_password = oldPswdVal;
+	        opt.password = newPswdVal;
+	        opt.confirm_password = confirmPswdVal;
+	        toSave = true;
+	      }();
+
+	      if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
+	    }
+
+	    if (surnameVal !== defaultOptions.surname) {
+	      opt.surname = surnameVal;
+	      toSave = true;
+	    }
+
+	    if (emailVal !== defaultOptions.email) {
+	      opt.email = emailVal;
+	      toSave = true;
+	    }
+
+	    if (timezoneVal !== defaultOptions.default_timezone) {
+	      opt.default_timezone = timezoneVal;
+	      toSave = true;
+	    }
+
+	    if (currencyVal !== defaultOptions.default_currency) {
+	      opt.default_currency = currencyVal;
+	      toSave = true;
+	    }
+
+	    if (toSave) {
+	      opt = window._getOptionsFetch(opt);
+
+	      fetch(window.might.url + '/user/profile/update', opt).then(function (response) {
+	        return response.json();
+	      }).then(function (res) {
+	        if (res.error) {
+	          if (res.result && _typeof(res.result) === 'object' && res.result.msg) {
+	            error.textContent = res.result.msg;
+	          } else {
+	            error.textContent = 'Error';
+	          }
+	        } else {
+	          if (res.result && _typeof(res.result) === 'object') {
+	            if (res.result.msg === 'Saved') {
+	              message.textContent = 'Profile saved';
+	            }
+	          }
+	        }
+	      });
+	    } else {
+	      message.textContent = 'Nothing to save';
+	    }
+	  });
+	};
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
+
+/***/ },
+/* 89 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  var options = window._getOptionsFetch();
+
+	  fetch(window.might.url + '/user/domains/get', options).then(function (response) {
+	    return response.json();
+	  }).then(function (result) {});
+	};
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ }
 ]);
