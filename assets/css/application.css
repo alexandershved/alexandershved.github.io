@@ -3473,7 +3473,7 @@ body.noscroll {
 .header__link {
   display: inline-block;
   height: 100%;
-  padding: 14px 20px 0;
+  padding: 13px 20px 0;
   font-size: 13px;
   color: #fff;
   cursor: pointer;
@@ -3486,16 +3486,20 @@ body.noscroll {
   background-color: rgba(255,255,255,0.2);
   border-bottom: 2px solid #fff;
 }
-.header__user {
+.header__controls {
   position: absolute;
   top: 0;
   right: 20px;
   bottom: 0;
 }
-.header__user-name {
+.header__user {
   position: relative;
   display: inline-block;
-  padding: 14px 35px 20px 20px;
+}
+.header__user-name {
+  display: block;
+  height: 40px;
+  padding: 13px 35px 0 20px;
   font-size: 13px;
   color: #fff;
   cursor: pointer;
@@ -3513,6 +3517,46 @@ body.noscroll {
 }
 .header__user-name:hover {
   background-color: rgba(255,255,255,0.2);
+}
+.header__user-links {
+  position: absolute;
+  display: none;
+  top: 100%;
+  left: 0;
+  right: 0;
+  box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2);
+  background-color: #0182ec;
+}
+.header__user-links a,
+.header__user-links span {
+  display: block;
+  height: 40px;
+  padding: 13px 20px 0 20px;
+  font-size: 13px;
+  color: #fff;
+  cursor: pointer;
+}
+.header__user-links a:hover,
+.header__user-links span:hover {
+  background-color: rgba(255,255,255,0.2);
+}
+.header__user.is-open .header__user-name {
+  background-color: rgba(255,255,255,0.2);
+}
+.header__user.is-open .header__user-name:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  top: 18px;
+  right: 15px;
+  border-top: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 6px solid #fff;
+}
+.header__user.is-open .header__user-links {
+  display: block;
 }
 .helper {
   position: absolute;
