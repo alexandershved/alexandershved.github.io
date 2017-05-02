@@ -12152,7 +12152,7 @@ webpackJsonp([0],[
 	  allTabs[settings.currentTab].classList.add('is-show');
 
 	  (0, _profile2.default)();
-	  (0, _domain2.default)();
+	  (0, _domains2.default)();
 	  (0, _conversions2.default)();
 	  (0, _rights2.default)();
 	};
@@ -12169,15 +12169,15 @@ webpackJsonp([0],[
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _domain = __webpack_require__(114);
+	var _domains = __webpack_require__(114);
 
-	var _domain2 = _interopRequireDefault(_domain);
+	var _domains2 = _interopRequireDefault(_domains);
 
-	var _conversions = __webpack_require__(115);
+	var _conversions = __webpack_require__(116);
 
 	var _conversions2 = _interopRequireDefault(_conversions);
 
-	var _rights = __webpack_require__(116);
+	var _rights = __webpack_require__(117);
 
 	var _rights2 = _interopRequireDefault(_rights);
 
@@ -12249,6 +12249,9 @@ webpackJsonp([0],[
 	  var resetMessages = function resetMessages() {
 	    message.textContent = '';
 	    error.textContent = '';
+
+	    profile.removeEventListener('click', resetMessages);
+	    profile.removeEventListener('focus', resetMessages);
 	  };
 
 	  (0, _fetchApi.fetchData)('/user/profile/get').then(function (res) {
@@ -12275,6 +12278,8 @@ webpackJsonp([0],[
 	    }
 	  }).catch(function (err) {
 	    error.textContent = err;
+	    profile.addEventListener('click', resetMessages);
+	    profile.addEventListener('focus', resetMessages);
 	  });
 
 	  profile.addEventListener('mousedown', resetMessages);
@@ -12422,12 +12427,18 @@ webpackJsonp([0],[
 	      (0, _fetchApi.fetchData)('/user/profile/update', opt).then(function (res) {
 	        if (res.msg === 'Saved') {
 	          message.textContent = 'Profile saved';
+	          profile.addEventListener('click', resetMessages);
+	          profile.addEventListener('focus', resetMessages);
 	        }
 	      }).catch(function (err) {
 	        error.textContent = err;
+	        profile.addEventListener('click', resetMessages);
+	        profile.addEventListener('focus', resetMessages);
 	      });
 	    } else {
 	      message.textContent = 'Nothing to save';
+	      profile.addEventListener('click', resetMessages);
+	      profile.addEventListener('focus', resetMessages);
 	    }
 	  });
 	};
@@ -12445,13 +12456,197 @@ webpackJsonp([0],[
 	});
 
 	exports.default = function () {
-	  (0, _fetchApi.fetchData)('/user/domains/get').then(function (res) {}).catch(function (err) {});
+	  var settings = document.querySelector('.js-settings');
+	  var domains = settings.querySelector('.js-settings-domains');
+	  var list = domains.querySelector('.js-settings-domains-list');
+	  var createDomain = domains.querySelector('.js-settings-domains-new');
+	  var message = domains.querySelector('.js-settings-domains-message');
+	  var error = domains.querySelector('.js-settings-domains-error');
+
+	  var resetMessages = function resetMessages() {
+	    message.textContent = '';
+	    error.textContent = '';
+
+	    domains.removeEventListener('click', resetMessages);
+	    domains.removeEventListener('focus', resetMessages);
+	  };
+
+	  (0, _fetchApi.fetchData)('/sites/user/list').then(function (res) {
+	    (res.data || []).forEach(function (item) {
+	      var tr = document.createElement('tr');
+
+	      tr.className = 'js-settings-domains-row';
+	      tr.dataset.id = item.id;
+	      tr.innerHTML = '\n          <td><span class="js-settings-domains-name">' + item.name + '</span></td>\n          <td><span class="js-settings-domains-edit">Edit</span></td>\n          <td><span class="js-settings-domains-delete">Delete</span></td>\n        ';
+
+	      list.appendChild(tr);
+	      list.addEventListener('click', clickRows);
+	    });
+	  }).catch(function (err) {
+	    error.textContent = err;
+	  });
+
+	  function clickRows(event) {
+	    var target = event.target;
+	    var editBtn = target.closest('.js-settings-domains-edit');
+	    var deleteBtn = target.closest('.js-settings-domains-delete');
+
+	    if (editBtn || deleteBtn) {
+	      var row = target.closest('.js-settings-domains-row');
+	      var id = row.dataset.id;
+
+	      if (id) {
+	        if (editBtn) {
+	          openEdit(id, true);
+	        }
+
+	        if (deleteBtn) {
+	          var name = row.querySelector('.js-settings-domains-name').textContent;
+
+	          if (confirm('Do delete the ' + name + ' domain?')) {
+	            deleteDomain(id, row);
+	          }
+	        }
+	      }
+	    }
+	  }
+
+	  createDomain.addEventListener('click', function () {
+	    return (0, _domainsEdit2.default)();
+	  });
+
+	  function openEdit(id, hasEdit) {
+	    (0, _fetchApi.fetchData)('/permission/list', { id: id }).then(function (res) {
+	      (0, _domainsEdit2.default)(res.data[0], hasEdit);
+	    }).catch(function (err) {
+	      error.textContent = err;
+	      domains.addEventListener('click', resetMessages);
+	      domains.addEventListener('focus', resetMessages);
+	    });
+	  }
+
+	  function deleteDomain(id, row) {
+	    (0, _fetchApi.fetchData)('/sites/delete', { id: id }).then(function (res) {
+	      row.parentNode.removeChild(row);
+	    }).catch(function (err) {
+	      error.textContent = err;
+	      domains.addEventListener('click', resetMessages);
+	      domains.addEventListener('focus', resetMessages);
+	    });
+	  }
 	};
+
+	var _domainsEdit = __webpack_require__(115);
+
+	var _domainsEdit2 = _interopRequireDefault(_domainsEdit);
 
 	var _fetchApi = __webpack_require__(35);
 
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /***/ },
 /* 115 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	exports.default = function (initOptions, hasEdit) {
+	  if (document.querySelector('.js-popup')) {
+	    return null;
+	  }
+
+	  var popup = (0, _createPopup2.default)('Adding new domain', true);
+
+	  if (!popup) {
+	    return null;
+	  }
+
+	  var popupBody = popup.querySelector('.js-popup-body');
+
+	  if (!popupBody) {
+	    return null;
+	  }
+
+	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name of domain:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Create a name of right">\n          <span><span>\n        </div>\n      </div>\n    </div>';
+
+	  var nameField = popupBody.querySelector('.js-form-name');
+
+	  if (initOptions && (typeof initOptions === 'undefined' ? 'undefined' : _typeof(initOptions)) === 'object') {
+	    nameField.value = initOptions.name || '';
+
+	    if (hasEdit) {
+	      popupBody.currentId = initOptions.id;
+	    }
+	  }
+
+	  popup.querySelector('.js-popup-save').addEventListener('click', function () {
+	    return saveDomain();
+	  });
+
+	  function saveDomain(isClose) {
+	    if (!nameField.value) {
+	      var _ret = function () {
+	        nameField.parentNode.classList.add('is-error');
+	        nameField.parentNode.querySelector('span').textContent = 'Invalid name of domain';
+
+	        var focusName = function focusName() {
+	          nameField.parentNode.classList.remove('is-error');
+	          nameField.parentNode.querySelector('span').textContent = '';
+	          nameField.removeEventListener('focus', focusName);
+	        };
+
+	        nameField.addEventListener('focus', focusName);
+
+	        return {
+	          v: void 0
+	        };
+	      }();
+
+	      if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+	    }
+
+	    var data = {
+	      name: nameField.value
+	    };
+
+	    if (popupBody.currentId) {
+	      data.id = popupBody.currentId;
+	    }
+
+	    (0, _fetchApi.fetchData)('/sites/create', data).then(function (res) {
+	      popup.close();
+	    }).catch(function (err) {
+	      popup.querySelector('.js-popup-error').textContent = err;
+	    });
+	  }
+
+	  return popupBody;
+	};
+
+	var _createPopup = __webpack_require__(78);
+
+	var _createPopup2 = _interopRequireDefault(_createPopup);
+
+	var _listEvent = __webpack_require__(25);
+
+	var _listEvent2 = _interopRequireDefault(_listEvent);
+
+	var _checklistEvent = __webpack_require__(87);
+
+	var _checklistEvent2 = _interopRequireDefault(_checklistEvent);
+
+	var _fetchApi = __webpack_require__(35);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12467,7 +12662,7 @@ webpackJsonp([0],[
 	var _fetchApi = __webpack_require__(35);
 
 /***/ },
-/* 116 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12481,10 +12676,15 @@ webpackJsonp([0],[
 	  var rights = settings.querySelector('.js-settings-rights');
 	  var list = rights.querySelector('.js-settings-rights-list');
 	  var createRight = rights.querySelector('.js-settings-rights-new');
+	  var message = rights.querySelector('.js-settings-rights-message');
+	  var error = rights.querySelector('.js-settings-rights-error');
 
 	  var resetMessages = function resetMessages() {
 	    message.textContent = '';
 	    error.textContent = '';
+
+	    rights.removeEventListener('click', resetMessages);
+	    rights.removeEventListener('focus', resetMessages);
 	  };
 
 	  (0, _fetchApi.fetchData)('/permission/list').then(function (res) {
@@ -12536,7 +12736,7 @@ webpackJsonp([0],[
 	          var name = row.querySelector('.js-settings-rights-name').textContent;
 
 	          if (confirm('Do delete the ' + name + ' rule?')) {
-	            deleteUser(id, row);
+	            deleteRight(id, row);
 	          }
 	        }
 
@@ -12571,17 +12771,23 @@ webpackJsonp([0],[
 	      (0, _rightsEdit2.default)(res.data[0], hasEdit);
 	    }).catch(function (err) {
 	      error.textContent = err;
+	      rights.addEventListener('click', resetMessages);
+	      rights.addEventListener('focus', resetMessages);
 	    });
 	  }
 
-	  function deleteUser(id, row) {
+	  function deleteRight(id, row) {
 	    (0, _fetchApi.fetchData)('/permission/delete', { id: id }).then(function (res) {
 	      row.parentNode.removeChild(row);
-	    }).catch(function (err) {});
+	    }).catch(function (err) {
+	      error.textContent = err;
+	      rights.addEventListener('click', resetMessages);
+	      rights.addEventListener('focus', resetMessages);
+	    });
 	  }
 	};
 
-	var _rightsEdit = __webpack_require__(117);
+	var _rightsEdit = __webpack_require__(118);
 
 	var _rightsEdit2 = _interopRequireDefault(_rightsEdit);
 
@@ -12592,7 +12798,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 117 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12608,7 +12814,7 @@ webpackJsonp([0],[
 	    return null;
 	  }
 
-	  var popup = (0, _createPopup2.default)('Creating new user', true);
+	  var popup = (0, _createPopup2.default)('Creating new right', true);
 
 	  if (!popup) {
 	    return null;
