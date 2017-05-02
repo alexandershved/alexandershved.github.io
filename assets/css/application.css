@@ -2449,7 +2449,7 @@ body.noscroll {
   transition: all 200ms ease;
   margin-right: 10px;
   padding: 0 10px;
-  color: #fff;
+  color: #fff !important;
   background-color: #0182ec;
 }
 .btn:hover {
@@ -2468,7 +2468,7 @@ body.noscroll {
   transition: all 200ms ease;
   min-width: 85px;
   padding: 0 10px;
-  color: #fff;
+  color: #fff !important;
   background-color: #3ac675;
 }
 .btn-green:hover {
@@ -2489,7 +2489,7 @@ body.noscroll {
   min-width: 85px;
   margin-right: 10px;
   padding: 0 10px;
-  color: #fff;
+  color: #fff !important;
   background-color: #3ac675;
 }
 .btn-apply:hover {
@@ -2519,7 +2519,7 @@ body.noscroll {
   transition: all 200ms ease;
   min-width: 85px;
   padding: 0 10px;
-  color: #fff;
+  color: #fff !important;
   background-color: #0182ec;
 }
 .btn-close:hover {
@@ -4135,6 +4135,86 @@ input:focus + .input__plus {
     transform: rotate(360deg);
   }
 }
+.login {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.login:before {
+  content: '';
+  position: absolute;
+  top: 40%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #0182ec;
+  background: -moz-linear-gradient(top, #0182ec 0%, #ebf2ff 100%);
+  background: -webkit-linear-gradient(top, #0182ec 0%, #ebf2ff 100%);
+  background: linear-gradient(to bottom, #0182ec 0%, #ebf2ff 100%);
+}
+.login__headline {
+  font-size: 17px;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px 0 30px;
+}
+.login form {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 340px;
+  padding: 30px;
+  transform: translate(-50%, -50%);
+  border: 1px solid #e9e9e9;
+  background-color: #fff;
+  box-shadow: 0 4px 10px 0 rgba(127,127,127,0.6);
+}
+.login form tr + tr td {
+  padding-top: 15px;
+}
+.login form td {
+  font-size: 15px;
+  line-height: 29px;
+}
+.login form td + td {
+  width: 99%;
+  padding-left: 10px;
+}
+.login form input {
+  width: 100%;
+  height: 29px;
+  padding: 0 10px;
+  font-size: 13px;
+  color: #4f607a;
+  border: 1px solid #e4e5e9;
+  background-color: #fff;
+  transition: all 200ms ease;
+}
+.login form input:focus {
+  border: 1px solid #7f7f7f;
+}
+.login form input[type=submit] {
+  height: 39px;
+  margin-top: 10px;
+  line-height: 39px;
+  font-size: 13px;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: top;
+  cursor: pointer;
+  transition: all 200ms ease;
+  min-width: 85px;
+  padding: 0 10px;
+  color: #fff !important;
+  background-color: #0182ec;
+}
+.login form input[type=submit]:hover {
+  color: #fff !important;
+  background-color: #3a62c6;
+}
 .nav {
   display: block;
   padding: 15px 20px;
@@ -4960,32 +5040,30 @@ input:focus + .input__plus {
   background-color: rgba(233,233,233,0.7);
 }
 .settings__list td {
+  width: 50%;
   padding: 5px 10px 5px 0;
   line-height: 29px;
   font-size: 13px;
-  color: #fff;
   text-align: left;
   white-space: nowrap;
 }
 .settings__list td span {
-  cursor: pointer;
-}
-.settings__list td span:hover {
-  color: #0182ec;
-}
-.settings__list td:nth-child(1),
-.settings__list td:nth-child(2) {
-  width: 45%;
-}
-.settings__list td:nth-child(1) span,
-.settings__list td:nth-child(2) span {
   position: relative;
   display: inline-block;
   color: #4f607a;
+}
+.settings__list td span.is-hover {
+  color: rgba(79,96,122,0);
+  cursor: pointer;
   transition: all 200ms ease;
-  cursor: default;
+}
+.settings__list td span.is-hover:hover {
+  color: #0182ec;
 }
 .settings__list tr:hover td {
+  color: #4f607a;
+}
+.settings__list tr:hover td span {
   color: #4f607a;
 }
 .table-cohort {

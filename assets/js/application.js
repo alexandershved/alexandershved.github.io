@@ -362,26 +362,31 @@ webpackJsonp([0],[
 
 	exports.default = function () {
 	  var user = document.querySelector('.js-header-user');
-	  var name = user.querySelector('.js-header-user-name');
 
-	  var clickWindow = function clickWindow(event) {
-	    var closest = event.target.closest('.js-header-user');
+	  if (user) {
+	    (function () {
+	      var name = user.querySelector('.js-header-user-name');
 
-	    if (!closest) {
-	      user.classList.remove('is-open');
-	      window.removeEventListener('click', clickWindow);
-	    }
-	  };
+	      var clickWindow = function clickWindow(event) {
+	        var closest = event.target.closest('.js-header-user');
 
-	  name.addEventListener('click', function (event) {
-	    if (user.classList.contains('is-open')) {
-	      user.classList.remove('is-open');
-	      window.removeEventListener('click', clickWindow);
-	    } else {
-	      user.classList.add('is-open');
-	      window.addEventListener('click', clickWindow);
-	    }
-	  });
+	        if (!closest) {
+	          user.classList.remove('is-open');
+	          window.removeEventListener('click', clickWindow);
+	        }
+	      };
+
+	      name.addEventListener('click', function (event) {
+	        if (user.classList.contains('is-open')) {
+	          user.classList.remove('is-open');
+	          window.removeEventListener('click', clickWindow);
+	        } else {
+	          user.classList.add('is-open');
+	          window.addEventListener('click', clickWindow);
+	        }
+	      });
+	    })();
+	  }
 	};
 
 /***/ },
@@ -12471,20 +12476,24 @@ webpackJsonp([0],[
 	    domains.removeEventListener('focus', resetMessages);
 	  };
 
-	  (0, _fetchApi.fetchData)('/sites/user/list').then(function (res) {
-	    (res.data || []).forEach(function (item) {
-	      var tr = document.createElement('tr');
+	  function showList() {
+	    list.innerHTML = '';
 
-	      tr.className = 'js-settings-domains-row';
-	      tr.dataset.id = item.id;
-	      tr.innerHTML = '\n          <td><span class="js-settings-domains-name">' + item.name + '</span></td>\n          <td><span class="js-settings-domains-edit">Edit</span></td>\n          <td><span class="js-settings-domains-delete">Delete</span></td>\n        ';
+	    (0, _fetchApi.fetchData)('/sites/user/list').then(function (res) {
+	      (res.data || []).forEach(function (item) {
+	        var tr = document.createElement('tr');
 
-	      list.appendChild(tr);
-	      list.addEventListener('click', clickRows);
+	        tr.className = 'js-settings-domains-row';
+	        tr.dataset.id = item.id;
+	        tr.innerHTML = '\n            <td><span class="js-settings-domains-name">' + item.name + '</span></td>\n            <td style="width: 1%;"><span class="js-settings-domains-edit is-hover">Edit</span></td>\n            <td style="width: 1%;"><span class="js-settings-domains-delete is-hover">Delete</span></td>\n          ';
+
+	        list.appendChild(tr);
+	        list.addEventListener('click', clickRows);
+	      });
+	    }).catch(function (err) {
+	      error.textContent = err;
 	    });
-	  }).catch(function (err) {
-	    error.textContent = err;
-	  });
+	  }
 
 	  function clickRows(event) {
 	    var target = event.target;
@@ -12511,13 +12520,9 @@ webpackJsonp([0],[
 	    }
 	  }
 
-	  createDomain.addEventListener('click', function () {
-	    return (0, _domainsEdit2.default)();
-	  });
-
 	  function openEdit(id, hasEdit) {
 	    (0, _fetchApi.fetchData)('/permission/list', { id: id }).then(function (res) {
-	      (0, _domainsEdit2.default)(res.data[0], hasEdit);
+	      (0, _domainsEdit2.default)(res.data[0], hasEdit, showList);
 	    }).catch(function (err) {
 	      error.textContent = err;
 	      domains.addEventListener('click', resetMessages);
@@ -12534,6 +12539,11 @@ webpackJsonp([0],[
 	      domains.addEventListener('focus', resetMessages);
 	    });
 	  }
+
+	  createDomain.addEventListener('click', function () {
+	    return (0, _domainsEdit2.default)(null, null, showList);
+	  });
+	  showList();
 	};
 
 	var _domainsEdit = __webpack_require__(115);
@@ -12556,7 +12566,7 @@ webpackJsonp([0],[
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-	exports.default = function (initOptions, hasEdit) {
+	exports.default = function (initOptions, hasEdit, showList) {
 	  if (document.querySelector('.js-popup')) {
 	    return null;
 	  }
@@ -12621,6 +12631,7 @@ webpackJsonp([0],[
 
 	    (0, _fetchApi.fetchData)('/sites/create', data).then(function (res) {
 	      popup.close();
+	      showList();
 	    }).catch(function (err) {
 	      popup.querySelector('.js-popup-error').textContent = err;
 	    });
@@ -12656,7 +12667,35 @@ webpackJsonp([0],[
 	});
 
 	exports.default = function () {
-	  (0, _fetchApi.fetchData)('/upload/conversions').then(function (res) {}).catch(function (err) {});
+	  var settings = document.querySelector('.js-settings');
+	  var conversions = settings.querySelector('.js-settings-conversions');
+	  var textarea = settings.querySelector('.js-settings-conversions-textarea');
+	  var upload = settings.querySelector('.js-settings-conversions-upload');
+	  var message = conversions.querySelector('.js-settings-conversions-message');
+	  var error = conversions.querySelector('.js-settings-conversions-error');
+
+	  var resetMessages = function resetMessages() {
+	    message.textContent = '';
+	    error.textContent = '';
+
+	    conversions.removeEventListener('click', resetMessages);
+	    conversions.removeEventListener('focus', resetMessages);
+	  };
+
+	  upload.addEventListener('click', function () {
+	    var text = textarea.value;
+
+	    (0, _fetchApi.fetchData)('/upload/conversions', { values: text }).then(function (res) {
+	      textarea.value = '';
+	      message.textContent = 'Conversions has been saved';
+	      conversions.addEventListener('click', resetMessages);
+	      conversions.addEventListener('focus', resetMessages);
+	    }).catch(function (err) {
+	      error.textContent = err;
+	      conversions.addEventListener('click', resetMessages);
+	      conversions.addEventListener('focus', resetMessages);
+	    });
+	  });
 	};
 
 	var _fetchApi = __webpack_require__(35);
@@ -12687,29 +12726,31 @@ webpackJsonp([0],[
 	    rights.removeEventListener('focus', resetMessages);
 	  };
 
-	  (0, _fetchApi.fetchData)('/permission/list').then(function (res) {
-	    var activeRight = Number(window.cookie('permission_user'));
+	  function showList() {
+	    (0, _fetchApi.fetchData)('/permission/list').then(function (res) {
+	      var activeRight = Number(window.cookie('permission_user'));
 
-	    res.data.forEach(function (item) {
-	      var tr = document.createElement('tr');
-	      var styleActive = '';
-	      var styleDeactive = ' style="display: none;"';
+	      res.data.forEach(function (item) {
+	        var tr = document.createElement('tr');
+	        var styleActive = '';
+	        var styleDeactive = ' style="display: none;"';
 
-	      if (activeRight === Number(item.user_id)) {
-	        styleActive = styleDeactive;
-	        styleDeactive = '';
-	      }
+	        if (activeRight === Number(item.user_id)) {
+	          styleActive = styleDeactive;
+	          styleDeactive = '';
+	        }
 
-	      tr.className = 'js-settings-rights-row';
-	      tr.dataset.id = item.user_id;
-	      tr.innerHTML = '\n          <td><span class="js-settings-rights-name">' + item.name + '</span></td>\n          <td><span class="js-settings-rights-email">' + item.email + '</span></td>\n          <td><span class="js-settings-rights-copy">Copy</span></td>\n          <td><span class="js-settings-rights-edit">Edit</span></td>\n          <td><span class="js-settings-rights-delete">Delete</span></td>\n          <td>\n            <span class="btn-green js-settings-rights-activate"' + styleActive + '>Activate</span>\n            <span class="btn-close js-settings-rights-deactivate"' + styleDeactive + '>Deactivate</span>\n          </td>\n        ';
+	        tr.className = 'js-settings-rights-row';
+	        tr.dataset.id = item.user_id;
+	        tr.innerHTML = '\n            <td><span class="js-settings-rights-name">' + item.name + '</span></td>\n            <td><span class="js-settings-rights-email">' + item.email + '</span></td>\n            <td style="width: 1%;"><span class="js-settings-rights-copy is-hover">Copy</span></td>\n            <td style="width: 1%;"><span class="js-settings-rights-edit is-hover">Edit</span></td>\n            <td style="width: 1%;"><span class="js-settings-rights-delete is-hover">Delete</span></td>\n            <td>\n              <span class="btn-green js-settings-rights-activate"' + styleActive + '>Activate</span>\n              <span class="btn-close js-settings-rights-deactivate"' + styleDeactive + '>Deactivate</span>\n            </td>\n          ';
 
-	      list.appendChild(tr);
-	      list.addEventListener('click', clickRows);
+	        list.appendChild(tr);
+	        list.addEventListener('click', clickRows);
+	      });
+	    }).catch(function (err) {
+	      error.textContent = err;
 	    });
-	  }).catch(function (err) {
-	    error.textContent = err;
-	  });
+	  }
 
 	  function clickRows(event) {
 	    var target = event.target;
@@ -12762,13 +12803,9 @@ webpackJsonp([0],[
 	    }
 	  }
 
-	  createRight.addEventListener('click', function () {
-	    return (0, _rightsEdit2.default)();
-	  });
-
 	  function openEdit(id, hasEdit) {
 	    (0, _fetchApi.fetchData)('/permission/list', { id: id }).then(function (res) {
-	      (0, _rightsEdit2.default)(res.data[0], hasEdit);
+	      (0, _rightsEdit2.default)(res.data[0], hasEdit, showList);
 	    }).catch(function (err) {
 	      error.textContent = err;
 	      rights.addEventListener('click', resetMessages);
@@ -12785,6 +12822,11 @@ webpackJsonp([0],[
 	      rights.addEventListener('focus', resetMessages);
 	    });
 	  }
+
+	  createRight.addEventListener('click', function () {
+	    return (0, _rightsEdit2.default)(null, null, showList);
+	  });
+	  showList();
 	};
 
 	var _rightsEdit = __webpack_require__(118);
@@ -12809,7 +12851,7 @@ webpackJsonp([0],[
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-	exports.default = function (initOptions, hasEdit) {
+	exports.default = function (initOptions, hasEdit, showList) {
 	  if (document.querySelector('.js-popup')) {
 	    return null;
 	  }
@@ -13033,6 +13075,7 @@ webpackJsonp([0],[
 	    (0, _fetchApi.fetchData)('/permission/create', data).then(function (res) {
 	      if (isClose) {
 	        popup.close();
+	        showList();
 	      }
 	    }).catch(function (err) {
 	      popup.querySelector('.js-popup-error').textContent = err;
