@@ -14,51 +14,59 @@ webpackJsonp([0],[
 
 	var _reset2 = _interopRequireDefault(_reset);
 
-	var _header = __webpack_require__(20);
+	var _loadSettings = __webpack_require__(20);
+
+	var _loadSettings2 = _interopRequireDefault(_loadSettings);
+
+	var _header = __webpack_require__(50);
 
 	var _header2 = _interopRequireDefault(_header);
 
-	var _nav = __webpack_require__(21);
+	var _rights = __webpack_require__(51);
+
+	var _rights2 = _interopRequireDefault(_rights);
+
+	var _nav = __webpack_require__(52);
 
 	var _nav2 = _interopRequireDefault(_nav);
 
-	var _time = __webpack_require__(22);
+	var _time = __webpack_require__(53);
 
 	var _time2 = _interopRequireDefault(_time);
 
-	var _checkbox = __webpack_require__(23);
+	var _checkbox = __webpack_require__(54);
 
 	var _checkbox2 = _interopRequireDefault(_checkbox);
 
-	var _list = __webpack_require__(24);
+	var _list = __webpack_require__(55);
 
 	var _list2 = _interopRequireDefault(_list);
 
-	var _helper = __webpack_require__(26);
+	var _helper = __webpack_require__(57);
 
 	var _helper2 = _interopRequireDefault(_helper);
 
-	var _select = __webpack_require__(27);
+	var _select = __webpack_require__(58);
 
 	var _select2 = _interopRequireDefault(_select);
 
-	var _calendar = __webpack_require__(29);
+	var _calendar = __webpack_require__(60);
 
 	var _calendar2 = _interopRequireDefault(_calendar);
 
-	var _postback = __webpack_require__(31);
+	var _postback = __webpack_require__(62);
 
 	var _postback2 = _interopRequireDefault(_postback);
 
-	var _listFetch = __webpack_require__(32);
+	var _listFetch = __webpack_require__(63);
 
 	var _listFetch2 = _interopRequireDefault(_listFetch);
 
-	var _index = __webpack_require__(64);
+	var _index = __webpack_require__(66);
 
 	var _index2 = _interopRequireDefault(_index);
 
-	var _index3 = __webpack_require__(112);
+	var _index3 = __webpack_require__(114);
 
 	var _index4 = _interopRequireDefault(_index3);
 
@@ -68,20 +76,22 @@ webpackJsonp([0],[
 
 	(0, _cookie2.default)();
 	(0, _reset2.default)();
-	(0, _header2.default)();
+	(0, _loadSettings2.default)().then(function () {
+	  (0, _header2.default)();
+	  (0, _rights2.default)();
+	  (0, _nav2.default)();
+	  (0, _time2.default)();
+	  (0, _checkbox2.default)();
+	  (0, _list2.default)();
+	  (0, _helper2.default)();
+	  (0, _select2.default)();
+	  (0, _calendar2.default)();
+	  (0, _postback2.default)();
+	  (0, _listFetch2.default)();
 
-	(0, _nav2.default)();
-	(0, _time2.default)();
-	(0, _checkbox2.default)();
-	(0, _list2.default)();
-	(0, _helper2.default)();
-	(0, _select2.default)();
-	(0, _calendar2.default)();
-	(0, _postback2.default)();
-	(0, _listFetch2.default)();
-
-	(0, _index2.default)();
-	(0, _index4.default)();
+	  (0, _index2.default)();
+	  (0, _index4.default)();
+	});
 
 /***/ },
 /* 1 */
@@ -352,2310 +362,36 @@ webpackJsonp([0],[
 /* 18 */,
 /* 19 */,
 /* 20 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(Promise) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 	exports.default = function () {
-	  var user = document.querySelector('.js-header-user');
-
-	  if (user) {
-	    (function () {
-	      var name = user.querySelector('.js-header-user-name');
-
-	      var clickWindow = function clickWindow(event) {
-	        var closest = event.target.closest('.js-header-user');
-
-	        if (!closest) {
-	          user.classList.remove('is-open');
-	          window.removeEventListener('click', clickWindow);
-	        }
-	      };
-
-	      name.addEventListener('click', function (event) {
-	        if (user.classList.contains('is-open')) {
-	          user.classList.remove('is-open');
-	          window.removeEventListener('click', clickWindow);
-	        } else {
-	          user.classList.add('is-open');
-	          window.addEventListener('click', clickWindow);
-	        }
-	      });
-	    })();
-	  }
+	  return new Promise(function (resolve) {
+	    (0, _fetchApi.fetchObject)('/settings').then(function (result) {
+	      if (result && (typeof result === 'undefined' ? 'undefined' : _typeof(result)) === 'object' && Object.keys(result).length) {
+	        window.__settings__ = result;
+	        resolve();
+	      } else {
+	        throw new Error('Failed to load settings');
+	      }
+	    }).catch(function (err) {
+	      throw new Error('Failed to load settings');
+	    });
+	  });
 	};
+
+	var _fetchApi = __webpack_require__(26);
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21)))
 
 /***/ },
 /* 21 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function () {
-	  [].concat(_toConsumableArray(document.querySelectorAll('.js-nav'))).forEach(function (nav) {
-	    var page = nav.querySelector('.js-nav-page');
-	    var count = nav.querySelector('.js-nav-count');
-	    var labelCount = nav.querySelector('.js-nav-count-label');
-	    var itemsCount = nav.querySelectorAll('.js-nav-count-item');
-
-	    var controls = nav.querySelector('.js-nav-controls');
-	    var label = nav.querySelector('.js-nav-label');
-	    var tostart = nav.querySelector('.js-nav-tostart');
-	    var prev = nav.querySelector('.js-nav-prev');
-	    var next = nav.querySelector('.js-nav-next');
-	    var toend = nav.querySelector('.js-nav-toend');
-
-	    var updateValue = void 0;
-	    var setValue = void 0;
-
-	    page.addEventListener('paste', function (event) {
-	      event.preventDefault();
-	    });
-
-	    page.addEventListener('keydown', function (event) {
-	      var code = event.keyCode;
-	      var char = String.fromCharCode(code);
-	      var key = '0123456789'.indexOf(char);
-	      var value = parseInt(event.target.value, 10);
-
-	      switch (code) {
-	        case 8:
-	        case 46:
-	        case 37:
-	        case 39:
-	          break;
-	        case 9:
-	        case 13:
-	        case 27:
-	          event.target.blur();
-	          break;
-	        case 38:
-	          event.preventDefault();
-	          value++;
-	          if (value > Math.ceil(nav.value.total / nav.value.length)) {
-	            value = Math.ceil(nav.value.total / nav.value.length);
-	          }
-	          setValue({ page: value });
-	          break;
-	        case 40:
-	          event.preventDefault();
-	          value--;
-	          if (value < 1) {
-	            value = 1;
-	          }
-	          setValue({ page: value });
-	          break;
-	        default:
-	          if (key === -1) {
-	            event.preventDefault();
-	          }
-	      }
-	    });
-
-	    page.addEventListener('change', function (event) {
-	      var value = parseInt(event.target.value, 10);
-
-	      if (!value || value < 1) {
-	        value = 1;
-	      }
-
-	      if (value > Math.ceil(nav.value.total / nav.value.length)) {
-	        value = Math.ceil(nav.value.total / nav.value.length);
-	      }
-
-	      setValue({ page: value });
-	    });
-
-	    var clickWindow = function clickWindow(event) {
-	      var closest = event.target.closest('.js-nav-count');
-	      if (!closest || closest !== count) {
-	        close();
-	      }
-	    };
-
-	    var open = function open() {
-	      count.classList.add('is-open');
-	      window.addEventListener('click', clickWindow);
-	    };
-
-	    var close = function close() {
-	      count.classList.remove('is-open');
-	      window.removeEventListener('click', clickWindow);
-	    };
-
-	    labelCount.addEventListener('click', function () {
-	      if (count.classList.contains('is-open')) {
-	        close();
-	      } else {
-	        open();
-	      }
-	    });
-
-	    [].concat(_toConsumableArray(itemsCount)).forEach(function (item) {
-	      item.addEventListener('click', function () {
-	        var value = parseInt(item.textContent, 10);
-	        [].concat(_toConsumableArray(itemsCount)).forEach(function (el) {
-	          return el.classList.remove('is-select');
-	        });
-	        item.classList.add('is-select');
-	        close();
-	        labelCount.textContent = value;
-	        setValue({ length: value });
-	      });
-	    });
-
-	    tostart.addEventListener('click', function () {
-	      setValue({ page: 1 });
-	    });
-
-	    prev.addEventListener('click', function () {
-	      var p = nav.value.page - 1;
-	      if (p < 1) {
-	        p = 1;
-	      }
-	      setValue({ page: p });
-	    });
-
-	    next.addEventListener('click', function () {
-	      var p = nav.value.page + 1;
-	      if (p > Math.ceil(nav.value.total / nav.value.length)) {
-	        p = Math.ceil(nav.value.total / nav.value.length);
-	      }
-	      setValue({ page: p });
-	    });
-
-	    toend.addEventListener('click', function () {
-	      setValue({ page: Math.ceil(nav.value.total / nav.value.length) });
-	    });
-
-	    updateValue = function updateValue(obj) {
-	      var isUpdate = false;
-
-	      if (obj.hasOwnProperty('total') && nav.value.total !== parseInt(obj.total, 10)) {
-	        nav.value.total = parseInt(obj.total, 10);
-	      }
-
-	      if (obj.hasOwnProperty('length') && nav.value.length !== parseInt(obj.length, 10)) {
-	        nav.value.length = parseInt(obj.length, 10);
-	        isUpdate = true;
-	      }
-
-	      if (obj.hasOwnProperty('page') && nav.value.page !== parseInt(obj.page, 10)) {
-	        nav.value.page = parseInt(obj.page, 10);
-	        isUpdate = true;
-	      }
-
-	      if (nav.value.total) {
-	        nav.style.display = '';
-
-	        if (nav.value.page > Math.ceil(nav.value.total / nav.value.length)) {
-	          nav.value.page = Math.ceil(nav.value.total / nav.value.length);
-	          isUpdate = true;
-	        }
-
-	        var start = (nav.value.page - 1) * nav.value.length + 1;
-	        var end = start + nav.value.length - 1;
-
-	        if (end > nav.value.total) {
-	          end = nav.value.total;
-	        }
-
-	        label.textContent = start + '-' + end + ' of ' + nav.value.total;
-
-	        if (nav.value.total > nav.value.length) {
-	          controls.style.display = '';
-	        } else {
-	          controls.style.display = 'none';
-	        }
-	      } else {
-	        nav.style.display = 'none';
-	      }
-
-	      if (nav.value.page === 1) {
-	        tostart.classList.add('is-disabled');
-	        prev.classList.add('is-disabled');
-	      } else {
-	        tostart.classList.remove('is-disabled');
-	        prev.classList.remove('is-disabled');
-	      }
-
-	      if (nav.value.page === Math.ceil(nav.value.total / nav.value.length)) {
-	        next.classList.add('is-disabled');
-	        toend.classList.add('is-disabled');
-	      } else {
-	        next.classList.remove('is-disabled');
-	        toend.classList.remove('is-disabled');
-	      }
-
-	      page.value = nav.value.page;
-
-	      if (isUpdate) {
-	        labelCount.textContent = nav.value.length;
-
-	        [].concat(_toConsumableArray(itemsCount)).forEach(function (item) {
-	          if (String(nav.value.length) === item.textContent) {
-	            item.classList.add('is-select');
-	          } else {
-	            item.classList.remove('is-select');
-	          }
-	        });
-	      }
-
-	      return isUpdate;
-	    };
-
-	    setValue = function setValue(obj) {
-	      if (updateValue(obj)) {
-	        nav.triggerEvent('change');
-	      }
-	    };
-
-	    nav.value = {};
-
-	    nav.updateValue = updateValue;
-	    nav.setValue = setValue;
-	  });
-	};
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/***/ },
-/* 22 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function () {
-	  [].concat(_toConsumableArray(document.querySelectorAll('.js-input-time'))).forEach(function (input) {
-	    var range = 1;
-
-	    var selectRange = function selectRange() {
-	      if (range === 1) {
-	        input.selectionStart = 0;
-	        input.selectionEnd = 2;
-	      } else {
-	        input.selectionStart = 3;
-	        input.selectionEnd = 5;
-	      }
-	      input.focus();
-	    };
-
-	    var keyDown = function keyDown(event) {
-	      var char = String.fromCharCode(event.keyCode);
-	      var key = '0123456789'.indexOf(char);
-
-	      event.preventDefault();
-
-	      if (key !== -1) {
-	        var value = event.target.value;
-	        var chunks = value.split(':');
-	        var str = range === 1 ? value[1] : value[4];
-	        var maxVal = range === 1 ? 24 : 60;
-
-	        str += String(key);
-
-	        if (parseInt(str, 10) < maxVal) {
-	          chunks[range - 1] = str;
-	        } else {
-	          chunks[range - 1] = '0' + key;
-	        }
-
-	        if (range === 1 && parseInt(chunks[0], 10) > 2) {
-	          range = 2;
-	        }
-
-	        input.value = chunks.join(':');
-	        input.triggerEvent('change');
-
-	        selectRange();
-	      }
-	    };
-
-	    var keyForChange = function keyForChange(code) {
-	      var chunks = event.target.value.split(':');
-	      var hours = parseInt(chunks[0], 10);
-	      var minutes = parseInt(chunks[1], 10);
-
-	      if (range === 1) {
-	        hours += code === 38 ? 1 : -1;
-	      } else {
-	        minutes += code === 38 ? 1 : -1;
-	      }
-
-	      if (minutes > 59) {
-	        minutes = 0;
-	        hours++;
-	      }
-
-	      if (minutes < 0) {
-	        minutes = 59;
-	        hours--;
-	      }
-
-	      if (hours > 23) {
-	        hours = 0;
-	      }
-
-	      if (hours < 0) {
-	        hours = 23;
-	      }
-
-	      chunks[0] = hours < 10 ? '0' + hours : hours;
-	      chunks[1] = minutes < 10 ? '0' + minutes : minutes;
-
-	      input.value = chunks.join(':');
-	      input.triggerEvent('change');
-
-	      selectRange();
-	    };
-
-	    input.addEventListener('focus', function () {
-	      setTimeout(function () {
-	        range = 1;
-	        selectRange();
-	      }, 0);
-	    });
-
-	    input.addEventListener('paste', function (event) {
-	      event.preventDefault();
-	    });
-
-	    input.addEventListener('cut', function (event) {
-	      event.preventDefault();
-	    });
-
-	    input.addEventListener('keydown', function (event) {
-	      var code = event.keyCode;
-
-	      switch (code) {
-	        case 9:
-	          if (event.shiftKey && range === 2) {
-	            range = 1;
-	            selectRange();
-	            event.preventDefault();
-	          } else if (!event.shiftKey && range === 1) {
-	            range = 2;
-	            selectRange();
-	            event.preventDefault();
-	          }
-	          break;
-	        case 13:
-	        case 27:
-	          event.target.blur();
-	          input.triggerEvent('change');
-	          break;
-	        case 37:
-	          event.preventDefault();
-	          range = 1;
-	          selectRange();
-	          break;
-	        case 38:
-	        case 40:
-	          event.preventDefault();
-	          keyForChange(code);
-	          break;
-	        case 32:
-	          event.preventDefault();
-	          break;
-	        case 39:
-	          event.preventDefault();
-	          range = 2;
-	          selectRange();
-	          break;
-	        default:
-	          keyDown(event);
-	      }
-	    });
-	  });
-	};
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/***/ },
-/* 23 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function () {
-	  document.body.addEventListener('click', function (event) {
-	    var closest = event.target.closest('.js-checkbox');
-
-	    if (closest) {
-	      closest.classList.toggle('is-select');
-	      closest.triggerEvent('change');
-	    }
-	  });
-	};
-
-/***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function () {
-	  [].concat(_toConsumableArray(document.querySelectorAll('.js-list'))).forEach(_listEvent2.default);
-	};
-
-	var _listEvent = __webpack_require__(25);
-
-	var _listEvent2 = _interopRequireDefault(_listEvent);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/***/ },
-/* 25 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function (list) {
-	  var listValue = list.querySelector('.js-list-value');
-	  var search = list.querySelector('.js-list-search');
-	  var placeholder = list.dataset.placeholder;
-
-	  var clickWindow = void 0;
-	  var open = void 0;
-	  var close = void 0;
-	  var getItemByValue = void 0;
-	  var haveValue = void 0;
-	  var updateValue = void 0;
-	  var setValue = void 0;
-	  var setDisabled = void 0;
-	  var unsetDisabled = void 0;
-
-	  clickWindow = function clickWindow(event) {
-	    var closest = event.target.closest('.js-list');
-	    if (!closest || closest !== list) {
-	      close();
-	    }
-	  };
-
-	  open = function open() {
-	    if (search) {
-	      search.value = '';
-	    }
-
-	    var value = list.value;
-
-	    [].concat(_toConsumableArray(list.querySelectorAll('.js-list-item'))).forEach(function (item) {
-	      if (item.dataset.value === value) {
-	        item.classList.add('is-select');
-	      } else {
-	        item.classList.remove('is-select');
-	      }
-	      item.style.display = '';
-	    });
-
-	    list.classList.add('is-open');
-	    window.addEventListener('click', clickWindow);
-	  };
-
-	  close = function close() {
-	    list.classList.remove('is-open');
-	    window.removeEventListener('click', clickWindow);
-	  };
-
-	  getItemByValue = function getItemByValue(val) {
-	    var item = void 0;
-	    var value = String(val);
-
-	    [].concat(_toConsumableArray(list.querySelectorAll('.js-list-item'))).forEach(function (el) {
-	      if (value === el.dataset.value) {
-	        item = el;
-	        return false;
-	      }
-	      return true;
-	    });
-
-	    return item;
-	  };
-
-	  haveValue = function haveValue(val) {
-	    var isHave = false;
-
-	    if (val || val !== 0) {
-	      var item = getItemByValue(val);
-
-	      if (item) {
-	        isHave = true;
-	      }
-	    }
-
-	    return isHave;
-	  };
-
-	  updateValue = function updateValue(val, lbl, clr) {
-	    var isUpdate = false;
-
-	    if (!val && val !== 0) {
-	      if (list.value) {
-	        list.oldValue = list.value;
-	        list.value = null;
-	        isUpdate = true;
-	      }
-
-	      if (placeholder) {
-	        listValue.textContent = placeholder;
-	      }
-	    } else {
-	      var value = String(val);
-	      var selectItem = getItemByValue(value);
-	      var text = void 0;
-
-	      if (selectItem) {
-	        text = selectItem.innerHTML;
-	      } else {
-	        text = value;
-	      }
-
-	      if (list.value !== value) {
-	        list.oldValue = list.value;
-	        list.value = value;
-	        listValue.textContent = text;
-	        isUpdate = true;
-	      }
-	    }
-
-	    if (clr) {
-	      var clearBtn = document.createElement('div');
-	      clearBtn.className = 'list__clear';
-	      list.appendChild(clearBtn);
-	      clearBtn.addEventListener('click', function () {
-	        return setValue();
-	      });
-	    }
-
-	    if (lbl) {
-	      var label = list.querySelector('.list__label');
-
-	      if (label) {
-	        label.parentNode.removeChild(label);
-	      }
-
-	      label = document.createElement('div');
-	      label.className = 'list__label';
-	      label.textContent = lbl;
-	      list.children[0]._inserBefore(label);
-	    }
-
-	    [].concat(_toConsumableArray(list.querySelectorAll('.js-list-item'))).forEach(function (item) {
-	      if (item.dataset.value === val) {
-	        item.classList.add('is-select');
-	      } else {
-	        item.classList.remove('is-select');
-	      }
-	    });
-
-	    return isUpdate;
-	  };
-
-	  setValue = function setValue(val, label, clear) {
-	    if (updateValue(val, label, clear)) {
-	      list.triggerEvent('change');
-	    }
-	  };
-
-	  setDisabled = function setDisabled(arr) {
-	    var setDis = function setDis(a) {
-	      var item = getItemByValue(a);
-
-	      if (item) {
-	        item.classList.add('is-disabled');
-	      }
-	    };
-
-	    if (typeof arr === 'string' || typeof arr === 'number') {
-	      setDis(arr);
-	    } else if (Array.isArray(arr)) {
-	      arr.forEach(setDis);
-	    }
-	  };
-
-	  unsetDisabled = function unsetDisabled(arr) {
-	    var setDis = function setDis() {
-	      var item = getItemByValue(arr);
-
-	      if (item) {
-	        item.classList.remove('is-disabled');
-	      }
-	    };
-
-	    if (typeof arr === 'string' || typeof arr === 'number') {
-	      setDis(arr);
-	    } else if (Array.isArray(arr)) {
-	      arr.forEach(setDis);
-	    } else {
-	      [].concat(_toConsumableArray(list.querySelectorAll('.js-list-item'))).forEach(function (item) {
-	        return item.classList.remove('is-disabled');
-	      });
-	    }
-	  };
-
-	  if (list.value || list.value === 0) {
-	    (function () {
-	      var value = String(list.value);
-	      var selectItem = getItemByValue(value);
-	      var text = void 0;
-
-	      if (selectItem) {
-	        text = selectItem.innerHTML;
-	      } else {
-	        text = value;
-	      }
-
-	      [].concat(_toConsumableArray(list.querySelectorAll('.js-list-item'))).forEach(function (item) {
-	        if (item.dataset.value === value) {
-	          item.classList.add('is-select');
-	        } else {
-	          item.classList.remove('is-select');
-	        }
-	      });
-
-	      listValue.textContent = text;
-	    })();
-	  }
-
-	  list.close = close;
-	  list.haveValue = haveValue;
-	  list.updateValue = updateValue;
-	  list.setValue = setValue;
-	  list.setDisabled = setDisabled;
-	  list.unsetDisabled = unsetDisabled;
-
-	  if (list.classList.contains('is-btn')) {
-	    (function () {
-	      var openOver = void 0;
-	      var _closeOut = void 0;
-
-	      openOver = function openOver() {
-	        window.addEventListener('mouseover', _closeOut);
-	        open();
-	      };
-
-	      _closeOut = function closeOut(event) {
-	        var closest = event.target.closest('.js-list');
-	        if (!closest || closest !== list) {
-	          window.removeEventListener('mouseover', _closeOut);
-	          close();
-	        }
-	      };
-
-	      listValue.addEventListener('mouseover', openOver);
-	    })();
-	  } else {
-	    listValue.addEventListener('click', function () {
-	      if (list.classList.contains('is-open')) {
-	        close();
-	      } else {
-	        open();
-	      }
-	    });
-	  }
-
-	  if (search) {
-	    var filterSearch = function filterSearch(event) {
-	      var reg = new RegExp(event.target.value, 'i');
-
-	      [].concat(_toConsumableArray(list.querySelectorAll('.js-list-item'))).forEach(function (item) {
-	        if (item.textContent.search(reg) === -1) {
-	          item.style.display = 'none';
-	        } else {
-	          item.style.display = '';
-	        }
-	      });
-	    };
-
-	    search.addEventListener('select', filterSearch);
-	    search.addEventListener('change', filterSearch);
-	    search.addEventListener('keyup', filterSearch);
-	  }
-
-	  list.addEventListener('click', function (event) {
-	    var item = event.target.closest('.js-list-item');
-
-	    if (item) {
-	      if (event.target.classList.contains('is-disabled')) {
-	        return;
-	      }
-
-	      if (item.dataset.value) {
-	        setValue(item.dataset.value);
-	      }
-
-	      close();
-	    }
-	  });
-
-	  [].concat(_toConsumableArray(list.querySelectorAll('.js-list-item'))).forEach(function (item) {
-	    if (item.classList.contains('is-select') && item.dataset.value) {
-	      setValue(item.dataset.value);
-	    }
-	  });
-
-	  if (!listValue.textContent && placeholder) {
-	    listValue.textContent = placeholder;
-	  }
-	};
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/***/ },
-/* 26 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function () {
-	  window.addEventListener('mouseover', function (event) {
-	    var helper = event.target.closest('.js-helper');
-
-	    if (helper && !helper.isOpen) {
-	      (function () {
-	        helper.isOpen = true;
-	        helper.classList.add('is-open');
-
-	        var closeHelper = void 0;
-	        var mouseOverHelper = void 0;
-	        var mouseOutHelper = void 0;
-	        var timer = void 0;
-
-	        closeHelper = function closeHelper() {
-	          helper.isOpen = false;
-	          helper.classList.remove('is-open');
-	          helper.removeEventListener('mouseover', mouseOverHelper);
-	          helper.removeEventListener('mouseout', mouseOutHelper);
-	        };
-
-	        mouseOverHelper = function mouseOverHelper() {
-	          clearTimeout(timer);
-	        };
-
-	        mouseOutHelper = function mouseOutHelper() {
-	          timer = setTimeout(closeHelper, 200);
-	        };
-
-	        helper.addEventListener('mouseover', mouseOverHelper);
-	        helper.addEventListener('mouseout', mouseOutHelper);
-	      })();
-	    }
-	  });
-	};
-
-/***/ },
-/* 27 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function () {
-	  [].concat(_toConsumableArray(document.querySelectorAll('.js-select'))).forEach(_selectEvent2.default);
-	};
-
-	var _selectEvent = __webpack_require__(28);
-
-	var _selectEvent2 = _interopRequireDefault(_selectEvent);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/***/ },
-/* 28 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function (select) {
-	  var popup = select.querySelector('.js-select-popup');
-	  var items = select.querySelectorAll('.js-select-item');
-
-	  var applyBtn = select.querySelector('.js-select-apply');
-	  var closeBtn = select.querySelector('.js-select-close');
-
-	  var clickWindow = void 0;
-	  var open = void 0;
-	  var close = void 0;
-	  var updateValue = void 0;
-	  var setValue = void 0;
-	  var setDisabled = void 0;
-	  var unsetDisabled = void 0;
-
-	  var newValue = void 0;
-
-	  clickWindow = function clickWindow(event) {
-	    var closest = event.target.closest('.js-select');
-	    if (!closest || closest !== select) {
-	      close();
-	    }
-	  };
-
-	  open = function open() {
-	    if (select.classList.contains('is-open')) {
-	      return;
-	    }
-
-	    var value = select.value;
-
-	    select.querySelectorAll('.js-select-item').forEach(function (item) {
-	      var val = item.dataset.value;
-
-	      if (val && value.indexOf(val) !== -1) {
-	        item.classList.add('is-select');
-	      } else {
-	        item.classList.remove('is-select');
-	      }
-	    });
-
-	    newValue = [];
-	    select.value.map(function (val) {
-	      return newValue.push(val);
-	    });
-
-	    select.classList.add('is-open');
-	    window.addEventListener('click', clickWindow);
-
-	    var rect = popup.getBoundingClientRect();
-	    if (rect.right > window.innerWidth - 35) {
-	      popup.style.left = window.innerWidth - 35 - rect.right + 'px';
-	    }
-	  };
-
-	  close = function close() {
-	    window.removeEventListener('click', clickWindow);
-	    setTimeout(function () {
-	      select.classList.remove('is-open');
-	    }, 0);
-	  };
-
-	  updateValue = function updateValue(arr) {
-	    var isUpdate = false;
-	    var param = void 0;
-
-	    var check = function check(par) {
-	      var p = String(par);
-
-	      if (select.value.indexOf(p) === -1) {
-	        select.value.push(p);
-	        isUpdate = true;
-	      }
-	    };
-
-	    if (typeof arr === 'string' || typeof arr === 'number') {
-	      param = [arr];
-	    } else {
-	      param = arr;
-	    }
-
-	    if (Array.isArray(param)) {
-	      (function () {
-	        param.forEach(function (par) {
-	          var p = String(par);
-
-	          if (select.value.indexOf(p) === -1) {
-	            select.value.push(p);
-	            isUpdate = true;
-	          }
-	        });
-
-	        var tempSelectValue = [];
-
-	        select.value.forEach(function (par, i) {
-	          if (param.indexOf(par) === -1) {
-	            isUpdate = true;
-	          } else {
-	            tempSelectValue.push(par);
-	          }
-	        });
-
-	        select.value = tempSelectValue;
-	      })();
-	    }
-
-	    return isUpdate;
-	  };
-
-	  setValue = function setValue(param) {
-	    if (updateValue(param)) {
-	      select.triggerEvent('change');
-	    }
-	  };
-
-	  setDisabled = function setDisabled(param) {
-	    var setDis = function setDis(par) {
-	      var p = String(par);
-
-	      [].concat(_toConsumableArray(select.querySelectorAll('.js-select-item'))).forEach(function (item) {
-	        if (item.dataset.value === p) {
-	          item.classList.add('is-disabled');
-	        }
-	      });
-	    };
-
-	    if (typeof param === 'string' || typeof param === 'number') {
-	      setDis(param);
-	    } else if (Array.isArray(param)) {
-	      param.forEach(setDis);
-	    }
-	  };
-
-	  unsetDisabled = function unsetDisabled(param) {
-	    var setDis = function setDis(par) {
-	      var p = String(par);
-
-	      [].concat(_toConsumableArray(select.querySelectorAll('.js-select-item'))).forEach(function (item) {
-	        if (item.dataset.value === p) {
-	          item.classList.remove('is-disabled');
-	        }
-	      });
-	    };
-
-	    if (typeof param === 'string' || typeof param === 'number') {
-	      setDis(param);
-	    } else if (Array.isArray(param)) {
-	      param.forEach(setDis);
-	    } else {
-	      [].concat(_toConsumableArray(select.querySelectorAll('.js-select-item'))).forEach(function (item) {
-	        return item.classList.remove('is-disabled');
-	      });
-	    }
-	  };
-
-	  select.value = select.value || [];
-
-	  select.updateValue = updateValue;
-	  select.setValue = setValue;
-	  select.setDisabled = setDisabled;
-	  select.unsetDisabled = unsetDisabled;
-
-	  select.addEventListener('click', open);
-
-	  applyBtn.addEventListener('click', function () {
-	    setValue(newValue);
-	    close();
-	  });
-
-	  closeBtn.addEventListener('click', close);
-
-	  select.addEventListener('click', function (event) {
-	    var item = event.target.closest('.js-select-item');
-
-	    if (item) {
-	      if (event.target.classList.contains('is-disabled')) {
-	        return;
-	      }
-
-	      var ind = newValue.indexOf(item.dataset.value);
-
-	      if (ind !== -1) {
-	        item.classList.remove('is-select');
-	        newValue.splice(ind, 1);
-	      } else {
-	        item.classList.add('is-select');
-	        newValue.push(item.dataset.value);
-	      }
-	    }
-	  });
-	};
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/***/ },
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-	exports.default = function () {
-	  [].concat(_toConsumableArray(document.querySelectorAll('.js-calendar'))).forEach(function (control) {
-	    var calendar = control.querySelector('.js-calendar-popup');
-
-	    if (!calendar) {
-	      return;
-	    }
-
-	    var currentDatetime = window.might.current_datetime;
-
-	    var today = {
-	      year: currentDatetime.getFullYear(),
-	      month: currentDatetime.getMonth(),
-	      date: currentDatetime.getDate()
-	    };
-
-	    var period = void 0;
-
-	    var labelControl = control.querySelector('.js-calendar-value');
-
-	    var boxes = {
-	      from: calendar.querySelectorAll('.js-calendar-box')[0],
-	      to: calendar.querySelectorAll('.js-calendar-box')[1]
-	    };
-
-	    var ranges = {
-	      today: calendar.querySelector('.js-calendar-range-today'),
-	      yesterday: calendar.querySelector('.js-calendar-range-yesterday'),
-	      lastweek: calendar.querySelector('.js-calendar-range-lastweek'),
-	      lastdays: calendar.querySelector('.js-calendar-range-lastdays'),
-	      thismonth: calendar.querySelector('.js-calendar-range-thismonth'),
-	      lastmonth: calendar.querySelector('.js-calendar-range-lastmonth'),
-	      custom: calendar.querySelector('.js-calendar-range-custom')
-	    };
-
-	    var inputTimeStart = calendar.querySelector('.js-calendar-time-start');
-	    var inputTimeEnd = calendar.querySelector('.js-calendar-time-end');
-	    var timezone = calendar.querySelector('.js-calendar-timezone');
-	    var applyBtn = calendar.querySelector('.js-calendar-apply');
-	    var closeBtn = calendar.querySelector('.js-calendar-close');
-
-	    var clickWindow = void 0;
-	    var _open = void 0;
-	    var close = void 0;
-	    var resetPeriod = void 0;
-	    var renderDefault = void 0;
-	    var renderDays = void 0;
-	    var renderRanges = void 0;
-	    var renderInputs = void 0;
-	    var updateSelects = void 0;
-	    var mouseoverDay = void 0;
-	    var mouseoutDay = void 0;
-	    var clickDay = void 0;
-	    var clickRange = void 0;
-	    var eventBoxes = void 0;
-	    var setLabelControl = void 0;
-	    var updateValue = void 0;
-	    var setValue = void 0;
-
-	    clickWindow = function clickWindow(event) {
-	      var closest = event.target.closest('.js-calendar');
-
-	      if (!closest || closest !== control) {
-	        resetPeriod();
-	        close(event);
-	      }
-	    };
-
-	    _open = function open(event) {
-	      event.stopPropagation();
-
-	      resetPeriod();
-	      renderDefault();
-
-	      calendar.classList.add('is-open');
-	      control.removeEventListener('click', _open);
-	      window.addEventListener('click', clickWindow);
-	    };
-
-	    close = function close(event) {
-	      event.stopPropagation();
-	      calendar.classList.remove('is-open');
-	      control.addEventListener('click', _open);
-	      window.removeEventListener('click', clickWindow);
-	    };
-
-	    resetPeriod = function resetPeriod() {
-	      var value = control.value;
-
-	      period = {
-	        from: {
-	          year: value.from.year,
-	          month: value.from.month,
-	          date: value.from.date
-	        },
-	        to: {
-	          year: value.to.year,
-	          month: value.to.month,
-	          date: value.to.date
-	        },
-	        start_time: value.start_time,
-	        end_time: value.end_time,
-	        timezone: value.timezone
-	      };
-	    };
-
-	    renderDefault = function renderDefault() {
-	      var curFrom = boxes.from.current;
-	      var curTo = boxes.to.current;
-
-	      curFrom.year = period.from.year;
-	      curFrom.month = period.from.month;
-
-	      curTo.year = period.to.year;
-	      curTo.month = period.to.month;
-
-	      if (curFrom.year === curTo.year && curFrom.month === curTo.month) {
-	        curFrom.month--;
-
-	        if (curFrom.month < 0) {
-	          curFrom.month = 11;
-	          curFrom.year--;
-	        }
-	      }
-
-	      updateSelects('from');
-	      updateSelects('to');
-
-	      renderDays('from');
-	      renderDays('to');
-	      renderRanges();
-
-	      renderInputs();
-
-	      timezone.setValue(period.timezone);
-	    };
-
-	    renderDays = function renderDays(b) {
-	      var days = boxes[b].querySelector('.js-calendar-days');
-
-	      var month = boxes[b].current.month;
-	      var year = boxes[b].current.year;
-	      var count = new Date(year, month + 1, 0).getDate();
-	      var first = new Date(year, month, 1).getDay() - 1;
-
-	      if (first === -1) {
-	        first = 6;
-	      }
-
-	      var tsFrom = +new Date(period.from.year, period.from.month, period.from.date);
-	      var tsTo = +new Date(period.to.year, period.to.month, period.to.date);
-	      var tsToday = +new Date(today.year, today.month, today.date);
-
-	      days.innerHTML = '';
-	      boxes[b].days_scope = {};
-
-	      for (var i = 1 - first; i <= count; i++) {
-	        var span = document.createElement('span');
-	        var day = void 0;
-
-	        if (i > 0) {
-	          span.textContent = i;
-	          day = +new Date(year, month, i);
-
-	          if (tsFrom === day) {
-	            span.classList.add('is-start');
-	          }
-
-	          if (tsFrom < day && tsTo > day) {
-	            span.classList.add('is-between');
-	          }
-
-	          if (tsTo === day) {
-	            span.classList.add('is-end');
-	          }
-
-	          if (tsToday < day) {
-	            span.classList.add('is-future');
-	          } else {
-	            span.dataset.value = day;
-	            span.addEventListener('click', clickDay);
-	            boxes[b].days_scope[day] = span;
-	          }
-	        } else {
-	          span.classList.add('is-empty');
-	        }
-
-	        days.appendChild(span);
-	      }
-	    };
-
-	    renderRanges = function renderRanges() {
-	      for (var i in ranges) {
-	        if (ranges.hasOwnProperty(i)) {
-	          ranges[i].parentNode.classList.remove('is-select');
-	        }
-	      }
-
-	      var tsFrom = +new Date(period.from.year, period.from.month, period.from.date);
-	      var tsTo = +new Date(period.to.year, period.to.month, period.to.date);
-
-	      var tsToday = +new Date(today.year, today.month, today.date);
-	      var tsYesterday = +new Date(today.year, today.month, today.date - 1);
-	      var ts7 = +new Date(today.year, today.month, today.date - 6);
-	      var ts30 = +new Date(today.year, today.month, today.date - 29);
-
-	      var tsMonthFrom = +new Date(today.year, today.month, 1);
-
-	      var tsLastMonthFrom = +new Date(today.year, today.month - 1, 1);
-	      var tsLastMonthTo = +new Date(today.year, today.month, 0);
-
-	      if (tsFrom === tsToday && tsTo === tsToday) {
-	        ranges.today.parentNode.classList.add('is-select');
-	      } else if (tsFrom === tsYesterday && tsTo === tsYesterday) {
-	        ranges.yesterday.parentNode.classList.add('is-select');
-	      } else if (tsFrom === ts7 && tsTo === tsToday) {
-	        ranges.lastweek.parentNode.classList.add('is-select');
-	      } else if (tsFrom === ts30 && tsTo === tsToday) {
-	        ranges.lastdays.parentNode.classList.add('is-select');
-	      } else if (tsFrom === tsMonthFrom && tsTo === tsToday) {
-	        ranges.thismonth.parentNode.classList.add('is-select');
-	      } else if (tsFrom === tsLastMonthFrom && tsTo === tsLastMonthTo) {
-	        ranges.lastmonth.parentNode.classList.add('is-select');
-	      } else {
-	        ranges.custom.parentNode.classList.add('is-select');
-	      }
-	    };
-
-	    renderInputs = function renderInputs() {
-	      inputTimeStart.value = period.start_time;
-	      inputTimeEnd.value = period.end_time;
-	    };
-
-	    updateSelects = function updateSelects(b) {
-	      var monthSelect = boxes[b].querySelector('.js-calendar-month');
-	      var yearSelect = boxes[b].querySelector('.js-calendar-year');
-
-	      try {
-	        monthSelect.updateValue(boxes[b].current.month);
-	        yearSelect.updateValue(boxes[b].current.year);
-	      } catch (err) {
-	        throw new Error(err);
-	      }
-	    };
-
-	    mouseoverDay = function mouseoverDay(event) {
-	      var target = event.target;
-
-	      if (target.nodeName !== 'SPAN' || !target.dataset.value) {
-	        mouseoutDay();
-	        return;
-	      }
-
-	      var date = parseInt(target.dataset.value, 10);
-	      var tsFrom = +new Date(period.from.year, period.from.month, period.from.date);
-	      var tsTo = +new Date(period.to.year, period.to.month, period.to.date);
-
-	      var fromScope = boxes.from.days_scope;
-	      var toScope = boxes.to.days_scope;
-
-	      var setBetween = function setBetween(day, span) {
-	        if (tsFrom === tsTo) {
-	          if (tsFrom < date && day < date && tsFrom < day || date < tsFrom && date < day && day < tsFrom) {
-	            span.classList.add('is-between');
-	          } else {
-	            span.classList.remove('is-between');
-	          }
-
-	          if (tsFrom < date && day === date || tsFrom === day && date < day) {
-	            span.classList.remove('is-start');
-	            span.classList.add('is-end');
-	          } else if (date < tsFrom && day === date || tsFrom === day && day < date) {
-	            span.classList.add('is-start');
-	            span.classList.remove('is-end');
-	          } else {
-	            span.classList.remove('is-start');
-	            span.classList.remove('is-end');
-	          }
-	        } else {
-	          span.classList.remove('is-between');
-
-	          if (date === day) {
-	            span.classList.add('is-start');
-	            span.classList.add('is-end');
-	          } else {
-	            span.classList.remove('is-start');
-	            span.classList.remove('is-end');
-	          }
-	        }
-	      };
-
-	      for (var i in fromScope) {
-	        if (fromScope.hasOwnProperty(i)) {
-	          setBetween(parseInt(i, 10), fromScope[i]);
-	        }
-	      }
-
-	      for (var _i in toScope) {
-	        if (toScope.hasOwnProperty(_i)) {
-	          setBetween(parseInt(_i, 10), toScope[_i]);
-	        }
-	      }
-	    };
-
-	    mouseoutDay = function mouseoutDay() {
-	      var tsFrom = +new Date(period.from.year, period.from.month, period.from.date);
-	      var tsTo = +new Date(period.to.year, period.to.month, period.to.date);
-
-	      var fromScope = boxes.from.days_scope;
-	      var toScope = boxes.to.days_scope;
-
-	      var setBetween = function setBetween(day, span) {
-	        if (tsFrom === day) {
-	          span.classList.add('is-start');
-	        } else {
-	          span.classList.remove('is-start');
-	        }
-
-	        if (tsFrom < day && day < tsTo) {
-	          span.classList.add('is-between');
-	        } else {
-	          span.classList.remove('is-between');
-	        }
-
-	        if (tsTo === day) {
-	          span.classList.add('is-end');
-	        } else {
-	          span.classList.remove('is-end');
-	        }
-	      };
-
-	      for (var i in fromScope) {
-	        if (fromScope.hasOwnProperty(i)) {
-	          setBetween(parseInt(i, 10), fromScope[i]);
-	        }
-	      }
-
-	      for (var _i2 in toScope) {
-	        if (toScope.hasOwnProperty(_i2)) {
-	          setBetween(parseInt(_i2, 10), toScope[_i2]);
-	        }
-	      }
-	    };
-
-	    clickDay = function clickDay(event) {
-	      event.stopPropagation();
-
-	      var tsFrom = +new Date(period.from.year, period.from.month, period.from.date);
-	      var tsTo = +new Date(period.to.year, period.to.month, period.to.date);
-
-	      var valueDate = new Date(parseInt(this.dataset.value, 10));
-
-	      var year = valueDate.getFullYear();
-	      var month = valueDate.getMonth();
-	      var date = valueDate.getDate();
-
-	      period.to.year = year;
-	      period.to.month = month;
-	      period.to.date = date;
-
-	      if (tsFrom !== tsTo) {
-	        period.from.year = year;
-	        period.from.month = month;
-	        period.from.date = date;
-	      } else {
-	        tsTo = valueDate.getTime();
-
-	        if (tsFrom > tsTo) {
-	          var y = period.from.year;
-	          var m = period.from.month;
-	          var d = period.from.date;
-
-	          period.from.year = period.to.year;
-	          period.from.month = period.to.month;
-	          period.from.date = period.to.date;
-
-	          period.to.year = y;
-	          period.to.month = m;
-	          period.to.date = d;
-	        }
-	      }
-
-	      renderDays('from');
-	      renderDays('to');
-	      renderRanges();
-	    };
-
-	    clickRange = function clickRange(f, t) {
-	      var from = f;
-	      var to = t || from;
-	      var periodTimezone = period.timezone;
-
-	      period = {
-	        from: {
-	          year: from.getFullYear(),
-	          month: from.getMonth(),
-	          date: from.getDate()
-	        },
-	        to: {
-	          year: to.getFullYear(),
-	          month: to.getMonth(),
-	          date: to.getDate()
-	        },
-	        start_time: '00:00',
-	        end_time: '23:59',
-	        timezone: periodTimezone
-	      };
-
-	      renderDefault();
-	    };
-
-	    eventBoxes = function eventBoxes(b) {
-	      var box = boxes[b];
-
-	      var next = box.querySelector('.js-calendar-next');
-	      var prev = box.querySelector('.js-calendar-prev');
-	      var monthSelect = box.querySelector('.js-calendar-month');
-	      var yearSelect = box.querySelector('.js-calendar-year');
-
-	      box.current = {};
-
-	      prev.addEventListener('click', function () {
-	        box.current.month--;
-
-	        if (box.current.month < 0) {
-	          box.current.month = 11;
-	          box.current.year--;
-	        }
-
-	        updateSelects(b);
-	        renderDays(b);
-	      });
-
-	      next.addEventListener('click', function () {
-	        box.current.month++;
-
-	        if (box.current.month > 11) {
-	          box.current.month = 0;
-	          box.current.year++;
-	        }
-
-	        updateSelects(b);
-	        renderDays(b);
-	      });
-
-	      monthSelect.addEventListener('change', function () {
-	        try {
-	          box.current.month = parseInt(monthSelect.value, 10);
-	          renderDays(b);
-	        } catch (err) {
-	          throw new Error(err);
-	        }
-	      });
-
-	      yearSelect.addEventListener('change', function () {
-	        try {
-	          box.current.year = parseInt(yearSelect.value, 10);
-	          renderDays(b);
-	        } catch (err) {
-	          throw new Error(err);
-	        }
-	      });
-	    };
-
-	    setLabelControl = function setLabelControl() {
-	      if (labelControl) {
-	        var value = control.value;
-	        var from = new Date(value.from.year, value.from.month, value.from.date);
-	        var to = new Date(value.to.year, value.to.month, value.to.date);
-
-	        from = (0, _dateformat2.default)(from, 'mmmm dd, yyyy');
-	        to = (0, _dateformat2.default)(to, 'mmmm dd, yyyy');
-
-	        if (from === to) {
-	          labelControl.innerHTML = from;
-	        } else {
-	          labelControl.innerHTML = from + ' &mdash; ' + to;
-	        }
-	      }
-	    };
-
-	    updateValue = function updateValue(obj) {
-	      var value = control.value;
-	      var newValue = obj || period;
-	      var isUpdate = false;
-
-	      for (var i in value) {
-	        if (value.hasOwnProperty(i) && newValue.hasOwnProperty(i)) {
-	          if (_typeof(value[i]) === 'object') {
-	            for (var j in value[i]) {
-	              if (value[i].hasOwnProperty(j) && newValue[i].hasOwnProperty(j)) {
-	                if (value[i][j] !== newValue[i][j]) {
-	                  value[i][j] = newValue[i][j];
-	                  isUpdate = true;
-	                }
-	              }
-	            }
-	          } else {
-	            if (value[i] !== newValue[i]) {
-	              value[i] = newValue[i];
-	              isUpdate = true;
-	            }
-	          }
-	        }
-	      }
-
-	      setLabelControl();
-
-	      return isUpdate;
-	    };
-
-	    setValue = function setValue(obj) {
-	      if (updateValue(obj)) {
-	        control.triggerEvent('change');
-	      }
-	    };
-
-	    boxes.from.addEventListener('mouseover', mouseoverDay);
-	    boxes.to.addEventListener('mouseover', mouseoverDay);
-	    boxes.from.addEventListener('mouseout', mouseoutDay);
-	    boxes.to.addEventListener('mouseout', mouseoutDay);
-
-	    ranges.today.addEventListener('click', function () {
-	      var tsToday = new Date(today.year, today.month, today.date);
-	      clickRange(tsToday);
-	    });
-
-	    ranges.yesterday.addEventListener('click', function () {
-	      var tsYesterday = new Date(today.year, today.month, today.date - 1);
-	      clickRange(tsYesterday);
-	    });
-
-	    ranges.lastweek.addEventListener('click', function () {
-	      var ts7 = new Date(today.year, today.month, today.date - 6);
-	      var tsToday = new Date(today.year, today.month, today.date);
-	      clickRange(ts7, tsToday);
-	    });
-
-	    ranges.lastdays.addEventListener('click', function () {
-	      var ts30 = new Date(today.year, today.month, today.date - 29);
-	      var tsToday = new Date(today.year, today.month, today.date);
-	      clickRange(ts30, tsToday);
-	    });
-
-	    ranges.thismonth.addEventListener('click', function () {
-	      var tsMonthFrom = new Date(today.year, today.month, 1);
-	      var tsToday = new Date(today.year, today.month, today.date);
-	      clickRange(tsMonthFrom, tsToday);
-	    });
-
-	    ranges.lastmonth.addEventListener('click', function () {
-	      var tsLastMonthFrom = new Date(today.year, today.month - 1, 1);
-	      var tsLastMonthTo = new Date(today.year, today.month, 0);
-	      clickRange(tsLastMonthFrom, tsLastMonthTo);
-	    });
-
-	    inputTimeStart.addEventListener('change', function () {
-	      period.start_time = inputTimeStart.value;
-	    });
-
-	    inputTimeEnd.addEventListener('change', function () {
-	      period.end_time = inputTimeEnd.value;
-	    });
-
-	    timezone.addEventListener('change', function () {
-	      period.timezone = timezone.value;
-	    });
-
-	    applyBtn.addEventListener('click', function (event) {
-	      setValue();
-	      close(event);
-	    });
-
-	    closeBtn.addEventListener('click', function (event) {
-	      close(event);
-	    });
-
-	    control.addEventListener('click', _open);
-
-	    control.value = {
-	      from: {
-	        year: today.year,
-	        month: today.month,
-	        date: today.date
-	      },
-	      to: {
-	        year: today.year,
-	        month: today.month,
-	        date: today.date
-	      },
-	      start_time: '00:00',
-	      end_time: '23:59',
-	      timezone: '+03:00|Europe/Moscow'
-	    };
-
-	    eventBoxes('from');
-	    eventBoxes('to');
-
-	    setLabelControl();
-
-	    control.updateValue = updateValue;
-	    control.setValue = setValue;
-	  });
-	};
-
-	var _dateformat = __webpack_require__(30);
-
-	var _dateformat2 = _interopRequireDefault(_dateformat);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/***/ },
-/* 30 */,
-/* 31 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function () {
-	  [].concat(_toConsumableArray(document.querySelectorAll('.js-postback'))).forEach(function (control) {
-	    var postback = control.querySelector('.js-postback-popup');
-
-	    if (!postback) {
-	      return;
-	    }
-
-	    var trigger = postback.querySelector('.js-postback-trigger');
-	    var usd = postback.querySelector('.js-postback-usd');
-	    var eur = postback.querySelector('.js-postback-eur');
-	    var rub = postback.querySelector('.js-postback-rub');
-	    var applyBtn = postback.querySelector('.js-postback-apply');
-	    var closeBtn = postback.querySelector('.js-postback-close');
-
-	    var clickWindow = void 0;
-	    var resetBtns = void 0;
-	    var open = void 0;
-	    var close = void 0;
-	    var updateValue = void 0;
-	    var setValue = void 0;
-	    var tempValue = {};
-
-	    clickWindow = function clickWindow(event) {
-	      var closest = event.target.closest('.js-postback');
-	      if (!closest || closest !== control) {
-	        close();
-	      }
-	    };
-
-	    resetBtns = function resetBtns(obj) {
-	      if (obj.postback_date) {
-	        trigger.classList.add('is-active');
-	      } else {
-	        trigger.classList.remove('is-active');
-	      }
-
-	      switch (obj.currency) {
-	        case 'usd':
-	          usd.classList.add('is-active');
-	          eur.classList.remove('is-active');
-	          rub.classList.remove('is-active');
-	          break;
-	        case 'eur':
-	          usd.classList.remove('is-active');
-	          eur.classList.add('is-active');
-	          rub.classList.remove('is-active');
-	          break;
-	        case 'rub':
-	          usd.classList.remove('is-active');
-	          eur.classList.remove('is-active');
-	          rub.classList.add('is-active');
-	          break;
-	        default:
-	          break;
-	      }
-	    };
-
-	    open = function open() {
-	      if (control.classList.contains('is-open')) {
-	        return;
-	      }
-
-	      tempValue.postback_date = control.value.postback_date;
-	      tempValue.currency = control.value.currency;
-
-	      control.classList.add('is-open');
-	      window.addEventListener('click', clickWindow);
-	    };
-
-	    close = function close() {
-	      resetBtns(control.value);
-
-	      window.removeEventListener('click', clickWindow);
-	      setTimeout(function () {
-	        control.classList.remove('is-open');
-	      }, 0);
-	    };
-
-	    updateValue = function updateValue(obj) {
-	      var isUpdate = false;
-
-	      if (obj.hasOwnProperty('postback_date')) {
-	        if (control.value.postback_date !== !!obj.postback_date) {
-	          control.value.postback_date = !!obj.postback_date;
-	          isUpdate = true;
-	        }
-	      }
-
-	      if (obj.hasOwnProperty('currency')) {
-	        if (control.value.currency !== obj.currency.toUpperCase()) {
-	          control.value.currency = obj.currency.toUpperCase();
-	          isUpdate = true;
-	        }
-	      }
-
-	      resetBtns(obj);
-
-	      return isUpdate;
-	    };
-
-	    setValue = function setValue(obj) {
-	      if (updateValue(obj)) {
-	        control.triggerEvent('change');
-	      }
-	    };
-
-	    trigger.addEventListener('click', function () {
-	      if (trigger.classList.contains('is-active')) {
-	        trigger.classList.remove('is-active');
-	        tempValue.postback_date = false;
-	      } else {
-	        trigger.classList.add('is-active');
-	        tempValue.postback_date = true;
-	      }
-	    });
-
-	    usd.addEventListener('click', function () {
-	      usd.classList.add('is-active');
-	      eur.classList.remove('is-active');
-	      rub.classList.remove('is-active');
-	      tempValue.currency = 'usd';
-	    });
-
-	    eur.addEventListener('click', function () {
-	      usd.classList.remove('is-active');
-	      eur.classList.add('is-active');
-	      rub.classList.remove('is-active');
-	      tempValue.currency = 'eur';
-	    });
-
-	    rub.addEventListener('click', function () {
-	      usd.classList.remove('is-active');
-	      eur.classList.remove('is-active');
-	      rub.classList.add('is-active');
-	      tempValue.currency = 'rub';
-	    });
-
-	    applyBtn.addEventListener('click', function () {
-	      setValue(tempValue);
-	      close();
-	    });
-
-	    closeBtn.addEventListener('click', function () {
-	      close();
-	    });
-
-	    control.value = {};
-
-	    control.addEventListener('click', open);
-
-	    control.updateValue = updateValue;
-	    control.setValue = setValue;
-	  });
-	};
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/***/ },
-/* 32 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function () {
-	  [].concat(_toConsumableArray(document.querySelectorAll('.js-list-fetch'))).forEach(_listFetchEvent2.default);
-	};
-
-	var _listFetchEvent = __webpack_require__(33);
-
-	var _listFetchEvent2 = _interopRequireDefault(_listFetchEvent);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/***/ },
-/* 33 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function (list) {
-	  var listValue = list.querySelector('.js-list-fetch-value');
-	  var search = list.querySelector('.js-list-fetch-search');
-	  var itemsWrap = list.querySelector('.js-list-fetch-items');
-	  var placeholder = list.dataset.placeholder;
-
-	  var clickWindow = void 0;
-	  var open = void 0;
-	  var close = void 0;
-	  var updateItems = void 0;
-	  var updateValue = void 0;
-	  var setValue = void 0;
-	  var filterSearch = void 0;
-
-	  clickWindow = function clickWindow(event) {
-	    var closest = event.target.closest('.js-list-fetch');
-	    if (!closest || closest !== list) {
-	      close();
-	    }
-	  };
-
-	  open = function open() {
-	    search.value = '';
-	    updateItems();
-	    list.classList.add('is-open');
-	    window.addEventListener('click', clickWindow);
-	  };
-
-	  close = function close() {
-	    list.classList.remove('is-open');
-	    window.removeEventListener('click', clickWindow);
-	  };
-
-	  var dateToString = function dateToString(y, m, d) {
-	    var date = new Date(y, m, d);
-	    return (0, _dateformat2.default)(date, 'yyyy-mm-dd');
-	  };
-
-	  updateItems = function updateItems() {
-	    var params = window.might.stat.params;
-	    var from = dateToString(params.date_from.year, params.date_from.month, params.date_from.date);
-	    var to = dateToString(params.date_to.year, params.date_to.month, params.date_to.date);
-	    var dateFilter = from + ' - ' + to;
-
-	    var data = {
-	      date_filter: dateFilter,
-	      timezone: params.timezone,
-	      search: search.value || false,
-	      field: list.field
-	    };
-
-	    params.filters_stock.forEach(function (filter, i) {
-	      if (filter.field !== list.field) {
-	        data.filter_items = data.filter_items || [];
-	        data.filter_items[filter];
-	      }
-	    });
-
-	    (0, _fetchApi.fetchObject)('/campaign/data/for/top_filter', data, false).then(function (res) {
-	      itemsWrap.innerHTML = '';
-
-	      if (res.error === false) {
-	        res.data.forEach(function (item) {
-	          var name = void 0;
-
-	          if (item.title) {
-	            name = item.title;
-	          } else {
-	            name = item[list.field] || item.v;
-	          }
-
-	          itemsWrap.innerHTML += '<div ' + 'class="list__item js-list-fetch-item' + (item.v === list.value ? ' is-select"' : '"') + ' data-value="' + item.v + '">' + name + '</div>';
-	        });
-	      }
-	    }).catch(function (err) {});
-	  };
-
-	  updateValue = function updateValue(val, ttl, fld, clr) {
-	    var isUpdate = false;
-
-	    if (!val && val !== 0) {
-	      if (list.value) {
-	        list.value = null;
-	        list.title = null;
-	        isUpdate = true;
-	      }
-
-	      if (placeholder) {
-	        listValue.textContent = placeholder;
-	      }
-	    } else {
-	      (function () {
-	        var value = String(val);
-	        var title = ttl || value;
-
-	        if (list.value !== value) {
-	          list.value = value;
-	          list.title = title;
-	          listValue.textContent = title;
-	          isUpdate = true;
-
-	          [].concat(_toConsumableArray(list.querySelectorAll('.js-list-fetch-item'))).forEach(function (el) {
-	            if (el.dataset.value === value) {
-	              el.classList.add('is-select');
-	            } else {
-	              el.classList.remove('is-select');
-	            }
-	          });
-	        }
-	      })();
-	    }
-
-	    if (clr) {
-	      var clearBtn = document.createElement('div');
-	      clearBtn.className = 'list__clear';
-	      list.appendChild(clearBtn);
-	      clearBtn.addEventListener('click', function () {
-	        setValue();
-	      });
-	    }
-
-	    if (fld) {
-	      list.field = fld;
-
-	      var label = list.querySelector('.list__label');
-
-	      if (label) {
-	        label.parentNode.removeChild(label);
-	      }
-
-	      label = document.createElement('div');
-	      label.className = 'list__label';
-	      label.textContent = (0, _fieldName2.default)(fld);
-	      list.children[0]._inserBefore(label);
-	    }
-
-	    return isUpdate;
-	  };
-
-	  setValue = function setValue(value, title) {
-	    if (updateValue(value, title)) {
-	      list.triggerEvent('change:list');
-	    }
-	  };
-
-	  list.updateValue = updateValue;
-	  list.setValue = setValue;
-
-	  listValue.addEventListener('click', function () {
-	    if (list.classList.contains('is-open')) {
-	      close();
-	    } else {
-	      open();
-	    }
-	  });
-
-	  var timeSearch = void 0;
-
-	  filterSearch = function filterSearch(event) {
-	    if (timeSearch) {
-	      clearTimeout(timeSearch);
-	    }
-
-	    timeSearch = setTimeout(updateItems, 300);
-	  };
-
-	  search.addEventListener('select', filterSearch);
-	  search.addEventListener('change', filterSearch);
-	  search.addEventListener('keyup', filterSearch);
-
-	  list.addEventListener('click', function (event) {
-	    var item = event.target.closest('.js-list-fetch-item');
-
-	    if (item) {
-	      setValue(item.dataset.value, item.textContent);
-	      close();
-	    }
-	  });
-
-	  if (!listValue.textContent && placeholder) {
-	    listValue.textContent = placeholder;
-	  }
-	};
-
-	var _qs = __webpack_require__(15);
-
-	var _qs2 = _interopRequireDefault(_qs);
-
-	var _dateformat = __webpack_require__(30);
-
-	var _dateformat2 = _interopRequireDefault(_dateformat);
-
-	var _fieldName = __webpack_require__(34);
-
-	var _fieldName2 = _interopRequireDefault(_fieldName);
-
-	var _fetchApi = __webpack_require__(35);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/***/ },
-/* 34 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function (param) {
-	  return names[param] || param;
-	};
-
-	var names = {
-	  campaign_id: 'Campaign',
-	  country: 'Country',
-	  browser: 'Browser',
-	  browser_language: 'Browser language',
-	  browser_version: 'Browser version',
-	  payment: 'Payment',
-	  tm_spend: 'Tm spend',
-	  unique_shows: 'Unique shows',
-	  shows: 'Shows',
-	  unique_clicks: 'Unique clicks',
-	  clicks: 'Clicks',
-	  uctr: 'UCTR',
-	  ctr: 'CTR',
-	  leads: 'Leads',
-	  declined: 'Declined',
-	  pending: 'Pending',
-	  total: 'Total',
-	  cvr: 'CVR',
-	  epc: 'EPC',
-	  cpc: 'CPC',
-	  rev: 'Rev',
-	  spend: 'Spend',
-	  pl: 'P/L',
-	  roi: 'ROI',
-	  label: 'Label',
-	  ip: 'IP',
-	  ip_range: 'IP range',
-	  time_hour: 'Hour',
-	  time_day: 'Day',
-	  time_weekday: 'Day of week',
-	  click_id: 'Click ID',
-	  user_agent: 'User agent',
-	  referer: 'Referrer',
-	  referer_domain: 'Referrer domain',
-	  device_brand: 'Device brand',
-	  device_model: 'Device model',
-	  device_type: 'Device type',
-	  state: 'State',
-	  city: 'City',
-	  os: 'OS',
-	  os_version: 'OS version',
-	  connection_type: 'Connection type',
-	  isp: 'ISP',
-	  mobile_carrier: 'Mobile carrier',
-	  affiliate_network: 'Affiliate network',
-	  traffic_source: 'Traffic source',
-	  offer: 'Offer',
-	  lander: 'Lander'
-	};
-
-/***/ },
-/* 35 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(Promise, fetch) {'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-	exports.fetchData = fetchData;
-	exports.fetchObject = fetchObject;
-
-	var _crypto = __webpack_require__(42);
-
-	var _crypto2 = _interopRequireDefault(_crypto);
-
-	var _qs = __webpack_require__(15);
-
-	var _qs2 = _interopRequireDefault(_qs);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function getOptionsFetch(opt) {
-	  var headers = new Headers();
-	  headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-	  var options = {
-	    method: 'post',
-	    mode: 'cors',
-	    headers: headers
-	  };
-
-	  if (true) {
-	    options.credentials = 'include';
-	  }
-
-	  var data = opt || {};
-
-	  if (window.might.hasOwnProperty('auth_key')) {
-	    data.auth_key = window.might.auth_key;
-	  }
-
-	  var permissionUser = window.cookie('permission_user');
-
-	  if (document.querySelector('.js-stat') && permissionUser) {
-	    data.permission_user = permissionUser;
-	  }
-
-	  options.body = _qs2.default.stringify(data);
-
-	  return options;
-	}
-
-	var timeout = void 0;
-
-	function startFetch(opt, preload) {
-	  var options = getOptionsFetch(opt);
-
-	  if (preload === false) {
-	    return { options: options };
-	  }
-
-	  var requestHash = _crypto2.default.randomBytes(12).toString('hex');
-
-	  window._activeRequests = window._activeRequests || [];
-	  window._activeRequests.push(requestHash);
-
-	  if (timeout) {
-	    clearTimeout(timeout);
-	  }
-
-	  if (!document.querySelector('.js-loading')) {
-	    (function () {
-	      var loading = document.createElement('div');
-	      loading.className = 'loading js-loading';
-	      document.body.appendChild(loading);
-
-	      setTimeout(function () {
-	        loading.classList.add('is-show');
-	      }, 0);
-	    })();
-	  }
-
-	  return { options: options, requestHash: requestHash };
-	}
-
-	function stopFetch(hash) {
-	  var index = window._activeRequests.indexOf(hash);
-	  window._activeRequests.splice(index, 1);
-
-	  if (!window._activeRequests.length) {
-	    (function () {
-	      var el = document.querySelector('.js-loading');
-
-	      timeout = setTimeout(function () {
-	        el.parentNode.removeChild(el);
-	      }, 100);
-	    })();
-	  }
-	}
-
-	function fetchData(url, opt, preload) {
-	  var _startFetch = startFetch(opt, preload),
-	      options = _startFetch.options,
-	      requestHash = _startFetch.requestHash;
-
-	  return new Promise(function (resolve, reject) {
-	    fetch(window.might.url + url, options).then(function (response) {
-	      return response.json();
-	    }).then(function (res) {
-	      if (res.error) {
-	        if (res.result && _typeof(res.result) === 'object') {
-	          if (res.result.msg) {
-	            reject(res.result.msg);
-	          }
-	        }
-	      } else if (res.result && _typeof(res.result) === 'object') {
-	        resolve(res.result);
-	      } else {
-	        reject('Error JSON object');
-	      }
-
-	      if (requestHash) {
-	        stopFetch(requestHash);
-	      }
-	    }).catch(function (err) {
-	      reject('Error network');
-	      if (requestHash) {
-	        stopFetch(requestHash);
-	      }
-	    });
-	  });
-	}
-
-	function fetchObject(url, opt, preload) {
-	  var _startFetch2 = startFetch(opt, preload),
-	      options = _startFetch2.options,
-	      requestHash = _startFetch2.requestHash;
-
-	  return new Promise(function (resolve, reject) {
-	    fetch(window.might.url + url, options).then(function (response) {
-	      return response.json();
-	    }).then(function (res) {
-	      resolve(res);
-
-	      if (requestHash) {
-	        stopFetch(requestHash);
-	      }
-	    }).catch(function (err) {
-	      reject('Error network');
-
-	      if (requestHash) {
-	        stopFetch(requestHash);
-	      }
-	    });
-	  });
-	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(36), __webpack_require__(41)))
-
-/***/ },
-/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*** IMPORTS FROM imports-loader ***/
@@ -2791,7 +527,7 @@ webpackJsonp([0],[
 	    function lib$es6$promise$asap$$attemptVertx() {
 	      try {
 	        var r = require;
-	        var vertx = __webpack_require__(39);
+	        var vertx = __webpack_require__(24);
 	        lib$es6$promise$asap$$vertxNext = vertx.runOnLoop || vertx.runOnContext;
 	        return lib$es6$promise$asap$$useVertxTimer();
 	      } catch(e) {
@@ -3609,7 +1345,7 @@ webpackJsonp([0],[
 	    };
 
 	    /* global define:true module:true window: true */
-	    if ("function" === 'function' && __webpack_require__(40)['amd']) {
+	    if ("function" === 'function' && __webpack_require__(25)['amd']) {
 	      !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return lib$es6$promise$umd$$ES6Promise; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	    } else if (typeof module !== 'undefined' && module['exports']) {
 	      module['exports'] = lib$es6$promise$umd$$ES6Promise;
@@ -3625,11 +1361,11 @@ webpackJsonp([0],[
 	/*** EXPORTS FROM exports-loader ***/
 	module.exports = global.Promise;
 	}.call(global));
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(37), (function() { return this; }()), __webpack_require__(38)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22), (function() { return this; }()), __webpack_require__(23)(module)))
 
 /***/ },
-/* 37 */,
-/* 38 */
+/* 22 */,
+/* 23 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -3645,20 +1381,182 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 39 */
+/* 24 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 40 */
+/* 25 */
 /***/ function(module, exports) {
 
 	module.exports = function() { throw new Error("define cannot be used indirect"); };
 
 
 /***/ },
-/* 41 */
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(Promise, fetch) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	exports.fetchData = fetchData;
+	exports.fetchObject = fetchObject;
+
+	var _crypto = __webpack_require__(28);
+
+	var _crypto2 = _interopRequireDefault(_crypto);
+
+	var _qs = __webpack_require__(15);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function getOptionsFetch(opt) {
+	  var headers = new Headers();
+	  headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+	  var options = {
+	    method: 'post',
+	    mode: 'cors',
+	    headers: headers
+	  };
+
+	  if (true) {
+	    options.credentials = 'include';
+	  }
+
+	  var data = opt || {};
+
+	  if (window.might.hasOwnProperty('auth_key')) {
+	    data.auth_key = window.might.auth_key;
+	  }
+
+	  var permissionId = window.cookie('permission_id');
+
+	  if (document.querySelector('.js-stat') && permissionId) {
+	    data.permission_user = permissionId;
+	  }
+
+	  options.body = _qs2.default.stringify(data);
+
+	  return options;
+	}
+
+	var timeout = void 0;
+
+	function startFetch(opt, preload) {
+	  var options = getOptionsFetch(opt);
+
+	  if (preload === false) {
+	    return { options: options };
+	  }
+
+	  var requestHash = _crypto2.default.randomBytes(12).toString('hex');
+
+	  window._activeRequests = window._activeRequests || [];
+	  window._activeRequests.push(requestHash);
+
+	  if (timeout) {
+	    clearTimeout(timeout);
+	  }
+
+	  if (!document.querySelector('.js-loading')) {
+	    (function () {
+	      var loading = document.createElement('div');
+	      loading.className = 'loading js-loading';
+	      document.body.appendChild(loading);
+
+	      setTimeout(function () {
+	        loading.classList.add('is-show');
+	      }, 0);
+	    })();
+	  }
+
+	  return { options: options, requestHash: requestHash };
+	}
+
+	function stopFetch(hash) {
+	  var index = window._activeRequests.indexOf(hash);
+	  window._activeRequests.splice(index, 1);
+
+	  if (!window._activeRequests.length) {
+	    (function () {
+	      var el = document.querySelector('.js-loading');
+
+	      timeout = setTimeout(function () {
+	        el.parentNode.removeChild(el);
+	      }, 100);
+	    })();
+	  }
+	}
+
+	function fetchData(url, opt, preload) {
+	  var _startFetch = startFetch(opt, preload),
+	      options = _startFetch.options,
+	      requestHash = _startFetch.requestHash;
+
+	  return new Promise(function (resolve, reject) {
+	    fetch(window.might.url + url, options).then(function (response) {
+	      return response.json();
+	    }).then(function (res) {
+	      if (res.error) {
+	        if (res.result && _typeof(res.result) === 'object') {
+	          if (res.result.msg) {
+	            reject(res.result.msg);
+	          }
+	        }
+	      } else if (res.result && _typeof(res.result) === 'object') {
+	        resolve(res.result);
+	      } else {
+	        reject('Error JSON object');
+	      }
+
+	      if (requestHash) {
+	        stopFetch(requestHash);
+	      }
+	    }).catch(function (err) {
+	      reject('Error network');
+	      if (requestHash) {
+	        stopFetch(requestHash);
+	      }
+	    });
+	  });
+	}
+
+	function fetchObject(url, opt, preload) {
+	  var _startFetch2 = startFetch(opt, preload),
+	      options = _startFetch2.options,
+	      requestHash = _startFetch2.requestHash;
+
+	  return new Promise(function (resolve, reject) {
+	    fetch(window.might.url + url, options).then(function (response) {
+	      return response.json();
+	    }).then(function (res) {
+	      resolve(res);
+
+	      if (requestHash) {
+	        stopFetch(requestHash);
+	      }
+	    }).catch(function (err) {
+	      reject('Error network');
+
+	      if (requestHash) {
+	        stopFetch(requestHash);
+	      }
+	    });
+	  });
+	}
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21), __webpack_require__(27)))
+
+/***/ },
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Promise, global) {/*** IMPORTS FROM imports-loader ***/
@@ -4102,9 +2000,23 @@ webpackJsonp([0],[
 	/*** EXPORTS FROM exports-loader ***/
 	module.exports = global.fetch;
 	}.call(global));
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(36), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21), (function() { return this; }())))
 
 /***/ },
+/* 28 */,
+/* 29 */,
+/* 30 */,
+/* 31 */,
+/* 32 */,
+/* 33 */,
+/* 34 */,
+/* 35 */,
+/* 36 */,
+/* 37 */,
+/* 38 */,
+/* 39 */,
+/* 40 */,
+/* 41 */,
 /* 42 */,
 /* 43 */,
 /* 44 */,
@@ -4113,21 +2025,2210 @@ webpackJsonp([0],[
 /* 47 */,
 /* 48 */,
 /* 49 */,
-/* 50 */,
-/* 51 */,
-/* 52 */,
-/* 53 */,
-/* 54 */,
-/* 55 */,
-/* 56 */,
-/* 57 */,
-/* 58 */,
-/* 59 */,
-/* 60 */,
+/* 50 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  var user = document.querySelector('.js-header-user');
+
+	  if (user) {
+	    (function () {
+	      var name = user.querySelector('.js-header-user-name');
+
+	      var clickWindow = function clickWindow(event) {
+	        var closest = event.target.closest('.js-header-user');
+
+	        if (!closest) {
+	          user.classList.remove('is-open');
+	          window.removeEventListener('click', clickWindow);
+	        }
+	      };
+
+	      name.addEventListener('click', function (event) {
+	        if (user.classList.contains('is-open')) {
+	          user.classList.remove('is-open');
+	          window.removeEventListener('click', clickWindow);
+	        } else {
+	          user.classList.add('is-open');
+	          window.addEventListener('click', clickWindow);
+	        }
+	      });
+	    })();
+	  }
+	};
+
+/***/ },
+/* 51 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  var settings = window.__settings__;
+	  var user = settings.user || {};
+	  var thisUserName = [user.name, user.surname].join(' ');
+	  var activePermision = Number(window.cookie('permission_id'));
+	  var userName = document.querySelector('.js-header-user-name');
+	  var rightsList = document.querySelector('.js-header-user-rights');
+
+	  var selectIdPermision = void 0;
+
+	  if (Array.isArray(settings.permissions)) {
+	    settings.permissions.forEach(function (permission, index) {
+	      var span = document.createElement('span');
+	      span.textContent = [permission.name, permission.surname].join(' ');
+
+	      if (!span.textContent) {
+	        span.textContent = '[id: ' + permission.id + ']';
+	      }
+
+	      if (activePermision === Number(permission.id)) {
+	        selectIdPermision = index;
+	        span.className = 'is-active';
+	      }
+
+	      rightsList.appendChild(span);
+
+	      span.addEventListener('click', function () {
+	        window.cookie('permission_id', permission.id, { expires: 30 });
+	        window.location = window.location.pathname;
+	      });
+	    });
+	  }
+
+	  if (typeof selectIdPermision === 'number') {
+	    var thisSpan = document.createElement('span');
+	    thisSpan.textContent = [thisUserName, '(you)'].join(' ');
+	    rightsList.insertBefore(thisSpan, rightsList.firstChild);
+	    thisSpan.addEventListener('click', function () {
+	      window.removeCookie('permission_id');
+	      window.location = window.location.pathname;
+	    });
+
+	    var selectUser = settings.permissions[selectIdPermision];
+	    userName.textContent = [selectUser.name, selectUser.surname].join(' ');
+
+	    window.__active_permission__ = selectUser.values;
+	  } else {
+	    userName.textContent = thisUserName;
+	  }
+	};
+
+/***/ },
+/* 52 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  [].concat(_toConsumableArray(document.querySelectorAll('.js-nav'))).forEach(function (nav) {
+	    var page = nav.querySelector('.js-nav-page');
+	    var count = nav.querySelector('.js-nav-count');
+	    var labelCount = nav.querySelector('.js-nav-count-label');
+	    var itemsCount = nav.querySelectorAll('.js-nav-count-item');
+
+	    var controls = nav.querySelector('.js-nav-controls');
+	    var label = nav.querySelector('.js-nav-label');
+	    var tostart = nav.querySelector('.js-nav-tostart');
+	    var prev = nav.querySelector('.js-nav-prev');
+	    var next = nav.querySelector('.js-nav-next');
+	    var toend = nav.querySelector('.js-nav-toend');
+
+	    var updateValue = void 0;
+	    var setValue = void 0;
+
+	    page.addEventListener('paste', function (event) {
+	      event.preventDefault();
+	    });
+
+	    page.addEventListener('keydown', function (event) {
+	      var code = event.keyCode;
+	      var char = String.fromCharCode(code);
+	      var key = '0123456789'.indexOf(char);
+	      var value = parseInt(event.target.value, 10);
+
+	      switch (code) {
+	        case 8:
+	        case 46:
+	        case 37:
+	        case 39:
+	          break;
+	        case 9:
+	        case 13:
+	        case 27:
+	          event.target.blur();
+	          break;
+	        case 38:
+	          event.preventDefault();
+	          value++;
+	          if (value > Math.ceil(nav.value.total / nav.value.length)) {
+	            value = Math.ceil(nav.value.total / nav.value.length);
+	          }
+	          setValue({ page: value });
+	          break;
+	        case 40:
+	          event.preventDefault();
+	          value--;
+	          if (value < 1) {
+	            value = 1;
+	          }
+	          setValue({ page: value });
+	          break;
+	        default:
+	          if (key === -1) {
+	            event.preventDefault();
+	          }
+	      }
+	    });
+
+	    page.addEventListener('change', function (event) {
+	      var value = parseInt(event.target.value, 10);
+
+	      if (!value || value < 1) {
+	        value = 1;
+	      }
+
+	      if (value > Math.ceil(nav.value.total / nav.value.length)) {
+	        value = Math.ceil(nav.value.total / nav.value.length);
+	      }
+
+	      setValue({ page: value });
+	    });
+
+	    var clickWindow = function clickWindow(event) {
+	      var closest = event.target.closest('.js-nav-count');
+	      if (!closest || closest !== count) {
+	        close();
+	      }
+	    };
+
+	    var open = function open() {
+	      count.classList.add('is-open');
+	      window.addEventListener('click', clickWindow);
+	    };
+
+	    var close = function close() {
+	      count.classList.remove('is-open');
+	      window.removeEventListener('click', clickWindow);
+	    };
+
+	    labelCount.addEventListener('click', function () {
+	      if (count.classList.contains('is-open')) {
+	        close();
+	      } else {
+	        open();
+	      }
+	    });
+
+	    [].concat(_toConsumableArray(itemsCount)).forEach(function (item) {
+	      item.addEventListener('click', function () {
+	        var value = parseInt(item.textContent, 10);
+	        [].concat(_toConsumableArray(itemsCount)).forEach(function (el) {
+	          return el.classList.remove('is-select');
+	        });
+	        item.classList.add('is-select');
+	        close();
+	        labelCount.textContent = value;
+	        setValue({ length: value });
+	      });
+	    });
+
+	    tostart.addEventListener('click', function () {
+	      setValue({ page: 1 });
+	    });
+
+	    prev.addEventListener('click', function () {
+	      var p = nav.value.page - 1;
+	      if (p < 1) {
+	        p = 1;
+	      }
+	      setValue({ page: p });
+	    });
+
+	    next.addEventListener('click', function () {
+	      var p = nav.value.page + 1;
+	      if (p > Math.ceil(nav.value.total / nav.value.length)) {
+	        p = Math.ceil(nav.value.total / nav.value.length);
+	      }
+	      setValue({ page: p });
+	    });
+
+	    toend.addEventListener('click', function () {
+	      setValue({ page: Math.ceil(nav.value.total / nav.value.length) });
+	    });
+
+	    updateValue = function updateValue(obj) {
+	      var isUpdate = false;
+
+	      if (obj.hasOwnProperty('total') && nav.value.total !== parseInt(obj.total, 10)) {
+	        nav.value.total = parseInt(obj.total, 10);
+	      }
+
+	      if (obj.hasOwnProperty('length') && nav.value.length !== parseInt(obj.length, 10)) {
+	        nav.value.length = parseInt(obj.length, 10);
+	        isUpdate = true;
+	      }
+
+	      if (obj.hasOwnProperty('page') && nav.value.page !== parseInt(obj.page, 10)) {
+	        nav.value.page = parseInt(obj.page, 10);
+	        isUpdate = true;
+	      }
+
+	      if (nav.value.total) {
+	        nav.style.display = '';
+
+	        if (nav.value.page > Math.ceil(nav.value.total / nav.value.length)) {
+	          nav.value.page = Math.ceil(nav.value.total / nav.value.length);
+	          isUpdate = true;
+	        }
+
+	        var start = (nav.value.page - 1) * nav.value.length + 1;
+	        var end = start + nav.value.length - 1;
+
+	        if (end > nav.value.total) {
+	          end = nav.value.total;
+	        }
+
+	        label.textContent = start + '-' + end + ' of ' + nav.value.total;
+
+	        if (nav.value.total > nav.value.length) {
+	          controls.style.display = '';
+	        } else {
+	          controls.style.display = 'none';
+	        }
+	      } else {
+	        nav.style.display = 'none';
+	      }
+
+	      if (nav.value.page === 1) {
+	        tostart.classList.add('is-disabled');
+	        prev.classList.add('is-disabled');
+	      } else {
+	        tostart.classList.remove('is-disabled');
+	        prev.classList.remove('is-disabled');
+	      }
+
+	      if (nav.value.page === Math.ceil(nav.value.total / nav.value.length)) {
+	        next.classList.add('is-disabled');
+	        toend.classList.add('is-disabled');
+	      } else {
+	        next.classList.remove('is-disabled');
+	        toend.classList.remove('is-disabled');
+	      }
+
+	      page.value = nav.value.page;
+
+	      if (isUpdate) {
+	        labelCount.textContent = nav.value.length;
+
+	        [].concat(_toConsumableArray(itemsCount)).forEach(function (item) {
+	          if (String(nav.value.length) === item.textContent) {
+	            item.classList.add('is-select');
+	          } else {
+	            item.classList.remove('is-select');
+	          }
+	        });
+	      }
+
+	      return isUpdate;
+	    };
+
+	    setValue = function setValue(obj) {
+	      if (updateValue(obj)) {
+	        nav.triggerEvent('change');
+	      }
+	    };
+
+	    nav.value = {};
+
+	    nav.updateValue = updateValue;
+	    nav.setValue = setValue;
+	  });
+	};
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
+/* 53 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  [].concat(_toConsumableArray(document.querySelectorAll('.js-input-time'))).forEach(function (input) {
+	    var range = 1;
+
+	    var selectRange = function selectRange() {
+	      if (range === 1) {
+	        input.selectionStart = 0;
+	        input.selectionEnd = 2;
+	      } else {
+	        input.selectionStart = 3;
+	        input.selectionEnd = 5;
+	      }
+	      input.focus();
+	    };
+
+	    var keyDown = function keyDown(event) {
+	      var char = String.fromCharCode(event.keyCode);
+	      var key = '0123456789'.indexOf(char);
+
+	      event.preventDefault();
+
+	      if (key !== -1) {
+	        var value = event.target.value;
+	        var chunks = value.split(':');
+	        var str = range === 1 ? value[1] : value[4];
+	        var maxVal = range === 1 ? 24 : 60;
+
+	        str += String(key);
+
+	        if (parseInt(str, 10) < maxVal) {
+	          chunks[range - 1] = str;
+	        } else {
+	          chunks[range - 1] = '0' + key;
+	        }
+
+	        if (range === 1 && parseInt(chunks[0], 10) > 2) {
+	          range = 2;
+	        }
+
+	        input.value = chunks.join(':');
+	        input.triggerEvent('change');
+
+	        selectRange();
+	      }
+	    };
+
+	    var keyForChange = function keyForChange(code) {
+	      var chunks = event.target.value.split(':');
+	      var hours = parseInt(chunks[0], 10);
+	      var minutes = parseInt(chunks[1], 10);
+
+	      if (range === 1) {
+	        hours += code === 38 ? 1 : -1;
+	      } else {
+	        minutes += code === 38 ? 1 : -1;
+	      }
+
+	      if (minutes > 59) {
+	        minutes = 0;
+	        hours++;
+	      }
+
+	      if (minutes < 0) {
+	        minutes = 59;
+	        hours--;
+	      }
+
+	      if (hours > 23) {
+	        hours = 0;
+	      }
+
+	      if (hours < 0) {
+	        hours = 23;
+	      }
+
+	      chunks[0] = hours < 10 ? '0' + hours : hours;
+	      chunks[1] = minutes < 10 ? '0' + minutes : minutes;
+
+	      input.value = chunks.join(':');
+	      input.triggerEvent('change');
+
+	      selectRange();
+	    };
+
+	    input.addEventListener('focus', function () {
+	      setTimeout(function () {
+	        range = 1;
+	        selectRange();
+	      }, 0);
+	    });
+
+	    input.addEventListener('paste', function (event) {
+	      event.preventDefault();
+	    });
+
+	    input.addEventListener('cut', function (event) {
+	      event.preventDefault();
+	    });
+
+	    input.addEventListener('keydown', function (event) {
+	      var code = event.keyCode;
+
+	      switch (code) {
+	        case 9:
+	          if (event.shiftKey && range === 2) {
+	            range = 1;
+	            selectRange();
+	            event.preventDefault();
+	          } else if (!event.shiftKey && range === 1) {
+	            range = 2;
+	            selectRange();
+	            event.preventDefault();
+	          }
+	          break;
+	        case 13:
+	        case 27:
+	          event.target.blur();
+	          input.triggerEvent('change');
+	          break;
+	        case 37:
+	          event.preventDefault();
+	          range = 1;
+	          selectRange();
+	          break;
+	        case 38:
+	        case 40:
+	          event.preventDefault();
+	          keyForChange(code);
+	          break;
+	        case 32:
+	          event.preventDefault();
+	          break;
+	        case 39:
+	          event.preventDefault();
+	          range = 2;
+	          selectRange();
+	          break;
+	        default:
+	          keyDown(event);
+	      }
+	    });
+	  });
+	};
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
+/* 54 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  document.body.addEventListener('click', function (event) {
+	    var closest = event.target.closest('.js-checkbox');
+
+	    if (closest) {
+	      closest.classList.toggle('is-select');
+	      closest.triggerEvent('change');
+	    }
+	  });
+	};
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  [].concat(_toConsumableArray(document.querySelectorAll('.js-list'))).forEach(_listEvent2.default);
+	};
+
+	var _listEvent = __webpack_require__(56);
+
+	var _listEvent2 = _interopRequireDefault(_listEvent);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
+/* 56 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (list) {
+	  var listValue = list.querySelector('.js-list-value');
+	  var search = list.querySelector('.js-list-search');
+	  var placeholder = list.dataset.placeholder;
+
+	  var clickWindow = void 0;
+	  var open = void 0;
+	  var close = void 0;
+	  var getItemByValue = void 0;
+	  var haveValue = void 0;
+	  var updateValue = void 0;
+	  var setValue = void 0;
+	  var setDisabled = void 0;
+	  var unsetDisabled = void 0;
+
+	  clickWindow = function clickWindow(event) {
+	    var closest = event.target.closest('.js-list');
+	    if (!closest || closest !== list) {
+	      close();
+	    }
+	  };
+
+	  open = function open() {
+	    if (search) {
+	      search.value = '';
+	    }
+
+	    var value = list.value;
+
+	    [].concat(_toConsumableArray(list.querySelectorAll('.js-list-item'))).forEach(function (item) {
+	      if (item.dataset.value === value) {
+	        item.classList.add('is-select');
+	      } else {
+	        item.classList.remove('is-select');
+	      }
+	      item.style.display = '';
+	    });
+
+	    list.classList.add('is-open');
+	    window.addEventListener('click', clickWindow);
+	  };
+
+	  close = function close() {
+	    list.classList.remove('is-open');
+	    window.removeEventListener('click', clickWindow);
+	  };
+
+	  getItemByValue = function getItemByValue(val) {
+	    var item = void 0;
+	    var value = String(val);
+
+	    [].concat(_toConsumableArray(list.querySelectorAll('.js-list-item'))).forEach(function (el) {
+	      if (value === el.dataset.value) {
+	        item = el;
+	        return false;
+	      }
+	      return true;
+	    });
+
+	    return item;
+	  };
+
+	  haveValue = function haveValue(val) {
+	    var isHave = false;
+
+	    if (val || val !== 0) {
+	      var item = getItemByValue(val);
+
+	      if (item) {
+	        isHave = true;
+	      }
+	    }
+
+	    return isHave;
+	  };
+
+	  updateValue = function updateValue(val, lbl, clr) {
+	    var isUpdate = false;
+
+	    if (!val && val !== 0) {
+	      if (list.value) {
+	        list.oldValue = list.value;
+	        list.value = null;
+	        isUpdate = true;
+	      }
+
+	      if (placeholder) {
+	        listValue.textContent = placeholder;
+	      }
+	    } else {
+	      var value = String(val);
+	      var selectItem = getItemByValue(value);
+	      var text = void 0;
+
+	      if (selectItem) {
+	        text = selectItem.innerHTML;
+	      } else {
+	        text = value;
+	      }
+
+	      if (list.value !== value) {
+	        list.oldValue = list.value;
+	        list.value = value;
+	        listValue.textContent = text;
+	        isUpdate = true;
+	      }
+	    }
+
+	    if (clr) {
+	      var clearBtn = document.createElement('div');
+	      clearBtn.className = 'list__clear';
+	      list.appendChild(clearBtn);
+	      clearBtn.addEventListener('click', function () {
+	        return setValue();
+	      });
+	    }
+
+	    if (lbl) {
+	      var label = list.querySelector('.list__label');
+
+	      if (label) {
+	        label.parentNode.removeChild(label);
+	      }
+
+	      label = document.createElement('div');
+	      label.className = 'list__label';
+	      label.textContent = lbl;
+	      list.children[0]._inserBefore(label);
+	    }
+
+	    [].concat(_toConsumableArray(list.querySelectorAll('.js-list-item'))).forEach(function (item) {
+	      if (item.dataset.value === val) {
+	        item.classList.add('is-select');
+	      } else {
+	        item.classList.remove('is-select');
+	      }
+	    });
+
+	    return isUpdate;
+	  };
+
+	  setValue = function setValue(val, label, clear) {
+	    if (updateValue(val, label, clear)) {
+	      list.triggerEvent('change');
+	    }
+	  };
+
+	  setDisabled = function setDisabled(arr) {
+	    var setDis = function setDis(a) {
+	      var item = getItemByValue(a);
+
+	      if (item) {
+	        item.classList.add('is-disabled');
+	      }
+	    };
+
+	    if (typeof arr === 'string' || typeof arr === 'number') {
+	      setDis(arr);
+	    } else if (Array.isArray(arr)) {
+	      arr.forEach(setDis);
+	    }
+	  };
+
+	  unsetDisabled = function unsetDisabled(arr) {
+	    var setDis = function setDis() {
+	      var item = getItemByValue(arr);
+
+	      if (item) {
+	        item.classList.remove('is-disabled');
+	      }
+	    };
+
+	    if (typeof arr === 'string' || typeof arr === 'number') {
+	      setDis(arr);
+	    } else if (Array.isArray(arr)) {
+	      arr.forEach(setDis);
+	    } else {
+	      [].concat(_toConsumableArray(list.querySelectorAll('.js-list-item'))).forEach(function (item) {
+	        return item.classList.remove('is-disabled');
+	      });
+	    }
+	  };
+
+	  if (list.value || list.value === 0) {
+	    (function () {
+	      var value = String(list.value);
+	      var selectItem = getItemByValue(value);
+	      var text = void 0;
+
+	      if (selectItem) {
+	        text = selectItem.innerHTML;
+	      } else {
+	        text = value;
+	      }
+
+	      [].concat(_toConsumableArray(list.querySelectorAll('.js-list-item'))).forEach(function (item) {
+	        if (item.dataset.value === value) {
+	          item.classList.add('is-select');
+	        } else {
+	          item.classList.remove('is-select');
+	        }
+	      });
+
+	      listValue.textContent = text;
+	    })();
+	  }
+
+	  list.close = close;
+	  list.haveValue = haveValue;
+	  list.updateValue = updateValue;
+	  list.setValue = setValue;
+	  list.setDisabled = setDisabled;
+	  list.unsetDisabled = unsetDisabled;
+
+	  if (list.classList.contains('is-btn')) {
+	    (function () {
+	      var openOver = void 0;
+	      var _closeOut = void 0;
+
+	      openOver = function openOver() {
+	        window.addEventListener('mouseover', _closeOut);
+	        open();
+	      };
+
+	      _closeOut = function closeOut(event) {
+	        var closest = event.target.closest('.js-list');
+	        if (!closest || closest !== list) {
+	          window.removeEventListener('mouseover', _closeOut);
+	          close();
+	        }
+	      };
+
+	      listValue.addEventListener('mouseover', openOver);
+	    })();
+	  } else {
+	    listValue.addEventListener('click', function () {
+	      if (list.classList.contains('is-open')) {
+	        close();
+	      } else {
+	        open();
+	      }
+	    });
+	  }
+
+	  if (search) {
+	    var filterSearch = function filterSearch(event) {
+	      var reg = new RegExp(event.target.value, 'i');
+
+	      [].concat(_toConsumableArray(list.querySelectorAll('.js-list-item'))).forEach(function (item) {
+	        if (item.textContent.search(reg) === -1) {
+	          item.style.display = 'none';
+	        } else {
+	          item.style.display = '';
+	        }
+	      });
+	    };
+
+	    search.addEventListener('select', filterSearch);
+	    search.addEventListener('change', filterSearch);
+	    search.addEventListener('keyup', filterSearch);
+	  }
+
+	  list.addEventListener('click', function (event) {
+	    var item = event.target.closest('.js-list-item');
+
+	    if (item) {
+	      if (event.target.classList.contains('is-disabled')) {
+	        return;
+	      }
+
+	      if (item.dataset.value) {
+	        setValue(item.dataset.value);
+	      }
+
+	      close();
+	    }
+	  });
+
+	  [].concat(_toConsumableArray(list.querySelectorAll('.js-list-item'))).forEach(function (item) {
+	    if (item.classList.contains('is-select') && item.dataset.value) {
+	      setValue(item.dataset.value);
+	    }
+	  });
+
+	  if (!listValue.textContent && placeholder) {
+	    listValue.textContent = placeholder;
+	  }
+	};
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
+/* 57 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  window.addEventListener('mouseover', function (event) {
+	    var helper = event.target.closest('.js-helper');
+
+	    if (helper && !helper.isOpen) {
+	      (function () {
+	        helper.isOpen = true;
+	        helper.classList.add('is-open');
+
+	        var closeHelper = void 0;
+	        var mouseOverHelper = void 0;
+	        var mouseOutHelper = void 0;
+	        var timer = void 0;
+
+	        closeHelper = function closeHelper() {
+	          helper.isOpen = false;
+	          helper.classList.remove('is-open');
+	          helper.removeEventListener('mouseover', mouseOverHelper);
+	          helper.removeEventListener('mouseout', mouseOutHelper);
+	        };
+
+	        mouseOverHelper = function mouseOverHelper() {
+	          clearTimeout(timer);
+	        };
+
+	        mouseOutHelper = function mouseOutHelper() {
+	          timer = setTimeout(closeHelper, 200);
+	        };
+
+	        helper.addEventListener('mouseover', mouseOverHelper);
+	        helper.addEventListener('mouseout', mouseOutHelper);
+	      })();
+	    }
+	  });
+	};
+
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  [].concat(_toConsumableArray(document.querySelectorAll('.js-select'))).forEach(_selectEvent2.default);
+	};
+
+	var _selectEvent = __webpack_require__(59);
+
+	var _selectEvent2 = _interopRequireDefault(_selectEvent);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
+/* 59 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (select) {
+	  var popup = select.querySelector('.js-select-popup');
+	  var items = select.querySelectorAll('.js-select-item');
+
+	  var applyBtn = select.querySelector('.js-select-apply');
+	  var closeBtn = select.querySelector('.js-select-close');
+
+	  var clickWindow = void 0;
+	  var open = void 0;
+	  var close = void 0;
+	  var updateValue = void 0;
+	  var setValue = void 0;
+	  var setDisabled = void 0;
+	  var unsetDisabled = void 0;
+
+	  var newValue = void 0;
+
+	  clickWindow = function clickWindow(event) {
+	    var closest = event.target.closest('.js-select');
+	    if (!closest || closest !== select) {
+	      close();
+	    }
+	  };
+
+	  open = function open() {
+	    if (select.classList.contains('is-open')) {
+	      return;
+	    }
+
+	    var value = select.value;
+
+	    select.querySelectorAll('.js-select-item').forEach(function (item) {
+	      var val = item.dataset.value;
+
+	      if (val && value.indexOf(val) !== -1) {
+	        item.classList.add('is-select');
+	      } else {
+	        item.classList.remove('is-select');
+	      }
+	    });
+
+	    newValue = [];
+	    select.value.map(function (val) {
+	      return newValue.push(val);
+	    });
+
+	    select.classList.add('is-open');
+	    window.addEventListener('click', clickWindow);
+
+	    var rect = popup.getBoundingClientRect();
+	    if (rect.right > window.innerWidth - 35) {
+	      popup.style.left = window.innerWidth - 35 - rect.right + 'px';
+	    }
+	  };
+
+	  close = function close() {
+	    window.removeEventListener('click', clickWindow);
+	    setTimeout(function () {
+	      select.classList.remove('is-open');
+	    }, 0);
+	  };
+
+	  updateValue = function updateValue(arr) {
+	    var isUpdate = false;
+	    var param = void 0;
+
+	    var check = function check(par) {
+	      var p = String(par);
+
+	      if (select.value.indexOf(p) === -1) {
+	        select.value.push(p);
+	        isUpdate = true;
+	      }
+	    };
+
+	    if (typeof arr === 'string' || typeof arr === 'number') {
+	      param = [arr];
+	    } else {
+	      param = arr;
+	    }
+
+	    if (Array.isArray(param)) {
+	      (function () {
+	        param.forEach(function (par) {
+	          var p = String(par);
+
+	          if (select.value.indexOf(p) === -1) {
+	            select.value.push(p);
+	            isUpdate = true;
+	          }
+	        });
+
+	        var tempSelectValue = [];
+
+	        select.value.forEach(function (par, i) {
+	          if (param.indexOf(par) === -1) {
+	            isUpdate = true;
+	          } else {
+	            tempSelectValue.push(par);
+	          }
+	        });
+
+	        select.value = tempSelectValue;
+	      })();
+	    }
+
+	    return isUpdate;
+	  };
+
+	  setValue = function setValue(param) {
+	    if (updateValue(param)) {
+	      select.triggerEvent('change');
+	    }
+	  };
+
+	  setDisabled = function setDisabled(param) {
+	    var setDis = function setDis(par) {
+	      var p = String(par);
+
+	      [].concat(_toConsumableArray(select.querySelectorAll('.js-select-item'))).forEach(function (item) {
+	        if (item.dataset.value === p) {
+	          item.classList.add('is-disabled');
+	        }
+	      });
+	    };
+
+	    if (typeof param === 'string' || typeof param === 'number') {
+	      setDis(param);
+	    } else if (Array.isArray(param)) {
+	      param.forEach(setDis);
+	    }
+	  };
+
+	  unsetDisabled = function unsetDisabled(param) {
+	    var setDis = function setDis(par) {
+	      var p = String(par);
+
+	      [].concat(_toConsumableArray(select.querySelectorAll('.js-select-item'))).forEach(function (item) {
+	        if (item.dataset.value === p) {
+	          item.classList.remove('is-disabled');
+	        }
+	      });
+	    };
+
+	    if (typeof param === 'string' || typeof param === 'number') {
+	      setDis(param);
+	    } else if (Array.isArray(param)) {
+	      param.forEach(setDis);
+	    } else {
+	      [].concat(_toConsumableArray(select.querySelectorAll('.js-select-item'))).forEach(function (item) {
+	        return item.classList.remove('is-disabled');
+	      });
+	    }
+	  };
+
+	  select.value = select.value || [];
+
+	  select.updateValue = updateValue;
+	  select.setValue = setValue;
+	  select.setDisabled = setDisabled;
+	  select.unsetDisabled = unsetDisabled;
+
+	  select.addEventListener('click', open);
+
+	  applyBtn.addEventListener('click', function () {
+	    setValue(newValue);
+	    close();
+	  });
+
+	  closeBtn.addEventListener('click', close);
+
+	  select.addEventListener('click', function (event) {
+	    var item = event.target.closest('.js-select-item');
+
+	    if (item) {
+	      if (event.target.classList.contains('is-disabled')) {
+	        return;
+	      }
+
+	      var ind = newValue.indexOf(item.dataset.value);
+
+	      if (ind !== -1) {
+	        item.classList.remove('is-select');
+	        newValue.splice(ind, 1);
+	      } else {
+	        item.classList.add('is-select');
+	        newValue.push(item.dataset.value);
+	      }
+	    }
+	  });
+	};
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	exports.default = function () {
+	  [].concat(_toConsumableArray(document.querySelectorAll('.js-calendar'))).forEach(function (control) {
+	    var calendar = control.querySelector('.js-calendar-popup');
+
+	    if (!calendar) {
+	      return;
+	    }
+
+	    var currentDatetime = window.might.current_datetime;
+
+	    var today = {
+	      year: currentDatetime.getFullYear(),
+	      month: currentDatetime.getMonth(),
+	      date: currentDatetime.getDate()
+	    };
+
+	    var period = void 0;
+
+	    var labelControl = control.querySelector('.js-calendar-value');
+
+	    var boxes = {
+	      from: calendar.querySelectorAll('.js-calendar-box')[0],
+	      to: calendar.querySelectorAll('.js-calendar-box')[1]
+	    };
+
+	    var ranges = {
+	      today: calendar.querySelector('.js-calendar-range-today'),
+	      yesterday: calendar.querySelector('.js-calendar-range-yesterday'),
+	      lastweek: calendar.querySelector('.js-calendar-range-lastweek'),
+	      lastdays: calendar.querySelector('.js-calendar-range-lastdays'),
+	      thismonth: calendar.querySelector('.js-calendar-range-thismonth'),
+	      lastmonth: calendar.querySelector('.js-calendar-range-lastmonth'),
+	      custom: calendar.querySelector('.js-calendar-range-custom')
+	    };
+
+	    var inputTimeStart = calendar.querySelector('.js-calendar-time-start');
+	    var inputTimeEnd = calendar.querySelector('.js-calendar-time-end');
+	    var timezone = calendar.querySelector('.js-calendar-timezone');
+	    var applyBtn = calendar.querySelector('.js-calendar-apply');
+	    var closeBtn = calendar.querySelector('.js-calendar-close');
+
+	    var clickWindow = void 0;
+	    var _open = void 0;
+	    var close = void 0;
+	    var resetPeriod = void 0;
+	    var renderDefault = void 0;
+	    var renderDays = void 0;
+	    var renderRanges = void 0;
+	    var renderInputs = void 0;
+	    var updateSelects = void 0;
+	    var mouseoverDay = void 0;
+	    var mouseoutDay = void 0;
+	    var clickDay = void 0;
+	    var clickRange = void 0;
+	    var eventBoxes = void 0;
+	    var setLabelControl = void 0;
+	    var updateValue = void 0;
+	    var setValue = void 0;
+
+	    clickWindow = function clickWindow(event) {
+	      var closest = event.target.closest('.js-calendar');
+
+	      if (!closest || closest !== control) {
+	        resetPeriod();
+	        close(event);
+	      }
+	    };
+
+	    _open = function open(event) {
+	      event.stopPropagation();
+
+	      resetPeriod();
+	      renderDefault();
+
+	      calendar.classList.add('is-open');
+	      control.removeEventListener('click', _open);
+	      window.addEventListener('click', clickWindow);
+	    };
+
+	    close = function close(event) {
+	      event.stopPropagation();
+	      calendar.classList.remove('is-open');
+	      control.addEventListener('click', _open);
+	      window.removeEventListener('click', clickWindow);
+	    };
+
+	    resetPeriod = function resetPeriod() {
+	      var value = control.value;
+
+	      period = {
+	        from: {
+	          year: value.from.year,
+	          month: value.from.month,
+	          date: value.from.date
+	        },
+	        to: {
+	          year: value.to.year,
+	          month: value.to.month,
+	          date: value.to.date
+	        },
+	        start_time: value.start_time,
+	        end_time: value.end_time,
+	        timezone: value.timezone
+	      };
+	    };
+
+	    renderDefault = function renderDefault() {
+	      var curFrom = boxes.from.current;
+	      var curTo = boxes.to.current;
+
+	      curFrom.year = period.from.year;
+	      curFrom.month = period.from.month;
+
+	      curTo.year = period.to.year;
+	      curTo.month = period.to.month;
+
+	      if (curFrom.year === curTo.year && curFrom.month === curTo.month) {
+	        curFrom.month--;
+
+	        if (curFrom.month < 0) {
+	          curFrom.month = 11;
+	          curFrom.year--;
+	        }
+	      }
+
+	      updateSelects('from');
+	      updateSelects('to');
+
+	      renderDays('from');
+	      renderDays('to');
+	      renderRanges();
+
+	      renderInputs();
+
+	      timezone.setValue(period.timezone);
+	    };
+
+	    renderDays = function renderDays(b) {
+	      var days = boxes[b].querySelector('.js-calendar-days');
+
+	      var month = boxes[b].current.month;
+	      var year = boxes[b].current.year;
+	      var count = new Date(year, month + 1, 0).getDate();
+	      var first = new Date(year, month, 1).getDay() - 1;
+
+	      if (first === -1) {
+	        first = 6;
+	      }
+
+	      var tsFrom = +new Date(period.from.year, period.from.month, period.from.date);
+	      var tsTo = +new Date(period.to.year, period.to.month, period.to.date);
+	      var tsToday = +new Date(today.year, today.month, today.date);
+
+	      days.innerHTML = '';
+	      boxes[b].days_scope = {};
+
+	      for (var i = 1 - first; i <= count; i++) {
+	        var span = document.createElement('span');
+	        var day = void 0;
+
+	        if (i > 0) {
+	          span.textContent = i;
+	          day = +new Date(year, month, i);
+
+	          if (tsFrom === day) {
+	            span.classList.add('is-start');
+	          }
+
+	          if (tsFrom < day && tsTo > day) {
+	            span.classList.add('is-between');
+	          }
+
+	          if (tsTo === day) {
+	            span.classList.add('is-end');
+	          }
+
+	          if (tsToday < day) {
+	            span.classList.add('is-future');
+	          } else {
+	            span.dataset.value = day;
+	            span.addEventListener('click', clickDay);
+	            boxes[b].days_scope[day] = span;
+	          }
+	        } else {
+	          span.classList.add('is-empty');
+	        }
+
+	        days.appendChild(span);
+	      }
+	    };
+
+	    renderRanges = function renderRanges() {
+	      for (var i in ranges) {
+	        if (ranges.hasOwnProperty(i)) {
+	          ranges[i].parentNode.classList.remove('is-select');
+	        }
+	      }
+
+	      var tsFrom = +new Date(period.from.year, period.from.month, period.from.date);
+	      var tsTo = +new Date(period.to.year, period.to.month, period.to.date);
+
+	      var tsToday = +new Date(today.year, today.month, today.date);
+	      var tsYesterday = +new Date(today.year, today.month, today.date - 1);
+	      var ts7 = +new Date(today.year, today.month, today.date - 6);
+	      var ts30 = +new Date(today.year, today.month, today.date - 29);
+
+	      var tsMonthFrom = +new Date(today.year, today.month, 1);
+
+	      var tsLastMonthFrom = +new Date(today.year, today.month - 1, 1);
+	      var tsLastMonthTo = +new Date(today.year, today.month, 0);
+
+	      if (tsFrom === tsToday && tsTo === tsToday) {
+	        ranges.today.parentNode.classList.add('is-select');
+	      } else if (tsFrom === tsYesterday && tsTo === tsYesterday) {
+	        ranges.yesterday.parentNode.classList.add('is-select');
+	      } else if (tsFrom === ts7 && tsTo === tsToday) {
+	        ranges.lastweek.parentNode.classList.add('is-select');
+	      } else if (tsFrom === ts30 && tsTo === tsToday) {
+	        ranges.lastdays.parentNode.classList.add('is-select');
+	      } else if (tsFrom === tsMonthFrom && tsTo === tsToday) {
+	        ranges.thismonth.parentNode.classList.add('is-select');
+	      } else if (tsFrom === tsLastMonthFrom && tsTo === tsLastMonthTo) {
+	        ranges.lastmonth.parentNode.classList.add('is-select');
+	      } else {
+	        ranges.custom.parentNode.classList.add('is-select');
+	      }
+	    };
+
+	    renderInputs = function renderInputs() {
+	      inputTimeStart.value = period.start_time;
+	      inputTimeEnd.value = period.end_time;
+	    };
+
+	    updateSelects = function updateSelects(b) {
+	      var monthSelect = boxes[b].querySelector('.js-calendar-month');
+	      var yearSelect = boxes[b].querySelector('.js-calendar-year');
+
+	      try {
+	        monthSelect.updateValue(boxes[b].current.month);
+	        yearSelect.updateValue(boxes[b].current.year);
+	      } catch (err) {
+	        throw new Error(err);
+	      }
+	    };
+
+	    mouseoverDay = function mouseoverDay(event) {
+	      var target = event.target;
+
+	      if (target.nodeName !== 'SPAN' || !target.dataset.value) {
+	        mouseoutDay();
+	        return;
+	      }
+
+	      var date = parseInt(target.dataset.value, 10);
+	      var tsFrom = +new Date(period.from.year, period.from.month, period.from.date);
+	      var tsTo = +new Date(period.to.year, period.to.month, period.to.date);
+
+	      var fromScope = boxes.from.days_scope;
+	      var toScope = boxes.to.days_scope;
+
+	      var setBetween = function setBetween(day, span) {
+	        if (tsFrom === tsTo) {
+	          if (tsFrom < date && day < date && tsFrom < day || date < tsFrom && date < day && day < tsFrom) {
+	            span.classList.add('is-between');
+	          } else {
+	            span.classList.remove('is-between');
+	          }
+
+	          if (tsFrom < date && day === date || tsFrom === day && date < day) {
+	            span.classList.remove('is-start');
+	            span.classList.add('is-end');
+	          } else if (date < tsFrom && day === date || tsFrom === day && day < date) {
+	            span.classList.add('is-start');
+	            span.classList.remove('is-end');
+	          } else {
+	            span.classList.remove('is-start');
+	            span.classList.remove('is-end');
+	          }
+	        } else {
+	          span.classList.remove('is-between');
+
+	          if (date === day) {
+	            span.classList.add('is-start');
+	            span.classList.add('is-end');
+	          } else {
+	            span.classList.remove('is-start');
+	            span.classList.remove('is-end');
+	          }
+	        }
+	      };
+
+	      for (var i in fromScope) {
+	        if (fromScope.hasOwnProperty(i)) {
+	          setBetween(parseInt(i, 10), fromScope[i]);
+	        }
+	      }
+
+	      for (var _i in toScope) {
+	        if (toScope.hasOwnProperty(_i)) {
+	          setBetween(parseInt(_i, 10), toScope[_i]);
+	        }
+	      }
+	    };
+
+	    mouseoutDay = function mouseoutDay() {
+	      var tsFrom = +new Date(period.from.year, period.from.month, period.from.date);
+	      var tsTo = +new Date(period.to.year, period.to.month, period.to.date);
+
+	      var fromScope = boxes.from.days_scope;
+	      var toScope = boxes.to.days_scope;
+
+	      var setBetween = function setBetween(day, span) {
+	        if (tsFrom === day) {
+	          span.classList.add('is-start');
+	        } else {
+	          span.classList.remove('is-start');
+	        }
+
+	        if (tsFrom < day && day < tsTo) {
+	          span.classList.add('is-between');
+	        } else {
+	          span.classList.remove('is-between');
+	        }
+
+	        if (tsTo === day) {
+	          span.classList.add('is-end');
+	        } else {
+	          span.classList.remove('is-end');
+	        }
+	      };
+
+	      for (var i in fromScope) {
+	        if (fromScope.hasOwnProperty(i)) {
+	          setBetween(parseInt(i, 10), fromScope[i]);
+	        }
+	      }
+
+	      for (var _i2 in toScope) {
+	        if (toScope.hasOwnProperty(_i2)) {
+	          setBetween(parseInt(_i2, 10), toScope[_i2]);
+	        }
+	      }
+	    };
+
+	    clickDay = function clickDay(event) {
+	      event.stopPropagation();
+
+	      var tsFrom = +new Date(period.from.year, period.from.month, period.from.date);
+	      var tsTo = +new Date(period.to.year, period.to.month, period.to.date);
+
+	      var valueDate = new Date(parseInt(this.dataset.value, 10));
+
+	      var year = valueDate.getFullYear();
+	      var month = valueDate.getMonth();
+	      var date = valueDate.getDate();
+
+	      period.to.year = year;
+	      period.to.month = month;
+	      period.to.date = date;
+
+	      if (tsFrom !== tsTo) {
+	        period.from.year = year;
+	        period.from.month = month;
+	        period.from.date = date;
+	      } else {
+	        tsTo = valueDate.getTime();
+
+	        if (tsFrom > tsTo) {
+	          var y = period.from.year;
+	          var m = period.from.month;
+	          var d = period.from.date;
+
+	          period.from.year = period.to.year;
+	          period.from.month = period.to.month;
+	          period.from.date = period.to.date;
+
+	          period.to.year = y;
+	          period.to.month = m;
+	          period.to.date = d;
+	        }
+	      }
+
+	      renderDays('from');
+	      renderDays('to');
+	      renderRanges();
+	    };
+
+	    clickRange = function clickRange(f, t) {
+	      var from = f;
+	      var to = t || from;
+	      var periodTimezone = period.timezone;
+
+	      period = {
+	        from: {
+	          year: from.getFullYear(),
+	          month: from.getMonth(),
+	          date: from.getDate()
+	        },
+	        to: {
+	          year: to.getFullYear(),
+	          month: to.getMonth(),
+	          date: to.getDate()
+	        },
+	        start_time: '00:00',
+	        end_time: '23:59',
+	        timezone: periodTimezone
+	      };
+
+	      renderDefault();
+	    };
+
+	    eventBoxes = function eventBoxes(b) {
+	      var box = boxes[b];
+
+	      var next = box.querySelector('.js-calendar-next');
+	      var prev = box.querySelector('.js-calendar-prev');
+	      var monthSelect = box.querySelector('.js-calendar-month');
+	      var yearSelect = box.querySelector('.js-calendar-year');
+
+	      box.current = {};
+
+	      prev.addEventListener('click', function () {
+	        box.current.month--;
+
+	        if (box.current.month < 0) {
+	          box.current.month = 11;
+	          box.current.year--;
+	        }
+
+	        updateSelects(b);
+	        renderDays(b);
+	      });
+
+	      next.addEventListener('click', function () {
+	        box.current.month++;
+
+	        if (box.current.month > 11) {
+	          box.current.month = 0;
+	          box.current.year++;
+	        }
+
+	        updateSelects(b);
+	        renderDays(b);
+	      });
+
+	      monthSelect.addEventListener('change', function () {
+	        try {
+	          box.current.month = parseInt(monthSelect.value, 10);
+	          renderDays(b);
+	        } catch (err) {
+	          throw new Error(err);
+	        }
+	      });
+
+	      yearSelect.addEventListener('change', function () {
+	        try {
+	          box.current.year = parseInt(yearSelect.value, 10);
+	          renderDays(b);
+	        } catch (err) {
+	          throw new Error(err);
+	        }
+	      });
+	    };
+
+	    setLabelControl = function setLabelControl() {
+	      if (labelControl) {
+	        var value = control.value;
+	        var from = new Date(value.from.year, value.from.month, value.from.date);
+	        var to = new Date(value.to.year, value.to.month, value.to.date);
+
+	        from = (0, _dateformat2.default)(from, 'mmmm dd, yyyy');
+	        to = (0, _dateformat2.default)(to, 'mmmm dd, yyyy');
+
+	        if (from === to) {
+	          labelControl.innerHTML = from;
+	        } else {
+	          labelControl.innerHTML = from + ' &mdash; ' + to;
+	        }
+	      }
+	    };
+
+	    updateValue = function updateValue(obj) {
+	      var value = control.value;
+	      var newValue = obj || period;
+	      var isUpdate = false;
+
+	      for (var i in value) {
+	        if (value.hasOwnProperty(i) && newValue.hasOwnProperty(i)) {
+	          if (_typeof(value[i]) === 'object') {
+	            for (var j in value[i]) {
+	              if (value[i].hasOwnProperty(j) && newValue[i].hasOwnProperty(j)) {
+	                if (value[i][j] !== newValue[i][j]) {
+	                  value[i][j] = newValue[i][j];
+	                  isUpdate = true;
+	                }
+	              }
+	            }
+	          } else {
+	            if (value[i] !== newValue[i]) {
+	              value[i] = newValue[i];
+	              isUpdate = true;
+	            }
+	          }
+	        }
+	      }
+
+	      setLabelControl();
+
+	      return isUpdate;
+	    };
+
+	    setValue = function setValue(obj) {
+	      if (updateValue(obj)) {
+	        control.triggerEvent('change');
+	      }
+	    };
+
+	    boxes.from.addEventListener('mouseover', mouseoverDay);
+	    boxes.to.addEventListener('mouseover', mouseoverDay);
+	    boxes.from.addEventListener('mouseout', mouseoutDay);
+	    boxes.to.addEventListener('mouseout', mouseoutDay);
+
+	    ranges.today.addEventListener('click', function () {
+	      var tsToday = new Date(today.year, today.month, today.date);
+	      clickRange(tsToday);
+	    });
+
+	    ranges.yesterday.addEventListener('click', function () {
+	      var tsYesterday = new Date(today.year, today.month, today.date - 1);
+	      clickRange(tsYesterday);
+	    });
+
+	    ranges.lastweek.addEventListener('click', function () {
+	      var ts7 = new Date(today.year, today.month, today.date - 6);
+	      var tsToday = new Date(today.year, today.month, today.date);
+	      clickRange(ts7, tsToday);
+	    });
+
+	    ranges.lastdays.addEventListener('click', function () {
+	      var ts30 = new Date(today.year, today.month, today.date - 29);
+	      var tsToday = new Date(today.year, today.month, today.date);
+	      clickRange(ts30, tsToday);
+	    });
+
+	    ranges.thismonth.addEventListener('click', function () {
+	      var tsMonthFrom = new Date(today.year, today.month, 1);
+	      var tsToday = new Date(today.year, today.month, today.date);
+	      clickRange(tsMonthFrom, tsToday);
+	    });
+
+	    ranges.lastmonth.addEventListener('click', function () {
+	      var tsLastMonthFrom = new Date(today.year, today.month - 1, 1);
+	      var tsLastMonthTo = new Date(today.year, today.month, 0);
+	      clickRange(tsLastMonthFrom, tsLastMonthTo);
+	    });
+
+	    inputTimeStart.addEventListener('change', function () {
+	      period.start_time = inputTimeStart.value;
+	    });
+
+	    inputTimeEnd.addEventListener('change', function () {
+	      period.end_time = inputTimeEnd.value;
+	    });
+
+	    timezone.addEventListener('change', function () {
+	      period.timezone = timezone.value;
+	    });
+
+	    applyBtn.addEventListener('click', function (event) {
+	      setValue();
+	      close(event);
+	    });
+
+	    closeBtn.addEventListener('click', function (event) {
+	      close(event);
+	    });
+
+	    control.addEventListener('click', _open);
+
+	    control.value = {
+	      from: {
+	        year: today.year,
+	        month: today.month,
+	        date: today.date
+	      },
+	      to: {
+	        year: today.year,
+	        month: today.month,
+	        date: today.date
+	      },
+	      start_time: '00:00',
+	      end_time: '23:59',
+	      timezone: '+03:00|Europe/Moscow'
+	    };
+
+	    eventBoxes('from');
+	    eventBoxes('to');
+
+	    setLabelControl();
+
+	    control.updateValue = updateValue;
+	    control.setValue = setValue;
+	  });
+	};
+
+	var _dateformat = __webpack_require__(61);
+
+	var _dateformat2 = _interopRequireDefault(_dateformat);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
 /* 61 */,
-/* 62 */,
-/* 63 */,
+/* 62 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  [].concat(_toConsumableArray(document.querySelectorAll('.js-postback'))).forEach(function (control) {
+	    var postback = control.querySelector('.js-postback-popup');
+
+	    if (!postback) {
+	      return;
+	    }
+
+	    var trigger = postback.querySelector('.js-postback-trigger');
+	    var usd = postback.querySelector('.js-postback-usd');
+	    var eur = postback.querySelector('.js-postback-eur');
+	    var rub = postback.querySelector('.js-postback-rub');
+	    var applyBtn = postback.querySelector('.js-postback-apply');
+	    var closeBtn = postback.querySelector('.js-postback-close');
+
+	    var clickWindow = void 0;
+	    var resetBtns = void 0;
+	    var open = void 0;
+	    var close = void 0;
+	    var updateValue = void 0;
+	    var setValue = void 0;
+	    var tempValue = {};
+
+	    clickWindow = function clickWindow(event) {
+	      var closest = event.target.closest('.js-postback');
+	      if (!closest || closest !== control) {
+	        close();
+	      }
+	    };
+
+	    resetBtns = function resetBtns(obj) {
+	      if (obj.postback_date) {
+	        trigger.classList.add('is-active');
+	      } else {
+	        trigger.classList.remove('is-active');
+	      }
+
+	      switch (obj.currency) {
+	        case 'usd':
+	          usd.classList.add('is-active');
+	          eur.classList.remove('is-active');
+	          rub.classList.remove('is-active');
+	          break;
+	        case 'eur':
+	          usd.classList.remove('is-active');
+	          eur.classList.add('is-active');
+	          rub.classList.remove('is-active');
+	          break;
+	        case 'rub':
+	          usd.classList.remove('is-active');
+	          eur.classList.remove('is-active');
+	          rub.classList.add('is-active');
+	          break;
+	        default:
+	          break;
+	      }
+	    };
+
+	    open = function open() {
+	      if (control.classList.contains('is-open')) {
+	        return;
+	      }
+
+	      tempValue.postback_date = control.value.postback_date;
+	      tempValue.currency = control.value.currency;
+
+	      control.classList.add('is-open');
+	      window.addEventListener('click', clickWindow);
+	    };
+
+	    close = function close() {
+	      resetBtns(control.value);
+
+	      window.removeEventListener('click', clickWindow);
+	      setTimeout(function () {
+	        control.classList.remove('is-open');
+	      }, 0);
+	    };
+
+	    updateValue = function updateValue(obj) {
+	      var isUpdate = false;
+
+	      if (obj.hasOwnProperty('postback_date')) {
+	        if (control.value.postback_date !== !!obj.postback_date) {
+	          control.value.postback_date = !!obj.postback_date;
+	          isUpdate = true;
+	        }
+	      }
+
+	      if (obj.hasOwnProperty('currency')) {
+	        if (control.value.currency !== obj.currency.toUpperCase()) {
+	          control.value.currency = obj.currency.toUpperCase();
+	          isUpdate = true;
+	        }
+	      }
+
+	      resetBtns(obj);
+
+	      return isUpdate;
+	    };
+
+	    setValue = function setValue(obj) {
+	      if (updateValue(obj)) {
+	        control.triggerEvent('change');
+	      }
+	    };
+
+	    trigger.addEventListener('click', function () {
+	      if (trigger.classList.contains('is-active')) {
+	        trigger.classList.remove('is-active');
+	        tempValue.postback_date = false;
+	      } else {
+	        trigger.classList.add('is-active');
+	        tempValue.postback_date = true;
+	      }
+	    });
+
+	    usd.addEventListener('click', function () {
+	      usd.classList.add('is-active');
+	      eur.classList.remove('is-active');
+	      rub.classList.remove('is-active');
+	      tempValue.currency = 'usd';
+	    });
+
+	    eur.addEventListener('click', function () {
+	      usd.classList.remove('is-active');
+	      eur.classList.add('is-active');
+	      rub.classList.remove('is-active');
+	      tempValue.currency = 'eur';
+	    });
+
+	    rub.addEventListener('click', function () {
+	      usd.classList.remove('is-active');
+	      eur.classList.remove('is-active');
+	      rub.classList.add('is-active');
+	      tempValue.currency = 'rub';
+	    });
+
+	    applyBtn.addEventListener('click', function () {
+	      setValue(tempValue);
+	      close();
+	    });
+
+	    closeBtn.addEventListener('click', function () {
+	      close();
+	    });
+
+	    control.value = {};
+
+	    control.addEventListener('click', open);
+
+	    control.updateValue = updateValue;
+	    control.setValue = setValue;
+	  });
+	};
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  [].concat(_toConsumableArray(document.querySelectorAll('.js-list-fetch'))).forEach(_listFetchEvent2.default);
+	};
+
+	var _listFetchEvent = __webpack_require__(64);
+
+	var _listFetchEvent2 = _interopRequireDefault(_listFetchEvent);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
 /* 64 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (list) {
+	  var listValue = list.querySelector('.js-list-fetch-value');
+	  var search = list.querySelector('.js-list-fetch-search');
+	  var itemsWrap = list.querySelector('.js-list-fetch-items');
+	  var placeholder = list.dataset.placeholder;
+
+	  var clickWindow = void 0;
+	  var open = void 0;
+	  var close = void 0;
+	  var updateItems = void 0;
+	  var updateValue = void 0;
+	  var setValue = void 0;
+	  var filterSearch = void 0;
+
+	  clickWindow = function clickWindow(event) {
+	    var closest = event.target.closest('.js-list-fetch');
+	    if (!closest || closest !== list) {
+	      close();
+	    }
+	  };
+
+	  open = function open() {
+	    search.value = '';
+	    updateItems();
+	    list.classList.add('is-open');
+	    window.addEventListener('click', clickWindow);
+	  };
+
+	  close = function close() {
+	    list.classList.remove('is-open');
+	    window.removeEventListener('click', clickWindow);
+	  };
+
+	  var dateToString = function dateToString(y, m, d) {
+	    var date = new Date(y, m, d);
+	    return (0, _dateformat2.default)(date, 'yyyy-mm-dd');
+	  };
+
+	  updateItems = function updateItems() {
+	    var params = window.might.stat.params;
+	    var from = dateToString(params.date_from.year, params.date_from.month, params.date_from.date);
+	    var to = dateToString(params.date_to.year, params.date_to.month, params.date_to.date);
+	    var dateFilter = from + ' - ' + to;
+
+	    var data = {
+	      date_filter: dateFilter,
+	      timezone: params.timezone,
+	      search: search.value || false,
+	      field: list.field
+	    };
+
+	    params.filters_stock.forEach(function (filter, i) {
+	      if (filter.field !== list.field) {
+	        data.filter_items = data.filter_items || [];
+	        data.filter_items[filter];
+	      }
+	    });
+
+	    (0, _fetchApi.fetchObject)('/campaign/data/for/top_filter', data, false).then(function (res) {
+	      itemsWrap.innerHTML = '';
+
+	      if (res.error === false) {
+	        res.data.forEach(function (item) {
+	          var name = void 0;
+
+	          if (item.title) {
+	            name = item.title;
+	          } else {
+	            name = item[list.field] || item.v;
+	          }
+
+	          itemsWrap.innerHTML += '<div ' + 'class="list__item js-list-fetch-item' + (item.v === list.value ? ' is-select"' : '"') + ' data-value="' + item.v + '">' + name + '</div>';
+	        });
+	      }
+	    }).catch(function (err) {});
+	  };
+
+	  updateValue = function updateValue(val, ttl, fld, clr) {
+	    var isUpdate = false;
+
+	    if (!val && val !== 0) {
+	      if (list.value) {
+	        list.value = null;
+	        list.title = null;
+	        isUpdate = true;
+	      }
+
+	      if (placeholder) {
+	        listValue.textContent = placeholder;
+	      }
+	    } else {
+	      (function () {
+	        var value = String(val);
+	        var title = ttl || value;
+
+	        if (list.value !== value) {
+	          list.value = value;
+	          list.title = title;
+	          listValue.textContent = title;
+	          isUpdate = true;
+
+	          [].concat(_toConsumableArray(list.querySelectorAll('.js-list-fetch-item'))).forEach(function (el) {
+	            if (el.dataset.value === value) {
+	              el.classList.add('is-select');
+	            } else {
+	              el.classList.remove('is-select');
+	            }
+	          });
+	        }
+	      })();
+	    }
+
+	    if (clr) {
+	      var clearBtn = document.createElement('div');
+	      clearBtn.className = 'list__clear';
+	      list.appendChild(clearBtn);
+	      clearBtn.addEventListener('click', function () {
+	        setValue();
+	      });
+	    }
+
+	    if (fld) {
+	      list.field = fld;
+
+	      var label = list.querySelector('.list__label');
+
+	      if (label) {
+	        label.parentNode.removeChild(label);
+	      }
+
+	      label = document.createElement('div');
+	      label.className = 'list__label';
+	      label.textContent = (0, _fieldName2.default)(fld);
+	      list.children[0]._inserBefore(label);
+	    }
+
+	    return isUpdate;
+	  };
+
+	  setValue = function setValue(value, title) {
+	    if (updateValue(value, title)) {
+	      list.triggerEvent('change:list');
+	    }
+	  };
+
+	  list.updateValue = updateValue;
+	  list.setValue = setValue;
+
+	  listValue.addEventListener('click', function () {
+	    if (list.classList.contains('is-open')) {
+	      close();
+	    } else {
+	      open();
+	    }
+	  });
+
+	  var timeSearch = void 0;
+
+	  filterSearch = function filterSearch(event) {
+	    if (timeSearch) {
+	      clearTimeout(timeSearch);
+	    }
+
+	    timeSearch = setTimeout(updateItems, 300);
+	  };
+
+	  search.addEventListener('select', filterSearch);
+	  search.addEventListener('change', filterSearch);
+	  search.addEventListener('keyup', filterSearch);
+
+	  list.addEventListener('click', function (event) {
+	    var item = event.target.closest('.js-list-fetch-item');
+
+	    if (item) {
+	      setValue(item.dataset.value, item.textContent);
+	      close();
+	    }
+	  });
+
+	  if (!listValue.textContent && placeholder) {
+	    listValue.textContent = placeholder;
+	  }
+	};
+
+	var _qs = __webpack_require__(15);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	var _dateformat = __webpack_require__(61);
+
+	var _dateformat2 = _interopRequireDefault(_dateformat);
+
+	var _fieldName = __webpack_require__(65);
+
+	var _fieldName2 = _interopRequireDefault(_fieldName);
+
+	var _fetchApi = __webpack_require__(26);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
+/* 65 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (param) {
+	  return names[param] || param;
+	};
+
+	var names = {
+	  campaign_id: 'Campaign',
+	  country: 'Country',
+	  browser: 'Browser',
+	  browser_language: 'Browser language',
+	  browser_version: 'Browser version',
+	  payment: 'Payment',
+	  tm_spend: 'Tm spend',
+	  unique_shows: 'Unique shows',
+	  shows: 'Shows',
+	  unique_clicks: 'Unique clicks',
+	  clicks: 'Clicks',
+	  uctr: 'UCTR',
+	  ctr: 'CTR',
+	  leads: 'Leads',
+	  declined: 'Declined',
+	  pending: 'Pending',
+	  total: 'Total',
+	  cvr: 'CVR',
+	  epc: 'EPC',
+	  cpc: 'CPC',
+	  rev: 'Rev',
+	  spend: 'Spend',
+	  pl: 'P/L',
+	  roi: 'ROI',
+	  label: 'Label',
+	  ip: 'IP',
+	  ip_range: 'IP range',
+	  time_hour: 'Hour',
+	  time_day: 'Day',
+	  time_weekday: 'Day of week',
+	  click_id: 'Click ID',
+	  user_agent: 'User agent',
+	  referer: 'Referrer',
+	  referer_domain: 'Referrer domain',
+	  device_brand: 'Device brand',
+	  device_model: 'Device model',
+	  device_type: 'Device type',
+	  state: 'State',
+	  city: 'City',
+	  os: 'OS',
+	  os_version: 'OS version',
+	  connection_type: 'Connection type',
+	  isp: 'ISP',
+	  mobile_carrier: 'Mobile carrier',
+	  affiliate_network: 'Affiliate network',
+	  traffic_source: 'Traffic source',
+	  offer: 'Offer',
+	  lander: 'Lander'
+	};
+
+/***/ },
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4190,7 +4291,9 @@ webpackJsonp([0],[
 	    }
 	  };
 
-	  var updateCreateControls = function updateCreateControls() {
+	  function updateCreateControls() {
+	    var right = window.__active_permission__;
+
 	    if (statControls) {
 	      for (var i in createControls) {
 	        if (createControls.hasOwnProperty(i)) {
@@ -4200,15 +4303,42 @@ webpackJsonp([0],[
 	            item.list.style.display = 'none';
 	            item.add.style.display = 'none';
 	          } else {
-	            item.list.style.display = '';
-	            item.add.style.display = '';
+	            if (right) {
+	              switch (statParams.segments[0]) {
+	                case 'campaign_id':
+	                  item.list.style.display = right.campaigns.type.indexOf(1) !== -1 ? '' : 'none';
+	                  item.add.style.display = right.campaigns.type.indexOf(3) !== -1 ? '' : 'none';
+	                  break;
+	                case 'lander':
+	                  item.list.style.display = right.landers.type.indexOf(1) !== -1 ? '' : 'none';
+	                  item.add.style.display = right.landers.type.indexOf(3) !== -1 ? '' : 'none';
+	                  break;
+	                case 'offer':
+	                  item.list.style.display = right.offers.type.indexOf(1) !== -1 ? '' : 'none';
+	                  item.add.style.display = right.offers.type.indexOf(3) !== -1 ? '' : 'none';
+	                  break;
+	                case 'traffic_source':
+	                  item.list.style.display = right.traffic_source.type.indexOf(1) !== -1 ? '' : 'none';
+	                  item.add.style.display = right.traffic_source.type.indexOf(3) !== -1 ? '' : 'none';
+	                  break;
+	                case 'affiliate_network':
+	                  item.list.style.display = right.affiliate_network.type.indexOf(1) !== -1 ? '' : 'none';
+	                  item.add.style.display = right.affiliate_network.type.indexOf(3) !== -1 ? '' : 'none';
+	                  break;
+	                default:
+	                  break;
+	              }
+	            } else {
+	              item.list.style.display = '';
+	              item.add.style.display = '';
+	            }
 	          }
 	        }
 	      }
 	    }
-	  };
+	  }
 
-	  var updateFilterStock = function updateFilterStock() {
+	  function updateFilterStock() {
 	    if (filterControl) {
 	      filterControl.style.display = 'none';
 	      filterControl.innerHTML = '';
@@ -4231,9 +4361,9 @@ webpackJsonp([0],[
 	        filterControl.style.display = '';
 	      });
 	    }
-	  };
+	  }
 
-	  var segmentChange = function segmentChange(event) {
+	  function segmentChange(event) {
 	    var segment = event.target;
 	    var value = segment.value;
 	    var oldValue = segment.oldValue;
@@ -4264,9 +4394,9 @@ webpackJsonp([0],[
 	        segmentAdd.style.display = 'none';
 	      }
 	    }
-	  };
+	  }
 
-	  var segmentClone = function segmentClone(value) {
+	  function segmentClone(value) {
 	    segmentAdd.updateValue();
 	    segmentAdd.setDisabled(value);
 	    segmentScope.forEach(function (el) {
@@ -4286,9 +4416,9 @@ webpackJsonp([0],[
 	    } else {
 	      segmentAdd.style.display = 'none';
 	    }
-	  };
+	  }
 
-	  var addGraphFilter = function addGraphFilter(pos) {
+	  function addGraphFilter(pos) {
 	    var filter = document.createElement('div');
 	    filter.className = 'list js-list';
 	    filter.dataset.placeholder = 'Select line';
@@ -4344,9 +4474,9 @@ webpackJsonp([0],[
 	        list.setDisabled(filter.value);
 	      });
 	    });
-	  };
+	  }
 
-	  var controlEvents = function controlEvents() {
+	  function controlEvents() {
 	    updateCreateControls();
 
 	    if (datetime) {
@@ -4528,9 +4658,9 @@ webpackJsonp([0],[
 	        (0, _update2.default)({ cohort_metric: cohortMetric.value });
 	      });
 	    }
-	  };
+	  }
 
-	  var controlsReset = function controlsReset() {
+	  function controlsReset() {
 	    updateFilterStock();
 
 	    [].concat(_toConsumableArray(segmentBtns)).forEach(function (btn) {
@@ -4653,7 +4783,147 @@ webpackJsonp([0],[
 	    if (cohortMetric) {
 	      cohortMetric.updateValue(statParams.cohort_metric);
 	    }
-	  };
+	  }
+
+	  function useSettings() {
+	    var result = window.__settings__;
+
+	    if (Array.isArray(result.segments) && (segmentAdd || cohortFilterAdd)) {
+	      (function () {
+	        var itemsWrap = void 0;
+
+	        if (segmentAdd) {
+	          itemsWrap = segmentAdd.querySelector('.js-list-items');
+	        } else {
+	          itemsWrap = cohortFilterAdd.querySelector('.js-list-items');
+	        }
+
+	        itemsWrap.innerHTML = '';
+
+	        result.segments.forEach(function (segment) {
+	          if (Array.isArray(segment) && segment.length === 2) {
+	            var item = document.createElement('div');
+	            item.className = 'list__item js-list-item';
+	            item.dataset.value = segment[1];
+	            item.textContent = segment[0];
+	            itemsWrap.appendChild(item);
+	          }
+	        });
+
+	        if (cohortFilterAdd) {
+	          cohortFilterAdd.style.display = '';
+	        }
+	      })();
+	    }
+
+	    if (result.table && _typeof(result.table) === 'object') {
+	      if (Array.isArray(result.table.columns)) {
+	        (function () {
+	          window.might.stat.columns_name = window.might.stat.columns_name || {};
+	          var columnsName = window.might.stat.columns_name;
+
+	          result.table.columns.forEach(function (column) {
+	            columnsName[column[1]] = column[0];
+	          });
+	        })();
+	      }
+
+	      if (Array.isArray(result.table.group) && segmentsBox) {
+	        segmentsBox.innerHTML = '';
+	        result.table.group.forEach(function (seg) {
+	          var ctrl = void 0;
+
+	          if (seg.name) {
+	            if (seg.value) {
+	              ctrl = document.createElement('div');
+	              ctrl.className = 'btn-white is-margin-top js-stat-btn-segment';
+	              ctrl.dataset.value = seg.value;
+	              ctrl.textContent = seg.name;
+	              segmentsBox.appendChild(ctrl);
+	            } else if (seg.chield && Array.isArray(seg.chield)) {
+	              (function () {
+	                ctrl = document.createElement('div');
+	                ctrl.className = 'list is-btn is-margin-top js-list js-stat-list-segment';
+	                ctrl.innerHTML = '' + '<div class="list__wrap">' + '<div class="list__value js-list-value"></div>' + '<div class="list__dropdown">' + '<div class="list__items js-list-items"></div>' + '</div>' + '</div>';
+	                ctrl.dataset.placeholder = seg.name;
+	                var ctrlItems = ctrl.querySelector('.js-list-items');
+
+	                if (seg.name !== 'Variables') {
+	                  seg.chield.forEach(function (cld) {
+	                    if (cld && (typeof cld === 'undefined' ? 'undefined' : _typeof(cld)) === 'object') {
+	                      if (cld.name && cld.value) {
+	                        var item = document.createElement('div');
+	                        item.className = 'list__item js-list-item';
+	                        item.dataset.value = cld.value;
+	                        item.textContent = cld.name;
+	                        ctrlItems.appendChild(item);
+	                      }
+	                    }
+	                  });
+	                } else {
+	                  ctrl.classList.add('js-stat-list-segment-variables');
+	                  ctrl.style.display = 'none';
+	                }
+	                segmentsBox.appendChild(ctrl);
+	                (0, _listEvent2.default)(ctrl);
+	              })();
+	            }
+	          }
+	        });
+	      }
+	    }
+
+	    if (result.user && _typeof(result.user) === 'object') {
+	      if (Array.isArray(result.user.all_columns) && columnsControl) {
+	        (function () {
+	          var allColumns = window.might.stat.params.all_columns;
+	          var itemsWrap = columnsControl.querySelector('.js-select-items');
+	          itemsWrap.innerHTML = '';
+
+	          result.user.all_columns.forEach(function (column) {
+	            if (Array.isArray(column) && column.length === 2) {
+	              var item = document.createElement('div');
+	              item.className = 'select__item js-select-item';
+	              item.dataset.value = column[1];
+	              item.textContent = column[0];
+	              itemsWrap.appendChild(item);
+	              allColumns[column[1]] = column[0];
+	            }
+	          });
+	        })();
+	      }
+
+	      if (result.user.currency && ['usd', 'eur', 'rub'].indexOf(result.user.currency.toLowerCase()) !== -1) {
+	        statParams.currency = result.user.currency.toLowerCase();
+	      }
+
+	      if (result.user.timezone) {
+	        statParams.timezone = result.user.timezone;
+	      }
+
+	      if (result.user.columns && columnsControl) {
+	        (function () {
+	          var arr = result.user.columns.split(',');
+	          var columns = [];
+	          columnsControl.updateValue(arr);
+
+	          arr.forEach(function (val) {
+	            columns.push(val);
+	          });
+
+	          (0, _update2.default)({ table_columns: columns });
+	        })();
+	      } else {
+	        (0, _update2.default)({ table_columns: [] });
+	      }
+	    }
+
+	    segmentBtns = stat.querySelectorAll('.js-stat-btn-segment');
+	    segmentLists = stat.querySelectorAll('.js-stat-list-segment');
+
+	    controlEvents();
+	    controlsReset();
+	  }
 
 	  (0, _init2.default)();
 	  (0, _updateVariables2.default)();
@@ -4663,200 +4933,61 @@ webpackJsonp([0],[
 	  (0, _tableCohort2.default)();
 
 	  statParams = window.might.stat.params;
-
 	  stat.addEventListener('upadatecreatecontrols', updateCreateControls);
 	  stat.addEventListener('backurl', controlsReset);
 	  stat.addEventListener('filterstockupdate', updateFilterStock);
 
-	  (0, _fetchApi.fetchObject)('/settings').then(function (result) {
-	    if (result) {
-	      if (Array.isArray(result.segments) && (segmentAdd || cohortFilterAdd)) {
-	        (function () {
-	          var itemsWrap = void 0;
-
-	          if (segmentAdd) {
-	            itemsWrap = segmentAdd.querySelector('.js-list-items');
-	          } else {
-	            itemsWrap = cohortFilterAdd.querySelector('.js-list-items');
-	          }
-
-	          itemsWrap.innerHTML = '';
-
-	          result.segments.forEach(function (segment) {
-	            if (Array.isArray(segment) && segment.length === 2) {
-	              var item = document.createElement('div');
-	              item.className = 'list__item js-list-item';
-	              item.dataset.value = segment[1];
-	              item.textContent = segment[0];
-	              itemsWrap.appendChild(item);
-	            }
-	          });
-
-	          if (cohortFilterAdd) {
-	            cohortFilterAdd.style.display = '';
-	          }
-	        })();
-	      }
-
-	      if (result.table && _typeof(result.table) === 'object') {
-	        if (Array.isArray(result.table.columns)) {
-	          (function () {
-	            window.might.stat.columns_name = window.might.stat.columns_name || {};
-	            var columnsName = window.might.stat.columns_name;
-
-	            result.table.columns.forEach(function (column) {
-	              columnsName[column[1]] = column[0];
-	            });
-	          })();
-	        }
-
-	        if (Array.isArray(result.table.group) && segmentsBox) {
-	          segmentsBox.innerHTML = '';
-	          result.table.group.forEach(function (seg) {
-	            var ctrl = void 0;
-
-	            if (seg.name) {
-	              if (seg.value) {
-	                ctrl = document.createElement('div');
-	                ctrl.className = 'btn-white is-margin-top js-stat-btn-segment';
-	                ctrl.dataset.value = seg.value;
-	                ctrl.textContent = seg.name;
-	                segmentsBox.appendChild(ctrl);
-	              } else if (seg.chield && Array.isArray(seg.chield)) {
-	                (function () {
-	                  ctrl = document.createElement('div');
-	                  ctrl.className = 'list is-btn is-margin-top js-list js-stat-list-segment';
-	                  ctrl.innerHTML = '' + '<div class="list__wrap">' + '<div class="list__value js-list-value"></div>' + '<div class="list__dropdown">' + '<div class="list__items js-list-items"></div>' + '</div>' + '</div>';
-	                  ctrl.dataset.placeholder = seg.name;
-	                  var ctrlItems = ctrl.querySelector('.js-list-items');
-
-	                  if (seg.name !== 'Variables') {
-	                    seg.chield.forEach(function (cld) {
-	                      if (cld && (typeof cld === 'undefined' ? 'undefined' : _typeof(cld)) === 'object') {
-	                        if (cld.name && cld.value) {
-	                          var item = document.createElement('div');
-	                          item.className = 'list__item js-list-item';
-	                          item.dataset.value = cld.value;
-	                          item.textContent = cld.name;
-	                          ctrlItems.appendChild(item);
-	                        }
-	                      }
-	                    });
-	                  } else {
-	                    ctrl.classList.add('js-stat-list-segment-variables');
-	                    ctrl.style.display = 'none';
-	                  }
-	                  segmentsBox.appendChild(ctrl);
-	                  (0, _listEvent2.default)(ctrl);
-	                })();
-	              }
-	            }
-	          });
-	        }
-	      }
-
-	      if (result.user && _typeof(result.user) === 'object') {
-	        if (Array.isArray(result.user.all_columns) && columnsControl) {
-	          (function () {
-	            var allColumns = window.might.stat.params.all_columns;
-	            var itemsWrap = columnsControl.querySelector('.js-select-items');
-	            itemsWrap.innerHTML = '';
-
-	            result.user.all_columns.forEach(function (column) {
-	              if (Array.isArray(column) && column.length === 2) {
-	                var item = document.createElement('div');
-	                item.className = 'select__item js-select-item';
-	                item.dataset.value = column[1];
-	                item.textContent = column[0];
-	                itemsWrap.appendChild(item);
-	                allColumns[column[1]] = column[0];
-	              }
-	            });
-	          })();
-	        }
-
-	        if (result.user.currency && ['usd', 'eur', 'rub'].indexOf(result.user.currency.toLowerCase()) !== -1) {
-	          statParams.currency = result.user.currency.toLowerCase();
-	        }
-
-	        if (result.user.timezone) {
-	          statParams.timezone = result.user.timezone;
-	        }
-
-	        if (result.user.columns && columnsControl) {
-	          (function () {
-	            var arr = result.user.columns.split(',');
-	            var columns = [];
-	            columnsControl.updateValue(arr);
-
-	            arr.forEach(function (val) {
-	              columns.push(val);
-	            });
-
-	            (0, _update2.default)({ table_columns: columns });
-	          })();
-	        } else {
-	          (0, _update2.default)({ table_columns: [] });
-	        }
-	      }
-
-	      segmentBtns = stat.querySelectorAll('.js-stat-btn-segment');
-	      segmentLists = stat.querySelectorAll('.js-stat-list-segment');
-
-	      controlEvents();
-	      controlsReset();
-	    }
-	  }).catch(function (err) {});
+	  useSettings();
 	};
 
 	var _qs = __webpack_require__(15);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _listEvent = __webpack_require__(25);
+	var _listEvent = __webpack_require__(56);
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
-	var _listFetchEvent = __webpack_require__(33);
+	var _listFetchEvent = __webpack_require__(64);
 
 	var _listFetchEvent2 = _interopRequireDefault(_listFetchEvent);
 
-	var _init = __webpack_require__(65);
+	var _init = __webpack_require__(67);
 
 	var _init2 = _interopRequireDefault(_init);
 
-	var _update = __webpack_require__(74);
+	var _update = __webpack_require__(76);
 
 	var _update2 = _interopRequireDefault(_update);
 
-	var _updateVariables = __webpack_require__(75);
+	var _updateVariables = __webpack_require__(77);
 
 	var _updateVariables2 = _interopRequireDefault(_updateVariables);
 
-	var _createControls = __webpack_require__(76);
+	var _createControls = __webpack_require__(78);
 
 	var _createControls2 = _interopRequireDefault(_createControls);
 
-	var _table = __webpack_require__(102);
+	var _table = __webpack_require__(104);
 
 	var _table2 = _interopRequireDefault(_table);
 
-	var _graph = __webpack_require__(105);
+	var _graph = __webpack_require__(107);
 
 	var _graph2 = _interopRequireDefault(_graph);
 
-	var _tableCohort = __webpack_require__(108);
+	var _tableCohort = __webpack_require__(110);
 
 	var _tableCohort2 = _interopRequireDefault(_tableCohort);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 65 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5083,30 +5214,30 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _dateformat = __webpack_require__(30);
+	var _dateformat = __webpack_require__(61);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _createBrowserHistory = __webpack_require__(66);
+	var _createBrowserHistory = __webpack_require__(68);
 
 	var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
 
-	var _update = __webpack_require__(74);
+	var _update = __webpack_require__(76);
 
 	var _update2 = _interopRequireDefault(_update);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 66 */,
-/* 67 */,
 /* 68 */,
 /* 69 */,
 /* 70 */,
 /* 71 */,
 /* 72 */,
 /* 73 */,
-/* 74 */
+/* 74 */,
+/* 75 */,
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5409,7 +5540,7 @@ webpackJsonp([0],[
 	  }
 	};
 
-	var _updateVariables = __webpack_require__(75);
+	var _updateVariables = __webpack_require__(77);
 
 	var _updateVariables2 = _interopRequireDefault(_updateVariables);
 
@@ -5421,7 +5552,7 @@ webpackJsonp([0],[
 	var regDate = new RegExp(/\d{4}-(0[1-9]|1[0-2])-([0-1][0-9]|3[0-1])/, 'g');
 
 /***/ },
-/* 75 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5533,7 +5664,7 @@ webpackJsonp([0],[
 	  }
 	};
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -5541,7 +5672,7 @@ webpackJsonp([0],[
 	var __trafficSourceVal__ = null;
 
 /***/ },
-/* 76 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5552,16 +5683,13 @@ webpackJsonp([0],[
 
 	exports.default = function () {
 	  var stat = document.querySelector('.js-stat');
-
 	  if (!stat || !document.querySelector('.js-stat-controls')) {
 	    return;
 	  }
 
 	  stat.querySelector('.js-stat-campaign-list').addEventListener('click', _campaignList2.default);
-
 	  stat.querySelector('.js-stat-campaign-add').addEventListener('click', function () {
 	    var popupBody = (0, _campaignAdd2.default)();
-
 	    popupBody.pathFunctions.createPath('Path 1', {
 	      weight: 1,
 	      checkbox: 'on',
@@ -5572,13 +5700,10 @@ webpackJsonp([0],[
 	      offer_url: [],
 	      direct_linking: false
 	    });
-
 	    var firstPath = popupBody.querySelectorAll('.js-path')[0];
-
 	    if (firstPath) {
 	      popupBody.pathFunctions.selectPath(firstPath);
 	    }
-
 	    setTimeout(function () {
 	      return popupBody.querySelector('.js-form-name').focus();
 	    }, 100);
@@ -5594,50 +5719,50 @@ webpackJsonp([0],[
 	  stat.querySelector('.js-stat-aff-add').addEventListener('click', _affiliateNetworkAdd2.default);
 	};
 
-	var _campaignList = __webpack_require__(77);
+	var _campaignList = __webpack_require__(79);
 
 	var _campaignList2 = _interopRequireDefault(_campaignList);
 
-	var _campaignAdd = __webpack_require__(81);
+	var _campaignAdd = __webpack_require__(83);
 
 	var _campaignAdd2 = _interopRequireDefault(_campaignAdd);
 
-	var _landerList = __webpack_require__(92);
+	var _landerList = __webpack_require__(94);
 
 	var _landerList2 = _interopRequireDefault(_landerList);
 
-	var _landerAdd = __webpack_require__(84);
+	var _landerAdd = __webpack_require__(86);
 
 	var _landerAdd2 = _interopRequireDefault(_landerAdd);
 
-	var _offerList = __webpack_require__(94);
+	var _offerList = __webpack_require__(96);
 
 	var _offerList2 = _interopRequireDefault(_offerList);
 
-	var _offerAdd = __webpack_require__(85);
+	var _offerAdd = __webpack_require__(87);
 
 	var _offerAdd2 = _interopRequireDefault(_offerAdd);
 
-	var _trafficSourceList = __webpack_require__(96);
+	var _trafficSourceList = __webpack_require__(98);
 
 	var _trafficSourceList2 = _interopRequireDefault(_trafficSourceList);
 
-	var _trafficSourceAdd = __webpack_require__(98);
+	var _trafficSourceAdd = __webpack_require__(100);
 
 	var _trafficSourceAdd2 = _interopRequireDefault(_trafficSourceAdd);
 
-	var _affiliateNetworkList = __webpack_require__(99);
+	var _affiliateNetworkList = __webpack_require__(101);
 
 	var _affiliateNetworkList2 = _interopRequireDefault(_affiliateNetworkList);
 
-	var _affiliateNetworkAdd = __webpack_require__(101);
+	var _affiliateNetworkAdd = __webpack_require__(103);
 
 	var _affiliateNetworkAdd2 = _interopRequireDefault(_affiliateNetworkAdd);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 77 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5707,6 +5832,7 @@ webpackJsonp([0],[
 	      table.className = 'popup__list';
 	      popupBody.appendChild(table);
 
+	      var right = window.__active_permission__;
 	      res.data.forEach(function (item) {
 	        var name = item.name;
 	        var id = item.id;
@@ -5714,7 +5840,11 @@ webpackJsonp([0],[
 	        tr.className = 'js-campaign-row js-popup-row';
 	        tr.dataset.id = id;
 
-	        tr.innerHTML = '\n          <td><span class="js-campaign-name js-popup-list-name">' + name + '</span></td>\n          <td><span class="js-campaign-copy">Copy</span></td>\n          <td><span class="js-campaign-edit">Edit</span></td>\n          <td><span class="js-campaign-update-cost">Update cost</span></td>\n          <td><span class="js-campaign-links">Links</span></td>\n        ';
+	        if (right) {
+	          tr.innerHTML = '\n            <td><span class="js-campaign-name js-popup-list-name">' + name + '</span></td>\n            <td><span class="js-campaign-copy">Copy</span></td>\n            ' + (right.campaigns.type.indexOf(2) !== -1 ? '<td><span class="js-campaign-edit">Edit</span></td>' : '') + '\n            ' + (right.campaigns.type.indexOf(2) !== -1 ? '<td><span class="js-campaign-update-cost">Update cost</span></td>' : '') + '\n            <td><span class="js-campaign-links">Links</span></td>\n          ';
+	        } else {
+	          tr.innerHTML = '\n            <td><span class="js-campaign-name js-popup-list-name">' + name + '</span></td>\n            <td><span class="js-campaign-copy">Copy</span></td>\n            <td><span class="js-campaign-edit">Edit</span></td>\n            <td><span class="js-campaign-update-cost">Update cost</span></td>\n            <td><span class="js-campaign-links">Links</span></td>\n          ';
+	        }
 
 	        table.appendChild(tr);
 	        popupBody.addEventListener('click', _forCampaignEdit2.default);
@@ -5729,22 +5859,22 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _createPopup = __webpack_require__(78);
+	var _createPopup = __webpack_require__(80);
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _forCampaignEdit = __webpack_require__(79);
+	var _forCampaignEdit = __webpack_require__(81);
 
 	var _forCampaignEdit2 = _interopRequireDefault(_forCampaignEdit);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 78 */
+/* 80 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -5799,7 +5929,7 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 79 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5847,19 +5977,19 @@ webpackJsonp([0],[
 	  }
 	};
 
-	var _campaignEdit = __webpack_require__(80);
+	var _campaignEdit = __webpack_require__(82);
 
 	var _campaignEdit2 = _interopRequireDefault(_campaignEdit);
 
-	var _campaignCosts = __webpack_require__(88);
+	var _campaignCosts = __webpack_require__(90);
 
 	var _campaignCosts2 = _interopRequireDefault(_campaignCosts);
 
-	var _campaignLinks = __webpack_require__(91);
+	var _campaignLinks = __webpack_require__(93);
 
 	var _campaignLinks2 = _interopRequireDefault(_campaignLinks);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5873,7 +6003,7 @@ webpackJsonp([0],[
 	}
 
 /***/ },
-/* 80 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6010,14 +6140,14 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _campaignAdd = __webpack_require__(81);
+	var _campaignAdd = __webpack_require__(83);
 
 	var _campaignAdd2 = _interopRequireDefault(_campaignAdd);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 81 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6529,26 +6659,26 @@ webpackJsonp([0],[
 	  return popupBody;
 	};
 
-	var _createPopup = __webpack_require__(78);
+	var _createPopup = __webpack_require__(80);
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _listEvent = __webpack_require__(25);
+	var _listEvent = __webpack_require__(56);
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
-	var _campaignAddChilds = __webpack_require__(82);
+	var _campaignAddChilds = __webpack_require__(84);
 
 	var _campaignAddChilds2 = _interopRequireDefault(_campaignAddChilds);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 82 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6564,18 +6694,18 @@ webpackJsonp([0],[
 	  popupBody.ruleFunctions = (0, _campaignAddRule2.default)(box);
 	};
 
-	var _campaignAddPath = __webpack_require__(83);
+	var _campaignAddPath = __webpack_require__(85);
 
 	var _campaignAddPath2 = _interopRequireDefault(_campaignAddPath);
 
-	var _campaignAddRule = __webpack_require__(86);
+	var _campaignAddRule = __webpack_require__(88);
 
 	var _campaignAddRule2 = _interopRequireDefault(_campaignAddRule);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 83 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7264,26 +7394,26 @@ webpackJsonp([0],[
 	  };
 	};
 
-	var _landerAdd = __webpack_require__(84);
+	var _landerAdd = __webpack_require__(86);
 
 	var _landerAdd2 = _interopRequireDefault(_landerAdd);
 
-	var _offerAdd2 = __webpack_require__(85);
+	var _offerAdd2 = __webpack_require__(87);
 
 	var _offerAdd3 = _interopRequireDefault(_offerAdd2);
 
-	var _listEvent = __webpack_require__(25);
+	var _listEvent = __webpack_require__(56);
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 84 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7415,22 +7545,22 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _createPopup = __webpack_require__(78);
+	var _createPopup = __webpack_require__(80);
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _listEvent = __webpack_require__(25);
+	var _listEvent = __webpack_require__(56);
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 85 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7654,22 +7784,22 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _createPopup = __webpack_require__(78);
+	var _createPopup = __webpack_require__(80);
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _listEvent = __webpack_require__(25);
+	var _listEvent = __webpack_require__(56);
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 86 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8158,11 +8288,11 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _listEvent = __webpack_require__(25);
+	var _listEvent = __webpack_require__(56);
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
-	var _checklistEvent = __webpack_require__(87);
+	var _checklistEvent = __webpack_require__(89);
 
 	var _checklistEvent2 = _interopRequireDefault(_checklistEvent);
 
@@ -8248,7 +8378,7 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 87 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8721,15 +8851,15 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _dateformat = __webpack_require__(30);
+	var _dateformat = __webpack_require__(61);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _fieldName = __webpack_require__(34);
+	var _fieldName = __webpack_require__(65);
 
 	var _fieldName2 = _interopRequireDefault(_fieldName);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -8738,7 +8868,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 88 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8978,32 +9108,32 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _dateformat = __webpack_require__(30);
+	var _dateformat = __webpack_require__(61);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _createPopup = __webpack_require__(78);
+	var _createPopup = __webpack_require__(80);
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _calendarLiteEvent = __webpack_require__(89);
+	var _calendarLiteEvent = __webpack_require__(91);
 
 	var _calendarLiteEvent2 = _interopRequireDefault(_calendarLiteEvent);
 
-	var _listEvent = __webpack_require__(25);
+	var _listEvent = __webpack_require__(56);
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
-	var _timezone = __webpack_require__(90);
+	var _timezone = __webpack_require__(92);
 
 	var _timezone2 = _interopRequireDefault(_timezone);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 89 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9287,18 +9417,18 @@ webpackJsonp([0],[
 	  control.setDisabled = setDisabled;
 	};
 
-	var _dateformat = __webpack_require__(30);
+	var _dateformat = __webpack_require__(61);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _listEvent = __webpack_require__(25);
+	var _listEvent = __webpack_require__(56);
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 90 */
+/* 92 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9309,7 +9439,7 @@ webpackJsonp([0],[
 	exports.default = ['+00:00|Africa/Abidjan', '+00:00|Africa/Accra', '+00:00|Africa/Bamako', '+00:00|Africa/Banjul', '+00:00|Africa/Bissau', '+00:00|Africa/Casablanca', '+00:00|Africa/Conakry', '+00:00|Africa/Dakar', '+00:00|Africa/El Aaiun', '+00:00|Africa/Freetown', '+00:00|Africa/Lome', '+00:00|Africa/Monrovia', '+00:00|Africa/Nouakchott', '+00:00|Africa/Ouagadougou', '+00:00|Africa/Sao Tome', '+01:00|Africa/Algiers', '+01:00|Africa/Bangui', '+01:00|Africa/Brazzaville', '+01:00|Africa/Douala', '+01:00|Africa/Kinshasa', '+01:00|Africa/Lagos', '+01:00|Africa/Libreville', '+01:00|Africa/Luanda', '+01:00|Africa/Malabo', '+01:00|Africa/Ndjamena', '+01:00|Africa/Niamey', '+01:00|Africa/Porto-Novo', '+01:00|Africa/Tunis', '+01:00|Africa/Windhoek', '+02:00|Africa/Blantyre', '+02:00|Africa/Bujumbura', '+02:00|Africa/Cairo', '+02:00|Africa/Ceuta', '+02:00|Africa/Gaborone', '+02:00|Africa/Harare', '+02:00|Africa/Johannesburg', '+02:00|Africa/Kigali', '+02:00|Africa/Lubumbashi', '+02:00|Africa/Lusaka', '+02:00|Africa/Maputo', '+02:00|Africa/Maseru', '+02:00|Africa/Mbabane', '+02:00|Africa/Tripoli', '+03:00|Africa/Addis Ababa', '+03:00|Africa/Asmara', '+03:00|Africa/Dar es Salaam', '+03:00|Africa/Djibouti', '+03:00|Africa/Juba', '+03:00|Africa/Kampala', '+03:00|Africa/Khartoum', '+03:00|Africa/Mogadishu', '+03:00|Africa/Nairobi', '-09:00|America/Adak', '-08:00|America/Anchorage', '-08:00|America/Juneau', '-08:00|America/Metlakatla', '-08:00|America/Nome', '-08:00|America/Sitka', '-08:00|America/Yakutat', '-07:00|America/Creston', '-07:00|America/Dawson', '-07:00|America/Dawson Creek', '-07:00|America/Hermosillo', '-07:00|America/Los Angeles', '-07:00|America/Phoenix', '-07:00|America/Santa Isabel', '-07:00|America/Tijuana', '-07:00|America/Vancouver', '-07:00|America/Whitehorse', '-06:00|America/Belize', '-06:00|America/Boise', '-06:00|America/Cambridge Bay', '-06:00|America/Chihuahua', '-06:00|America/Costa Rica', '-06:00|America/Denver', '-06:00|America/Edmonton', '-06:00|America/El Salvador', '-06:00|America/Guatemala', '-06:00|America/Inuvik', '-06:00|America/Managua', '-06:00|America/Mazatlan', '-06:00|America/Ojinaga', '-06:00|America/Regina', '-06:00|America/Swift Current', '-06:00|America/Tegucigalpa', '-06:00|America/Yellowknife', '-05:00|America/Atikokan', '-05:00|America/Bahia Banderas', '-05:00|America/Bogota', '-05:00|America/Cancun', '-05:00|America/Cayman', '-05:00|America/Chicago', '-05:00|America/Eirunepe', '-05:00|America/Guayaquil', '-05:00|America/Indiana/Knox', '-05:00|America/Indiana/Tell City', '-05:00|America/Jamaica', '-05:00|America/Lima', '-05:00|America/Matamoros', '-05:00|America/Menominee', '-05:00|America/Merida', '-05:00|America/Mexico City', '-05:00|America/Monterrey', '-05:00|America/North Dakota/Beulah', '-05:00|America/North Dakota/Center', '-05:00|America/North Dakota/New Salem', '-05:00|America/Panama', '-05:00|America/Rainy River', '-05:00|America/Rankin Inlet', '-05:00|America/Resolute', '-05:00|America/Rio Branco', '-05:00|America/Winnipeg', '-04:30|America/Caracas', '-04:00|America/Anguilla', '-04:00|America/Antigua', '-04:00|America/Aruba', '-04:00|America/Asuncion', '-04:00|America/Barbados', '-04:00|America/Blanc-Sablon', '-04:00|America/Boa Vista', '-04:00|America/Campo Grande', '-04:00|America/Cuiaba', '-04:00|America/Curacao', '-04:00|America/Detroit', '-04:00|America/Dominica', '-04:00|America/Grand Turk', '-04:00|America/Grenada', '-04:00|America/Guadeloupe', '-04:00|America/Guyana', '-04:00|America/Havana', '-04:00|America/Indiana/Indianapolis', '-04:00|America/Indiana/Marengo', '-04:00|America/Indiana/Petersburg', '-04:00|America/Indiana/Vevay', '-04:00|America/Indiana/Vincennes', '-04:00|America/Indiana/Winamac', '-04:00|America/Iqaluit', '-04:00|America/Kentucky/Louisville', '-04:00|America/Kentucky/Monticello', '-04:00|America/Kralendijk', '-04:00|America/La Paz', '-04:00|America/Lower Princes', '-04:00|America/Manaus', '-04:00|America/Marigot', '-04:00|America/Martinique', '-04:00|America/Montserrat', '-04:00|America/Nassau', '-04:00|America/New York', '-04:00|America/Nipigon', '-04:00|America/Pangnirtung', '-04:00|America/Port-au-Prince', '-04:00|America/Port of Spain', '-04:00|America/Porto Velho', '-04:00|America/Puerto Rico', '-04:00|America/Santiago', '-04:00|America/Santo Domingo', '-04:00|America/St Barthelemy', '-04:00|America/St Kitts', '-04:00|America/St Lucia', '-04:00|America/St Thomas', '-04:00|America/St Vincent', '-04:00|America/Thunder Bay', '-04:00|America/Toronto', '-04:00|America/Tortola', '-03:00|America/Araguaina', '-03:00|America/Argentina/Buenos Aires', '-03:00|America/Argentina/Catamarca', '-03:00|America/Argentina/Cordoba', '-03:00|America/Argentina/Jujuy', '-03:00|America/Argentina/La Rioja', '-03:00|America/Argentina/Mendoza', '-03:00|America/Argentina/Rio Gallegos', '-03:00|America/Argentina/Salta', '-03:00|America/Argentina/San Juan', '-03:00|America/Argentina/San Luis', '-03:00|America/Argentina/Tucuman', '-03:00|America/Argentina/Ushuaia', '-03:00|America/Bahia', '-03:00|America/Belem', '-03:00|America/Cayenne', '-03:00|America/Fortaleza', '-03:00|America/Glace Bay', '-03:00|America/Goose Bay', '-03:00|America/Halifax', '-03:00|America/Maceio', '-03:00|America/Moncton', '-03:00|America/Montevideo', '-03:00|America/Paramaribo', '-03:00|America/Recife', '-03:00|America/Santarem', '-03:00|America/Sao Paulo', '-03:00|America/Thule', '-02:00|America/Godthab', '-02:00|America/Miquelon', '-02:00|America/Noronha', '-02:30|America/St Johns', '+00:00|America/Danmarkshavn', '+00:00|America/Scoresbysund', '-04:00|Antarctica/Palmer', '-03:00|Antarctica/Rothera', '+02:00|Antarctica/Troll', '+03:00|Antarctica/Syowa', '+05:00|Antarctica/Mawson', '+06:00|Antarctica/Vostok', '+07:00|Antarctica/Davis', '+08:00|Antarctica/Casey', '+10:00|Antarctica/DumontDUrville', '+11:00|Antarctica/Macquarie', '+12:00|Antarctica/McMurdo', '+03:00|Asia/Aden', '+03:00|Asia/Amman', '+03:00|Asia/Baghdad', '+03:00|Asia/Bahrain', '+03:00|Asia/Beirut', '+03:00|Asia/Damascus', '+03:00|Asia/Gaza', '+03:00|Asia/Hebron', '+03:00|Asia/Jerusalem', '+03:00|Asia/Kuwait', '+03:00|Asia/Nicosia', '+03:00|Asia/Qatar', '+03:00|Asia/Riyadh', '+04:30|Asia/Kabul', '+04:30|Asia/Tehran', '+04:00|Asia/Dubai', '+04:00|Asia/Muscat', '+04:00|Asia/Tbilisi', '+04:00|Asia/Yerevan', '+05:45|Asia/Kathmandu', '+05:30|Asia/Colombo', '+05:30|Asia/Kolkata', '+05:00|Asia/Aqtau', '+05:00|Asia/Aqtobe', '+05:00|Asia/Ashgabat', '+05:00|Asia/Baku', '+05:00|Asia/Dushanbe', '+05:00|Asia/Karachi', '+05:00|Asia/Oral', '+05:00|Asia/Samarkand', '+05:00|Asia/Tashkent', '+05:00|Asia/Yekaterinburg', '+06:00|Asia/Almaty', '+06:00|Asia/Bishkek', '+06:00|Asia/Dhaka', '+06:00|Asia/Novosibirsk', '+06:00|Asia/Omsk', '+06:00|Asia/Qyzylorda', '+06:00|Asia/Thimphu', '+06:00|Asia/Urumqi', '+06:30|Asia/Rangoon', '+07:00|Asia/Bangkok', '+07:00|Asia/Ho Chi Minh', '+07:00|Asia/Hovd', '+07:00|Asia/Jakarta', '+07:00|Asia/Krasnoyarsk', '+07:00|Asia/Novokuznetsk', '+07:00|Asia/Phnom Penh', '+07:00|Asia/Pontianak', '+07:00|Asia/Vientiane', '+08:00|Asia/Brunei', '+08:00|Asia/Chita', '+08:00|Asia/Choibalsan', '+08:00|Asia/Hong Kong', '+08:00|Asia/Irkutsk', '+08:00|Asia/Kuala Lumpur', '+08:00|Asia/Kuching', '+08:00|Asia/Macau', '+08:00|Asia/Makassar', '+08:00|Asia/Manila', '+08:00|Asia/Shanghai', '+08:00|Asia/Singapore', '+08:00|Asia/Taipei', '+08:00|Asia/Ulaanbaatar', '+09:00|Asia/Dili', '+09:00|Asia/Jayapura', '+09:00|Asia/Khandyga', '+09:00|Asia/Pyongyang', '+09:00|Asia/Seoul', '+09:00|Asia/Tokyo', '+09:00|Asia/Yakutsk', '+10:00|Asia/Magadan', '+10:00|Asia/Sakhalin', '+10:00|Asia/Ust-Nera', '+10:00|Asia/Vladivostok', '+11:00|Asia/Srednekolymsk', '+12:00|Asia/Anadyr', '+12:00|Asia/Kamchatka', '-03:00|Atlantic/Bermuda', '-03:00|Atlantic/Stanley', '-02:00|Atlantic/South Georgia', '-01:00|Atlantic/Cape Verde', '+00:00|Atlantic/Azores', '+00:00|Atlantic/Reykjavik', '+00:00|Atlantic/St Helena', '+01:00|Atlantic/Canary', '+01:00|Atlantic/Faroe', '+01:00|Atlantic/Madeira', '+01:00|Europe/Dublin', '+01:00|Europe/Guernsey', '+01:00|Europe/Isle of Man', '+01:00|Europe/Jersey', '+01:00|Europe/Lisbon', '+01:00|Europe/London', '+02:00|Europe/Amsterdam', '+02:00|Europe/Andorra', '+02:00|Europe/Belgrade', '+02:00|Europe/Berlin', '+02:00|Europe/Bratislava', '+02:00|Europe/Brussels', '+02:00|Europe/Budapest', '+02:00|Europe/Busingen', '+02:00|Europe/Copenhagen', '+02:00|Europe/Gibraltar', '+02:00|Europe/Kaliningrad', '+02:00|Europe/Ljubljana', '+02:00|Europe/Luxembourg', '+02:00|Europe/Madrid', '+02:00|Europe/Malta', '+02:00|Europe/Monaco', '+02:00|Europe/Oslo', '+02:00|Europe/Paris', '+02:00|Europe/Podgorica', '+02:00|Europe/Prague', '+02:00|Europe/Rome', '+02:00|Europe/San Marino', '+02:00|Europe/Sarajevo', '+02:00|Europe/Skopje', '+02:00|Europe/Stockholm', '+02:00|Europe/Tirane', '+02:00|Europe/Vaduz', '+02:00|Europe/Vatican', '+02:00|Europe/Vienna', '+02:00|Europe/Warsaw', '+02:00|Europe/Zagreb', '+02:00|Europe/Zurich', '+03:00|Europe/Athens', '+03:00|Europe/Bucharest', '+03:00|Europe/Chisinau', '+03:00|Europe/Helsinki', '+03:00|Europe/Istanbul', '+03:00|Europe/Kiev', '+03:00|Europe/Mariehamn', '+03:00|Europe/Minsk', '+03:00|Europe/Moscow', '+03:00|Europe/Riga', '+03:00|Europe/Simferopol', '+03:00|Europe/Sofia', '+03:00|Europe/Tallinn', '+03:00|Europe/Uzhgorod', '+03:00|Europe/Vilnius', '+03:00|Europe/Volgograd', '+03:00|Europe/Zaporozhye', '+04:00|Europe/Samara', '+03:00|Indian/Antananarivo', '+03:00|Indian/Comoro', '+03:00|Indian/Mayotte', '+04:00|Indian/Mahe', '+04:00|Indian/Mauritius', '+04:00|Indian/Reunion', '+05:00|Indian/Kerguelen', '+05:00|Indian/Maldives', '+06:30|Indian/Cocos', '+06:00|Indian/Chagos', '+07:00|Indian/Christmas', '-11:00|Pacific/Midway', '-11:00|Pacific/Niue', '-11:00|Pacific/Pago Pago', '-10:00|Pacific/Honolulu', '-10:00|Pacific/Johnston', '-10:00|Pacific/Rarotonga', '-10:00|Pacific/Tahiti', '-09:30|Pacific/Marquesas', '-09:00|Pacific/Gambier', '-08:00|Pacific/Pitcairn', '-06:00|Pacific/Easter', '-06:00|Pacific/Galapagos', '+09:00|Pacific/Palau', '+10:00|Pacific/Chuuk', '+10:00|Pacific/Guam', '+10:00|Pacific/Port Moresby', '+10:00|Pacific/Saipan', '+11:30|Pacific/Norfolk', '+11:00|Pacific/Bougainville', '+11:00|Pacific/Efate', '+11:00|Pacific/Guadalcanal', '+11:00|Pacific/Kosrae', '+11:00|Pacific/Noumea', '+11:00|Pacific/Pohnpei', '+12:00|Pacific/Auckland', '+12:00|Pacific/Fiji', '+12:00|Pacific/Funafuti', '+12:00|Pacific/Kwajalein', '+12:00|Pacific/Majuro', '+12:00|Pacific/Nauru', '+12:00|Pacific/Tarawa', '+12:00|Pacific/Wake', '+12:00|Pacific/Wallis', '+12:45|Pacific/Chatham', '+13:00|Pacific/Apia', '+13:00|Pacific/Enderbury', '+13:00|Pacific/Fakaofo', '+13:00|Pacific/Tongatapu'];
 
 /***/ },
-/* 91 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9379,16 +9509,16 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _createPopup = __webpack_require__(78);
+	var _createPopup = __webpack_require__(80);
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 92 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9458,13 +9588,18 @@ webpackJsonp([0],[
 	      table.className = 'popup__list';
 	      popupBody.appendChild(table);
 
+	      var right = window.__active_permission__;
 	      res.data.forEach(function (item) {
 	        var name = item.name;
 	        var id = item.id;
 	        var tr = document.createElement('tr');
 	        tr.className = 'js-lander-row js-popup-row';
 
-	        tr.innerHTML = '\n          <td class="js-lander-name" data-id="' + id + '">\n            <span class="js-lander-edit js-popup-list-name">' + name + '</span>\n          </td>\n          <td><span class="js-lander-copy">Copy</span></td>\n          <td><span class="js-lander-edit">Edit</span></td>\n        ';
+	        if (right) {
+	          tr.innerHTML = '\n            <td class="js-lander-name" data-id="' + id + '">\n              <span class="js-lander-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-lander-copy">Copy</span></td>\n            ' + (right.landers.type.indexOf(2) !== -1 ? '<td><span class="js-lander-edit">Edit</span></td>' : '') + '\n          ';
+	        } else {
+	          tr.innerHTML = '\n            <td class="js-lander-name" data-id="' + id + '">\n              <span class="js-lander-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-lander-copy">Copy</span></td>\n            <td><span class="js-lander-edit">Edit</span></td>\n          ';
+	        }
 
 	        table.appendChild(tr);
 
@@ -9509,22 +9644,22 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _createPopup = __webpack_require__(78);
+	var _createPopup = __webpack_require__(80);
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _landerEdit = __webpack_require__(93);
+	var _landerEdit = __webpack_require__(95);
 
 	var _landerEdit2 = _interopRequireDefault(_landerEdit);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 93 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9569,7 +9704,7 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _landerAdd = __webpack_require__(84);
+	var _landerAdd = __webpack_require__(86);
 
 	var _landerAdd2 = _interopRequireDefault(_landerAdd);
 
@@ -9578,7 +9713,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 94 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9648,13 +9783,18 @@ webpackJsonp([0],[
 	      table.className = 'popup__list';
 	      popupBody.appendChild(table);
 
+	      var right = window.__active_permission__;
 	      res.data.forEach(function (item) {
 	        var name = item.name;
 	        var id = item.id;
 	        var tr = document.createElement('tr');
 	        tr.className = 'js-offer-row js-popup-row';
 
-	        tr.innerHTML = '\n          <td class="js-offer-name" data-id="' + id + '">\n            <span class="js-offer-edit js-popup-list-name">' + name + '</span>\n          </td>\n          <td><span class="js-offer-copy">Copy</span></td>\n          <td><span class="js-offer-edit">Edit</span></td>\n        ';
+	        if (right) {
+	          tr.innerHTML = '\n            <td class="js-offer-name" data-id="' + id + '">\n              <span class="js-offer-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-offer-copy">Copy</span></td>\n            ' + (right.offers.type.indexOf(2) !== -1 ? '<td><span class="js-offer-edit">Edit</span></td>' : '') + '\n          ';
+	        } else {
+	          tr.innerHTML = '\n            <td class="js-offer-name" data-id="' + id + '">\n              <span class="js-offer-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-offer-copy">Copy</span></td>\n            <td><span class="js-offer-edit">Edit</span></td>\n          ';
+	        }
 
 	        table.appendChild(tr);
 
@@ -9699,22 +9839,22 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _createPopup = __webpack_require__(78);
+	var _createPopup = __webpack_require__(80);
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _offerEdit = __webpack_require__(95);
+	var _offerEdit = __webpack_require__(97);
 
 	var _offerEdit2 = _interopRequireDefault(_offerEdit);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 95 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9804,7 +9944,7 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _offerAdd = __webpack_require__(85);
+	var _offerAdd = __webpack_require__(87);
 
 	var _offerAdd2 = _interopRequireDefault(_offerAdd);
 
@@ -9813,7 +9953,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 96 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9883,13 +10023,18 @@ webpackJsonp([0],[
 	      table.className = 'popup__list';
 	      popupBody.appendChild(table);
 
+	      var right = window.__active_permission__;
 	      res.data.forEach(function (item) {
 	        var name = item.name;
 	        var id = item.id;
 	        var tr = document.createElement('tr');
 	        tr.className = 'js-traffic-row js-popup-row';
 
-	        tr.innerHTML = '\n          <td class="js-traffic-name" data-id="' + id + '">\n            <span class="js-traffic-edit js-popup-list-name">' + name + '</span>\n          </td>\n          <td><span class="js-traffic-copy">Copy</span></td>\n          <td><span class="js-traffic-edit">Edit</span></td>\n        ';
+	        if (right) {
+	          tr.innerHTML = '\n            <td class="js-traffic-name" data-id="' + id + '">\n              <span class="js-traffic-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-traffic-copy">Copy</span></td>\n            ' + (right.traffic_source.type.indexOf(2) !== -1 ? '<td><span class="js-traffic-edit">Edit</span></td>' : '') + '\n          ';
+	        } else {
+	          tr.innerHTML = '\n            <td class="js-traffic-name" data-id="' + id + '">\n              <span class="js-traffic-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-traffic-copy">Copy</span></td>\n            <td><span class="js-traffic-edit">Edit</span></td>\n          ';
+	        }
 
 	        table.appendChild(tr);
 
@@ -9934,22 +10079,22 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _createPopup = __webpack_require__(78);
+	var _createPopup = __webpack_require__(80);
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _trafficSourceEdit = __webpack_require__(97);
+	var _trafficSourceEdit = __webpack_require__(99);
 
 	var _trafficSourceEdit2 = _interopRequireDefault(_trafficSourceEdit);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 97 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10010,7 +10155,7 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _trafficSourceAdd = __webpack_require__(98);
+	var _trafficSourceAdd = __webpack_require__(100);
 
 	var _trafficSourceAdd2 = _interopRequireDefault(_trafficSourceAdd);
 
@@ -10019,7 +10164,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 98 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10180,22 +10325,22 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _createPopup = __webpack_require__(78);
+	var _createPopup = __webpack_require__(80);
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _listEvent = __webpack_require__(25);
+	var _listEvent = __webpack_require__(56);
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 99 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10265,13 +10410,18 @@ webpackJsonp([0],[
 	      table.className = 'popup__list';
 	      popupBody.appendChild(table);
 
+	      var right = window.__active_permission__;
 	      res.data.forEach(function (item) {
 	        var name = item.name;
 	        var id = item.id;
 	        var tr = document.createElement('tr');
 	        tr.className = 'js-affiliate-row js-popup-row';
 
-	        tr.innerHTML = '\n          <td class="js-affiliate-name" data-id="' + id + '">\n            <span class="js-affiliate-edit js-popup-list-name">' + name + '</span>\n          </td>\n          <td><span class="js-affiliate-copy">Copy</span></td>\n          <td><span class="js-affiliate-edit">Edit</span></td>\n        ';
+	        if (right) {
+	          tr.innerHTML = '\n            <td class="js-affiliate-name" data-id="' + id + '">\n              <span class="js-affiliate-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-affiliate-copy">Copy</span></td>\n            <td><span class="js-affiliate-edit">Edit</span></td>\n          ';
+	        } else {
+	          tr.innerHTML = '\n            <td class="js-affiliate-name" data-id="' + id + '">\n              <span class="js-affiliate-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-affiliate-copy">Copy</span></td>\n            ' + (right.affiliate_network.type.indexOf(2) !== -1 ? '<td><span class="js-affiliate-edit">Edit</span></td>' : '') + '\n          ';
+	        }
 
 	        table.appendChild(tr);
 
@@ -10316,22 +10466,22 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _createPopup = __webpack_require__(78);
+	var _createPopup = __webpack_require__(80);
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _affiliateNetworkEdit = __webpack_require__(100);
+	var _affiliateNetworkEdit = __webpack_require__(102);
 
 	var _affiliateNetworkEdit2 = _interopRequireDefault(_affiliateNetworkEdit);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 100 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10390,14 +10540,14 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _affiliateNetworkAdd = __webpack_require__(101);
+	var _affiliateNetworkAdd = __webpack_require__(103);
 
 	var _affiliateNetworkAdd2 = _interopRequireDefault(_affiliateNetworkAdd);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 101 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10537,18 +10687,18 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _createPopup = __webpack_require__(78);
+	var _createPopup = __webpack_require__(80);
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 102 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10693,24 +10843,24 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _dateformat = __webpack_require__(30);
+	var _dateformat = __webpack_require__(61);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _tableRender = __webpack_require__(103);
+	var _tableRender = __webpack_require__(105);
 
 	var _tableRender2 = _interopRequireDefault(_tableRender);
 
-	var _tableEvent = __webpack_require__(104);
+	var _tableEvent = __webpack_require__(106);
 
 	var _tableEvent2 = _interopRequireDefault(_tableEvent);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 103 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10721,7 +10871,7 @@ webpackJsonp([0],[
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-	var _forCampaignEdit = __webpack_require__(79);
+	var _forCampaignEdit = __webpack_require__(81);
 
 	var _forCampaignEdit2 = _interopRequireDefault(_forCampaignEdit);
 
@@ -10821,7 +10971,14 @@ webpackJsonp([0],[
 
 	      if (k === 'campaign_id') {
 	        var helper = createNode('div', ['helper', 'js-helper']);
-	        helper.innerHTML = '<div class="helper__cloud">' + '<div class="helper__link"><span class="js-campaign-copy">Copy</span></div>' + '<div class="helper__link"><span class="js-campaign-edit">Edit</span></div>' + '<div class="helper__link"><span class="js-campaign-update-cost">Update cost</span></div>' + '<div class="helper__link"><span class="js-campaign-links">Links</span></div>' + '</div>';
+	        var right = window.__active_permission__;
+
+	        if (right) {
+	          helper.innerHTML = '<div class="helper__cloud">\n            ' + (right.campaigns.type.indexOf(1) !== -1 ? '<div class="helper__link"><span class="js-campaign-copy">Copy</span></div>' : '') + '\n            ' + (right.campaigns.type.indexOf(2) !== -1 ? '<div class="helper__link"><span class="js-campaign-edit">Edit</span></div>' : '') + '\n            ' + (right.campaigns.type.indexOf(2) !== -1 ? '<div class="helper__link"><span class="js-campaign-update-cost">Update cost</span></div>' : '') + '\n            <div class="helper__link"><span class="js-campaign-links">Links</span></div>\n          </div>';
+	        } else {
+	          helper.innerHTML = '<div class="helper__cloud">\n            <div class="helper__link"><span class="js-campaign-copy">Copy</span></div>\n            <div class="helper__link"><span class="js-campaign-edit">Edit</span></div>\n            <div class="helper__link"><span class="js-campaign-update-cost">Update cost</span></div>\n            <div class="helper__link"><span class="js-campaign-links">Links</span></div>\n          </div>';
+	        }
+
 	        main.appendChild(helper);
 	        main.classList.add('is-with-helper');
 	      }
@@ -10977,7 +11134,7 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 104 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11185,7 +11342,7 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _update = __webpack_require__(74);
+	var _update = __webpack_require__(76);
 
 	var _update2 = _interopRequireDefault(_update);
 
@@ -11194,7 +11351,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 105 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11316,28 +11473,28 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _dateformat = __webpack_require__(30);
+	var _dateformat = __webpack_require__(61);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _listEvent = __webpack_require__(25);
+	var _listEvent = __webpack_require__(56);
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
-	var _update = __webpack_require__(74);
+	var _update = __webpack_require__(76);
 
 	var _update2 = _interopRequireDefault(_update);
 
-	var _graphRender = __webpack_require__(106);
+	var _graphRender = __webpack_require__(108);
 
 	var _graphRender2 = _interopRequireDefault(_graphRender);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 106 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11555,23 +11712,23 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _dateformat = __webpack_require__(30);
+	var _dateformat = __webpack_require__(61);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _highcharts = __webpack_require__(107);
+	var _highcharts = __webpack_require__(109);
 
 	var _highcharts2 = _interopRequireDefault(_highcharts);
 
-	var _update = __webpack_require__(74);
+	var _update = __webpack_require__(76);
 
 	var _update2 = _interopRequireDefault(_update);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 107 */,
-/* 108 */
+/* 109 */,
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11676,24 +11833,24 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _dateformat = __webpack_require__(30);
+	var _dateformat = __webpack_require__(61);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _tableCohortRender = __webpack_require__(109);
+	var _tableCohortRender = __webpack_require__(111);
 
 	var _tableCohortRender2 = _interopRequireDefault(_tableCohortRender);
 
-	var _tableCohortEvent = __webpack_require__(110);
+	var _tableCohortEvent = __webpack_require__(112);
 
 	var _tableCohortEvent2 = _interopRequireDefault(_tableCohortEvent);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 109 */
+/* 111 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11856,7 +12013,7 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 110 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11971,11 +12128,11 @@ webpackJsonp([0],[
 	  }
 	};
 
-	var _update = __webpack_require__(74);
+	var _update = __webpack_require__(76);
 
 	var _update2 = _interopRequireDefault(_update);
 
-	var _graphCohortRender = __webpack_require__(111);
+	var _graphCohortRender = __webpack_require__(113);
 
 	var _graphCohortRender2 = _interopRequireDefault(_graphCohortRender);
 
@@ -11984,7 +12141,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 111 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12092,22 +12249,22 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _dateformat = __webpack_require__(30);
+	var _dateformat = __webpack_require__(61);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	var _highcharts = __webpack_require__(107);
+	var _highcharts = __webpack_require__(109);
 
 	var _highcharts2 = _interopRequireDefault(_highcharts);
 
-	var _update = __webpack_require__(74);
+	var _update = __webpack_require__(76);
 
 	var _update2 = _interopRequireDefault(_update);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 112 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12166,23 +12323,23 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _createBrowserHistory = __webpack_require__(66);
+	var _createBrowserHistory = __webpack_require__(68);
 
 	var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
 
-	var _profile = __webpack_require__(113);
+	var _profile = __webpack_require__(115);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _domains = __webpack_require__(114);
+	var _domains = __webpack_require__(116);
 
 	var _domains2 = _interopRequireDefault(_domains);
 
-	var _conversions = __webpack_require__(116);
+	var _conversions = __webpack_require__(118);
 
 	var _conversions2 = _interopRequireDefault(_conversions);
 
-	var _rights = __webpack_require__(117);
+	var _rights = __webpack_require__(119);
 
 	var _rights2 = _interopRequireDefault(_rights);
 
@@ -12220,7 +12377,7 @@ webpackJsonp([0],[
 	}
 
 /***/ },
-/* 113 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12448,10 +12605,10 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 /***/ },
-/* 114 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12546,16 +12703,16 @@ webpackJsonp([0],[
 	  showList();
 	};
 
-	var _domainsEdit = __webpack_require__(115);
+	var _domainsEdit = __webpack_require__(117);
 
 	var _domainsEdit2 = _interopRequireDefault(_domainsEdit);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 115 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12640,24 +12797,24 @@ webpackJsonp([0],[
 	  return popupBody;
 	};
 
-	var _createPopup = __webpack_require__(78);
+	var _createPopup = __webpack_require__(80);
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _listEvent = __webpack_require__(25);
+	var _listEvent = __webpack_require__(56);
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
-	var _checklistEvent = __webpack_require__(87);
+	var _checklistEvent = __webpack_require__(89);
 
 	var _checklistEvent2 = _interopRequireDefault(_checklistEvent);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 116 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12698,10 +12855,10 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 /***/ },
-/* 117 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12728,21 +12885,12 @@ webpackJsonp([0],[
 
 	  function showList() {
 	    (0, _fetchApi.fetchData)('/permission/list').then(function (res) {
-	      var activeRight = Number(window.cookie('permission_user'));
-
 	      res.data.forEach(function (item) {
 	        var tr = document.createElement('tr');
-	        var styleActive = '';
-	        var styleDeactive = ' style="display: none;"';
-
-	        if (activeRight === Number(item.user_id)) {
-	          styleActive = styleDeactive;
-	          styleDeactive = '';
-	        }
 
 	        tr.className = 'js-settings-rights-row';
 	        tr.dataset.id = item.user_id;
-	        tr.innerHTML = '\n            <td><span class="js-settings-rights-name">' + item.name + '</span></td>\n            <td><span class="js-settings-rights-email">' + item.email + '</span></td>\n            <td style="width: 1%;"><span class="js-settings-rights-copy is-hover">Copy</span></td>\n            <td style="width: 1%;"><span class="js-settings-rights-edit is-hover">Edit</span></td>\n            <td style="width: 1%;"><span class="js-settings-rights-delete is-hover">Delete</span></td>\n            <td>\n              <span class="btn-green js-settings-rights-activate"' + styleActive + '>Activate</span>\n              <span class="btn-close js-settings-rights-deactivate"' + styleDeactive + '>Deactivate</span>\n            </td>\n          ';
+	        tr.innerHTML = '\n            <td><span class="js-settings-rights-name">' + item.name + '</span></td>\n            <td><span class="js-settings-rights-email">' + item.email + '</span></td>\n            <td style="width: 1%;"><span class="js-settings-rights-copy is-hover">Copy</span></td>\n            <td style="width: 1%;"><span class="js-settings-rights-edit is-hover">Edit</span></td>\n            <td style="width: 1%;"><span class="js-settings-rights-delete is-hover">Delete</span></td>';
 
 	        list.appendChild(tr);
 	        list.addEventListener('click', clickRows);
@@ -12757,10 +12905,8 @@ webpackJsonp([0],[
 	    var copyBtn = target.closest('.js-settings-rights-copy');
 	    var editBtn = target.closest('.js-settings-rights-edit');
 	    var deleteBtn = target.closest('.js-settings-rights-delete');
-	    var activateBtn = target.closest('.js-settings-rights-activate');
-	    var deactivateBtn = target.closest('.js-settings-rights-deactivate');
 
-	    if (copyBtn || editBtn || deleteBtn || activateBtn || deactivateBtn) {
+	    if (copyBtn || editBtn || deleteBtn) {
 	      var row = target.closest('.js-settings-rights-row');
 	      var id = row.dataset.id;
 
@@ -12779,25 +12925,6 @@ webpackJsonp([0],[
 	          if (confirm('Do delete the ' + name + ' rule?')) {
 	            deleteRight(id, row);
 	          }
-	        }
-
-	        if (activateBtn) {
-	          window.cookie('permission_user', id, { expires: 30 });
-
-	          [].concat(_toConsumableArray(list.querySelectorAll('.js-settings-rights-row'))).forEach(function (el) {
-	            el.querySelector('.js-settings-rights-activate').style.display = '';
-	            el.querySelector('.js-settings-rights-deactivate').style.display = 'none';
-	          });
-
-	          row.querySelector('.js-settings-rights-activate').style.display = 'none';
-	          row.querySelector('.js-settings-rights-deactivate').style.display = '';
-	        }
-
-	        if (deactivateBtn) {
-	          window.removeCookie('permission_user');
-
-	          row.querySelector('.js-settings-rights-activate').style.display = '';
-	          row.querySelector('.js-settings-rights-deactivate').style.display = 'none';
 	        }
 	      }
 	    }
@@ -12829,18 +12956,16 @@ webpackJsonp([0],[
 	  showList();
 	};
 
-	var _rightsEdit = __webpack_require__(118);
+	var _rightsEdit = __webpack_require__(120);
 
 	var _rightsEdit2 = _interopRequireDefault(_rightsEdit);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 /***/ },
-/* 118 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13085,19 +13210,19 @@ webpackJsonp([0],[
 	  return popupBody;
 	};
 
-	var _createPopup = __webpack_require__(78);
+	var _createPopup = __webpack_require__(80);
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _listEvent = __webpack_require__(25);
+	var _listEvent = __webpack_require__(56);
 
 	var _listEvent2 = _interopRequireDefault(_listEvent);
 
-	var _checklistEvent = __webpack_require__(87);
+	var _checklistEvent = __webpack_require__(89);
 
 	var _checklistEvent2 = _interopRequireDefault(_checklistEvent);
 
-	var _fetchApi = __webpack_require__(35);
+	var _fetchApi = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
