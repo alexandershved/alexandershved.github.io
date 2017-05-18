@@ -4227,7 +4227,8 @@ webpackJsonp([0],[
 	  var columnsControl = stat.querySelector('.js-stat-columns');
 	  var statGraphFields = stat.querySelector('.js-stat-graph-fields');
 	  var cohortSize = stat.querySelector('.js-stat-cohort-size');
-	  var cohortMetric = stat.querySelector('.js-stat-cohort-metric');
+	  var cohortMetric1 = stat.querySelector('.js-stat-cohort-metric1');
+	  var cohortMetric2 = stat.querySelector('.js-stat-cohort-metric2');
 
 	  var createControls = {
 	    campaign_id: {
@@ -4614,9 +4615,15 @@ webpackJsonp([0],[
 	      });
 	    }
 
-	    if (cohortMetric) {
-	      cohortMetric.addEventListener('change', function () {
-	        (0, _update2.default)({ cohort_metric: cohortMetric.value });
+	    if (cohortMetric1) {
+	      cohortMetric1.addEventListener('change', function () {
+	        (0, _update2.default)({ cohort_metric1: cohortMetric1.value });
+	      });
+	    }
+
+	    if (cohortMetric2) {
+	      cohortMetric2.addEventListener('change', function () {
+	        (0, _update2.default)({ cohort_metric2: cohortMetric2.value });
 	      });
 	    }
 	  }
@@ -4741,8 +4748,12 @@ webpackJsonp([0],[
 	      cohortSize.updateValue(statParams.cohort_size);
 	    }
 
-	    if (cohortMetric) {
-	      cohortMetric.updateValue(statParams.cohort_metric);
+	    if (cohortMetric1) {
+	      cohortMetric1.updateValue(statParams.cohort_metric1);
+	    }
+
+	    if (cohortMetric2) {
+	      cohortMetric2.updateValue(statParams.cohort_metric2);
 	    }
 	  }
 
@@ -4900,9 +4911,11 @@ webpackJsonp([0],[
 
 	  useSettings();
 
-	  downloadBtn.addEventListener('click', function () {
-	    stat.triggerEvent('download');
-	  });
+	  if (downloadBtn) {
+	    downloadBtn.addEventListener('click', function () {
+	      stat.triggerEvent('download');
+	    });
+	  }
 	};
 
 	var _qs = __webpack_require__(15);
@@ -4998,13 +5011,15 @@ webpackJsonp([0],[
 	    current: null,
 	    value: null,
 	    fields_graph: [],
+	    more_page: 1,
 
 	    sort: null,
 	    columns: {},
 	    all_columns: {},
 
 	    cohort_size: 'month',
-	    cohort_metric: 'leads'
+	    cohort_metric1: 'clicks',
+	    cohort_metric2: 'leads'
 	  };
 
 	  var stat = document.querySelector('.js-stat');
@@ -5079,7 +5094,8 @@ webpackJsonp([0],[
 	    }
 
 	    params.cohort_size = query.cs || 'month';
-	    params.cohort_metric = query.cm || 'leads';
+	    params.cohort_metric1 = query.field1 || 'clicks';
+	    params.cohort_metric2 = query.field2 || 'leads';
 	  };
 
 	  var pushHistroy = function pushHistroy() {
@@ -5154,8 +5170,12 @@ webpackJsonp([0],[
 	      query.cs = params.cohort_size;
 	    }
 
-	    if (params.cohort_metric !== 'leads') {
-	      query.cm = params.cohort_metric;
+	    if (params.cohort_metric1 !== 'clicks') {
+	      query.field1 = params.cohort_metric1;
+	    }
+
+	    if (params.cohort_metric2 !== 'leads') {
+	      query.field2 = params.cohort_metric2;
 	    }
 
 	    history.push({
@@ -5401,6 +5421,7 @@ webpackJsonp([0],[
 	              params.level = render.level;
 	              params.filter = render.filter;
 	              params.current = render.current;
+	              params.more_page = render.more_page || 1;
 	              isUpdate = true;
 	              isUpdateRows = true;
 	            }
@@ -5453,9 +5474,16 @@ webpackJsonp([0],[
 	          }
 	          break;
 
-	        case 'cohort_metric':
-	          if (params.cohort_metric !== obj.cohort_metric) {
-	            params.cohort_metric = obj.cohort_metric;
+	        case 'cohort_metric1':
+	          if (params.cohort_metric1 !== obj.cohort_metric1) {
+	            params.cohort_metric1 = obj.cohort_metric1;
+	            isUpdate = true;
+	          }
+	          break;
+
+	        case 'cohort_metric2':
+	          if (params.cohort_metric2 !== obj.cohort_metric2) {
+	            params.cohort_metric2 = obj.cohort_metric2;
 	            isUpdate = true;
 	          }
 	          break;
@@ -10085,11 +10113,16 @@ webpackJsonp([0],[
 	    }
 	  }
 
+	  formInputs[0].querySelectorAll('input')[0].value = data.external_id_parameter || '';
+	  formInputs[0].querySelectorAll('input')[1].value = data.external_id_placeholder || '';
+	  formInputs[1].querySelectorAll('input')[0].value = data.cost_parameter || '';
+	  formInputs[1].querySelectorAll('input')[1].value = data.cost_placeholder || '';
+
 	  if (Array.isArray(data.traffic_sources_values)) {
 	    data.traffic_sources_values.forEach(function (values, index) {
-	      formInputs[index].querySelectorAll('input')[0].value = values.param || '';
-	      formInputs[index].querySelectorAll('input')[1].value = values.value || '';
-	      formInputs[index].querySelectorAll('input')[2].value = values.name || '';
+	      formInputs[index + 2].querySelectorAll('input')[0].value = values.param || '';
+	      formInputs[index + 2].querySelectorAll('input')[1].value = values.value || '';
+	      formInputs[index + 2].querySelectorAll('input')[2].value = values.name || '';
 	    });
 	  }
 	};
@@ -10129,7 +10162,7 @@ webpackJsonp([0],[
 	    return null;
 	  }
 
-	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new offer">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Postback URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" placeholder="Create a url">\n          <span><span>\n        </div>\n        <div class="tags js-form-tags" style="display: none;"></div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Loading settings from:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-loading" style="display: block; margin: 0 0 15px;" data-placeholder="Select affiliate network">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items">\n                <div class="list__item js-list-item" data-value="0">test</div>\n              </div>\n            </div>\n          </div>\n        </div>\n\n        <div class="popup__inputs">\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-field"><div class="popup__inputs-title">Parameter<div class="info"></div></div></div>\n            <div class="popup__inputs-field"><div class="popup__inputs-title">Placeholder<div class="info"></div></div></div>\n            <div class="popup__inputs-field"><div class="popup__inputs-title">Name<div class="info"></div></div></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">External ID:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Cost:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 1:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 2:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 3:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 4:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 5:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 6:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 7:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 8:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 9:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 10:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 11:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 12:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 13:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 14:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 15:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n        </div>\n      </div>\n    </div>';
+	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for the new offer">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Postback URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-url" type="text" placeholder="Create a url">\n          <span><span>\n        </div>\n        <div class="tags js-form-tags" style="display: none;"></div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Loading settings from:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-loading" style="display: block; margin: 0 0 15px;" data-placeholder="Select affiliate network">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items">\n                <div class="list__item js-list-item" data-value="0">test</div>\n              </div>\n            </div>\n          </div>\n        </div>\n\n        <div class="popup__inputs">\n          <div class="popup__inputs-line">\n            <div class="popup__inputs-field"><div class="popup__inputs-title">Parameter<div class="info"></div></div></div>\n            <div class="popup__inputs-field"><div class="popup__inputs-title">Placeholder<div class="info"></div></div></div>\n            <div class="popup__inputs-field"><div class="popup__inputs-title">Name<div class="info"></div></div></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">External ID:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text" disabled="true"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Cost:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text" disabled="true"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 1:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 2:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 3:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 4:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 5:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 6:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 7:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 8:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 9:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 10:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 11:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 12:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 13:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 14:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n          <div class="popup__inputs-line js-form-inputs">\n            <div class="popup__inputs-label">Custom variable 15:</div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n            <div class="popup__inputs-field"><input type="text"></div>\n          </div>\n        </div>\n      </div>\n    </div>';
 
 	  var formName = popupBody.querySelector('.js-form-name');
 	  var formUrl = popupBody.querySelector('.js-form-url');
@@ -10194,15 +10227,15 @@ webpackJsonp([0],[
 
 	  (0, _listEvent2.default)(formLoading);
 
-	  [].concat(_toConsumableArray(formInputs)).forEach(function (inputs) {
+	  [].concat(_toConsumableArray(formInputs)).forEach(function (inputs, index) {
 	    inputs.querySelectorAll('input')[0].addEventListener('change', function (event) {
 	      var val = event.target.value.toLowerCase().replace(/\s+/g, '_');
 
-	      if (val && !inputs.querySelectorAll('input')[1].value) {
+	      if (index > 1 && val && !inputs.querySelectorAll('input')[1].value) {
 	        inputs.querySelectorAll('input')[1].value = '{' + val + '}';
 	      }
 
-	      if (val && !inputs.querySelectorAll('input')[2].value) {
+	      if (index > 1 && val && !inputs.querySelectorAll('input')[2].value) {
 	        inputs.querySelectorAll('input')[2].value = val[0].toUpperCase() + val.slice(1);
 	      }
 	    });
@@ -10213,14 +10246,27 @@ webpackJsonp([0],[
 	    var affilateNetwork = formLoading.value;
 	    var postbackUrl = formUrl.value;
 
+	    var externalParameter = '';
+	    var externalPlaceholder = '';
+	    var costParameter = '';
+	    var costPlaceholder = '';
+
 	    var paramInputs = [];
 	    var valueInputs = [];
 	    var nameInputs = [];
 
-	    [].concat(_toConsumableArray(formInputs)).forEach(function (inputs) {
-	      paramInputs.push(inputs.querySelectorAll('input')[0].value || '');
-	      valueInputs.push(inputs.querySelectorAll('input')[1].value || '');
-	      nameInputs.push(inputs.querySelectorAll('input')[2].value || '');
+	    [].concat(_toConsumableArray(formInputs)).forEach(function (inputs, index) {
+	      if (index === 0) {
+	        externalParameter = inputs.querySelectorAll('input')[0].value || '';
+	        externalPlaceholder = inputs.querySelectorAll('input')[1].value || '';
+	      } else if (index === 1) {
+	        costParameter = inputs.querySelectorAll('input')[0].value || '';
+	        costPlaceholder = inputs.querySelectorAll('input')[1].value || '';
+	      } else {
+	        paramInputs.push(inputs.querySelectorAll('input')[0].value || '');
+	        valueInputs.push(inputs.querySelectorAll('input')[1].value || '');
+	        nameInputs.push(inputs.querySelectorAll('input')[2].value || '');
+	      }
 	    });
 
 	    var focusFormName = function focusFormName() {
@@ -10243,6 +10289,10 @@ webpackJsonp([0],[
 	      affilate_network: affilateNetwork || '',
 	      postback_url: postbackUrl || '',
 	      is_active: 1,
+	      external_id_parameter: externalParameter,
+	      external_id_placeholder: externalPlaceholder,
+	      cost_parameter: costParameter,
+	      cost_placeholder: costPlaceholder,
 	      params: {
 	        param: paramInputs,
 	        value: valueInputs,
@@ -10678,7 +10728,7 @@ webpackJsonp([0],[
 	      data.start = (params.page - 1) * params.length;
 	      data.length = params.length;
 	    } else {
-	      data.start = 0;
+	      data.start = (params.more_page - 1) * 50;
 	      data.length = 50;
 	    }
 	    data.search = params.search;
@@ -10775,7 +10825,7 @@ webpackJsonp([0],[
 
 	          stat.triggerEvent('drawgraph');
 	        } else {
-	          _tableRender2.default.renderRow(obj);
+	          _tableRender2.default.renderRow(obj, params.more_page);
 	        }
 	      }).catch(function (err) {});
 	    }
@@ -10909,15 +10959,15 @@ webpackJsonp([0],[
 	var columns = void 0;
 
 	var renderRows = function renderRows(tr, record, response) {
-	  if (response.is_tree) {
-	    tr.level = response.level;
-	    tr.filter = [];
-	    (response.filter || []).forEach(function (el) {
-	      tr.filter.push(el);
-	    });
-	    tr.filter.push({ field: response.field, value: record[response.field] });
-	    tr.thisFilter = { field: response.field, value: record[response.field] };
-	  }
+	  tr.level = response.level;
+	  tr.filter = [];
+
+	  (response.filter || []).forEach(function (el) {
+	    tr.filter.push(el);
+	  });
+
+	  tr.filter.push({ field: response.field, value: record[response.field] });
+	  tr.thisFilter = { field: response.field, value: record[response.field] };
 
 	  if (response.field === 'campaign_id') {
 	    tr.classList.add('js-campaign-row');
@@ -10943,7 +10993,7 @@ webpackJsonp([0],[
 	      span.classList.add('js-campaign-name');
 	    }
 
-	    if (response.is_tree && fields[j]) {
+	    if (fields[j]) {
 	      span.classList.add('is-clickable');
 	    }
 
@@ -11096,13 +11146,19 @@ webpackJsonp([0],[
 	    return div;
 	  },
 
-	  renderRow: function renderRow(response) {
+	  renderRow: function renderRow(response, morePage) {
+	    var recordsTotal = parseInt(response.result.recordsTotal, 10);
 	    var data = response.result.data;
+
 	    var type = typeof data === 'undefined' ? 'undefined' : _typeof(data);
 	    var table = response.current.parentNode;
 	    var nextRow = response.current.nextSibling;
 
-	    response.current.classList.add('is-open');
+	    if (response.current.querySelector('.is-more')) {
+	      response.current.parentNode.removeChild(response.current);
+	    } else {
+	      response.current.classList.add('is-open');
+	    }
 
 	    if (Array.isArray(data)) {
 	      data.forEach(function (record, i) {
@@ -11126,6 +11182,25 @@ webpackJsonp([0],[
 	          renderRows(tr, record, response);
 	        }
 	      });
+	    }
+
+	    if (morePage * 50 < recordsTotal) {
+	      var tr = createNode('tr', ['is-level' + response.level]);
+	      var td = createNode('td');
+	      var div = createNode('div', ['is-more-wrap']);
+	      var span = createNode('span', ['is-more'], 'load more...');
+
+	      tr.dataset.morePage = morePage + 1;
+
+	      div.appendChild(span);
+	      td.appendChild(div);
+	      tr.appendChild(td);
+
+	      if (nextRow) {
+	        nextRow._insertBefore(tr);
+	      } else {
+	        table.appendChild(tr);
+	      }
 	    }
 	  }
 	};
@@ -11239,6 +11314,7 @@ webpackJsonp([0],[
 	    var swtch = event.target.closest('.is-switch');
 	    var clickable = event.target.closest('.is-clickable');
 	    var sort = event.target.closest('.is-sort');
+	    var more = event.target.closest('.is-more');
 
 	    if (swtch) {
 	      var elements = getElements(event.target);
@@ -11275,6 +11351,22 @@ webpackJsonp([0],[
 	      if (value) {
 	        (0, _update2.default)({ table_sort: value });
 	      }
+	    } else if (more) {
+	      var _elements2 = getElements(event.target);
+
+	      if (!_elements2) {
+	        return;
+	      }
+
+	      var _level = _elements2.parent.level;
+	      var _filter2 = _elements2.parent.filter;
+	      var morePage = parseInt(_elements2.current.dataset.morePage, 10);
+
+	      if (!_level || !_filter2) {
+	        return;
+	      }
+
+	      (0, _update2.default)({ render_child_rows: { level: parseInt(_level, 10) + 1, filter: _filter2, current: _elements2.current, more_page: morePage } });
 	    }
 	  });
 
@@ -11766,8 +11858,8 @@ webpackJsonp([0],[
 	    data.timezone = params.timezone;
 
 	    data.group = 'campaign_id';
-	    data.field1 = 'clicks';
-	    data.field2 = params.cohort_metric;
+	    data.field1 = params.cohort_metric1;
+	    data.field2 = params.cohort_metric2;
 	    data.interval = params.cohort_size;
 
 	    var filter = [];
@@ -11904,7 +11996,8 @@ webpackJsonp([0],[
 	    if ((typeof sum === 'undefined' ? 'undefined' : _typeof(sum)) === 'object' && (typeof values === 'undefined' ? 'undefined' : _typeof(values)) === 'object') {
 
 	      var columnsCount = 0;
-	      var metric = window.might.stat.params.cohort_metric;
+	      var metric1 = window.might.stat.params.cohort_metric1;
+	      var metric2 = window.might.stat.params.cohort_metric2;
 
 	      for (var i in values) {
 	        if (values.hasOwnProperty(i) && Array.isArray(values[i])) {
@@ -11940,9 +12033,9 @@ webpackJsonp([0],[
 	          _td.appendChild(span);
 	          tr.appendChild(_td);
 
-	          var counClicks = Number(sum[_i2] && sum[_i2].clicks) || 0;
-	          clicksMedian += counClicks;
-	          _td = createNode('td', null, counClicks);
+	          var count = Number(sum[_i2] && sum[_i2][metric1]) || 0;
+	          clicksMedian += count;
+	          _td = createNode('td', null, count);
 	          tr.appendChild(_td);
 
 	          var isArray = Array.isArray(values[_i2]);
@@ -11956,8 +12049,8 @@ webpackJsonp([0],[
 	            tdMedian[j] = tdMedian[j] || 0;
 
 	            if (isArray && val[j]) {
-	              if (counClicks) {
-	                txt = Math.round(100 * val[j][metric] / counClicks) / 100 + '%';
+	              if (count) {
+	                txt = Math.round(100 * 100 * val[j][metric2] / count) / 100 + '%';
 	              } else {
 	                txt = '0%';
 	              }
