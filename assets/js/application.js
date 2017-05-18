@@ -72,7 +72,7 @@ webpackJsonp([0],[
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	window._version = '0.4.27';
+	window._version = '0.5.18';
 
 	(0, _cookie2.default)();
 	(0, _reset2.default)();
