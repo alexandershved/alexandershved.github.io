@@ -72,7 +72,7 @@ webpackJsonp([0],[
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	window._version = '0.5.18';
+	window._version = '0.5.19';
 
 	(0, _cookie2.default)();
 	(0, _reset2.default)();
@@ -342,7 +342,7 @@ webpackJsonp([0],[
 	        throw new Error('Failed to load settings');
 	      }
 	    }).catch(function (err) {
-	      throw new Error('Failed to load settings');
+	      throw new Error(err);
 	    });
 	  });
 	};
@@ -1483,9 +1483,12 @@ webpackJsonp([0],[
 	      }
 	    }).catch(function (err) {
 	      reject('Error network');
+
 	      if (requestHash) {
 	        stopFetch(requestHash);
 	      }
+
+	      throw new Error(err);
 	    });
 	  });
 	}
@@ -1510,6 +1513,8 @@ webpackJsonp([0],[
 	      if (requestHash) {
 	        stopFetch(requestHash);
 	      }
+
+	      throw new Error(err);
 	    });
 	  });
 	}
@@ -3797,6 +3802,7 @@ webpackJsonp([0],[
 	      tempValue.currency = control.value.currency;
 
 	      control.classList.add('is-open');
+	      console.log(control);
 	      window.addEventListener('click', clickWindow);
 	    };
 
@@ -3994,7 +4000,9 @@ webpackJsonp([0],[
 	          itemsWrap.innerHTML += '<div ' + 'class="list__item js-list-fetch-item' + (item.v === list.value ? ' is-select"' : '"') + ' data-value="' + item.v + '">' + name + '</div>';
 	        });
 	      }
-	    }).catch(function (err) {});
+	    }).catch(function (err) {
+	      throw new Error(err);
+	    });
 	  };
 
 	  updateValue = function updateValue(val, ttl, fld, clr) {
@@ -4593,7 +4601,9 @@ webpackJsonp([0],[
 	          if (res.error === false) {
 	            (0, _update2.default)({ refresh: true });
 	          }
-	        }).catch(function (err) {});
+	        }).catch(function (err) {
+	          throw new Error(err);
+	        });
 	      });
 	    }
 
@@ -5616,7 +5626,9 @@ webpackJsonp([0],[
 	  var getTrafficSource = function getTrafficSource(id) {
 	    (0, _fetchApi.fetchData)('/traffic/sources/get', { id: id }).then(function (res) {
 	      setVariables(res.data.traffic_sources_values);
-	    }).catch(function (err) {});
+	    }).catch(function (err) {
+	      throw new Error(err);
+	    });
 	  };
 
 	  var getCampaign = function getCampaign(id) {
@@ -5624,7 +5636,9 @@ webpackJsonp([0],[
 	      if (String(res.data.traffic_source_id)) {
 	        getTrafficSource(res.data.traffic_source_id);
 	      }
-	    }).catch(function (err) {});
+	    }).catch(function (err) {
+	      throw new Error(err);
+	    });
 	  };
 
 	  (stock || []).forEach(function (el) {
@@ -5844,6 +5858,7 @@ webpackJsonp([0],[
 	      });
 	    }).catch(function (err) {
 	      popupBody.innerHTML = '<div class="popup__message">' + err + '</div>';
+	      throw new Error(err);
 	    });
 	  }
 	};
@@ -5992,7 +6007,9 @@ webpackJsonp([0],[
 	      document.querySelector('.js-popup').close();
 	    }
 	    (0, _campaignEdit2.default)(res.data, hasEdit || false);
-	  }).catch(function (err) {});
+	  }).catch(function (err) {
+	    throw new Error(err);
+	  });
 	}
 
 /***/ },
@@ -6019,7 +6036,7 @@ webpackJsonp([0],[
 	  var formCostDoNotTrack = popupBody.querySelector('.js-form-cost-donottrack');
 	  var formCostCPC = popupBody.querySelector('.js-form-cost-cpc');
 	  var formCostCPA = popupBody.querySelector('.js-form-cost-cpa');
-	  var formCostClick = popupBody.querySelector('.js-form-cost-click');
+	  var formCostValue = popupBody.querySelector('.js-form-cost-value');
 	  var formCostEur = popupBody.querySelector('.js-form-cost-eur');
 	  var formCostRub = popupBody.querySelector('.js-form-cost-rub');
 	  var formCostUsd = popupBody.querySelector('.js-form-cost-usd');
@@ -6054,7 +6071,7 @@ webpackJsonp([0],[
 	    }
 	  }
 
-	  formCostClick.value = data.cost_click || '';
+	  formCostValue.value = data.cost_click || '';
 
 	  formCostEur.classList.remove('is-select');
 	  formCostRub.classList.remove('is-select');
@@ -6127,6 +6144,23 @@ webpackJsonp([0],[
 	      }
 	    });
 	  }
+
+	  var startTime = new Date();
+
+	  var valInterval = setInterval(function () {
+	    if (new Date() - startTime >= 3000) {
+	      clearInterval(valInterval);
+	    }
+
+	    if (popupBody.querySelector('.js-path-lander-add').querySelector('.js-list').setValue && popupBody.querySelector('.js-path-offer-add').querySelector('.js-list').setValue) {
+	      clearInterval(valInterval);
+	      var firstPath = popupBody.querySelectorAll('.js-path')[0];
+
+	      if (firstPath) {
+	        popupBody.pathFunctions.selectPath(firstPath);
+	      }
+	    }
+	  }, 100);
 	};
 
 	var _qs = __webpack_require__(15);
@@ -6230,7 +6264,9 @@ webpackJsonp([0],[
 	      }
 
 	      (0, _listEvent2.default)(formDomain);
-	    }).catch(function (err) {});
+	    }).catch(function (err) {
+	      throw new Error(err);
+	    });
 	  })();
 
 	  (function () {
@@ -6245,7 +6281,9 @@ webpackJsonp([0],[
 	      });
 
 	      (0, _listEvent2.default)(formTrafficSource);
-	    }).catch(function (err) {});
+	    }).catch(function (err) {
+	      throw new Error(err);
+	    });
 	  })();
 
 	  formCostDoNotTrack.addEventListener('click', function () {
@@ -6654,6 +6692,7 @@ webpackJsonp([0],[
 	      }
 	      if (isClose) {
 	        popup.close();
+	        throw new Error(err);
 	      }
 	    }).catch(function (err) {
 	      popup.querySelector('.js-popup-error').textContent = err;
@@ -7296,7 +7335,9 @@ webpackJsonp([0],[
 	      list.addEventListener('change', function () {
 	        return newList(type);
 	      });
-	    }).catch(function (err) {});
+	    }).catch(function (err) {
+	      throw new Error(err);
+	    });
 	  }
 
 	  (function () {
@@ -7545,6 +7586,7 @@ webpackJsonp([0],[
 	      }
 	    }).catch(function (err) {
 	      popup.querySelector('.js-popup-error').textContent = err;
+	      throw new Error(err);
 	    });
 	  });
 
@@ -7672,7 +7714,9 @@ webpackJsonp([0],[
 	      });
 
 	      (0, _listEvent2.default)(formAffNet);
-	    }).catch(function (err) {});
+	    }).catch(function (err) {
+	      throw new Error(err);
+	    });
 	  })();
 
 	  formPayoutAuto.addEventListener('click', function () {
@@ -7784,6 +7828,7 @@ webpackJsonp([0],[
 	      }
 	    }).catch(function (err) {
 	      popup.querySelector('.js-popup-error').textContent = err;
+	      throw new Error(err);
 	    });
 	  });
 
@@ -8558,7 +8603,9 @@ webpackJsonp([0],[
 
 	      (0, _fetchApi.fetchData)(searchLink, { search: val }, false).then(function (res) {
 	        drawItems(res.data);
-	      }).catch(function (err) {});
+	      }).catch(function (err) {
+	        throw new Error(err);
+	      });
 	    } else {
 	      var items = listItems.querySelectorAll('.js-checklist-item');
 
@@ -8722,7 +8769,9 @@ webpackJsonp([0],[
 
 	              loading = false;
 	              drawTags();
-	            }).catch(function (err) {});
+	            }).catch(function (err) {
+	              throw new Error(err);
+	            });
 	          } else {
 	            var prev = group.previousSibling;
 	            if (prev) {
@@ -9037,6 +9086,7 @@ webpackJsonp([0],[
 	      }
 	    }).catch(function (err) {
 	      popup.querySelector('.js-popup-error').textContent = err;
+	      throw new Error(err);
 	    });
 	  });
 
@@ -9420,7 +9470,9 @@ webpackJsonp([0],[
 	});
 
 	exports.default = function (id, name) {
-	  (0, _fetchApi.fetchData)('/campaign/get/links', { id: id }).then(render).catch(function (err) {});
+	  (0, _fetchApi.fetchData)('/campaign/get/links', { id: id }).then(render).catch(function (err) {
+	    throw new Error(err);
+	  });
 
 	  function render(res) {
 	    if (document.querySelector('.js-popup')) {
@@ -9578,6 +9630,7 @@ webpackJsonp([0],[
 	      });
 	    }).catch(function (err) {
 	      popupBody.innerHTML = '<div class="popup__message">' + err + '</div>';
+	      throw new Error(err);
 	    });
 	  }
 
@@ -9607,7 +9660,9 @@ webpackJsonp([0],[
 	    (0, _fetchApi.fetchData)('/lander/get', { id: id }).then(function (res) {
 	      popup.close();
 	      (0, _landerEdit2.default)(res.data, hasEdit || false);
-	    }).catch(function (err) {});
+	    }).catch(function (err) {
+	      throw new Error(err);
+	    });
 	  }
 	};
 
@@ -9773,6 +9828,7 @@ webpackJsonp([0],[
 	      });
 	    }).catch(function (err) {
 	      popupBody.innerHTML = '<div class="popup__message">' + err + '</div>';
+	      throw new Error(err);
 	    });
 	  }
 
@@ -9802,7 +9858,9 @@ webpackJsonp([0],[
 	    (0, _fetchApi.fetchData)('/offer/get', { id: id }).then(function (res) {
 	      popup.close();
 	      (0, _offerEdit2.default)(res.data, hasEdit || false);
-	    }).catch(function (err) {});
+	    }).catch(function (err) {
+	      throw new Error(err);
+	    });
 	  }
 	};
 
@@ -10013,6 +10071,7 @@ webpackJsonp([0],[
 	      });
 	    }).catch(function (err) {
 	      popupBody.innerHTML = '<div class="popup__message">' + err + '</div>';
+	      throw new Error(err);
 	    });
 	  }
 
@@ -10042,7 +10101,9 @@ webpackJsonp([0],[
 	    (0, _fetchApi.fetchData)('/traffic/sources/get', { id: id }).then(function (res) {
 	      popup.close();
 	      (0, _trafficSourceEdit2.default)(res.data, hasEdit || false);
-	    }).catch(function (err) {});
+	    }).catch(function (err) {
+	      throw new Error(err);
+	    });
 	  }
 	};
 
@@ -10308,6 +10369,7 @@ webpackJsonp([0],[
 	      popup.close();
 	    }).catch(function (err) {
 	      popup.querySelector('.js-popup-error').textContent = err;
+	      throw new Error(err);
 	    });
 	  });
 
@@ -10422,6 +10484,7 @@ webpackJsonp([0],[
 	      });
 	    }).catch(function (err) {
 	      popupBody.innerHTML = '<div class="popup__message">' + err + '</div>';
+	      throw new Error(err);
 	    });
 	  }
 
@@ -10451,7 +10514,9 @@ webpackJsonp([0],[
 	    (0, _fetchApi.fetchData)('/affiliate_network/get', { id: id }).then(function (res) {
 	      popup.close();
 	      (0, _affiliateNetworkEdit2.default)(res.data, hasEdit || false);
-	    }).catch(function (err) {});
+	    }).catch(function (err) {
+	      throw new Error(err);
+	    });
 	  }
 	};
 
@@ -10670,6 +10735,7 @@ webpackJsonp([0],[
 	      popup.close();
 	    }).catch(function (err) {
 	      popup.querySelector('.js-popup-error').textContent = err;
+	      throw new Error(err);
 	    });
 	  });
 
@@ -10827,7 +10893,9 @@ webpackJsonp([0],[
 	        } else {
 	          _tableRender2.default.renderRow(obj, params.more_page);
 	        }
-	      }).catch(function (err) {});
+	      }).catch(function (err) {
+	        throw new Error(err);
+	      });
 	    }
 	  });
 
@@ -10880,7 +10948,9 @@ webpackJsonp([0],[
 	        }
 
 	        link.click();
-	      }).catch(function (err) {});
+	      }).catch(function (err) {
+	        throw new Error(err);
+	      });
 	    }
 	  });
 	};
@@ -11553,7 +11623,9 @@ webpackJsonp([0],[
 	    if (obj) {
 	      (0, _fetchApi.fetchObject)('/graph/data', obj).then(function (res) {
 	        (0, _graphRender2.default)(res);
-	      }).catch(function (err) {});
+	      }).catch(function (err) {
+	        throw new Error(err);
+	      });
 	    }
 	  });
 	};
@@ -11913,7 +11985,9 @@ webpackJsonp([0],[
 	        }
 
 	        stat.triggerEvent('drawgraph');
-	      }).catch(function (err) {});
+	      }).catch(function (err) {
+	        throw new Error(err);
+	      });
 	    }
 	  });
 	};
@@ -12532,6 +12606,7 @@ webpackJsonp([0],[
 	    error.textContent = err;
 	    profile.addEventListener('click', resetMessages);
 	    profile.addEventListener('focus', resetMessages);
+	    throw new Error(err);
 	  });
 
 	  profile.addEventListener('mousedown', resetMessages);
@@ -12686,6 +12761,7 @@ webpackJsonp([0],[
 	        error.textContent = err;
 	        profile.addEventListener('click', resetMessages);
 	        profile.addEventListener('focus', resetMessages);
+	        throw new Error(err);
 	      });
 	    } else {
 	      message.textContent = 'Nothing to save';
@@ -12739,6 +12815,7 @@ webpackJsonp([0],[
 	      });
 	    }).catch(function (err) {
 	      error.textContent = err;
+	      throw new Error(err);
 	    });
 	  }
 
@@ -12774,6 +12851,7 @@ webpackJsonp([0],[
 	      error.textContent = err;
 	      domains.addEventListener('click', resetMessages);
 	      domains.addEventListener('focus', resetMessages);
+	      throw new Error(err);
 	    });
 	  }
 
@@ -12784,6 +12862,7 @@ webpackJsonp([0],[
 	      error.textContent = err;
 	      domains.addEventListener('click', resetMessages);
 	      domains.addEventListener('focus', resetMessages);
+	      throw new Error(err);
 	    });
 	  }
 
@@ -12881,6 +12960,7 @@ webpackJsonp([0],[
 	      showList();
 	    }).catch(function (err) {
 	      popup.querySelector('.js-popup-error').textContent = err;
+	      throw new Error(err);
 	    });
 	  }
 
@@ -12941,6 +13021,7 @@ webpackJsonp([0],[
 	      error.textContent = err;
 	      conversions.addEventListener('click', resetMessages);
 	      conversions.addEventListener('focus', resetMessages);
+	      throw new Error(err);
 	    });
 	  });
 	};
@@ -12987,6 +13068,7 @@ webpackJsonp([0],[
 	      });
 	    }).catch(function (err) {
 	      error.textContent = err;
+	      throw new Error(err);
 	    });
 	  }
 
@@ -13027,6 +13109,7 @@ webpackJsonp([0],[
 	      error.textContent = err;
 	      rights.addEventListener('click', resetMessages);
 	      rights.addEventListener('focus', resetMessages);
+	      throw new Error(err);
 	    });
 	  }
 
@@ -13037,6 +13120,7 @@ webpackJsonp([0],[
 	      error.textContent = err;
 	      rights.addEventListener('click', resetMessages);
 	      rights.addEventListener('focus', resetMessages);
+	      throw new Error(err);
 	    });
 	  }
 
@@ -13164,7 +13248,9 @@ webpackJsonp([0],[
 	        type: 'line',
 	        data: res.data
 	      });
-	    }).catch(function (err) {});
+	    }).catch(function (err) {
+	      throw new Error(err);
+	    });
 	  }
 
 	  [{ name: 'Campaigns', url: '/campaign/list', slug: 'campaigns' }, { name: 'Landers', url: '/lander/list', slug: 'landers' }, { name: 'Offers', url: '/offer/list', slug: 'offers' }, { name: 'Traffic sources', url: '/traffic/sources/list', slug: 'traffic_source' }, { name: 'Affiliate network', url: '/affiliate_network/list', slug: 'affiliate_network' }].forEach(initList);
@@ -13283,6 +13369,7 @@ webpackJsonp([0],[
 	      saveRightWithId(data, isClose);
 	    }).catch(function (err) {
 	      popup.querySelector('.js-popup-error').textContent = err;
+	      throw new Error(err);
 	    });
 	  }
 
@@ -13294,6 +13381,7 @@ webpackJsonp([0],[
 	      }
 	    }).catch(function (err) {
 	      popup.querySelector('.js-popup-error').textContent = err;
+	      throw new Error(err);
 	    });
 	  }
 
