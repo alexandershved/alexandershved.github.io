@@ -78,7 +78,7 @@ webpackJsonp([0],[
 
 	window._version = '0.5.19';
 
-	var __svg__ = { filename: "/assets/svg/1495933418071.icons.svg" };
+	var __svg__ = { filename: "/assets/svg/1496258441832.icons.svg" };
 	__svg__.filename = __svg__.filename;
 	(0, _svgxhr2.default)(__svg__);
 
@@ -6603,121 +6603,133 @@ webpackJsonp([0],[
 	    var defaultPath = [];
 
 	    [].concat(_toConsumableArray(createCampaign.querySelector('.js-pathes-default').querySelectorAll('.js-path'))).forEach(function (el) {
-	      var path = {};
-	      var val = el.value;
+	      if (!el.classList.contains('is-deleted')) {
+	        (function () {
+	          var path = {};
+	          var val = el.value;
 
-	      path.name = val.name || '';
-	      path.checkbox = val.checkbox || 'on';
-	      path.direct_linking_checkbox = Number(!!val.direct_linking);
-	      path.weight = val.weight || '';
-	      path.lander = [];
-	      path.lander_weight = [];
-	      path.offer = [];
-	      path.offer_weight = [];
-	      path.offer_use_url = [];
+	          path.name = val.name || '';
+	          path.checkbox = val.checkbox || 'on';
+	          path.direct_linking_checkbox = Number(!!val.direct_linking);
+	          path.weight = val.weight || '';
+	          path.lander = [];
+	          path.lander_weight = [];
+	          path.offer = [];
+	          path.offer_weight = [];
+	          path.offer_use_url = [];
 
-	      val.lander.forEach(function (l, index) {
-	        path.lander[index] = l;
-	        path.lander_weight[index] = val.lander_weight[index];
-	      });
+	          val.lander.forEach(function (l, index) {
+	            path.lander[index] = l;
+	            path.lander_weight[index] = val.lander_weight[index];
+	          });
 
-	      val.offer.forEach(function (l, index) {
-	        path.offer[index] = l;
-	        path.offer_weight[index] = val.offer_weight[index];
-	        path.offer_use_url[index] = val.offer_url[index] || '';
-	      });
+	          val.offer.forEach(function (l, index) {
+	            path.offer[index] = l;
+	            path.offer_weight[index] = val.offer_weight[index];
+	            path.offer_use_url[index] = val.offer_url[index] || '';
+	          });
 
-	      if (val.hash) {
-	        path.hash = val.hash;
+	          if (val.hash) {
+	            path.hash = val.hash;
+	          }
+
+	          defaultPath.push(path);
+	        })();
 	      }
-
-	      defaultPath.push(path);
 	    });
 
 	    var rules = [];
 
 	    [].concat(_toConsumableArray(createCampaign.querySelectorAll('.js-rule'))).forEach(function (el) {
-	      var val = el.value;
+	      if (!el.classList.contains('is-deleted')) {
+	        (function () {
+	          var val = el.value;
 
-	      var rule = {
-	        name: val.name,
-	        rules: {},
-	        checkbox: val.checkbox || 'on',
-	        weight: val.weight || '',
-	        path: []
-	      };
+	          var rule = {
+	            name: val.name,
+	            rules: {},
+	            checkbox: val.checkbox || 'on',
+	            weight: val.weight || '',
+	            path: []
+	          };
 
-	      if (val.hash) {
-	        rule.hash = val.hash;
-	      }
-
-	      val.rules.forEach(function (i) {
-	        rule.rules[i.name] = {};
-
-	        if (i.condition) {
-	          rule.rules[i.name].checkbox = i.condition;
-	        }
-
-	        if (i.set && _typeof(i.set) === 'object') {
-	          var isTree = false;
-
-	          for (var j in i.set) {
-	            if (i.set.hasOwnProperty(j) && i.set[j] && (_typeof(i.set[j]) === 'object' || i.set[j] === 'select all')) {
-	              isTree = true;
-	            }
+	          if (val.hash) {
+	            rule.hash = val.hash;
 	          }
 
-	          if (isTree) {
-	            rule.rules[i.name].value = {};
+	          val.rules.forEach(function (i) {
+	            rule.rules[i.name] = {};
 
-	            for (var _j in i.set) {
-	              if (i.set.hasOwnProperty(_j)) {
-	                if (i.set[_j] === 'select all') {
-	                  rule.rules[i.name].value[_j] = 'select all';
-	                } else {
-	                  rule.rules[i.name].value[_j] = Object.keys(i.set[_j]);
+	            if (i.condition) {
+	              rule.rules[i.name].checkbox = i.condition;
+	            }
+
+	            if (i.set && _typeof(i.set) === 'object') {
+	              var isTree = false;
+
+	              for (var j in i.set) {
+	                if (i.set.hasOwnProperty(j) && i.set[j] && (_typeof(i.set[j]) === 'object' || i.set[j] === 'select all')) {
+	                  isTree = true;
 	                }
 	              }
+
+	              if (isTree) {
+	                rule.rules[i.name].value = {};
+
+	                for (var _j in i.set) {
+	                  if (i.set.hasOwnProperty(_j)) {
+	                    if (i.set[_j] === 'select all') {
+	                      rule.rules[i.name].value[_j] = 'select all';
+	                    } else {
+	                      rule.rules[i.name].value[_j] = Object.keys(i.set[_j]);
+	                    }
+	                  }
+	                }
+	              } else {
+	                rule.rules[i.name].value = Object.keys(i.set);
+	              }
 	            }
-	          } else {
-	            rule.rules[i.name].value = Object.keys(i.set);
-	          }
-	        }
-	      });
+	          });
 
-	      [].concat(_toConsumableArray(el.querySelectorAll('.js-path'))).forEach(function (e) {
-	        var path = {};
-	        var v = e.value;
+	          [].concat(_toConsumableArray(el.querySelectorAll('.js-path'))).forEach(function (e) {
+	            if (!e.classList.contains('is-deleted')) {
+	              (function () {
+	                var path = {};
+	                var v = e.value;
 
-	        path.name = v.name || '';
-	        path.checkbox = v.checkbox || 'on';
-	        path.direct_linking_checkbox = Number(!!v.direct_linking);
-	        path.weight = v.weight;
-	        path.lander = [];
-	        path.lander_weight = [];
-	        path.offer = [];
-	        path.offer_weight = [];
-	        path.offer_use_url = [];
+	                path.name = v.name || '';
+	                path.checkbox = v.checkbox || 'on';
+	                path.direct_linking_checkbox = Number(!!v.direct_linking);
+	                path.weight = v.weight;
+	                path.lander = [];
+	                path.lander_weight = [];
+	                path.offer = [];
+	                path.offer_weight = [];
+	                path.offer_use_url = [];
 
-	        v.lander.forEach(function (l, index) {
-	          path.lander[index] = l;
-	          path.lander_weight[index] = v.lander_weight[index];
-	        });
+	                v.lander.forEach(function (l, index) {
+	                  path.lander[index] = l;
+	                  path.lander_weight[index] = v.lander_weight[index];
+	                });
 
-	        v.offer.forEach(function (l, index) {
-	          path.offer[index] = l;
-	          path.offer_weight[index] = v.offer_weight[index];
-	          path.offer_use_url[index] = v.offer_url[index] || '';
-	        });
+	                v.offer.forEach(function (l, index) {
+	                  path.offer[index] = l;
+	                  path.offer_weight[index] = v.offer_weight[index];
+	                  path.offer_use_url[index] = v.offer_url[index] || '';
+	                });
 
-	        if (v.hash) {
-	          path.hash = v.hash;
-	        }
+	                if (v.hash) {
+	                  path.hash = v.hash;
+	                }
 
-	        rule.path.push(path);
-	      });
+	                rule.path.push(path);
+	              })();
+	            }
+	          });
 
-	      rules.push(rule);
+	          rules.push(rule);
+	        })();
+	      }
 	    });
 
 	    var data = {
