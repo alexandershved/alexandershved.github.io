@@ -78,7 +78,7 @@ webpackJsonp([0],[
 
 	window._version = '0.5.19';
 
-	var __svg__ = { filename: "/assets/svg/1496258441832.icons.svg" };
+	var __svg__ = { filename: "/assets/svg/1496261237860.icons.svg" };
 	__svg__.filename = __svg__.filename;
 	(0, _svgxhr2.default)(__svg__);
 
@@ -5652,18 +5652,21 @@ webpackJsonp([0],[
 	      firstBtn.triggerEvent('click');
 	    }
 
-	    var segments = stat.querySelector('.js-stat-add-segment').parentNode.querySelectorAll('.js-list');
-	    [].concat(_toConsumableArray(segments)).forEach(function (segment) {
-	      if (segment.querySelector('.js-list-value').textContent.indexOf('variable') === 0) {
-	        segment.setValue();
-	      } else {
-	        [].concat(_toConsumableArray(segment.querySelectorAll('.js-list-item'))).forEach(function (item) {
-	          if (item.textContent.indexOf('variable') === 0) {
-	            item.parentNode.removeChild(item);
-	          }
-	        });
-	      }
-	    });
+	    var segments = stat.querySelector('.js-stat-add-segment');
+
+	    if (segments) {
+	      [].concat(_toConsumableArray(segments.parentNode.querySelectorAll('.js-list'))).forEach(function (segment) {
+	        if (segment.querySelector('.js-list-value').textContent.indexOf('variable') === 0) {
+	          segment.setValue();
+	        } else {
+	          [].concat(_toConsumableArray(segment.querySelectorAll('.js-list-item'))).forEach(function (item) {
+	            if (item.textContent.indexOf('variable') === 0) {
+	              item.parentNode.removeChild(item);
+	            }
+	          });
+	        }
+	      });
+	    }
 	  };
 
 	  var setVariables = function setVariables(values) {
