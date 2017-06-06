@@ -70,7 +70,7 @@ webpackJsonp([0],[
 
 	var _index2 = _interopRequireDefault(_index);
 
-	var _index3 = __webpack_require__(115);
+	var _index3 = __webpack_require__(119);
 
 	var _index4 = _interopRequireDefault(_index3);
 
@@ -78,7 +78,7 @@ webpackJsonp([0],[
 
 	window._version = '0.5.19';
 
-	var __svg__ = { filename: "/assets/svg/1496261237860.icons.svg" };
+	var __svg__ = { filename: "/assets/svg/1496772137020.icons.svg" };
 	__svg__.filename = __svg__.filename;
 	(0, _svgxhr2.default)(__svg__);
 
@@ -4282,7 +4282,7 @@ webpackJsonp([0],[
 	  var segmentScope = [];
 
 	  var segmentsBox = stat.querySelector('.js-stat-segments');
-
+	  var trendsSegmentsBox = stat.querySelector('.js-trends-segments');
 	  var filterControl = stat.querySelector('.js-stat-filter');
 	  var datetime = stat.querySelector('.js-stat-datetime');
 	  var segmentBtns = void 0;
@@ -4916,6 +4916,50 @@ webpackJsonp([0],[
 	          }
 	        });
 	      }
+
+	      if (Array.isArray(result.trends.group) && trendsSegmentsBox) {
+	        trendsSegmentsBox.innerHTML = '';
+	        result.trends.group.forEach(function (seg) {
+	          var ctrl = void 0;
+
+	          if (seg.name) {
+	            if (seg.value) {
+	              ctrl = document.createElement('div');
+	              ctrl.className = 'btn-white is-margin-top js-stat-btn-segment';
+	              ctrl.dataset.value = seg.value;
+	              ctrl.textContent = seg.name;
+	              trendsSegmentsBox.appendChild(ctrl);
+	            } else if (seg.chield && Array.isArray(seg.chield)) {
+	              (function () {
+	                ctrl = document.createElement('div');
+	                ctrl.className = 'list is-btn is-margin-top js-list js-stat-list-segment';
+	                ctrl.innerHTML = '' + '<div class="list__wrap">' + '<div class="list__value js-list-value"></div>' + '<div class="list__dropdown">' + '<div class="list__items js-list-items"></div>' + '</div>' + '</div>';
+	                ctrl.dataset.placeholder = seg.name;
+	                var ctrlItems = ctrl.querySelector('.js-list-items');
+
+	                if (seg.name !== 'Variables') {
+	                  seg.chield.forEach(function (cld) {
+	                    if (cld && (typeof cld === 'undefined' ? 'undefined' : _typeof(cld)) === 'object') {
+	                      if (cld.name && cld.value) {
+	                        var item = document.createElement('div');
+	                        item.className = 'list__item js-list-item';
+	                        item.dataset.value = cld.value;
+	                        item.textContent = cld.name;
+	                        ctrlItems.appendChild(item);
+	                      }
+	                    }
+	                  });
+	                } else {
+	                  ctrl.classList.add('js-stat-list-segment-variables');
+	                  ctrl.style.display = 'none';
+	                }
+	                trendsSegmentsBox.appendChild(ctrl);
+	                (0, _listEvent2.default)(ctrl);
+	              })();
+	            }
+	          }
+	        });
+	      }
 	    }
 
 	    if (result.user && _typeof(result.user) === 'object') {
@@ -4976,6 +5020,7 @@ webpackJsonp([0],[
 	  (0, _table2.default)();
 	  (0, _graph2.default)();
 	  (0, _tableCohort2.default)();
+	  (0, _tableTrends2.default)();
 
 	  statParams = window.might.stat.params;
 	  stat.addEventListener('upadatecreatecontrols', updateCreateControls);
@@ -5030,6 +5075,10 @@ webpackJsonp([0],[
 	var _tableCohort = __webpack_require__(111);
 
 	var _tableCohort2 = _interopRequireDefault(_tableCohort);
+
+	var _tableTrends = __webpack_require__(115);
+
+	var _tableTrends2 = _interopRequireDefault(_tableTrends);
 
 	var _fetchApi = __webpack_require__(27);
 
@@ -5107,9 +5156,18 @@ webpackJsonp([0],[
 	    return (0, _dateformat2.default)(date, 'yyyy-mm-dd');
 	  };
 
+	  var updateLinkParams = function updateLinkParams(queryParams) {
+	    var updateLinks = document.getElementsByClassName('update_link');
+	    for (var i = 0; i < updateLinks.length; i++) {
+	      var tmpLocation = document.createElement('a');
+	      tmpLocation.href = updateLinks[i].getAttribute('href');
+	      updateLinks[i].setAttribute('href', tmpLocation.pathname + '?' + queryParams);
+	    }
+	  };
+
 	  var updateTableParams = function updateTableParams(loc) {
 	    var query = _qs2.default.parse(loc.search.slice(1));
-
+	    updateLinkParams(_qs2.default.stringify(query));
 	    params.length = query.l || 25;
 	    params.page = query.p || 1;
 	    params.order = query.ord || false;
@@ -5144,6 +5202,9 @@ webpackJsonp([0],[
 	    params.segments = query.seg || ['campaign_id'];
 	    params.is_tree = query.hasOwnProperty('it') ? !!parseInt(query.it, 10) : true;
 	    if (!stat.classList.contains('is-cohort')) {
+	      params.show_graph = !!parseInt(query.sg, 10);
+	    }
+	    if (!stat.classList.contains('is-trends')) {
 	      params.show_graph = !!parseInt(query.sg, 10);
 	    }
 	    params.filters_stock = query.fs || [];
@@ -5219,6 +5280,10 @@ webpackJsonp([0],[
 	      query.sg = 1;
 	    }
 
+	    if (!stat.classList.contains('is-trends') && params.show_graph) {
+	      query.sg = 1;
+	    }
+
 	    if (params.filters_stock.length > 0) {
 	      query.fs = params.filters_stock;
 	    }
@@ -5251,9 +5316,12 @@ webpackJsonp([0],[
 	      query.field2 = params.cohort_metric2;
 	    }
 
+	    var queryParams = _qs2.default.stringify(query);
+	    updateLinkParams(queryParams);
+
 	    history.push({
 	      pathname: location.pathname,
-	      search: _qs2.default.stringify(query)
+	      search: queryParams
 	    });
 	  };
 
@@ -5679,12 +5747,18 @@ webpackJsonp([0],[
 	    }
 
 	    var segmentVariablesItems = segmentVariables.querySelector('.js-list-items');
-	    var addSegmentsList = stat.querySelector('.js-stat-add-segment').querySelector('.js-list-items');
+	    var addSegmentsList = stat.querySelector('.js-stat-add-segment');
+
+	    if (addSegmentsList) {
+	      addSegmentsList = addSegmentsList.querySelector('.js-list-items');
+	    }
 
 	    segmentVariables.style.display = '';
 
 	    values.forEach(function (val, index) {
-	      addSegmentsList.innerHTML += '<div class="list__item js-list-item" data-value="p' + (index + 1) + '">variable: ' + val.name + '</div>';
+	      if (addSegmentsList) {
+	        addSegmentsList.innerHTML += '<div class="list__item js-list-item" data-value="p' + (index + 1) + '">variable: ' + val.name + '</div>';
+	      }
 	      segmentVariablesItems.innerHTML += '<div class="list__item js-list-item" data-value="p' + (index + 1) + '">' + val.name + '</div>';
 	    });
 	  };
@@ -5800,7 +5874,7 @@ webpackJsonp([0],[
 
 	var _campaignAdd2 = _interopRequireDefault(_campaignAdd);
 
-	var _landerList = __webpack_require__(95);
+	var _landerList = __webpack_require__(101);
 
 	var _landerList2 = _interopRequireDefault(_landerList);
 
@@ -5808,7 +5882,7 @@ webpackJsonp([0],[
 
 	var _landerAdd2 = _interopRequireDefault(_landerAdd);
 
-	var _offerList = __webpack_require__(97);
+	var _offerList = __webpack_require__(102);
 
 	var _offerList2 = _interopRequireDefault(_offerList);
 
@@ -5816,19 +5890,19 @@ webpackJsonp([0],[
 
 	var _offerAdd2 = _interopRequireDefault(_offerAdd);
 
-	var _trafficSourceList = __webpack_require__(99);
+	var _trafficSourceList = __webpack_require__(103);
 
 	var _trafficSourceList2 = _interopRequireDefault(_trafficSourceList);
 
-	var _trafficSourceAdd = __webpack_require__(101);
+	var _trafficSourceAdd = __webpack_require__(98);
 
 	var _trafficSourceAdd2 = _interopRequireDefault(_trafficSourceAdd);
 
-	var _affiliateNetworkList = __webpack_require__(102);
+	var _affiliateNetworkList = __webpack_require__(104);
 
 	var _affiliateNetworkList2 = _interopRequireDefault(_affiliateNetworkList);
 
-	var _affiliateNetworkAdd = __webpack_require__(104);
+	var _affiliateNetworkAdd = __webpack_require__(100);
 
 	var _affiliateNetworkAdd2 = _interopRequireDefault(_affiliateNetworkAdd);
 
@@ -5920,7 +5994,7 @@ webpackJsonp([0],[
 	        }
 
 	        table.appendChild(tr);
-	        popupBody.addEventListener('click', _forCampaignEdit2.default);
+	        popupBody.addEventListener('click', _line2.default);
 	      });
 	    }).catch(function (err) {
 	      popupBody.innerHTML = '<div class="popup__message">' + err + '</div>';
@@ -5937,9 +6011,9 @@ webpackJsonp([0],[
 
 	var _createPopup2 = _interopRequireDefault(_createPopup);
 
-	var _forCampaignEdit = __webpack_require__(82);
+	var _line = __webpack_require__(82);
 
-	var _forCampaignEdit2 = _interopRequireDefault(_forCampaignEdit);
+	var _line2 = _interopRequireDefault(_line);
 
 	var _fetchApi = __webpack_require__(27);
 
@@ -6011,41 +6085,108 @@ webpackJsonp([0],[
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.getPopupElements = getPopupElements;
 
 	exports.default = function (event) {
 	  var target = event.target;
-	  var copyBtn = target.closest('.js-campaign-copy');
-	  var editBtn = target.closest('.js-campaign-edit');
-	  var updateCostBtn = target.closest('.js-campaign-update-cost');
-	  var linksBtn = target.closest('.js-campaign-links');
+	  var elements = getPopupElements();
+	  for (var j in elements) {
+	    if (elements[j][0]) {
+	      var copyBtn = false;
+	      var editBtn = false;
+	      var updateCostBtn = false;
+	      var linksBtn = false;
+	      var elem = elements[j][0];
 
-	  if (copyBtn || editBtn || linksBtn || updateCostBtn) {
-	    var row = target.closest('.js-campaign-row');
-	    var id = row.dataset.id;
-
-	    if (copyBtn) {
-	      if (id) {
-	        openEdit(id);
+	      if (elements[j][2].indexOf(1) >= 0) {
+	        copyBtn = target.closest('.js-' + elements[j][1] + '-copy');
 	      }
-	    }
 
-	    if (editBtn) {
-	      if (id) {
-	        openEdit(id, true);
+	      if (elements[j][2].indexOf(2) >= 0) {
+	        editBtn = target.closest('.js-' + elements[j][1] + '-edit');
 	      }
-	    }
 
-	    if (updateCostBtn) {
-	      if (id) {
-	        var name = row.querySelector('.js-campaign-name').textContent;
-	        (0, _campaignCosts2.default)(id, name);
+	      if (elements[j][2].indexOf(3) >= 0) {
+	        updateCostBtn = target.closest('.js-' + elements[j][1] + '-update-cost');
 	      }
-	    }
 
-	    if (linksBtn) {
-	      if (id) {
-	        var _name = row.querySelector('.js-campaign-name').textContent;
-	        (0, _campaignLinks2.default)(id, _name);
+	      if (elements[j][2].indexOf(4) >= 0) {
+	        linksBtn = target.closest('.js-' + elements[j][1] + '-links');
+	      }
+
+	      if (copyBtn || editBtn || linksBtn || updateCostBtn) {
+	        var row = target.closest('.js-' + elements[j][1] + '-row');
+	        var id = row.dataset.id;
+	        if (copyBtn) {
+	          if (id) {
+	            switch (elem) {
+	              case 'campaign_id':
+	                openCampaignEdit(id);
+	                break;
+	              case 'lander':
+	                openLanderEdit(id);
+	                break;
+	              case 'offer':
+	                openOfferEdit(id);
+	                break;
+	              case 'traffic_source':
+	                openTrafficEdit(id);
+	                break;
+	              case 'affiliate_network':
+	                openAffiliateEdit(id);
+	                break;
+	              default:
+	                break;
+	            }
+	          }
+	        }
+	        if (editBtn) {
+	          if (id) {
+	            switch (elements[j][0]) {
+	              case 'campaign_id':
+	                openCampaignEdit(id, true);
+	                break;
+	              case 'lander':
+	                openLanderEdit(id, true);
+	                break;
+	              case 'offer':
+	                openOfferEdit(id, true);
+	                break;
+	              case 'traffic_source':
+	                openTrafficEdit(id, true);
+	                break;
+	              case 'affiliate_network':
+	                openAffiliateEdit(id, true);
+	                break;
+	              default:
+	                break;
+	            }
+	          }
+	        }
+	        if (updateCostBtn) {
+	          if (id) {
+	            var name = row.querySelector('.js-' + elements[j][1] + '-name').textContent;
+	            switch (elements[j][0]) {
+	              case 'campaign_id':
+	                (0, _campaignCosts2.default)(id, name);
+	                break;
+	              default:
+	                break;
+	            }
+	          }
+	        }
+	        if (linksBtn) {
+	          if (id) {
+	            var _name = row.querySelector('.js-' + elements[j][1] + '-name').textContent;
+	            switch (elements[j][0]) {
+	              case 'campaign_id':
+	                (0, _campaignLinks2.default)(id, _name);
+	                break;
+	              default:
+	                break;
+	            }
+	          }
+	        }
 	      }
 	    }
 	  }
@@ -6063,11 +6204,27 @@ webpackJsonp([0],[
 
 	var _campaignLinks2 = _interopRequireDefault(_campaignLinks);
 
+	var _landerEdit = __webpack_require__(95);
+
+	var _landerEdit2 = _interopRequireDefault(_landerEdit);
+
+	var _offerEdit = __webpack_require__(96);
+
+	var _offerEdit2 = _interopRequireDefault(_offerEdit);
+
+	var _trafficSourceEdit = __webpack_require__(97);
+
+	var _trafficSourceEdit2 = _interopRequireDefault(_trafficSourceEdit);
+
+	var _affiliateNetworkEdit = __webpack_require__(99);
+
+	var _affiliateNetworkEdit2 = _interopRequireDefault(_affiliateNetworkEdit);
+
 	var _fetchApi = __webpack_require__(27);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function openEdit(id, hasEdit) {
+	function openCampaignEdit(id, hasEdit) {
 	  (0, _fetchApi.fetchData)('/campaign/get', { id: id }).then(function (res) {
 	    if (document.querySelector('.js-popup')) {
 	      document.querySelector('.js-popup').close();
@@ -6076,6 +6233,54 @@ webpackJsonp([0],[
 	  }).catch(function (err) {
 	    throw new Error(err);
 	  });
+	}
+
+	function openLanderEdit(id, hasEdit) {
+	  (0, _fetchApi.fetchData)('/lander/get', { id: id }).then(function (res) {
+	    if (document.querySelector('.js-popup')) {
+	      document.querySelector('.js-popup').close();
+	    }
+	    (0, _landerEdit2.default)(res.data, hasEdit || false);
+	  }).catch(function (err) {
+	    throw new Error(err);
+	  });
+	}
+
+	function openOfferEdit(id, hasEdit) {
+	  (0, _fetchApi.fetchData)('/offer/get', { id: id }).then(function (res) {
+	    if (document.querySelector('.js-popup')) {
+	      document.querySelector('.js-popup').close();
+	    }
+	    (0, _offerEdit2.default)(res.data, hasEdit || false);
+	  }).catch(function (err) {
+	    throw new Error(err);
+	  });
+	}
+
+	function openTrafficEdit(id, hasEdit) {
+	  (0, _fetchApi.fetchData)('/traffic/sources/get', { id: id }).then(function (res) {
+	    if (document.querySelector('.js-popup')) {
+	      document.querySelector('.js-popup').close();
+	    }
+	    (0, _trafficSourceEdit2.default)(res.data, hasEdit || false);
+	  }).catch(function (err) {
+	    throw new Error(err);
+	  });
+	}
+
+	function openAffiliateEdit(id, hasEdit) {
+	  (0, _fetchApi.fetchData)('/affiliate_network/get', { id: id }).then(function (res) {
+	    if (document.querySelector('.js-popup')) {
+	      document.querySelector('.js-popup').close();
+	    }
+	    (0, _affiliateNetworkEdit2.default)(res.data, hasEdit || false);
+	  }).catch(function (err) {
+	    throw new Error(err);
+	  });
+	}
+
+	function getPopupElements() {
+	  return [['campaign_id', 'campaign', [1, 2, 3, 4]], ['lander', 'lander', [1, 2], 'openLanderEdit'], ['offer', 'offer', [1, 2]], ['traffic_source', 'traffic_source', [1, 2]], ['affiliate_network', 'affiliate_network', [1, 2]]];
 	}
 
 /***/ },
@@ -6108,6 +6313,8 @@ webpackJsonp([0],[
 	  var formCostUsd = popupBody.querySelector('.js-form-cost-usd');
 	  var formPostbackUrl = popupBody.querySelector('.js-form-postback-url');
 	  var formReirectType = popupBody.querySelector('.js-form-directtype');
+	  var formBetaDistributionOn = popupBody.querySelector('.js-form-beta-distribution-on');
+	  var formBetaDistributionOff = popupBody.querySelector('.js-form-beta-distribution-off');
 
 	  formName.value = data.name || '';
 
@@ -6166,6 +6373,21 @@ webpackJsonp([0],[
 	    case 'cpc':
 	    default:
 	      formCostCPC.classList.add('is-select');
+	      break;
+	  }
+
+	  switch (data.beta_distribution) {
+	    case '1':
+	      formBetaDistributionOn.classList.add('is-select');
+	      formBetaDistributionOff.classList.remove('is-select');
+	      break;
+	    case '0':
+	      formBetaDistributionOff.classList.add('is-select');
+	      formBetaDistributionOn.classList.remove('is-select');
+	      break;
+	    default:
+	      formBetaDistributionOff.classList.add('is-select');
+	      formBetaDistributionOn.classList.remove('is-select');
 	      break;
 	  }
 
@@ -6270,7 +6492,7 @@ webpackJsonp([0],[
 
 	  popup.querySelector('.js-popup-wrap').style.width = '1000px';
 
-	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for campaign">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Domain:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-domain" style="display: block; margin: 0 0 10px;" data-placeholder="Select domain">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Traffic Source:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-traffic-source" style="display: block; margin: 0 0 10px;" data-placeholder="Select traffic source">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Payout:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="radiobutton js-form-cost-donottrack">Do not track</div>\n        <div class="radiobutton js-form-cost-cpc is-select">CPC</div>\n        <div class="radiobutton js-form-cost-cpa" style="margin-right: 80px;">CPA</div>\n        <div class="js-form-cost" style="display: inline-block;">\n          <div class="popup__line-lbl"><span class="js-form-cost-label">Cost click:</span><div class="info"></div></div>\n          <div class="input" style="display: inline-block; width: 90px; margin-left: 10px; margin-right: 10px;">\n            <input class="js-form-cost-value" type="text" placeholder="0">\n            <span><span>\n          </div>\n          <div class="popup__currency js-form-cost-eur">\n            <i class="fa fa-euro"></i>\n          </div>\n          <div class="popup__currency js-form-cost-rub">\n            <i class="fa fa-ruble"></i>\n          </div>\n          <div class="popup__currency js-form-cost-usd is-select">\n            <i class="fa fa-dollar"></i>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Postback URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="js-form-input-parent">\n          <div class="input is-with-plus">\n            <input class="js-form-postback-url" type="text" placeholder="Postback URL">\n            <div class="input__plus js-form-postback-url-add"></div>\n            <span><span>\n          </div>\n          <div class="tags js-form-postback-tags" style="display: none;"></div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Redirect mode:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-directtype" style="display: block; margin: 0 0 10px;" data-placeholder="Select redirect mode">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items">\n                <div class="list__item js-list-item" data-value="301">301</div>\n                <div class="list__item js-list-item" data-value="302">302</div>\n                <div class="list__item js-list-item" data-value="js">js</div>\n                <div class="list__item js-list-item" data-value="double_js">double_js</div>\n                <div class="list__item js-list-item" data-value="meta_refresh">meta_refresh</div>\n                <div class="list__item js-list-item" data-value="double_meta_refresh">double_meta_refresh</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="cc js-create-campaign"></div>\n\n    <div class="cc">\n      <div class="popup__line">\n        <div class="popup__line-label">\n          <span>Campaign URL:</span>\n          <div class="info"></div>\n        </div>\n        <div class="popup__line-body">\n          <div class="input">\n            <input class="js-form-url" type="text" readonly="true">\n          </div>\n        </div>\n        <div class="popup__line-btn">\n          <div class="btn-copy js-form-url-copy">Clipboard</div>\n        </div>\n      </div>\n    </div>';
+	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for campaign">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Domain:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-domain" style="display: block; margin: 0 0 10px;" data-placeholder="Select domain">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Traffic Source:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-traffic-source" style="display: block; margin: 0 0 10px;" data-placeholder="Select traffic source">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Payout:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="radiobutton js-form-cost-donottrack">Do not track</div>\n        <div class="radiobutton js-form-cost-cpc is-select">CPC</div>\n        <div class="radiobutton js-form-cost-cpa" style="margin-right: 80px;">CPA</div>\n        <div class="js-form-cost" style="display: inline-block;">\n          <div class="popup__line-lbl"><span class="js-form-cost-label">Cost click:</span><div class="info"></div></div>\n          <div class="input" style="display: inline-block; width: 90px; margin-left: 10px; margin-right: 10px;">\n            <input class="js-form-cost-value" type="text" placeholder="0">\n            <span><span>\n          </div>\n          <div class="popup__currency js-form-cost-eur">\n            <i class="fa fa-euro"></i>\n          </div>\n          <div class="popup__currency js-form-cost-rub">\n            <i class="fa fa-ruble"></i>\n          </div>\n          <div class="popup__currency js-form-cost-usd is-select">\n            <i class="fa fa-dollar"></i>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Postback URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="js-form-input-parent">\n          <div class="input is-with-plus">\n            <input class="js-form-postback-url" type="text" placeholder="Postback URL">\n            <div class="input__plus js-form-postback-url-add"></div>\n            <span><span>\n          </div>\n          <div class="tags js-form-postback-tags" style="display: none;"></div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Redirect mode:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-directtype" style="display: block; margin: 0 0 10px;" data-placeholder="Select redirect mode">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items">\n                <div class="list__item js-list-item" data-value="301">301</div>\n                <div class="list__item js-list-item" data-value="302">302</div>\n                <div class="list__item js-list-item" data-value="js">js</div>\n                <div class="list__item js-list-item" data-value="double_js">double_js</div>\n                <div class="list__item js-list-item" data-value="meta_refresh">meta_refresh</div>\n                <div class="list__item js-list-item" data-value="double_meta_refresh">double_meta_refresh</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Auto optimization :</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n\t\t    <div class="radiobutton js-form-beta-distribution-on">On</div>\n\t      <div class="radiobutton js-form-beta-distribution-off is-select">Off</div>\n      </div>\n    </div>\n\n    <div class="cc js-create-campaign"></div>\n\n    <div class="cc">\n      <div class="popup__line">\n        <div class="popup__line-label">\n          <span>Campaign URL:</span>\n          <div class="info"></div>\n        </div>\n        <div class="popup__line-body">\n          <div class="input">\n            <input class="js-form-url" type="text" readonly="true">\n          </div>\n        </div>\n        <div class="popup__line-btn">\n          <div class="btn-copy js-form-url-copy">Clipboard</div>\n        </div>\n      </div>\n    </div>';
 
 	  var formName = popupBody.querySelector('.js-form-name');
 	  var formDomain = popupBody.querySelector('.js-form-domain');
@@ -6291,6 +6513,8 @@ webpackJsonp([0],[
 	  var formPostbackUrlAdd = popupBody.querySelector('.js-form-postback-url-add');
 	  var formReirectType = popupBody.querySelector('.js-form-directtype');
 	  var createCampaign = popupBody.querySelector('.js-create-campaign');
+	  var formBetaDistributionOn = popupBody.querySelector('.js-form-beta-distribution-on');
+	  var formBetaDistributionOff = popupBody.querySelector('.js-form-beta-distribution-off');
 
 	  formUrlCopy.addEventListener('click', function () {
 	    if (formUrl.value) {
@@ -6351,6 +6575,16 @@ webpackJsonp([0],[
 	      throw new Error(err);
 	    });
 	  })();
+
+	  formBetaDistributionOn.addEventListener('click', function () {
+	    formBetaDistributionOn.classList.add('is-select');
+	    formBetaDistributionOff.classList.remove('is-select');
+	  });
+
+	  formBetaDistributionOff.addEventListener('click', function () {
+	    formBetaDistributionOff.classList.add('is-select');
+	    formBetaDistributionOn.classList.remove('is-select');
+	  });
 
 	  formCostDoNotTrack.addEventListener('click', function () {
 	    formCostDoNotTrack.classList.add('is-select');
@@ -6590,6 +6824,12 @@ webpackJsonp([0],[
 	      currency = 'RUB';
 	    }
 
+	    var betaDistribution = 0;
+
+	    if (formBetaDistributionOn.classList.contains('is-select')) {
+	      betaDistribution = '1';
+	    }
+
 	    var doublePostback = void 0;
 
 	    if (formPostbackUrlAll.length > 1) {
@@ -6621,10 +6861,12 @@ webpackJsonp([0],[
 	          path.offer_weight = [];
 	          path.offer_use_url = [];
 
-	          val.lander.forEach(function (l, index) {
-	            path.lander[index] = l;
-	            path.lander_weight[index] = val.lander_weight[index];
-	          });
+	          if (!path.direct_linking_checkbox) {
+	            val.lander.forEach(function (l, index) {
+	              path.lander[index] = l;
+	              path.lander_weight[index] = val.lander_weight[index];
+	            });
+	          }
 
 	          val.offer.forEach(function (l, index) {
 	            path.offer[index] = l;
@@ -6710,10 +6952,12 @@ webpackJsonp([0],[
 	                path.offer_weight = [];
 	                path.offer_use_url = [];
 
-	                v.lander.forEach(function (l, index) {
-	                  path.lander[index] = l;
-	                  path.lander_weight[index] = v.lander_weight[index];
-	                });
+	                if (!path.direct_linking_checkbox) {
+	                  v.lander.forEach(function (l, index) {
+	                    path.lander[index] = l;
+	                    path.lander_weight[index] = v.lander_weight[index];
+	                  });
+	                }
 
 	                v.offer.forEach(function (l, index) {
 	                  path.offer[index] = l;
@@ -6747,7 +6991,8 @@ webpackJsonp([0],[
 	      double_postback: doublePostback || '',
 	      redirect_type: redirectType || '',
 	      default_path: defaultPath || [],
-	      rule: rules || []
+	      rule: rules || [],
+	      beta_distribution: betaDistribution
 	    };
 
 	    if (costMode !== 'not_track') {
@@ -6843,7 +7088,7 @@ webpackJsonp([0],[
 
 	  pathBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Redirect mode:</div></div>\n    </div>\n\n    <div class="cc__line">\n      <div class="cc__col">\n        <div class="input">\n          <input class="js-path-redirect-mode" type="text" disabled="true">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-164 cc__col-pad">\n        <div class="checkbox js-checkbox js-path-direct-linking">Direct linking</div>\n      </div>\n    </div>';
 
-	  pathBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Lander:</div></div>\n      <div class="cc__col cc__col-120 cc__col-pad"><div class="cc__label js-path-lander-label-weight"></div></div>\n      <div class="cc__col cc__col-50 cc__col-pad"></div>\n    </div>\n\n    <div class="cc__line js-path-lander-add">\n      <div class="cc__col">\n        <div class="list is-add js-list" data-placeholder="+ Add Lander">\n          <div class="list__wrap">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown">\n              <div class="list__search">\n                <i class="fa fa-search"></i>\n                <input class="js-list-search" type="text">\n              </div>\n              <div class="list__items js-list-items"></div>\n              <div class="list__control">\n                <div class="list__control-item">\n                  <span class="js-path-create-lander">Create new lander</span>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-120 cc__col-pad cc__hidden js-path-hidden">\n        <div class="input">\n          <input class="js-path-lander-weight" type="text" placeholder="0" value="1">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-50 cc__col-pad cc__hidden js-path-hidden">\n        <div class="cc__clear js-path-clear"></div>\n      </div>\n    </div>';
+	  pathBox.innerHTML += '\n    <div class="cc__line js-path-lander-line">\n      <div class="cc__col"><div class="cc__label">Lander:</div></div>\n      <div class="cc__col cc__col-120 cc__col-pad"><div class="cc__label js-path-lander-label-weight"></div></div>\n      <div class="cc__col cc__col-50 cc__col-pad"></div>\n    </div>\n\n    <div class="cc__line js-path-lander-line js-path-lander-add">\n      <div class="cc__col">\n        <div class="list is-add js-list" data-placeholder="+ Add Lander">\n          <div class="list__wrap">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown">\n              <div class="list__search">\n                <i class="fa fa-search"></i>\n                <input class="js-list-search" type="text">\n              </div>\n              <div class="list__items js-list-items"></div>\n              <div class="list__control">\n                <div class="list__control-item">\n                  <span class="js-path-create-lander">Create new lander</span>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-120 cc__col-pad cc__hidden js-path-hidden">\n        <div class="input">\n          <input class="js-path-lander-weight" type="text" placeholder="0" value="1">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-50 cc__col-pad cc__hidden js-path-hidden">\n        <div class="cc__clear js-path-clear"></div>\n      </div>\n    </div>';
 
 	  pathBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Offer:</div></div>\n      <div class="cc__col cc__col-120 cc__col-pad"><div class="cc__label js-path-offer-label-weight"></div></div>\n      <div class="cc__col cc__col-50 cc__col-pad"></div>\n    </div>\n\n    <div class="cc__line js-path-offer-add">\n      <div class="cc__col">\n        <div class="list is-add js-list" data-placeholder="+ Add Offer">\n          <div class="list__wrap">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown">\n              <div class="list__search">\n                <i class="fa fa-search"></i>\n                <input class="js-list-search" type="text">\n              </div>\n              <div class="list__items js-list-items"></div>\n              <div class="list__control">\n                <div class="list__control-item">\n                  <span class="js-path-use-url">Use URL</span>\n                </div>\n                <div class="list__control-item">\n                  <span class="js-path-create-offer">Create new offer</span>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-120 cc__col-pad cc__hidden js-path-hidden">\n        <div class="input">\n          <input class="js-path-offer-weight" type="text" placeholder="0" value="1">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-50 cc__col-pad cc__hidden js-path-hidden">\n        <div class="cc__clear js-path-clear"></div>\n      </div>\n    </div>';
 
@@ -7004,6 +7249,13 @@ webpackJsonp([0],[
 
 	    if (path.value.direct_linking) {
 	      pathDirectLinking.classList.add('is-select');
+	      [].concat(_toConsumableArray(pathBox.querySelectorAll('.js-path-lander-line'))).forEach(function (el) {
+	        el.style.display = 'none';
+	      });
+	    } else {
+	      [].concat(_toConsumableArray(pathBox.querySelectorAll('.js-path-lander-line'))).forEach(function (el) {
+	        el.style.display = '';
+	      });
 	    }
 
 	    path.value.offer.forEach(function (value, index) {
@@ -7178,6 +7430,10 @@ webpackJsonp([0],[
 	    pathStatus.classList.remove('is-stoped');
 	    pathDirectLinking.classList.remove('is-select');
 
+	    [].concat(_toConsumableArray(pathBox.querySelectorAll('.js-path-lander-line'))).forEach(function (el) {
+	      el.style.display = '';
+	    });
+
 	    ['lander', 'offer'].forEach(function (type) {
 	      [].concat(_toConsumableArray(pathBox.querySelectorAll('.js-path-' + type))).forEach(function (wrap) {
 	        wrap.parentNode.removeChild(wrap);
@@ -7270,9 +7526,19 @@ webpackJsonp([0],[
 	  });
 
 	  pathDirectLinking.addEventListener('change', function () {
+	    var isSelect = pathDirectLinking.classList.contains('is-select');
+
 	    updatePath({
 	      field: 'direct_linking',
-	      value: pathDirectLinking.classList.contains('is-select')
+	      value: isSelect
+	    });
+
+	    [].concat(_toConsumableArray(pathBox.querySelectorAll('.js-path-lander-line'))).forEach(function (el) {
+	      if (isSelect) {
+	        el.style.display = 'none';
+	      } else {
+	        el.style.display = '';
+	      }
 	    });
 	  });
 
@@ -7947,7 +8213,7 @@ webpackJsonp([0],[
 	  var pathBox = box.querySelector('.js-path-box');
 	  var ruleBox = box.querySelector('.js-rule-box');
 
-	  ruleBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Name:</div></div>\n      <div class="cc__col cc__col-120 cc__col-pad"><div class="cc__label">Weight:</div></div>\n    </div>\n\n    <div class="cc__line">\n      <div class="cc__col">\n        <div class="input">\n          <input class="js-rule-name" type="text" placeholder="Rule name">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-50 cc__col-pad">\n        <div class="cc__status js-rule-status"></div>\n      </div>\n    </div>\n\n    <div class="cc__line js-rule-line-add">\n      <div class="list is-add js-list" data-placeholder="+ Add Rule">\n        <div class="list__wrap">\n          <div class="list__value js-list-value"></div>\n          <div class="list__dropdown">\n            <div class="list__items js-list-items"></div>\n          </div>\n        </div>\n      </div>\n    </div>';
+	  ruleBox.innerHTML += '\n    <div class="cc__line">\n      <div class="cc__col"><div class="cc__label">Name:</div></div>\n    </div>\n\n    <div class="cc__line">\n      <div class="cc__col">\n        <div class="input">\n          <input class="js-rule-name" type="text" placeholder="Rule name">\n          <span><span>\n        </div>\n      </div>\n\n      <div class="cc__col cc__col-50 cc__col-pad">\n        <div class="cc__status js-rule-status"></div>\n      </div>\n    </div>\n\n    <div class="cc__line js-rule-line-add">\n      <div class="list is-add js-list" data-placeholder="+ Add Rule">\n        <div class="list__wrap">\n          <div class="list__value js-list-value"></div>\n          <div class="list__dropdown">\n            <div class="list__items js-list-items"></div>\n          </div>\n        </div>\n      </div>\n    </div>';
 
 	  var allRules = box.querySelector('.js-rules');
 
@@ -8395,6 +8661,34 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 	var __RULES__ = {
+	  device_type: {
+	    name: 'Device type',
+	    childs: {
+	      type: 'line',
+	      data: ['desktop', 'smartphone', 'feature phone', 'tablet', 'phablet', 'tv', 'smart display']
+	    },
+	    conditions: [{
+	      name: 'Is any of',
+	      slug: 'on'
+	    }, {
+	      name: 'Is not any of',
+	      slug: 'off'
+	    }]
+	  },
+	  os: {
+	    name: 'Operating system',
+	    childs: {
+	      type: 'line',
+	      data: ['AIX', 'Android', 'AmigaOS', 'Apple TV', 'Arch Linux', 'BackTrack', 'Bada', 'BeOS', 'BlackBerry OS', 'BlackBerry Tablet OS', 'Brew', 'CentOS', 'Chrome OS', 'CyanogenMod', 'Debian', 'DragonFly', 'Fedora', 'Firefox OS', 'FreeBSD', 'Gentoo', 'Google TV', 'HP-UX', 'Haiku OS', 'IRIX', 'Inferno', 'Knoppix', 'Kubuntu', 'GNU/Linux', 'Lubuntu', 'VectorLinux', 'Mac', 'Mandriva', 'MeeGo', 'MocorDroid', 'Mint', 'MildWild', 'MorphOS', 'NetBSD', 'Nintendo', 'Nintendo Mobile', 'OS/2', 'OSF1', 'OpenBSD', 'PlayStation Portable', 'PlayStation', 'Red Hat', 'RISC OS', 'RazoDroiD', 'Sabayon', 'SUSE', 'Sailfish OS', 'Slackware', 'Solaris', 'Syllable', 'Symbian', 'Symbian OS', 'Symbian OS Series 40', 'Symbian OS Series 60', 'Symbian^3', 'Tizen', 'Ubuntu', 'WebTV', 'Windows', 'Windows CE', 'Windows Mobile', 'Windows Phone', 'Windows RT', 'Xbox', 'Xubuntu', 'YunOs', 'iOS', 'palmOS', 'webOS']
+	    },
+	    conditions: [{
+	      name: 'Is any of',
+	      slug: 'on'
+	    }, {
+	      name: 'Is not any of',
+	      slug: 'off'
+	    }]
+	  },
 	  brand_and_model: {
 	    name: 'Brand and Model',
 	    conditions: [{
@@ -8437,10 +8731,24 @@ webpackJsonp([0],[
 	    },
 	    conditions: [{
 	      name: 'Is any of',
-	      slug: 'is_any_of'
+	      slug: 'on'
 	    }, {
 	      name: 'Is not any of',
-	      slug: 'is_not_any_of'
+	      slug: 'off'
+	    }]
+	  },
+	  country: {
+	    name: 'Country',
+	    childs: {
+	      type: 'line',
+	      data: [{ value: 'A1', name: 'Anonymous Proxy' }, { value: 'A2', name: 'Satellite Provider' }, { value: 'O1', name: 'Other Country' }, { value: 'AD', name: 'Andorra' }, { value: 'AE', name: 'United Arab Emirates' }, { value: 'AF', name: 'Afghanistan' }, { value: 'AG', name: 'Antigua and Barbuda' }, { value: 'AI', name: 'Anguilla' }, { value: 'AL', name: 'Albania' }, { value: 'AM', name: 'Armenia' }, { value: 'AO', name: 'Angola' }, { value: 'AP', name: 'Asia/Pacific Region' }, { value: 'AQ', name: 'Antarctica' }, { value: 'AR', name: 'Argentina' }, { value: 'AS', name: 'American Samoa' }, { value: 'AT', name: 'Austria' }, { value: 'AU', name: 'Australia' }, { value: 'AW', name: 'Aruba' }, { value: 'AX', name: 'Aland Islands' }, { value: 'AZ', name: 'Azerbaijan' }, { value: 'BA', name: 'Bosnia and Herzegovina' }, { value: 'BB', name: 'Barbados' }, { value: 'BD', name: 'Bangladesh' }, { value: 'BE', name: 'Belgium' }, { value: 'BF', name: 'Burkina Faso' }, { value: 'BG', name: 'Bulgaria' }, { value: 'BH', name: 'Bahrain' }, { value: 'BI', name: 'Burundi' }, { value: 'BJ', name: 'Benin' }, { value: 'BL', name: 'Saint Bartelemey' }, { value: 'BM', name: 'Bermuda' }, { value: 'BN', name: 'Brunei Darussalam' }, { value: 'BO', name: 'Bolivia' }, { value: 'BQ', name: 'Bonaire, Saint Eustatius and Saba' }, { value: 'BR', name: 'Brazil' }, { value: 'BS', name: 'Bahamas' }, { value: 'BT', name: 'Bhutan' }, { value: 'BV', name: 'Bouvet Island' }, { value: 'BW', name: 'Botswana' }, { value: 'BY', name: 'Belarus' }, { value: 'BZ', name: 'Belize' }, { value: 'CA', name: 'Canada' }, { value: 'CC', name: 'Cocos (Keeling) Islands' }, { value: 'CD', name: 'Congo, The Democratic Republic of the' }, { value: 'CF', name: 'Central African Republic' }, { value: 'CG', name: 'Congo' }, { value: 'CH', name: 'Switzerland' }, { value: 'CI', name: 'Cote d\'Ivoire' }, { value: 'CK', name: 'Cook Islands' }, { value: 'CL', name: 'Chile' }, { value: 'CM', name: 'Cameroon' }, { value: 'CN', name: 'China' }, { value: 'CO', name: 'Colombia' }, { value: 'CR', name: 'Costa Rica' }, { value: 'CU', name: 'Cuba' }, { value: 'CV', name: 'Cape Verde' }, { value: 'CW', name: 'Curacao' }, { value: 'CX', name: 'Christmas Island' }, { value: 'CY', name: 'Cyprus' }, { value: 'CZ', name: 'Czech Republic' }, { value: 'DE', name: 'Germany' }, { value: 'DJ', name: 'Djibouti' }, { value: 'DK', name: 'Denmark' }, { value: 'DM', name: 'Dominica' }, { value: 'DO', name: 'Dominican Republic' }, { value: 'DZ', name: 'Algeria' }, { value: 'EC', name: 'Ecuador' }, { value: 'EE', name: 'Estonia' }, { value: 'EG', name: 'Egypt' }, { value: 'EH', name: 'Western Sahara' }, { value: 'ER', name: 'Eritrea' }, { value: 'ES', name: 'Spain' }, { value: 'ET', name: 'Ethiopia' }, { value: 'EU', name: 'Europe' }, { value: 'FI', name: 'Finland' }, { value: 'FJ', name: 'Fiji' }, { value: 'FK', name: 'Falkland Islands (Malvinas)' }, { value: 'FM', name: 'Micronesia, Federated States of' }, { value: 'FO', name: 'Faroe Islands' }, { value: 'FR', name: 'France' }, { value: 'GA', name: 'Gabon' }, { value: 'GB', name: 'United Kingdom' }, { value: 'GD', name: 'Grenada' }, { value: 'GE', name: 'Georgia' }, { value: 'GF', name: 'French Guiana' }, { value: 'GG', name: 'Guernsey' }, { value: 'GH', name: 'Ghana' }, { value: 'GI', name: 'Gibraltar' }, { value: 'GL', name: 'Greenland' }, { value: 'GM', name: 'Gambia' }, { value: 'GN', name: 'Guinea' }, { value: 'GP', name: 'Guadeloupe' }, { value: 'GQ', name: 'Equatorial Guinea' }, { value: 'GR', name: 'Greece' }, { value: 'GS', name: 'South Georgia and the South Sandwich Islands' }, { value: 'GT', name: 'Guatemala' }, { value: 'GU', name: 'Guam' }, { value: 'GW', name: 'Guinea-Bissau' }, { value: 'GY', name: 'Guyana' }, { value: 'HK', name: 'Hong Kong' }, { value: 'HM', name: 'Heard Island and McDonald Islands' }, { value: 'HN', name: 'Honduras' }, { value: 'HR', name: 'Croatia' }, { value: 'HT', name: 'Haiti' }, { value: 'HU', name: 'Hungary' }, { value: 'ID', name: 'Indonesia' }, { value: 'IE', name: 'Ireland' }, { value: 'IL', name: 'Israel' }, { value: 'IM', name: 'Isle of Man' }, { value: 'IN', name: 'India' }, { value: 'IO', name: 'British Indian Ocean Territory' }, { value: 'IQ', name: 'Iraq' }, { value: 'IR', name: 'Iran, Islamic Republic of' }, { value: 'IS', name: 'Iceland' }, { value: 'IT', name: 'Italy' }, { value: 'JE', name: 'Jersey' }, { value: 'JM', name: 'Jamaica' }, { value: 'JO', name: 'Jordan' }, { value: 'JP', name: 'Japan' }, { value: 'KE', name: 'Kenya' }, { value: 'KG', name: 'Kyrgyzstan' }, { value: 'KH', name: 'Cambodia' }, { value: 'KI', name: 'Kiribati' }, { value: 'KM', name: 'Comoros' }, { value: 'KN', name: 'Saint Kitts and Nevis' }, { value: 'KP', name: 'Korea, Democratic People\'s Republic of' }, { value: 'KR', name: 'Korea, Republic of' }, { value: 'KW', name: 'Kuwait' }, { value: 'KY', name: 'Cayman Islands' }, { value: 'KZ', name: 'Kazakhstan' }, { value: 'LA', name: 'Lao People\'s Democratic Republic' }, { value: 'LB', name: 'Lebanon' }, { value: 'LC', name: 'Saint Lucia' }, { value: 'LI', name: 'Liechtenstein' }, { value: 'LK', name: 'Sri Lanka' }, { value: 'LR', name: 'Liberia' }, { value: 'LS', name: 'Lesotho' }, { value: 'LT', name: 'Lithuania' }, { value: 'LU', name: 'Luxembourg' }, { value: 'LV', name: 'Latvia' }, { value: 'LY', name: 'Libyan Arab Jamahiriya' }, { value: 'MA', name: 'Morocco' }, { value: 'MC', name: 'Monaco' }, { value: 'MD', name: 'Moldova, Republic of' }, { value: 'ME', name: 'Montenegro' }, { value: 'MF', name: 'Saint Martin' }, { value: 'MG', name: 'Madagascar' }, { value: 'MH', name: 'Marshall Islands' }, { value: 'MK', name: 'Macedonia' }, { value: 'ML', name: 'Mali' }, { value: 'MM', name: 'Myanmar' }, { value: 'MN', name: 'Mongolia' }, { value: 'MO', name: 'Macao' }, { value: 'MP', name: 'Northern Mariana Islands' }, { value: 'MQ', name: 'Martinique' }, { value: 'MR', name: 'Mauritania' }, { value: 'MS', name: 'Montserrat' }, { value: 'MT', name: 'Malta' }, { value: 'MU', name: 'Mauritius' }, { value: 'MV', name: 'Maldives' }, { value: 'MW', name: 'Malawi' }, { value: 'MX', name: 'Mexico' }, { value: 'MY', name: 'Malaysia' }, { value: 'MZ', name: 'Mozambique' }, { value: 'NA', name: 'Namibia' }, { value: 'NC', name: 'New Caledonia' }, { value: 'NE', name: 'Niger' }, { value: 'NF', name: 'Norfolk Island' }, { value: 'NG', name: 'Nigeria' }, { value: 'NI', name: 'Nicaragua' }, { value: 'NL', name: 'Netherlands' }, { value: 'NO', name: 'Norway' }, { value: 'NP', name: 'Nepal' }, { value: 'NR', name: 'Nauru' }, { value: 'NU', name: 'Niue' }, { value: 'NZ', name: 'New Zealand' }, { value: 'OM', name: 'Oman' }, { value: 'PA', name: 'Panama' }, { value: 'PE', name: 'Peru' }, { value: 'PF', name: 'French Polynesia' }, { value: 'PG', name: 'Papua New Guinea' }, { value: 'PH', name: 'Philippines' }, { value: 'PK', name: 'Pakistan' }, { value: 'PL', name: 'Poland' }, { value: 'PM', name: 'Saint Pierre and Miquelon' }, { value: 'PN', name: 'Pitcairn' }, { value: 'PR', name: 'Puerto Rico' }, { value: 'PS', name: 'Palestinian Territory' }, { value: 'PT', name: 'Portugal' }, { value: 'PW', name: 'Palau' }, { value: 'PY', name: 'Paraguay' }, { value: 'QA', name: 'Qatar' }, { value: 'RE', name: 'Reunion' }, { value: 'RO', name: 'Romania' }, { value: 'RS', name: 'Serbia' }, { value: 'RU', name: 'Russian Federation' }, { value: 'RW', name: 'Rwanda' }, { value: 'SA', name: 'Saudi Arabia' }, { value: 'SB', name: 'Solomon Islands' }, { value: 'SC', name: 'Seychelles' }, { value: 'SD', name: 'Sudan' }, { value: 'SE', name: 'Sweden' }, { value: 'SG', name: 'Singapore' }, { value: 'SH', name: 'Saint Helena' }, { value: 'SI', name: 'Slovenia' }, { value: 'SJ', name: 'Svalbard and Jan Mayen' }, { value: 'SK', name: 'Slovakia' }, { value: 'SL', name: 'Sierra Leone' }, { value: 'SM', name: 'San Marino' }, { value: 'SN', name: 'Senegal' }, { value: 'SO', name: 'Somalia' }, { value: 'SR', name: 'Suriname' }, { value: 'SS', name: 'South Sudan' }, { value: 'ST', name: 'Sao Tome and Principe' }, { value: 'SV', name: 'El Salvador' }, { value: 'SX', name: 'Sint Maarten' }, { value: 'SY', name: 'Syrian Arab Republic' }, { value: 'SZ', name: 'Swaziland' }, { value: 'TC', name: 'Turks and Caicos Islands' }, { value: 'TD', name: 'Chad' }, { value: 'TF', name: 'French Southern Territories' }, { value: 'TG', name: 'Togo' }, { value: 'TH', name: 'Thailand' }, { value: 'TJ', name: 'Tajikistan' }, { value: 'TK', name: 'Tokelau' }, { value: 'TL', name: 'Timor-Leste' }, { value: 'TM', name: 'Turkmenistan' }, { value: 'TN', name: 'Tunisia' }, { value: 'TO', name: 'Tonga' }, { value: 'TR', name: 'Turkey' }, { value: 'TT', name: 'Trinidad and Tobago' }, { value: 'TV', name: 'Tuvalu' }, { value: 'TW', name: 'Taiwan' }, { value: 'TZ', name: 'Tanzania, United Republic of' }, { value: 'UA', name: 'Ukraine' }, { value: 'UG', name: 'Uganda' }, { value: 'UM', name: 'United States Minor Outlying Islands' }, { value: 'US', name: 'United States' }, { value: 'UY', name: 'Uruguay' }, { value: 'UZ', name: 'Uzbekistan' }, { value: 'VA', name: 'Holy See (Vatican City State)' }, { value: 'VC', name: 'Saint Vincent and the Grenadines' }, { value: 'VE', name: 'Venezuela' }, { value: 'VG', name: 'Virgin Islands, British' }, { value: 'VI', name: 'Virgin Islands, U.S.' }, { value: 'VN', name: 'Vietnam' }, { value: 'VU', name: 'Vanuatu' }, { value: 'WF', name: 'Wallis and Futuna' }, { value: 'WS', name: 'Samoa' }, { value: 'YE', name: 'Yemen' }, { value: 'YT', name: 'Mayotte' }, { value: 'ZA', name: 'South Africa' }, { value: 'ZM', name: 'Zambia' }, { value: 'ZW', name: 'Zimbabwe' }]
+	    },
+	    conditions: [{
+	      name: 'Is any of',
+	      slug: 'on'
+	    }, {
+	      name: 'Is not any of',
+	      slug: 'off'
 	    }]
 	  },
 	  browser: {
@@ -8461,13 +8769,65 @@ webpackJsonp([0],[
 	    name: 'Browser language',
 	    childs: {
 	      type: 'normal'
-	    }
+	    },
+	    conditions: [{
+	      name: 'Is any of',
+	      slug: 'on'
+	    }, {
+	      name: 'Is not any of',
+	      slug: 'off'
+	    }]
 	  },
 	  get_param: {
 	    name: 'GET param',
 	    childs: {
 	      type: 'normal'
-	    }
+	    },
+	    conditions: [{
+	      name: 'Contain',
+	      slug: 'contain'
+	    }, {
+	      name: 'Not contain',
+	      slug: 'not contain'
+	    }]
+	  },
+	  user_agent: {
+	    name: 'User agent',
+	    childs: {
+	      type: 'normal'
+	    },
+	    conditions: [{
+	      name: 'Contain',
+	      slug: 'contain'
+	    }, {
+	      name: 'Not contain',
+	      slug: 'not contain'
+	    }, {
+	      name: 'Equal',
+	      slug: 'equal'
+	    }, {
+	      name: 'Not equal',
+	      slug: 'not equal'
+	    }]
+	  },
+	  referer: {
+	    name: 'Referer',
+	    childs: {
+	      type: 'normal'
+	    },
+	    conditions: [{
+	      name: 'Contain',
+	      slug: 'contain'
+	    }, {
+	      name: 'Not contain',
+	      slug: 'not contain'
+	    }, {
+	      name: 'Equal',
+	      slug: 'equal'
+	    }, {
+	      name: 'Not equal',
+	      slug: 'not equal'
+	    }]
 	  }
 	};
 
@@ -9640,150 +10000,6 @@ webpackJsonp([0],[
 	  value: true
 	});
 
-	exports.default = function () {
-	  if (document.querySelector('.js-popup')) {
-	    return;
-	  }
-
-	  var popup = (0, _createPopup2.default)('List of landers', null, true);
-
-	  if (!popup) {
-	    return;
-	  }
-
-	  var popupBody = popup.querySelector('.js-popup-body');
-
-	  if (popupBody) {
-	    popup.querySelector('.js-popup-wrap').style.width = '600px';
-
-	    (0, _fetchApi.fetchData)('/lander/list', {
-	      field: 'id,name',
-	      order: 'name'
-	    }).then(function (res) {
-	      var search = document.createElement('div');
-	      search.className = 'popup__list-search';
-	      search.innerHTML = '\n        <i class="fa fa-search"></i>\n        <input class="js-popup-list-search" type="text" placeholder="Enter to search">';
-	      popupBody.appendChild(search);
-
-	      var timeForSearch = void 0;
-	      var inputSearch = search.querySelector('.js-popup-list-search');
-	      var filterRows = function filterRows() {
-	        if (timeForSearch) {
-	          clearTimeout(timeForSearch);
-	        }
-
-	        timeForSearch = setTimeout(function () {
-	          var val = inputSearch.value.trim();
-	          var reg = new RegExp(val, 'i');
-	          var names = popupBody.querySelectorAll('.js-popup-list-name');
-
-	          if (val) {
-	            [].concat(_toConsumableArray(names)).forEach(function (el) {
-	              if (el.textContent.search(reg) === -1) {
-	                el.closest('.js-popup-row').style.display = 'none';
-	              } else {
-	                el.closest('.js-popup-row').style.display = '';
-	              }
-	            });
-	          } else {
-	            [].concat(_toConsumableArray(names)).forEach(function (el) {
-	              el.closest('.js-popup-row').style.display = '';
-	            });
-	          }
-	        }, 200);
-	      };
-
-	      inputSearch.addEventListener('keyup', filterRows);
-	      inputSearch.addEventListener('paste', filterRows);
-	      inputSearch.addEventListener('change', filterRows);
-
-	      var table = document.createElement('table');
-	      table.className = 'popup__list';
-	      popupBody.appendChild(table);
-
-	      var right = window.__active_permission__;
-	      res.data.forEach(function (item) {
-	        var name = item.name;
-	        var id = item.id;
-	        var tr = document.createElement('tr');
-	        tr.className = 'js-lander-row js-popup-row';
-
-	        if (right) {
-	          tr.innerHTML = '\n            <td class="js-lander-name" data-id="' + id + '">\n              <span class="js-lander-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-lander-copy">Copy</span></td>\n            ' + (right.landers.type.indexOf(2) !== -1 ? '<td><span class="js-lander-edit">Edit</span></td>' : '') + '\n          ';
-	        } else {
-	          tr.innerHTML = '\n            <td class="js-lander-name" data-id="' + id + '">\n              <span class="js-lander-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-lander-copy">Copy</span></td>\n            <td><span class="js-lander-edit">Edit</span></td>\n          ';
-	        }
-
-	        table.appendChild(tr);
-
-	        popupBody.addEventListener('click', listClick);
-	      });
-	    }).catch(function (err) {
-	      popupBody.innerHTML = '<div class="popup__message">' + err + '</div>';
-	      throw new Error(err);
-	    });
-	  }
-
-	  function listClick(event) {
-	    var target = event.target;
-	    var copyBtn = target.closest('.js-lander-copy');
-	    var editBtn = target.closest('.js-lander-edit');
-
-	    if (copyBtn || editBtn) {
-	      var id = target.closest('.js-lander-row').querySelector('.js-lander-name').dataset.id;
-
-	      if (copyBtn) {
-	        if (id) {
-	          openEdit(id);
-	        }
-	      }
-
-	      if (editBtn) {
-	        if (id) {
-	          openEdit(id, true);
-	        }
-	      }
-	    }
-	  }
-
-	  function openEdit(id, hasEdit) {
-	    (0, _fetchApi.fetchData)('/lander/get', { id: id }).then(function (res) {
-	      popup.close();
-	      (0, _landerEdit2.default)(res.data, hasEdit || false);
-	    }).catch(function (err) {
-	      throw new Error(err);
-	    });
-	  }
-	};
-
-	var _qs = __webpack_require__(16);
-
-	var _qs2 = _interopRequireDefault(_qs);
-
-	var _createPopup = __webpack_require__(81);
-
-	var _createPopup2 = _interopRequireDefault(_createPopup);
-
-	var _landerEdit = __webpack_require__(96);
-
-	var _landerEdit2 = _interopRequireDefault(_landerEdit);
-
-	var _fetchApi = __webpack_require__(27);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/***/ },
-/* 96 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
 	exports.default = function (data, hasEdit) {
 	  var popupBody = (0, _landerAdd2.default)();
 
@@ -9829,151 +10045,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 97 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function () {
-	  if (document.querySelector('.js-popup')) {
-	    return;
-	  }
-
-	  var popup = (0, _createPopup2.default)('Offer list', null, true);
-
-	  if (!popup) {
-	    return;
-	  }
-
-	  var popupBody = popup.querySelector('.js-popup-body');
-
-	  if (popupBody) {
-	    popup.querySelector('.js-popup-wrap').style.width = '600px';
-
-	    (0, _fetchApi.fetchData)('/offer/list', {
-	      field: 'id,name',
-	      order: 'name'
-	    }).then(function (res) {
-	      var search = document.createElement('div');
-	      search.className = 'popup__list-search';
-	      search.innerHTML = '\n        <i class="fa fa-search"></i>\n        <input class="js-popup-list-search" type="text" placeholder="Enter to search">';
-	      popupBody.appendChild(search);
-
-	      var timeForSearch = void 0;
-	      var inputSearch = search.querySelector('.js-popup-list-search');
-	      var filterRows = function filterRows() {
-	        if (timeForSearch) {
-	          clearTimeout(timeForSearch);
-	        }
-
-	        timeForSearch = setTimeout(function () {
-	          var val = inputSearch.value.trim();
-	          var reg = new RegExp(val, 'i');
-	          var names = popupBody.querySelectorAll('.js-popup-list-name');
-
-	          if (val) {
-	            [].concat(_toConsumableArray(names)).forEach(function (el) {
-	              if (el.textContent.search(reg) === -1) {
-	                el.closest('.js-popup-row').style.display = 'none';
-	              } else {
-	                el.closest('.js-popup-row').style.display = '';
-	              }
-	            });
-	          } else {
-	            [].concat(_toConsumableArray(names)).forEach(function (el) {
-	              el.closest('.js-popup-row').style.display = '';
-	            });
-	          }
-	        }, 200);
-	      };
-
-	      inputSearch.addEventListener('keyup', filterRows);
-	      inputSearch.addEventListener('paste', filterRows);
-	      inputSearch.addEventListener('change', filterRows);
-
-	      var table = document.createElement('table');
-	      table.className = 'popup__list';
-	      popupBody.appendChild(table);
-
-	      var right = window.__active_permission__;
-	      res.data.forEach(function (item) {
-	        var name = item.name;
-	        var id = item.id;
-	        var tr = document.createElement('tr');
-	        tr.className = 'js-offer-row js-popup-row';
-
-	        if (right) {
-	          tr.innerHTML = '\n            <td class="js-offer-name" data-id="' + id + '">\n              <span class="js-offer-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-offer-copy">Copy</span></td>\n            ' + (right.offers.type.indexOf(2) !== -1 ? '<td><span class="js-offer-edit">Edit</span></td>' : '') + '\n          ';
-	        } else {
-	          tr.innerHTML = '\n            <td class="js-offer-name" data-id="' + id + '">\n              <span class="js-offer-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-offer-copy">Copy</span></td>\n            <td><span class="js-offer-edit">Edit</span></td>\n          ';
-	        }
-
-	        table.appendChild(tr);
-
-	        popupBody.addEventListener('click', listClick);
-	      });
-	    }).catch(function (err) {
-	      popupBody.innerHTML = '<div class="popup__message">' + err + '</div>';
-	      throw new Error(err);
-	    });
-	  }
-
-	  function listClick(event) {
-	    var target = event.target;
-	    var copyBtn = target.closest('.js-offer-copy');
-	    var editBtn = target.closest('.js-offer-edit');
-
-	    if (copyBtn || editBtn) {
-	      var id = target.closest('.js-offer-row').querySelector('.js-offer-name').dataset.id;
-
-	      if (copyBtn) {
-	        if (id) {
-	          openEdit(id);
-	        }
-	      }
-
-	      if (editBtn) {
-	        if (id) {
-	          openEdit(id, true);
-	        }
-	      }
-	    }
-	  }
-
-	  function openEdit(id, hasEdit) {
-	    (0, _fetchApi.fetchData)('/offer/get', { id: id }).then(function (res) {
-	      popup.close();
-	      (0, _offerEdit2.default)(res.data, hasEdit || false);
-	    }).catch(function (err) {
-	      throw new Error(err);
-	    });
-	  }
-	};
-
-	var _qs = __webpack_require__(16);
-
-	var _qs2 = _interopRequireDefault(_qs);
-
-	var _createPopup = __webpack_require__(81);
-
-	var _createPopup2 = _interopRequireDefault(_createPopup);
-
-	var _offerEdit = __webpack_require__(98);
-
-	var _offerEdit2 = _interopRequireDefault(_offerEdit);
-
-	var _fetchApi = __webpack_require__(27);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/***/ },
-/* 98 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10072,151 +10144,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 99 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function () {
-	  if (document.querySelector('.js-popup')) {
-	    return;
-	  }
-
-	  var popup = (0, _createPopup2.default)('Traffic source list', null, true);
-
-	  if (!popup) {
-	    return;
-	  }
-
-	  var popupBody = popup.querySelector('.js-popup-body');
-
-	  if (popupBody) {
-	    popup.querySelector('.js-popup-wrap').style.width = '600px';
-
-	    (0, _fetchApi.fetchData)('/traffic/sources/list', {
-	      field: 'id,name',
-	      order: 'name'
-	    }).then(function (res) {
-	      var search = document.createElement('div');
-	      search.className = 'popup__list-search';
-	      search.innerHTML = '\n        <i class="fa fa-search"></i>\n        <input class="js-popup-list-search" type="text" placeholder="Enter to search">';
-	      popupBody.appendChild(search);
-
-	      var timeForSearch = void 0;
-	      var inputSearch = search.querySelector('.js-popup-list-search');
-	      var filterRows = function filterRows() {
-	        if (timeForSearch) {
-	          clearTimeout(timeForSearch);
-	        }
-
-	        timeForSearch = setTimeout(function () {
-	          var val = inputSearch.value.trim();
-	          var reg = new RegExp(val, 'i');
-	          var names = popupBody.querySelectorAll('.js-popup-list-name');
-
-	          if (val) {
-	            [].concat(_toConsumableArray(names)).forEach(function (el) {
-	              if (el.textContent.search(reg) === -1) {
-	                el.closest('.js-popup-row').style.display = 'none';
-	              } else {
-	                el.closest('.js-popup-row').style.display = '';
-	              }
-	            });
-	          } else {
-	            [].concat(_toConsumableArray(names)).forEach(function (el) {
-	              el.closest('.js-popup-row').style.display = '';
-	            });
-	          }
-	        }, 200);
-	      };
-
-	      inputSearch.addEventListener('keyup', filterRows);
-	      inputSearch.addEventListener('paste', filterRows);
-	      inputSearch.addEventListener('change', filterRows);
-
-	      var table = document.createElement('table');
-	      table.className = 'popup__list';
-	      popupBody.appendChild(table);
-
-	      var right = window.__active_permission__;
-	      res.data.forEach(function (item) {
-	        var name = item.name;
-	        var id = item.id;
-	        var tr = document.createElement('tr');
-	        tr.className = 'js-traffic-row js-popup-row';
-
-	        if (right) {
-	          tr.innerHTML = '\n            <td class="js-traffic-name" data-id="' + id + '">\n              <span class="js-traffic-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-traffic-copy">Copy</span></td>\n            ' + (right.traffic_source.type.indexOf(2) !== -1 ? '<td><span class="js-traffic-edit">Edit</span></td>' : '') + '\n          ';
-	        } else {
-	          tr.innerHTML = '\n            <td class="js-traffic-name" data-id="' + id + '">\n              <span class="js-traffic-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-traffic-copy">Copy</span></td>\n            <td><span class="js-traffic-edit">Edit</span></td>\n          ';
-	        }
-
-	        table.appendChild(tr);
-
-	        popupBody.addEventListener('click', listClick);
-	      });
-	    }).catch(function (err) {
-	      popupBody.innerHTML = '<div class="popup__message">' + err + '</div>';
-	      throw new Error(err);
-	    });
-	  }
-
-	  function listClick(event) {
-	    var target = event.target;
-	    var copyBtn = target.closest('.js-traffic-copy');
-	    var editBtn = target.closest('.js-traffic-edit');
-
-	    if (copyBtn || editBtn) {
-	      var id = target.closest('.js-traffic-row').querySelector('.js-traffic-name').dataset.id;
-
-	      if (copyBtn) {
-	        if (id) {
-	          openEdit(id);
-	        }
-	      }
-
-	      if (editBtn) {
-	        if (id) {
-	          openEdit(id, true);
-	        }
-	      }
-	    }
-	  }
-
-	  function openEdit(id, hasEdit) {
-	    (0, _fetchApi.fetchData)('/traffic/sources/get', { id: id }).then(function (res) {
-	      popup.close();
-	      (0, _trafficSourceEdit2.default)(res.data, hasEdit || false);
-	    }).catch(function (err) {
-	      throw new Error(err);
-	    });
-	  }
-	};
-
-	var _qs = __webpack_require__(16);
-
-	var _qs2 = _interopRequireDefault(_qs);
-
-	var _createPopup = __webpack_require__(81);
-
-	var _createPopup2 = _interopRequireDefault(_createPopup);
-
-	var _trafficSourceEdit = __webpack_require__(100);
-
-	var _trafficSourceEdit2 = _interopRequireDefault(_trafficSourceEdit);
-
-	var _fetchApi = __webpack_require__(27);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/***/ },
-/* 100 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10282,7 +10210,7 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _trafficSourceAdd = __webpack_require__(101);
+	var _trafficSourceAdd = __webpack_require__(98);
 
 	var _trafficSourceAdd2 = _interopRequireDefault(_trafficSourceAdd);
 
@@ -10291,7 +10219,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 101 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10485,151 +10413,7 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
-/* 102 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function () {
-	  if (document.querySelector('.js-popup')) {
-	    return;
-	  }
-
-	  var popup = (0, _createPopup2.default)('List of affiliate networks', null, true);
-
-	  if (!popup) {
-	    return;
-	  }
-
-	  var popupBody = popup.querySelector('.js-popup-body');
-
-	  if (popupBody) {
-	    popup.querySelector('.js-popup-wrap').style.width = '600px';
-
-	    (0, _fetchApi.fetchData)('/affiliate_network/list', {
-	      field: 'id,name',
-	      order: 'name'
-	    }).then(function (res) {
-	      var search = document.createElement('div');
-	      search.className = 'popup__list-search';
-	      search.innerHTML = '\n        <i class="fa fa-search"></i>\n        <input class="js-popup-list-search" type="text" placeholder="Enter to search">';
-	      popupBody.appendChild(search);
-
-	      var timeForSearch = void 0;
-	      var inputSearch = search.querySelector('.js-popup-list-search');
-	      var filterRows = function filterRows() {
-	        if (timeForSearch) {
-	          clearTimeout(timeForSearch);
-	        }
-
-	        timeForSearch = setTimeout(function () {
-	          var val = inputSearch.value.trim();
-	          var reg = new RegExp(val, 'i');
-	          var names = popupBody.querySelectorAll('.js-popup-list-name');
-
-	          if (val) {
-	            [].concat(_toConsumableArray(names)).forEach(function (el) {
-	              if (el.textContent.search(reg) === -1) {
-	                el.closest('.js-popup-row').style.display = 'none';
-	              } else {
-	                el.closest('.js-popup-row').style.display = '';
-	              }
-	            });
-	          } else {
-	            [].concat(_toConsumableArray(names)).forEach(function (el) {
-	              el.closest('.js-popup-row').style.display = '';
-	            });
-	          }
-	        }, 200);
-	      };
-
-	      inputSearch.addEventListener('keyup', filterRows);
-	      inputSearch.addEventListener('paste', filterRows);
-	      inputSearch.addEventListener('change', filterRows);
-
-	      var table = document.createElement('table');
-	      table.className = 'popup__list';
-	      popupBody.appendChild(table);
-
-	      var right = window.__active_permission__;
-	      res.data.forEach(function (item) {
-	        var name = item.name;
-	        var id = item.id;
-	        var tr = document.createElement('tr');
-	        tr.className = 'js-affiliate-row js-popup-row';
-
-	        if (right) {
-	          tr.innerHTML = '\n            <td class="js-affiliate-name" data-id="' + id + '">\n              <span class="js-affiliate-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-affiliate-copy">Copy</span></td>\n            <td><span class="js-affiliate-edit">Edit</span></td>\n          ';
-	        } else {
-	          tr.innerHTML = '\n            <td class="js-affiliate-name" data-id="' + id + '">\n              <span class="js-affiliate-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-affiliate-copy">Copy</span></td>\n            ' + (right.affiliate_network.type.indexOf(2) !== -1 ? '<td><span class="js-affiliate-edit">Edit</span></td>' : '') + '\n          ';
-	        }
-
-	        table.appendChild(tr);
-
-	        popupBody.addEventListener('click', listClick);
-	      });
-	    }).catch(function (err) {
-	      popupBody.innerHTML = '<div class="popup__message">' + err + '</div>';
-	      throw new Error(err);
-	    });
-	  }
-
-	  function listClick(event) {
-	    var target = event.target;
-	    var copyBtn = target.closest('.js-affiliate-copy');
-	    var editBtn = target.closest('.js-affiliate-edit');
-
-	    if (copyBtn || editBtn) {
-	      var id = target.closest('.js-affiliate-row').querySelector('.js-affiliate-name').dataset.id;
-
-	      if (copyBtn) {
-	        if (id) {
-	          openEdit(id);
-	        }
-	      }
-
-	      if (editBtn) {
-	        if (id) {
-	          openEdit(id, true);
-	        }
-	      }
-	    }
-	  }
-
-	  function openEdit(id, hasEdit) {
-	    (0, _fetchApi.fetchData)('/affiliate_network/get', { id: id }).then(function (res) {
-	      popup.close();
-	      (0, _affiliateNetworkEdit2.default)(res.data, hasEdit || false);
-	    }).catch(function (err) {
-	      throw new Error(err);
-	    });
-	  }
-	};
-
-	var _qs = __webpack_require__(16);
-
-	var _qs2 = _interopRequireDefault(_qs);
-
-	var _createPopup = __webpack_require__(81);
-
-	var _createPopup2 = _interopRequireDefault(_createPopup);
-
-	var _affiliateNetworkEdit = __webpack_require__(103);
-
-	var _affiliateNetworkEdit2 = _interopRequireDefault(_affiliateNetworkEdit);
-
-	var _fetchApi = __webpack_require__(27);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/***/ },
-/* 103 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10688,14 +10472,14 @@ webpackJsonp([0],[
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _affiliateNetworkAdd = __webpack_require__(104);
+	var _affiliateNetworkAdd = __webpack_require__(100);
 
 	var _affiliateNetworkAdd2 = _interopRequireDefault(_affiliateNetworkAdd);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 104 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10847,6 +10631,582 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ },
+/* 101 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  if (document.querySelector('.js-popup')) {
+	    return;
+	  }
+
+	  var popup = (0, _createPopup2.default)('List of landers', null, true);
+
+	  if (!popup) {
+	    return;
+	  }
+
+	  var popupBody = popup.querySelector('.js-popup-body');
+
+	  if (popupBody) {
+	    popup.querySelector('.js-popup-wrap').style.width = '600px';
+
+	    (0, _fetchApi.fetchData)('/lander/list', {
+	      field: 'id,name',
+	      order: 'name'
+	    }).then(function (res) {
+	      var search = document.createElement('div');
+	      search.className = 'popup__list-search';
+	      search.innerHTML = '\n        <i class="fa fa-search"></i>\n        <input class="js-popup-list-search" type="text" placeholder="Enter to search">';
+	      popupBody.appendChild(search);
+
+	      var timeForSearch = void 0;
+	      var inputSearch = search.querySelector('.js-popup-list-search');
+	      var filterRows = function filterRows() {
+	        if (timeForSearch) {
+	          clearTimeout(timeForSearch);
+	        }
+
+	        timeForSearch = setTimeout(function () {
+	          var val = inputSearch.value.trim();
+	          var reg = new RegExp(val, 'i');
+	          var names = popupBody.querySelectorAll('.js-popup-list-name');
+
+	          if (val) {
+	            [].concat(_toConsumableArray(names)).forEach(function (el) {
+	              if (el.textContent.search(reg) === -1) {
+	                el.closest('.js-popup-row').style.display = 'none';
+	              } else {
+	                el.closest('.js-popup-row').style.display = '';
+	              }
+	            });
+	          } else {
+	            [].concat(_toConsumableArray(names)).forEach(function (el) {
+	              el.closest('.js-popup-row').style.display = '';
+	            });
+	          }
+	        }, 200);
+	      };
+
+	      inputSearch.addEventListener('keyup', filterRows);
+	      inputSearch.addEventListener('paste', filterRows);
+	      inputSearch.addEventListener('change', filterRows);
+
+	      var table = document.createElement('table');
+	      table.className = 'popup__list';
+	      popupBody.appendChild(table);
+
+	      var right = window.__active_permission__;
+	      res.data.forEach(function (item) {
+	        var name = item.name;
+	        var id = item.id;
+	        var tr = document.createElement('tr');
+	        tr.className = 'js-lander-row js-popup-row';
+
+	        if (right) {
+	          tr.innerHTML = '\n            <td class="js-lander-name" data-id="' + id + '">\n              <span class="js-lander-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-lander-copy">Copy</span></td>\n            ' + (right.landers.type.indexOf(2) !== -1 ? '<td><span class="js-lander-edit">Edit</span></td>' : '') + '\n          ';
+	        } else {
+	          tr.innerHTML = '\n            <td class="js-lander-name" data-id="' + id + '">\n              <span class="js-lander-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-lander-copy">Copy</span></td>\n            <td><span class="js-lander-edit">Edit</span></td>\n          ';
+	        }
+
+	        table.appendChild(tr);
+
+	        popupBody.addEventListener('click', listClick);
+	      });
+	    }).catch(function (err) {
+	      popupBody.innerHTML = '<div class="popup__message">' + err + '</div>';
+	      throw new Error(err);
+	    });
+	  }
+
+	  function listClick(event) {
+	    var target = event.target;
+	    var copyBtn = target.closest('.js-lander-copy');
+	    var editBtn = target.closest('.js-lander-edit');
+
+	    if (copyBtn || editBtn) {
+	      var id = target.closest('.js-lander-row').querySelector('.js-lander-name').dataset.id;
+
+	      if (copyBtn) {
+	        if (id) {
+	          openEdit(id);
+	        }
+	      }
+
+	      if (editBtn) {
+	        if (id) {
+	          openEdit(id, true);
+	        }
+	      }
+	    }
+	  }
+
+	  function openEdit(id, hasEdit) {
+	    (0, _fetchApi.fetchData)('/lander/get', { id: id }).then(function (res) {
+	      popup.close();
+	      (0, _landerEdit2.default)(res.data, hasEdit || false);
+	    }).catch(function (err) {
+	      throw new Error(err);
+	    });
+	  }
+	};
+
+	var _qs = __webpack_require__(16);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	var _createPopup = __webpack_require__(81);
+
+	var _createPopup2 = _interopRequireDefault(_createPopup);
+
+	var _landerEdit = __webpack_require__(95);
+
+	var _landerEdit2 = _interopRequireDefault(_landerEdit);
+
+	var _fetchApi = __webpack_require__(27);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
+/* 102 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  if (document.querySelector('.js-popup')) {
+	    return;
+	  }
+
+	  var popup = (0, _createPopup2.default)('Offer list', null, true);
+
+	  if (!popup) {
+	    return;
+	  }
+
+	  var popupBody = popup.querySelector('.js-popup-body');
+
+	  if (popupBody) {
+	    popup.querySelector('.js-popup-wrap').style.width = '600px';
+
+	    (0, _fetchApi.fetchData)('/offer/list', {
+	      field: 'id,name',
+	      order: 'name'
+	    }).then(function (res) {
+	      var search = document.createElement('div');
+	      search.className = 'popup__list-search';
+	      search.innerHTML = '\n        <i class="fa fa-search"></i>\n        <input class="js-popup-list-search" type="text" placeholder="Enter to search">';
+	      popupBody.appendChild(search);
+
+	      var timeForSearch = void 0;
+	      var inputSearch = search.querySelector('.js-popup-list-search');
+	      var filterRows = function filterRows() {
+	        if (timeForSearch) {
+	          clearTimeout(timeForSearch);
+	        }
+
+	        timeForSearch = setTimeout(function () {
+	          var val = inputSearch.value.trim();
+	          var reg = new RegExp(val, 'i');
+	          var names = popupBody.querySelectorAll('.js-popup-list-name');
+
+	          if (val) {
+	            [].concat(_toConsumableArray(names)).forEach(function (el) {
+	              if (el.textContent.search(reg) === -1) {
+	                el.closest('.js-popup-row').style.display = 'none';
+	              } else {
+	                el.closest('.js-popup-row').style.display = '';
+	              }
+	            });
+	          } else {
+	            [].concat(_toConsumableArray(names)).forEach(function (el) {
+	              el.closest('.js-popup-row').style.display = '';
+	            });
+	          }
+	        }, 200);
+	      };
+
+	      inputSearch.addEventListener('keyup', filterRows);
+	      inputSearch.addEventListener('paste', filterRows);
+	      inputSearch.addEventListener('change', filterRows);
+
+	      var table = document.createElement('table');
+	      table.className = 'popup__list';
+	      popupBody.appendChild(table);
+
+	      var right = window.__active_permission__;
+	      res.data.forEach(function (item) {
+	        var name = item.name;
+	        var id = item.id;
+	        var tr = document.createElement('tr');
+	        tr.className = 'js-offer-row js-popup-row';
+
+	        if (right) {
+	          tr.innerHTML = '\n            <td class="js-offer-name" data-id="' + id + '">\n              <span class="js-offer-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-offer-copy">Copy</span></td>\n            ' + (right.offers.type.indexOf(2) !== -1 ? '<td><span class="js-offer-edit">Edit</span></td>' : '') + '\n          ';
+	        } else {
+	          tr.innerHTML = '\n            <td class="js-offer-name" data-id="' + id + '">\n              <span class="js-offer-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-offer-copy">Copy</span></td>\n            <td><span class="js-offer-edit">Edit</span></td>\n          ';
+	        }
+
+	        table.appendChild(tr);
+
+	        popupBody.addEventListener('click', listClick);
+	      });
+	    }).catch(function (err) {
+	      popupBody.innerHTML = '<div class="popup__message">' + err + '</div>';
+	      throw new Error(err);
+	    });
+	  }
+
+	  function listClick(event) {
+	    var target = event.target;
+	    var copyBtn = target.closest('.js-offer-copy');
+	    var editBtn = target.closest('.js-offer-edit');
+
+	    if (copyBtn || editBtn) {
+	      var id = target.closest('.js-offer-row').querySelector('.js-offer-name').dataset.id;
+
+	      if (copyBtn) {
+	        if (id) {
+	          openEdit(id);
+	        }
+	      }
+
+	      if (editBtn) {
+	        if (id) {
+	          openEdit(id, true);
+	        }
+	      }
+	    }
+	  }
+
+	  function openEdit(id, hasEdit) {
+	    (0, _fetchApi.fetchData)('/offer/get', { id: id }).then(function (res) {
+	      popup.close();
+	      (0, _offerEdit2.default)(res.data, hasEdit || false);
+	    }).catch(function (err) {
+	      throw new Error(err);
+	    });
+	  }
+	};
+
+	var _qs = __webpack_require__(16);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	var _createPopup = __webpack_require__(81);
+
+	var _createPopup2 = _interopRequireDefault(_createPopup);
+
+	var _offerEdit = __webpack_require__(96);
+
+	var _offerEdit2 = _interopRequireDefault(_offerEdit);
+
+	var _fetchApi = __webpack_require__(27);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
+/* 103 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  if (document.querySelector('.js-popup')) {
+	    return;
+	  }
+
+	  var popup = (0, _createPopup2.default)('Traffic source list', null, true);
+
+	  if (!popup) {
+	    return;
+	  }
+
+	  var popupBody = popup.querySelector('.js-popup-body');
+
+	  if (popupBody) {
+	    popup.querySelector('.js-popup-wrap').style.width = '600px';
+
+	    (0, _fetchApi.fetchData)('/traffic/sources/list', {
+	      field: 'id,name',
+	      order: 'name'
+	    }).then(function (res) {
+	      var search = document.createElement('div');
+	      search.className = 'popup__list-search';
+	      search.innerHTML = '\n        <i class="fa fa-search"></i>\n        <input class="js-popup-list-search" type="text" placeholder="Enter to search">';
+	      popupBody.appendChild(search);
+
+	      var timeForSearch = void 0;
+	      var inputSearch = search.querySelector('.js-popup-list-search');
+	      var filterRows = function filterRows() {
+	        if (timeForSearch) {
+	          clearTimeout(timeForSearch);
+	        }
+
+	        timeForSearch = setTimeout(function () {
+	          var val = inputSearch.value.trim();
+	          var reg = new RegExp(val, 'i');
+	          var names = popupBody.querySelectorAll('.js-popup-list-name');
+
+	          if (val) {
+	            [].concat(_toConsumableArray(names)).forEach(function (el) {
+	              if (el.textContent.search(reg) === -1) {
+	                el.closest('.js-popup-row').style.display = 'none';
+	              } else {
+	                el.closest('.js-popup-row').style.display = '';
+	              }
+	            });
+	          } else {
+	            [].concat(_toConsumableArray(names)).forEach(function (el) {
+	              el.closest('.js-popup-row').style.display = '';
+	            });
+	          }
+	        }, 200);
+	      };
+
+	      inputSearch.addEventListener('keyup', filterRows);
+	      inputSearch.addEventListener('paste', filterRows);
+	      inputSearch.addEventListener('change', filterRows);
+
+	      var table = document.createElement('table');
+	      table.className = 'popup__list';
+	      popupBody.appendChild(table);
+
+	      var right = window.__active_permission__;
+	      res.data.forEach(function (item) {
+	        var name = item.name;
+	        var id = item.id;
+	        var tr = document.createElement('tr');
+	        tr.className = 'js-traffic-row js-popup-row';
+
+	        if (right) {
+	          tr.innerHTML = '\n            <td class="js-traffic-name" data-id="' + id + '">\n              <span class="js-traffic-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-traffic-copy">Copy</span></td>\n            ' + (right.traffic_source.type.indexOf(2) !== -1 ? '<td><span class="js-traffic-edit">Edit</span></td>' : '') + '\n          ';
+	        } else {
+	          tr.innerHTML = '\n            <td class="js-traffic-name" data-id="' + id + '">\n              <span class="js-traffic-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-traffic-copy">Copy</span></td>\n            <td><span class="js-traffic-edit">Edit</span></td>\n          ';
+	        }
+
+	        table.appendChild(tr);
+
+	        popupBody.addEventListener('click', listClick);
+	      });
+	    }).catch(function (err) {
+	      popupBody.innerHTML = '<div class="popup__message">' + err + '</div>';
+	      throw new Error(err);
+	    });
+	  }
+
+	  function listClick(event) {
+	    var target = event.target;
+	    var copyBtn = target.closest('.js-traffic-copy');
+	    var editBtn = target.closest('.js-traffic-edit');
+
+	    if (copyBtn || editBtn) {
+	      var id = target.closest('.js-traffic-row').querySelector('.js-traffic-name').dataset.id;
+
+	      if (copyBtn) {
+	        if (id) {
+	          openEdit(id);
+	        }
+	      }
+
+	      if (editBtn) {
+	        if (id) {
+	          openEdit(id, true);
+	        }
+	      }
+	    }
+	  }
+
+	  function openEdit(id, hasEdit) {
+	    (0, _fetchApi.fetchData)('/traffic/sources/get', { id: id }).then(function (res) {
+	      popup.close();
+	      (0, _trafficSourceEdit2.default)(res.data, hasEdit || false);
+	    }).catch(function (err) {
+	      throw new Error(err);
+	    });
+	  }
+	};
+
+	var _qs = __webpack_require__(16);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	var _createPopup = __webpack_require__(81);
+
+	var _createPopup2 = _interopRequireDefault(_createPopup);
+
+	var _trafficSourceEdit = __webpack_require__(97);
+
+	var _trafficSourceEdit2 = _interopRequireDefault(_trafficSourceEdit);
+
+	var _fetchApi = __webpack_require__(27);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
+/* 104 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  if (document.querySelector('.js-popup')) {
+	    return;
+	  }
+
+	  var popup = (0, _createPopup2.default)('List of affiliate networks', null, true);
+
+	  if (!popup) {
+	    return;
+	  }
+
+	  var popupBody = popup.querySelector('.js-popup-body');
+
+	  if (popupBody) {
+	    popup.querySelector('.js-popup-wrap').style.width = '600px';
+
+	    (0, _fetchApi.fetchData)('/affiliate_network/list', {
+	      field: 'id,name',
+	      order: 'name'
+	    }).then(function (res) {
+	      var search = document.createElement('div');
+	      search.className = 'popup__list-search';
+	      search.innerHTML = '\n        <i class="fa fa-search"></i>\n        <input class="js-popup-list-search" type="text" placeholder="Enter to search">';
+	      popupBody.appendChild(search);
+
+	      var timeForSearch = void 0;
+	      var inputSearch = search.querySelector('.js-popup-list-search');
+	      var filterRows = function filterRows() {
+	        if (timeForSearch) {
+	          clearTimeout(timeForSearch);
+	        }
+
+	        timeForSearch = setTimeout(function () {
+	          var val = inputSearch.value.trim();
+	          var reg = new RegExp(val, 'i');
+	          var names = popupBody.querySelectorAll('.js-popup-list-name');
+
+	          if (val) {
+	            [].concat(_toConsumableArray(names)).forEach(function (el) {
+	              if (el.textContent.search(reg) === -1) {
+	                el.closest('.js-popup-row').style.display = 'none';
+	              } else {
+	                el.closest('.js-popup-row').style.display = '';
+	              }
+	            });
+	          } else {
+	            [].concat(_toConsumableArray(names)).forEach(function (el) {
+	              el.closest('.js-popup-row').style.display = '';
+	            });
+	          }
+	        }, 200);
+	      };
+
+	      inputSearch.addEventListener('keyup', filterRows);
+	      inputSearch.addEventListener('paste', filterRows);
+	      inputSearch.addEventListener('change', filterRows);
+
+	      var table = document.createElement('table');
+	      table.className = 'popup__list';
+	      popupBody.appendChild(table);
+
+	      var right = window.__active_permission__;
+	      res.data.forEach(function (item) {
+	        var name = item.name;
+	        var id = item.id;
+	        var tr = document.createElement('tr');
+	        tr.className = 'js-affiliate-row js-popup-row';
+
+	        if (right) {
+	          tr.innerHTML = '\n            <td class="js-affiliate-name" data-id="' + id + '">\n              <span class="js-affiliate-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-affiliate-copy">Copy</span></td>\n            <td><span class="js-affiliate-edit">Edit</span></td>\n          ';
+	        } else {
+	          tr.innerHTML = '\n            <td class="js-affiliate-name" data-id="' + id + '">\n              <span class="js-affiliate-edit js-popup-list-name">' + name + '</span>\n            </td>\n            <td><span class="js-affiliate-copy">Copy</span></td>\n            ' + (right.affiliate_network.type.indexOf(2) !== -1 ? '<td><span class="js-affiliate-edit">Edit</span></td>' : '') + '\n          ';
+	        }
+
+	        table.appendChild(tr);
+
+	        popupBody.addEventListener('click', listClick);
+	      });
+	    }).catch(function (err) {
+	      popupBody.innerHTML = '<div class="popup__message">' + err + '</div>';
+	      throw new Error(err);
+	    });
+	  }
+
+	  function listClick(event) {
+	    var target = event.target;
+	    var copyBtn = target.closest('.js-affiliate-copy');
+	    var editBtn = target.closest('.js-affiliate-edit');
+
+	    if (copyBtn || editBtn) {
+	      var id = target.closest('.js-affiliate-row').querySelector('.js-affiliate-name').dataset.id;
+
+	      if (copyBtn) {
+	        if (id) {
+	          openEdit(id);
+	        }
+	      }
+
+	      if (editBtn) {
+	        if (id) {
+	          openEdit(id, true);
+	        }
+	      }
+	    }
+	  }
+
+	  function openEdit(id, hasEdit) {
+	    (0, _fetchApi.fetchData)('/affiliate_network/get', { id: id }).then(function (res) {
+	      popup.close();
+	      (0, _affiliateNetworkEdit2.default)(res.data, hasEdit || false);
+	    }).catch(function (err) {
+	      throw new Error(err);
+	    });
+	  }
+	};
+
+	var _qs = __webpack_require__(16);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	var _createPopup = __webpack_require__(81);
+
+	var _createPopup2 = _interopRequireDefault(_createPopup);
+
+	var _affiliateNetworkEdit = __webpack_require__(99);
+
+	var _affiliateNetworkEdit2 = _interopRequireDefault(_affiliateNetworkEdit);
+
+	var _fetchApi = __webpack_require__(27);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
 /* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -10861,6 +11221,9 @@ webpackJsonp([0],[
 	  var navControl = document.querySelector('.js-stat-nav');
 
 	  if (stat.classList.contains('is-cohort')) {
+	    return;
+	  }
+	  if (stat.classList.contains('is-trends')) {
 	    return;
 	  }
 
@@ -11078,9 +11441,9 @@ webpackJsonp([0],[
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-	var _forCampaignEdit = __webpack_require__(82);
+	var _line = __webpack_require__(82);
 
-	var _forCampaignEdit2 = _interopRequireDefault(_forCampaignEdit);
+	var _line2 = _interopRequireDefault(_line);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11120,6 +11483,7 @@ webpackJsonp([0],[
 
 	var renderRows = function renderRows(tr, record, response) {
 	  var params = window.might.stat.params;
+	  var activeItems = (0, _line.getPopupElements)();
 
 	  if (params.is_tree) {
 	    tr.level = response.level;
@@ -11132,9 +11496,12 @@ webpackJsonp([0],[
 	    tr.filter.push({ field: response.field, value: record[response.field] });
 	    tr.thisFilter = { field: response.field, value: record[response.field] };
 
-	    if (response.field === 'campaign_id') {
-	      tr.classList.add('js-campaign-row');
-	      tr.dataset.id = record.campaign_id;
+	    for (var l in activeItems) {
+	      if (activeItems[l][0] === response.field) {
+	        tr.classList.add('js-' + activeItems[l][1] + '-row');
+	        tr.dataset.id = record[activeItems[l][0]];
+	        tr.dataset.row = activeItems[l][1];
+	      }
 	    }
 	  }
 
@@ -11181,18 +11548,24 @@ webpackJsonp([0],[
 
 	      main.appendChild(span);
 
-	      if (k === 'campaign_id') {
-	        var helper = createNode('div', ['helper', 'js-helper']);
-	        var right = window.__active_permission__;
-
-	        if (right) {
-	          helper.innerHTML = '<div class="helper__cloud">\n            ' + (right.campaigns.type.indexOf(1) !== -1 ? '<div class="helper__link"><span class="js-campaign-copy">Copy</span></div>' : '') + '\n            ' + (right.campaigns.type.indexOf(2) !== -1 ? '<div class="helper__link"><span class="js-campaign-edit">Edit</span></div>' : '') + '\n            ' + (right.campaigns.type.indexOf(2) !== -1 ? '<div class="helper__link"><span class="js-campaign-update-cost">Update cost</span></div>' : '') + '\n            <div class="helper__link"><span class="js-campaign-links">Links</span></div>\n          </div>';
-	        } else {
-	          helper.innerHTML = '<div class="helper__cloud">\n            <div class="helper__link"><span class="js-campaign-copy">Copy</span></div>\n            <div class="helper__link"><span class="js-campaign-edit">Edit</span></div>\n            <div class="helper__link"><span class="js-campaign-update-cost">Update cost</span></div>\n            <div class="helper__link"><span class="js-campaign-links">Links</span></div>\n          </div>';
+	      for (var _l in activeItems) {
+	        if (record[activeItems[_l][0]] === '') {
+	          continue;
 	        }
 
-	        main.appendChild(helper);
-	        main.classList.add('is-with-helper');
+	        if (activeItems[_l][0] === k) {
+	          var helper = createNode('div', ['helper', 'js-helper']);
+	          var right = window.__active_permission__;
+
+	          if (right) {
+	            helper.innerHTML = '<div class="helper__cloud">\n            ' + (activeItems[_l][2].indexOf(1) >= 0 && right.campaigns.type.indexOf(1) !== -1 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-copy">Copy</span></div>' : '') + '\n            ' + (activeItems[_l][2].indexOf(2) >= 0 && right.campaigns.type.indexOf(2) !== -1 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-edit">Edit</span></div>' : '') + '\n            ' + (activeItems[_l][3].indexOf(3) >= 0 && right.campaigns.type.indexOf(2) !== -1 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-update-cost">Update cost</span></div>' : '') + '\n            ' + (activeItems[_l][3].indexOf(4) >= 0 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-links">Links</span></div>' : '') + '\n          </div>';
+	          } else {
+	            helper.innerHTML = '<div class="helper__cloud">\n            ' + (activeItems[_l][2].indexOf(1) >= 0 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-copy">Copy</span></div>' : '') + '\n            ' + (activeItems[_l][2].indexOf(2) >= 0 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-edit">Edit</span></div>' : '') + '\n            ' + (activeItems[_l][2].indexOf(3) >= 0 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-update-cost">Update cost</span></div>' : '') + '\n            ' + (activeItems[_l][2].indexOf(4) >= 0 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-links">Links</span></div>' : '') + '\n          </div>';
+	          }
+
+	          main.appendChild(helper);
+	          main.classList.add('is-with-helper');
+	        }
 	      }
 	    } else {
 	      td.appendChild(span);
@@ -11302,7 +11675,7 @@ webpackJsonp([0],[
 	      }
 	    }
 
-	    table.addEventListener('click', _forCampaignEdit2.default);
+	    table.addEventListener('click', _line2.default);
 
 	    document.querySelector('.js-canvas').innerHTML = '';
 	    document.querySelector('.js-canvas').appendChild(div);
@@ -11626,6 +11999,10 @@ webpackJsonp([0],[
 	  var statGraphCanvas = stat.querySelector('#stat-graph');
 
 	  if (stat.classList.contains('is-cohort')) {
+	    return;
+	  }
+
+	  if (stat.classList.contains('is-trends')) {
 	    return;
 	  }
 
@@ -12539,6 +12916,555 @@ webpackJsonp([0],[
 	});
 
 	exports.default = function () {
+	  var stat = document.querySelector('.js-stat');
+	  var navControl = document.querySelector('.js-stat-nav');
+
+	  if (!stat.classList.contains('is-trends')) {
+	    return;
+	  }
+
+	  var dateToString = function dateToString(y, m, d) {
+	    var date = new Date(y, m, d);
+	    return (0, _dateformat2.default)(date, 'yyyy-mm-dd');
+	  };
+
+	  var getFormData = function getFormData() {
+	    var params = window.might.stat.params;
+	    var data = {};
+
+	    data.draw = params.draw;
+	    data.start = (params.page - 1) * params.length;
+	    data.length = params.length;
+	    data.order = false;
+	    data.currency = params.currency.toUpperCase();
+	    data.currency_type = params.currency_type;
+	    data.currency_date = params.currency_date;
+	    var from = dateToString(params.date_from.year, params.date_from.month, params.date_from.date);
+	    var to = dateToString(params.date_to.year, params.date_to.month, params.date_to.date);
+	    data.date_filter = from + ' - ' + to;
+	    data.start_time = params.start_time;
+	    data.end_time = params.end_time;
+	    data.timezone = params.timezone;
+
+	    if (window.might.stat.params.sort && window.might.stat.params.sort.direction) {
+	      var column = window.might.stat.params.sort.column;
+	      var direction = window.might.stat.params.sort.direction;
+	      data.order = column + ' ' + direction;
+	    }
+
+	    data.group = params.segments.join(',');
+	    data.field1 = params.cohort_metric1;
+	    data.field2 = params.cohort_metric2;
+	    data.interval = params.cohort_size;
+	    var filter = [];
+	    params.filters_stock.forEach(function (f) {
+	      filter.push(f);
+	    });
+	    params.filter.forEach(function (f) {
+	      filter.push(f);
+	    });
+	    data.filter = JSON.stringify(filter);
+
+	    return data;
+	  };
+
+	  stat.addEventListener('drawtable', function () {
+	    var obj = getFormData();
+
+	    if (obj) {
+	      (0, _fetchApi.fetchObject)('/trends/data', obj).then(function (res) {
+	        var params = window.might.stat.params;
+
+	        if (res.error) {
+	          return;
+	        }
+
+	        (0, _tableTrendsEvent2.default)(_tableTrendsRender2.default.render(res));
+
+	        if (navControl) {
+	          var yPosNav = navControl.getBoundingClientRect().top;
+	          var xScrollWindow = window.scrollX;
+	          var visibleNav = window.scrollY > 0 && yPosNav < window.innerHeight;
+
+	          if (params.total !== parseInt(res.recordsTotal, 10)) {
+	            params.total = parseInt(res.recordsTotal, 10);
+	            navControl.updateValue({
+	              total: params.total
+	            });
+	          }
+
+	          if (visibleNav) {
+	            var t = 0;
+	            var o = navControl;
+	            while (o) {
+	              if (o.offsetParent) {
+	                t += o.offsetTop;
+	              }
+	              o = o.offsetParent;
+	            }
+	            window.scrollTo(xScrollWindow, t - yPosNav);
+	          }
+	        }
+
+	        stat.triggerEvent('drawgraph');
+	      }).catch(function (err) {
+	        throw new Error(err);
+	      });
+	    }
+	  });
+	};
+
+	var _qs = __webpack_require__(16);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	var _dateformat = __webpack_require__(62);
+
+	var _dateformat2 = _interopRequireDefault(_dateformat);
+
+	var _tableTrendsRender = __webpack_require__(116);
+
+	var _tableTrendsRender2 = _interopRequireDefault(_tableTrendsRender);
+
+	var _tableTrendsEvent = __webpack_require__(117);
+
+	var _tableTrendsEvent2 = _interopRequireDefault(_tableTrendsEvent);
+
+	var _fetchApi = __webpack_require__(27);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 116 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	var _updateVariables = __webpack_require__(78);
+
+	var _updateVariables2 = _interopRequireDefault(_updateVariables);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var createNode = function createNode(tag, cls, txt) {
+	  var el = document.createElement(tag);
+	  var classes = cls || [];
+	  var _iteratorNormalCompletion = true;
+	  var _didIteratorError = false;
+	  var _iteratorError = undefined;
+
+	  try {
+	    for (var _iterator = classes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	      var c = _step.value;
+
+	      if (c) el.classList.add(c);
+	    }
+	  } catch (err) {
+	    _didIteratorError = true;
+	    _iteratorError = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion && _iterator.return) {
+	        _iterator.return();
+	      }
+	    } finally {
+	      if (_didIteratorError) {
+	        throw _iteratorError;
+	      }
+	    }
+	  }
+
+	  if (txt || txt === 0) el.innerHTML = txt;
+	  return el;
+	};
+
+	exports.default = {
+	  render: function render(response) {
+	    var data = response.result.data;
+	    var sum = data.sum;
+	    var values = data.values;
+
+	    var div = createNode('div', ['table-trends']);
+	    var table = createNode('table');
+
+	    div.appendChild(table);
+
+	    if ((typeof sum === 'undefined' ? 'undefined' : _typeof(sum)) === 'object' && (typeof values === 'undefined' ? 'undefined' : _typeof(values)) === 'object') {
+
+	      var columnsCount = data.col;
+	      var metric1 = window.might.stat.params.cohort_metric1;
+	      var metric2 = window.might.stat.params.cohort_metric2;
+
+	      var thead = createNode('tr');
+	      table.appendChild(thead);
+
+	      var th = createNode('th', ['is-left', 'is-sort'], 'Trends');
+	      var direction = null;
+	      var params = window.might.stat.params;
+
+	      if (params.sort && params.sort.direction && params.sort.column && params.sort.column.split('-').indexOf('date_column') < 0) {
+	        direction = window.might.stat.params.sort.direction;
+	        th.classList.add('is-' + direction);
+	      }
+
+	      th.setAttribute('data-value', data.group);
+
+	      thead.appendChild(th);
+
+	      th = createNode('th', null, metric1 + ' / ' + metric2);
+	      thead.appendChild(th);
+
+	      for (var i = 0; i < columnsCount; i++) {
+	        th = createNode('th', ['is-sort'], data.dates[i]);
+	        th.setAttribute('data-value', 'date_column-' + i);
+
+	        if (params.sort && params.sort.direction && params.sort.column && params.sort.column.split('-').indexOf('date_column') >= 0) {
+	          var sp = params.sort.column.split('-');
+	          if (sp.indexOf('' + i) >= 0) {
+	            direction = window.might.stat.params.sort.direction;
+	            th.classList.add('is-' + direction);
+	          }
+	        }
+
+	        thead.appendChild(th);
+	      }
+
+	      var tdMedian = [];
+	      var tdMedian2 = [];
+	      var medianOne = 0;
+	      var medianTwo = 0;
+	      var fragment = document.createDocumentFragment();
+
+	      for (var k in values) {
+	        if (values.hasOwnProperty(k)) {
+	          for (var _i in values[k]) {
+	            if (values[k].hasOwnProperty(_i)) {
+	              var tr = createNode('tr');
+	              fragment.appendChild(tr);
+
+	              var _td = createNode('td', ['is-left', 'is-bold', 'js-table-trends-graph']);
+	              var name = _i;
+	              if (typeof data.names[_i] !== 'undefined') {
+	                name = data.names[_i];
+	              }
+	              var span = createNode('span', ['is-clickable'], '<div class="title">' + name + '</div><div style="display: none" class="element">' + data.group + '</div><div style="display: none" class="value">' + _i + '</div>');
+
+	              _td.appendChild(span);
+	              tr.appendChild(_td);
+
+	              var count = Number(sum[k][_i] && sum[k][_i][metric1]) || 0;
+	              var count2 = Number(sum[k][_i] && sum[k][_i][metric2]) || 0;
+	              medianOne += count;
+	              medianTwo += count2;
+
+	              _td = createNode('td', null, count + ' / ' + count2);
+	              tr.appendChild(_td);
+
+	              var val = values[k][_i];
+	              var txt = void 0;
+	              var backgroundColor = void 0;
+	              var opacity = void 0;
+	              var color = void 0;
+
+	              for (var j = 0; j < columnsCount; j++) {
+	                tdMedian[j] = tdMedian[j] || 0;
+	                tdMedian2[j] = tdMedian2[j] || 0;
+	                if (val[j]) {
+	                  if (!val[j][metric1]) {
+	                    val[j][metric1] = 0;
+	                  }
+	                  if (!val[j][metric2]) {
+	                    val[j][metric2] = 0;
+	                  }
+	                  _td = createNode('td', null, val[j][metric1] + ' / ' + val[j][metric2]);
+	                  tdMedian[j] += val[j][metric1] || 0;
+	                  tdMedian2[j] += val[j][metric2] || 0;
+	                  if (val[j].roi < 0) {
+	                    backgroundColor = '245,91,99';
+	                  } else {
+	                    backgroundColor = '35,160,87';
+	                  }
+
+	                  opacity = Math.abs(val[j].roi) / 300;
+	                  _td.style.backgroundColor = 'rgba(' + backgroundColor + ',' + opacity + ')';
+
+	                  if (opacity > 0.6) {
+	                    _td.style.color = '#ffffff';
+	                  }
+	                } else {
+	                  _td = createNode('td');
+	                }
+	                tr.appendChild(_td);
+	              }
+	            }
+	          }
+	        }
+	      }
+
+	      var trMedian = createNode('tr');
+	      table.appendChild(trMedian);
+
+	      var td = createNode('td', ['is-left', 'is-bold'], 'Median');
+	      trMedian.appendChild(td);
+
+	      td = createNode('td', ['is-bold'], medianOne + ' / ' + medianTwo);
+	      trMedian.appendChild(td);
+
+	      for (var _j = 0; _j < columnsCount; _j++) {
+	        td = createNode('td', ['is-bold'], tdMedian[_j] + ' / ' + tdMedian2[_j]);
+	        trMedian.appendChild(td);
+	      }
+
+	      table.appendChild(fragment);
+	    }
+
+	    (0, _updateVariables2.default)();
+	    document.querySelector('.js-canvas').innerHTML = '';
+	    document.querySelector('.js-canvas').appendChild(div);
+
+	    return div;
+	  }
+	};
+
+/***/ },
+/* 117 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (table) {
+	  var colors = window.might.graph_colors;
+	  var selectColor = [];
+
+	  for (var i = 0; i < colors.length; i++) {
+	    selectColor.push(false);
+	  }
+
+	  table.addEventListener('click', function (event) {
+	    var clickable = event.target.closest('.is-clickable');
+	    var sort = event.target.closest('.is-sort');
+
+	    if (clickable) {
+	      var elements = event.target;
+
+	      var title = elements.innerHTML;
+	      var field = elements.parentNode.getElementsByClassName('element')[0].innerHTML;
+	      var value = elements.parentNode.getElementsByClassName('value')[0].innerHTML;
+	      (0, _update2.default)({ filter_stock: { field: field, value: value, title: title } });
+
+	      render();
+	    } else if (sort) {
+	      var _value = sort.dataset.value;
+	      if (_value) {
+	        (0, _update2.default)({ table_sort: _value });
+	      }
+	    }
+	  });
+
+	  function render() {
+	    var res = [];
+	    var color = [];
+
+	    [].concat(_toConsumableArray(table.querySelectorAll('tr.is-select'))).forEach(function (tr) {
+	      var line = {
+	        data: []
+	      };
+
+	      color.push(tr.dataset.color);
+
+	      [].concat(_toConsumableArray(tr.querySelectorAll('td'))).forEach(function (td, i) {
+	        if (i === 0) {
+	          line.name = td.textContent;
+	        } else if (i > 1 && td.textContent) {
+	          line.data.push(Number(td.textContent.replace('%', ''), 10));
+	        }
+	      });
+
+	      res.push(line);
+	    });
+
+	    (0, _graphTrendsRender2.default)(res, color);
+	  }
+
+	  function getColor() {
+	    var color = void 0;
+
+	    for (var _i = 0; _i < selectColor.length; _i++) {
+	      if (!selectColor[_i]) {
+	        color = colors[_i];
+	        selectColor[_i] = true;
+	        break;
+	      }
+	    }
+
+	    return color;
+	  }
+
+	  function unselectColor(color) {
+	    for (var _i2 = 0; _i2 < colors.length; _i2++) {
+	      if (colors[_i2] === color) {
+	        selectColor[_i2] = false;
+	      }
+	    }
+	  }
+	};
+
+	var _update = __webpack_require__(77);
+
+	var _update2 = _interopRequireDefault(_update);
+
+	var _graphTrendsRender = __webpack_require__(118);
+
+	var _graphTrendsRender2 = _interopRequireDefault(_graphTrendsRender);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ },
+/* 118 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (result, color) {
+	  var stat = document.querySelector('.js-stat');
+	  var statGraph = stat.querySelector('.js-stat-graph');
+	  var canvas = stat.querySelector('#stat-graph');
+
+	  if (result.length) {
+	    statGraph.style.display = '';
+	    canvas.style.display = '';
+	  } else {
+	    statGraph.style.display = 'none';
+	    canvas.style.display = 'none';
+	  }
+
+	  canvas.innerHTML = '';
+
+	  _highcharts2.default.setOptions({
+	    timezone: 'Africa/Abidjan'
+	  });
+
+	  _highcharts2.default.chart('stat-graph', {
+	    chart: {
+	      zoomType: 'x',
+	      spacingLeft: 5,
+	      spacingRight: 0,
+	      spacingBottom: 0,
+	      resetZoomButton: {
+	        position: {
+	          x: 0,
+	          y: 10
+	        },
+	        theme: {
+	          fill: '#0182ec',
+	          stroke: '#0182ec',
+	          style: {
+	            color: '#ffffff'
+	          },
+	          r: 0,
+	          states: {
+	            hover: {
+	              fill: '#3a62c6',
+	              stroke: '#3a62c6',
+	              style: {
+	                color: '#ffffff'
+	              }
+	            }
+	          }
+	        }
+	      }
+	    },
+	    title: {
+	      text: null
+	    },
+	    credits: {
+	      enabled: false
+	    },
+	    xAxis: {
+	      type: 'linear'
+	    },
+	    yAxis: {
+	      title: {
+	        text: null
+	      },
+	      plotLines: [{
+	        value: 0,
+	        width: 1,
+	        color: '#808080'
+	      }]
+	    },
+	    legend: {
+	      enabled: false
+	    },
+	    tooltip: {
+	      shared: true,
+	      padding: 15,
+	      borderRadius: 0,
+	      borderColor: '#3a62c6',
+	      backgroundColor: '#ffffff',
+	      style: {
+	        color: '#54647e',
+	        fontSize: '14px',
+	        lineHeight: '20px'
+	      },
+	      headerFormat: '<span style="font-weight: bold; font-size: 14px;">{point.key}</span><br/><br/>'
+	    },
+	    plotOptions: {
+	      series: {
+	        marker: {
+	          symbol: 'circle',
+	          radius: 2
+	        },
+	        pointStart: 1
+	      }
+	    },
+
+	    colors: color,
+	    series: result
+	  });
+	};
+
+	var _dateformat = __webpack_require__(62);
+
+	var _dateformat2 = _interopRequireDefault(_dateformat);
+
+	var _highcharts = __webpack_require__(110);
+
+	var _highcharts2 = _interopRequireDefault(_highcharts);
+
+	var _update = __webpack_require__(77);
+
+	var _update2 = _interopRequireDefault(_update);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 119 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
 	  var settings = document.querySelector('.js-settings');
 	  var currentTab = void 0;
 
@@ -12592,19 +13518,19 @@ webpackJsonp([0],[
 
 	var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
 
-	var _profile = __webpack_require__(116);
+	var _profile = __webpack_require__(120);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _domains = __webpack_require__(117);
+	var _domains = __webpack_require__(121);
 
 	var _domains2 = _interopRequireDefault(_domains);
 
-	var _conversions = __webpack_require__(119);
+	var _conversions = __webpack_require__(123);
 
 	var _conversions2 = _interopRequireDefault(_conversions);
 
-	var _rights = __webpack_require__(120);
+	var _rights = __webpack_require__(124);
 
 	var _rights2 = _interopRequireDefault(_rights);
 
@@ -12642,7 +13568,7 @@ webpackJsonp([0],[
 	}
 
 /***/ },
-/* 116 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12875,7 +13801,7 @@ webpackJsonp([0],[
 	var _fetchApi = __webpack_require__(27);
 
 /***/ },
-/* 117 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12973,7 +13899,7 @@ webpackJsonp([0],[
 	  showList();
 	};
 
-	var _domainsEdit = __webpack_require__(118);
+	var _domainsEdit = __webpack_require__(122);
 
 	var _domainsEdit2 = _interopRequireDefault(_domainsEdit);
 
@@ -12982,7 +13908,7 @@ webpackJsonp([0],[
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 118 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13085,7 +14011,7 @@ webpackJsonp([0],[
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 119 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13130,7 +14056,7 @@ webpackJsonp([0],[
 	var _fetchApi = __webpack_require__(27);
 
 /***/ },
-/* 120 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13231,7 +14157,7 @@ webpackJsonp([0],[
 	  showList();
 	};
 
-	var _rightsEdit = __webpack_require__(121);
+	var _rightsEdit = __webpack_require__(125);
 
 	var _rightsEdit2 = _interopRequireDefault(_rightsEdit);
 
@@ -13240,7 +14166,7 @@ webpackJsonp([0],[
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 121 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
