@@ -78,7 +78,7 @@ webpackJsonp([0],[
 
 	window._version = '0.5.19';
 
-	var __svg__ = { filename: "/assets/svg/1496772137020.icons.svg" };
+	var __svg__ = { filename: "/assets/svg/1496944764598.icons.svg" };
 	__svg__.filename = __svg__.filename;
 	(0, _svgxhr2.default)(__svg__);
 
@@ -2609,6 +2609,7 @@ webpackJsonp([0],[
 	  var listValue = list.querySelector('.js-list-value');
 	  var search = list.querySelector('.js-list-search');
 	  var placeholder = list.dataset.placeholder;
+	  var setstyle = list.dataset.setstyle;
 
 	  var clickWindow = void 0;
 	  var open = void 0;
@@ -2889,7 +2890,9 @@ webpackJsonp([0],[
 	    }
 	  });
 
-	  if (!listValue.textContent && placeholder) {
+	  if (!listValue.textContent && placeholder && setstyle) {
+	    listValue.innerHTML = '<div style="' + setstyle + '">' + placeholder + '</div>';
+	  } else if (!listValue.textContent && placeholder) {
 	    listValue.textContent = placeholder;
 	  }
 	};
@@ -5227,7 +5230,7 @@ webpackJsonp([0],[
 	      params.sort = null;
 	    }
 
-	    params.cohort_size = query.cs || 'month';
+	    params.cohort_size = query.cs || 'hour';
 	    params.cohort_metric1 = query.field1 || 'clicks';
 	    params.cohort_metric2 = query.field2 || 'leads';
 	  };
@@ -5304,7 +5307,7 @@ webpackJsonp([0],[
 	      query.sdir = params.sort.direction;
 	    }
 
-	    if (params.cohort_size !== 'month') {
+	    if (params.cohort_size !== 'hour') {
 	      query.cs = params.cohort_size;
 	    }
 
@@ -6294,7 +6297,7 @@ webpackJsonp([0],[
 	});
 
 	exports.default = function (data, hasEdit) {
-	  var popupBody = (0, _campaignAdd2.default)();
+	  var popupBody = (0, _campaignAdd2.default)(true);
 
 	  if (hasEdit) {
 	    popupBody.currentCampaignId = data.id;
@@ -6315,6 +6318,7 @@ webpackJsonp([0],[
 	  var formReirectType = popupBody.querySelector('.js-form-directtype');
 	  var formBetaDistributionOn = popupBody.querySelector('.js-form-beta-distribution-on');
 	  var formBetaDistributionOff = popupBody.querySelector('.js-form-beta-distribution-off');
+	  var formCostLabel = popupBody.querySelector('.js-form-cost-label');
 
 	  formName.value = data.name || '';
 
@@ -6366,13 +6370,22 @@ webpackJsonp([0],[
 	  switch (data.cost_mode) {
 	    case 'cpa':
 	      formCostCPA.classList.add('is-select');
+	      formCostDoNotTrack.classList.remove('is-select');
+	      formCostCPC.classList.remove('is-select');
+	      formCostLabel.textContent = 'CPA:';
 	      break;
 	    case 'not_track':
 	      formCostDoNotTrack.classList.add('is-select');
+	      formCostCPA.classList.remove('is-select');
+	      formCostCPC.classList.remove('is-select');
+	      formCostLabel.textContent = 'Cost click:';
 	      break;
 	    case 'cpc':
 	    default:
 	      formCostCPC.classList.add('is-select');
+	      formCostDoNotTrack.classList.remove('is-select');
+	      formCostCPA.classList.remove('is-select');
+	      formCostLabel.textContent = 'Cost click:';
 	      break;
 	  }
 
@@ -6474,11 +6487,17 @@ webpackJsonp([0],[
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 	exports.default = function () {
+	  var edit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
 	  if (document.querySelector('.js-popup')) {
 	    return null;
 	  }
-
-	  var popup = (0, _createPopup2.default)('Creating new campaign', true);
+	  var popup = false;
+	  if (edit === true) {
+	    popup = (0, _createPopup2.default)('Edit campaign', true);
+	  } else {
+	    popup = (0, _createPopup2.default)('Creating new campaign', true);
+	  }
 
 	  if (!popup) {
 	    return null;
@@ -6492,7 +6511,7 @@ webpackJsonp([0],[
 
 	  popup.querySelector('.js-popup-wrap').style.width = '1000px';
 
-	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for campaign">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Domain:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-domain" style="display: block; margin: 0 0 10px;" data-placeholder="Select domain">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Traffic Source:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-traffic-source" style="display: block; margin: 0 0 10px;" data-placeholder="Select traffic source">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Payout:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="radiobutton js-form-cost-donottrack">Do not track</div>\n        <div class="radiobutton js-form-cost-cpc is-select">CPC</div>\n        <div class="radiobutton js-form-cost-cpa" style="margin-right: 80px;">CPA</div>\n        <div class="js-form-cost" style="display: inline-block;">\n          <div class="popup__line-lbl"><span class="js-form-cost-label">Cost click:</span><div class="info"></div></div>\n          <div class="input" style="display: inline-block; width: 90px; margin-left: 10px; margin-right: 10px;">\n            <input class="js-form-cost-value" type="text" placeholder="0">\n            <span><span>\n          </div>\n          <div class="popup__currency js-form-cost-eur">\n            <i class="fa fa-euro"></i>\n          </div>\n          <div class="popup__currency js-form-cost-rub">\n            <i class="fa fa-ruble"></i>\n          </div>\n          <div class="popup__currency js-form-cost-usd is-select">\n            <i class="fa fa-dollar"></i>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Postback URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="js-form-input-parent">\n          <div class="input is-with-plus">\n            <input class="js-form-postback-url" type="text" placeholder="Postback URL">\n            <div class="input__plus js-form-postback-url-add"></div>\n            <span><span>\n          </div>\n          <div class="tags js-form-postback-tags" style="display: none;"></div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Redirect mode:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-directtype" style="display: block; margin: 0 0 10px;" data-placeholder="Select redirect mode">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items">\n                <div class="list__item js-list-item" data-value="301">301</div>\n                <div class="list__item js-list-item" data-value="302">302</div>\n                <div class="list__item js-list-item" data-value="js">js</div>\n                <div class="list__item js-list-item" data-value="double_js">double_js</div>\n                <div class="list__item js-list-item" data-value="meta_refresh">meta_refresh</div>\n                <div class="list__item js-list-item" data-value="double_meta_refresh">double_meta_refresh</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Auto optimization :</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n\t\t    <div class="radiobutton js-form-beta-distribution-on">On</div>\n\t      <div class="radiobutton js-form-beta-distribution-off is-select">Off</div>\n      </div>\n    </div>\n\n    <div class="cc js-create-campaign"></div>\n\n    <div class="cc">\n      <div class="popup__line">\n        <div class="popup__line-label">\n          <span>Campaign URL:</span>\n          <div class="info"></div>\n        </div>\n        <div class="popup__line-body">\n          <div class="input">\n            <input class="js-form-url" type="text" readonly="true">\n          </div>\n        </div>\n        <div class="popup__line-btn">\n          <div class="btn-copy js-form-url-copy">Clipboard</div>\n        </div>\n      </div>\n    </div>';
+	  popupBody.innerHTML = '\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Name:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="input">\n          <input class="js-form-name" type="text" placeholder="Write a name for campaign">\n          <span><span>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Domain:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-domain" style="display: block; margin: 0 0 10px;" data-placeholder="Select domain" data-setstyle="color:#b7b9bb;font-weight: 100;">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Traffic Source:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-traffic-source" style="display: block; margin: 0 0 10px;" data-placeholder="Select traffic source" data-setstyle="color:#b7b9bb;font-weight: 100;">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Payout:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="radiobutton js-form-cost-donottrack">Do not track</div>\n        <div class="radiobutton js-form-cost-cpc is-select">CPC</div>\n        <div class="radiobutton js-form-cost-cpa" style="margin-right: 80px;">CPA</div>\n        <div class="js-form-cost" style="display: inline-block;">\n          <div class="popup__line-lbl"><span class="js-form-cost-label">Cost click:</span><div class="info"></div></div>\n          <div class="input" style="display: inline-block; width: 90px; margin-left: 10px; margin-right: 10px;">\n            <input class="js-form-cost-value" type="text" placeholder="0">\n            <span><span>\n          </div>\n          <div class="popup__currency js-form-cost-eur">\n            <i class="fa fa-euro"></i>\n          </div>\n          <div class="popup__currency js-form-cost-rub">\n            <i class="fa fa-ruble"></i>\n          </div>\n          <div class="popup__currency js-form-cost-usd is-select">\n            <i class="fa fa-dollar"></i>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Postback URL:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="js-form-input-parent">\n          <div class="input is-with-plus">\n            <input class="js-form-postback-url" type="text" placeholder="Postback URL">\n            <div class="input__plus js-form-postback-url-add"></div>\n            <span><span>\n          </div>\n          <div class="tags js-form-postback-tags" style="display: none;"></div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Redirect mode:</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n        <div class="list js-list js-form-directtype" style="display: block; margin: 0 0 10px;" data-placeholder="Select redirect mode" data-setstyle="color:#b7b9bb;font-weight: 100;">\n          <div class="list__wrap" style="display: block;">\n            <div class="list__value js-list-value"></div>\n            <div class="list__dropdown" style="right: 0;">\n              <div class="list__items js-list-items">\n                <div class="list__item js-list-item" data-value="301">301</div>\n                <div class="list__item js-list-item" data-value="302">302</div>\n                <div class="list__item js-list-item" data-value="js">js</div>\n                <div class="list__item js-list-item" data-value="double_js">double_js</div>\n                <div class="list__item js-list-item" data-value="meta_refresh">meta_refresh</div>\n                <div class="list__item js-list-item" data-value="double_meta_refresh">double_meta_refresh</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class="popup__line">\n      <div class="popup__line-label">\n        <span>Auto optimization :</span>\n        <div class="info"></div>\n      </div>\n      <div class="popup__line-body">\n\t\t    <div class="radiobutton js-form-beta-distribution-on">On</div>\n\t      <div class="radiobutton js-form-beta-distribution-off is-select">Off</div>\n      </div>\n    </div>\n\n    <div class="cc js-create-campaign"></div>\n\n    <div class="cc">\n      <div class="popup__line">\n        <div class="popup__line-label">\n          <span>Campaign URL:</span>\n          <div class="info"></div>\n        </div>\n        <div class="popup__line-body">\n          <div class="input">\n            <input class="js-form-url" type="text" readonly="true">\n          </div>\n        </div>\n        <div class="popup__line-btn">\n          <div class="btn-copy js-form-url-copy">Clipboard</div>\n        </div>\n      </div>\n    </div>';
 
 	  var formName = popupBody.querySelector('.js-form-name');
 	  var formDomain = popupBody.querySelector('.js-form-domain');
@@ -6599,6 +6618,7 @@ webpackJsonp([0],[
 	    formCostDoNotTrack.classList.remove('is-select');
 	    formCostCPC.classList.add('is-select');
 	    formCostCPA.classList.remove('is-select');
+	    formCostLabel.textContent = 'Cost click:';
 
 	    formCost.style.display = 'inline-block';
 	  });
@@ -6607,6 +6627,7 @@ webpackJsonp([0],[
 	    formCostDoNotTrack.classList.remove('is-select');
 	    formCostCPC.classList.remove('is-select');
 	    formCostCPA.classList.add('is-select');
+	    formCostLabel.textContent = 'CPA:';
 
 	    formCost.style.display = 'inline-block';
 	  });
@@ -7818,7 +7839,14 @@ webpackJsonp([0],[
 	});
 
 	exports.default = function (callback) {
-	  var popup = (0, _createPopup2.default)('Creating new lander', true);
+	  var edit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+	  var popup = false;
+	  if (edit === true) {
+	    popup = (0, _createPopup2.default)('Edit lander', true);
+	  } else {
+	    popup = (0, _createPopup2.default)('Creating new lander', true);
+	  }
 
 	  if (!popup) {
 	    return null;
@@ -7966,8 +7994,14 @@ webpackJsonp([0],[
 	});
 
 	exports.default = function (callback) {
-	  var popup = (0, _createPopup2.default)('Creating new offer', true);
+	  var edit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
+	  var popup = false;
+	  if (edit === true) {
+	    popup = (0, _createPopup2.default)('Edit offer', true);
+	  } else {
+	    popup = (0, _createPopup2.default)('Creating new offer', true);
+	  }
 	  if (!popup) {
 	    return null;
 	  }
@@ -9125,7 +9159,7 @@ webpackJsonp([0],[
 	              }
 	            }
 	          }
-	        } else {
+	        } else if (isLine || isFetch) {
 	          var label = void 0;
 
 	          [].concat(_toConsumableArray(listItems.querySelectorAll('.js-checklist-item'))).forEach(function (el) {
@@ -9140,6 +9174,8 @@ webpackJsonp([0],[
 	          label = label || i;
 
 	          drawTag(label, i);
+	        } else {
+	          drawTag(i, i);
 	        }
 	      }
 	    };
@@ -10001,7 +10037,7 @@ webpackJsonp([0],[
 	});
 
 	exports.default = function (data, hasEdit) {
-	  var popupBody = (0, _landerAdd2.default)();
+	  var popupBody = (0, _landerAdd2.default)(false, true);
 
 	  if (hasEdit) {
 	    popupBody.currentLanderId = data.id;
@@ -10055,7 +10091,7 @@ webpackJsonp([0],[
 	});
 
 	exports.default = function (data, hasEdit) {
-	  var popupBody = (0, _offerAdd2.default)();
+	  var popupBody = (0, _offerAdd2.default)(false, true);
 
 	  if (hasEdit) {
 	    popupBody.currentOfferId = data.id;
@@ -10154,7 +10190,7 @@ webpackJsonp([0],[
 	});
 
 	exports.default = function (data, hasEdit) {
-	  var popupBody = (0, _trafficSourceAdd2.default)();
+	  var popupBody = (0, _trafficSourceAdd2.default)(true);
 
 	  if (hasEdit) {
 	    popupBody.currentTrafficId = data.id;
@@ -10229,7 +10265,14 @@ webpackJsonp([0],[
 	});
 
 	exports.default = function () {
-	  var popup = (0, _createPopup2.default)('Creating new traffic source', true);
+	  var edit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+	  var popup = false;
+	  if (edit === true) {
+	    popup = (0, _createPopup2.default)('Edit traffic source', true);
+	  } else {
+	    popup = (0, _createPopup2.default)('Creating new traffic source', true);
+	  }
 
 	  if (!popup) {
 	    return null;
@@ -10423,7 +10466,7 @@ webpackJsonp([0],[
 	});
 
 	exports.default = function (data, hasEdit) {
-	  var popupBody = (0, _affiliateNetworkAdd2.default)();
+	  var popupBody = (0, _affiliateNetworkAdd2.default)(true);
 
 	  if (hasEdit) {
 	    popupBody.currentAffiliateId = data.id;
@@ -10489,7 +10532,14 @@ webpackJsonp([0],[
 	});
 
 	exports.default = function () {
-	  var popup = (0, _createPopup2.default)('Creating new affilate networks', true);
+	  var edit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+	  var popup = false;
+	  if (edit === true) {
+	    popup = (0, _createPopup2.default)('Edit affilate network', true);
+	  } else {
+	    popup = (0, _createPopup2.default)('Creating new affilate network', true);
+	  }
 
 	  if (!popup) {
 	    return null;
@@ -11549,7 +11599,7 @@ webpackJsonp([0],[
 	      main.appendChild(span);
 
 	      for (var _l in activeItems) {
-	        if (record[activeItems[_l][0]] === '') {
+	        if (['', 0, '0'].indexOf(record[activeItems[_l][0]]) > -1) {
 	          continue;
 	        }
 
@@ -12585,6 +12635,7 @@ webpackJsonp([0],[
 	          _td.appendChild(span);
 	          tr.appendChild(_td);
 
+	          var metricSum1 = Number(sum[_i2][metric2]) || 0;
 	          var count = Number(sum[_i2] && sum[_i2][metric1]) || 0;
 	          clicksMedian += count;
 	          _td = createNode('td', null, count);
@@ -12601,8 +12652,8 @@ webpackJsonp([0],[
 	            tdMedian[j] = tdMedian[j] || 0;
 
 	            if (isArray && val[j]) {
-	              if (count) {
-	                txt = Math.round(100 * 100 * val[j][metric2] / count) / 100 + '%';
+	              if (metricSum1) {
+	                txt = Math.round(100 * 100 * val[j][metric2] / metricSum1) / 100 + '%';
 	              } else {
 	                txt = '0%';
 	              }
@@ -12610,9 +12661,9 @@ webpackJsonp([0],[
 	              tdMedian[j] += val[j].clicks || 0;
 
 	              if (val[j].roi < 0) {
-	                backgroundColor = '245,91,99';
+	                backgroundColor = '255,89,100';
 	              } else {
-	                backgroundColor = '35,160,87';
+	                backgroundColor = '34,193,160';
 	              }
 
 	              opacity = Math.abs(val[j].roi) / 300;
@@ -13108,7 +13159,7 @@ webpackJsonp([0],[
 	      var direction = null;
 	      var params = window.might.stat.params;
 
-	      if (params.sort && params.sort.direction && params.sort.column && params.sort.column.split('-').indexOf('date_column') < 0) {
+	      if (params.sort && params.sort.direction && params.sort.column && params.sort.column.split('-').indexOf('date_column') < 0 && params.sort.column.split('-').indexOf('date_sum') < 0) {
 	        direction = window.might.stat.params.sort.direction;
 	        th.classList.add('is-' + direction);
 	      }
@@ -13117,7 +13168,12 @@ webpackJsonp([0],[
 
 	      thead.appendChild(th);
 
-	      th = createNode('th', null, metric1 + ' / ' + metric2);
+	      th = createNode('th', ['is-sort'], metric1 + ' / ' + metric2);
+	      th.setAttribute('data-value', 'date_sum');
+	      if (params.sort && params.sort.direction && params.sort.column && params.sort.column.split('-').indexOf('date_sum') > -1) {
+	        direction = window.might.stat.params.sort.direction;
+	        th.classList.add('is-' + direction);
+	      }
 	      thead.appendChild(th);
 
 	      for (var i = 0; i < columnsCount; i++) {
@@ -13186,9 +13242,9 @@ webpackJsonp([0],[
 	                  tdMedian[j] += val[j][metric1] || 0;
 	                  tdMedian2[j] += val[j][metric2] || 0;
 	                  if (val[j].roi < 0) {
-	                    backgroundColor = '245,91,99';
+	                    backgroundColor = '255,89,100';
 	                  } else {
-	                    backgroundColor = '35,160,87';
+	                    backgroundColor = '34,193,160';
 	                  }
 
 	                  opacity = Math.abs(val[j].roi) / 300;
