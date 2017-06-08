@@ -3351,6 +3351,9 @@ body.noscroll {
   padding: 5px 0 0 5px;
   background-color: #fff;
   cursor: pointer;
+  text-align: justify;
+  line-height: 0;
+  text-align-last: justify;
 }
 .checklist__value:before {
   content: '';
@@ -3363,6 +3366,14 @@ body.noscroll {
 }
 .checklist__value.is-focus:before {
   border: 1px solid #7f7f7f;
+}
+.checklist__value:after {
+  content: '';
+  display: inline-block;
+  width: 100%;
+  height: 0px;
+  visibility: hidden;
+  overflow: hidden;
 }
 .checklist__value span {
   display: inline-block;

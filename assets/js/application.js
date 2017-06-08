@@ -78,7 +78,7 @@ webpackJsonp([0],[
 
 	window._version = '0.5.19';
 
-	var __svg__ = { filename: "/assets/svg/1496944764598.icons.svg" };
+	var __svg__ = { filename: "/assets/svg/1496945931011.icons.svg" };
 	__svg__.filename = __svg__.filename;
 	(0, _svgxhr2.default)(__svg__);
 
@@ -8946,7 +8946,16 @@ webpackJsonp([0],[
 	        var val = listInput.value.trim();
 
 	        if (val) {
-	          list.value[val] = true;
+	          if (isNormal) {
+	            val = val.split(',');
+	            val.forEach(function (v) {
+	              var _v = v.trim();
+	              list.value[_v] = true;
+	            });
+	          } else {
+	            list.value[val] = true;
+	          }
+
 	          listInput.value = '';
 	          drawTags();
 	        }
@@ -9086,7 +9095,7 @@ webpackJsonp([0],[
 	      }).catch(function (err) {
 	        throw new Error(err);
 	      });
-	    } else {
+	    } else if (isTree || isLine) {
 	      var items = listItems.querySelectorAll('.js-checklist-item');
 
 	      if (!val) {
