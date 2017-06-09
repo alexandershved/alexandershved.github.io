@@ -78,7 +78,7 @@ webpackJsonp([0],[
 
 	window._version = '0.5.19';
 
-	var __svg__ = { filename: "/assets/svg/1496945931011.icons.svg" };
+	var __svg__ = { filename: "/assets/svg/1497034818034.icons.svg" };
 	__svg__.filename = __svg__.filename;
 	(0, _svgxhr2.default)(__svg__);
 
@@ -11617,9 +11617,9 @@ webpackJsonp([0],[
 	          var right = window.__active_permission__;
 
 	          if (right) {
-	            helper.innerHTML = '<div class="helper__cloud">\n            ' + (activeItems[_l][2].indexOf(1) >= 0 && right.campaigns.type.indexOf(1) !== -1 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-copy">Copy</span></div>' : '') + '\n            ' + (activeItems[_l][2].indexOf(2) >= 0 && right.campaigns.type.indexOf(2) !== -1 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-edit">Edit</span></div>' : '') + '\n            ' + (activeItems[_l][3].indexOf(3) >= 0 && right.campaigns.type.indexOf(2) !== -1 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-update-cost">Update cost</span></div>' : '') + '\n            ' + (activeItems[_l][3].indexOf(4) >= 0 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-links">Links</span></div>' : '') + '\n          </div>';
+	            helper.innerHTML = '<svg class="svg-icon" height="4px" width="20px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-dots"></use></svg>\n            <div class="helper__cloud">\n            ' + (activeItems[_l][2].indexOf(1) >= 0 && right.campaigns.type.indexOf(1) !== -1 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-copy">Copy</span></div>' : '') + '\n            ' + (activeItems[_l][2].indexOf(2) >= 0 && right.campaigns.type.indexOf(2) !== -1 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-edit">Edit</span></div>' : '') + '\n            ' + (activeItems[_l][3].indexOf(3) >= 0 && right.campaigns.type.indexOf(2) !== -1 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-update-cost">Update cost</span></div>' : '') + '\n            ' + (activeItems[_l][3].indexOf(4) >= 0 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-links">Links</span></div>' : '') + '\n          </div>';
 	          } else {
-	            helper.innerHTML = '<div class="helper__cloud">\n            ' + (activeItems[_l][2].indexOf(1) >= 0 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-copy">Copy</span></div>' : '') + '\n            ' + (activeItems[_l][2].indexOf(2) >= 0 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-edit">Edit</span></div>' : '') + '\n            ' + (activeItems[_l][2].indexOf(3) >= 0 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-update-cost">Update cost</span></div>' : '') + '\n            ' + (activeItems[_l][2].indexOf(4) >= 0 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-links">Links</span></div>' : '') + '\n          </div>';
+	            helper.innerHTML = '<svg class="svg-icon" height="4px" width="20px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-dots"></use></svg>\n            <div class="helper__cloud">\n            ' + (activeItems[_l][2].indexOf(1) >= 0 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-copy">Copy</span></div>' : '') + '\n            ' + (activeItems[_l][2].indexOf(2) >= 0 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-edit">Edit</span></div>' : '') + '\n            ' + (activeItems[_l][2].indexOf(3) >= 0 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-update-cost">Update cost</span></div>' : '') + '\n            ' + (activeItems[_l][2].indexOf(4) >= 0 ? '<div class="helper__link"><span class="js-' + activeItems[_l][1] + '-links">Links</span></div>' : '') + '\n          </div>';
 	          }
 
 	          main.appendChild(helper);
