@@ -3108,6 +3108,9 @@ body.noscroll {
   border-right: 5px solid transparent;
   border-bottom: 8px solid #fff;
 }
+.cc__element-up:hover:before {
+  border-bottom: 8px solid #3a9ad8;
+}
 .cc__element-down {
   right: 60px;
 }
@@ -3121,6 +3124,9 @@ body.noscroll {
   border-top: 8px solid #fff;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
+}
+.cc__element-down:hover:before {
+  border-top: 8px solid #3a9ad8;
 }
 .cc__element-copy {
   right: 31px;
@@ -3163,8 +3169,9 @@ body.noscroll {
 .cc__element-delete:before {
   transform: rotate(45deg);
 }
-.cc__element-delete:hover {
-  background-color: rgba(233,233,233,0.7);
+.cc__element-delete:hover:after,
+.cc__element-delete:hover:before {
+  border-bottom: 1px solid #3a9ad8;
 }
 .cc__element-up,
 .cc__element-down,
@@ -3185,7 +3192,7 @@ body.noscroll {
 .cc__element-down:hover,
 .cc__element-copy:hover,
 .cc__element-delete:hover {
-  background-color: #358cc5;
+  background-color: #fff;
 }
 .cc__element-undo {
   display: none;

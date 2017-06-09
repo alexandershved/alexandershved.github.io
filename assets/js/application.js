@@ -78,7 +78,7 @@ webpackJsonp([0],[
 
 	window._version = '0.5.19';
 
-	var __svg__ = { filename: "/assets/svg/1497034818034.icons.svg" };
+	var __svg__ = { filename: "/assets/svg/1497035203984.icons.svg" };
 	__svg__.filename = __svg__.filename;
 	(0, _svgxhr2.default)(__svg__);
 
