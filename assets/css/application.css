@@ -3358,9 +3358,6 @@ body.noscroll {
   padding: 5px 0 0 5px;
   background-color: #fff;
   cursor: pointer;
-  text-align: justify;
-  line-height: 0;
-  text-align-last: justify;
 }
 .checklist__value:before {
   content: '';
@@ -3374,33 +3371,29 @@ body.noscroll {
 .checklist__value.is-focus:before {
   border: 1px solid #7f7f7f;
 }
-.checklist__value:after {
-  content: '';
-  display: inline-block;
-  width: 100%;
-  height: 0px;
-  visibility: hidden;
-  overflow: hidden;
-}
 .checklist__value span {
+  position: relative;
   display: inline-block;
-  height: 19px;
+  max-width: 270px;
+  min-height: 19px;
   margin-right: 5px;
   margin-bottom: 5px;
-  padding: 3px 6px;
+  padding: 3px 21px 3px 6px;
   line-height: 11px;
   font-size: 11px;
   color: #fff;
   vertical-align: top;
   background-color: #3a9ad8;
   cursor: default;
+  word-wrap: break-word;
 }
 .checklist__value span i {
-  position: relative;
+  position: absolute;
   display: inline-block;
   width: 10px;
   height: 10px;
-  margin-left: 5px;
+  top: 3px;
+  right: 6px;
   cursor: pointer;
 }
 .checklist__value span i:after,
@@ -3418,16 +3411,17 @@ body.noscroll {
 .checklist__value span i:before {
   transform: rotate(-45deg);
 }
-.checklist__value input {
+.checklist__input {
   display: none;
   height: 19px;
+  width: 100%;
   margin-bottom: 5px;
   padding: 3px 6px;
   font-size: 11px;
   border: 0;
   background-color: transparent;
 }
-.checklist__value.is-focus input {
+.checklist__value.is-focus .checklist__input {
   display: inline-block;
 }
 .checklist__error {

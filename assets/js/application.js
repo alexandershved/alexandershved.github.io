@@ -78,7 +78,7 @@ webpackJsonp([0],[
 
 	window._version = '0.5.19';
 
-	var __svg__ = { filename: "/assets/svg/1497035203984.icons.svg" };
+	var __svg__ = { filename: "/assets/svg/1497553177939.icons.svg" };
 	__svg__.filename = __svg__.filename;
 	(0, _svgxhr2.default)(__svg__);
 
@@ -6681,7 +6681,7 @@ webpackJsonp([0],[
 	    }
 	  });
 
-	  '{country},{cost},{campaign_id},{trafficsource_id},{ip_id},{offer_id}'.split(',').forEach(function (tag) {
+	  '{postback_type},{postback_value},{campaign_id},{trafficsource_id},{lander_id},{device_brand},{device_model},{device_type},{browser},{browser_version},{os},{os_version},{country},{isp},{useragent},{ip},{click_id},{visit_id},{browser_language},{referrer_domain}'.split(',').forEach(function (tag) {
 	    var span = document.createElement('span');
 	    span.className = 'js-form-tag';
 	    span.textContent = tag;
@@ -7865,7 +7865,7 @@ webpackJsonp([0],[
 	  var formUrlTags = popupBody.querySelector('.js-form-tags');
 	  var formPostUrl = popupBody.querySelector('.js-form-post-id');
 
-	  '{country},{cost},{campaign_id},{trafficsource_id},{ip_id},{offer_id}'.split(',').forEach(function (tag) {
+	  '{campaign_id},{trafficsource_id},{trafficsource_name},{lander_id},{device_brand},{device_model},{device_type},{browser},{browser_version},{os},{os_version},{country},{isp},{useragent},{ip},{click_id},{visit_id},{browser_language},{referrer_domain}'.split(',').forEach(function (tag) {
 	    var span = document.createElement('span');
 	    span.className = 'js-form-tag';
 	    span.textContent = tag;
@@ -8025,7 +8025,7 @@ webpackJsonp([0],[
 	  var formPayoutRub = popupBody.querySelector('.js-form-payout-rub');
 	  var formPayoutUsd = popupBody.querySelector('.js-form-payout-usd');
 
-	  '{country},{cost},{campaign_id},{trafficsource_id},{ip_id},{offer_id}'.split(',').forEach(function (tag) {
+	  '{campaign_id},{trafficsource_id},{trafficsource_name},{lander_id},{device_brand},{device_model},{device_type},{browser},{browser_version},{os},{os_version},{country},{isp},{useragent},{ip},{click_id},{visit_id},{browser_language},{referrer_domain}'.split(',').forEach(function (tag) {
 	    var span = document.createElement('span');
 	    span.className = 'js-form-tag';
 	    span.textContent = tag;
@@ -8946,15 +8946,11 @@ webpackJsonp([0],[
 	        var val = listInput.value.trim();
 
 	        if (val) {
-	          if (isNormal) {
-	            val = val.split(',');
-	            val.forEach(function (v) {
-	              var _v = v.trim();
-	              list.value[_v] = true;
-	            });
-	          } else {
-	            list.value[val] = true;
-	          }
+	          val = val.split(',');
+	          val.forEach(function (v) {
+	            var _v = v.trim();
+	            list.value[_v] = true;
+	          });
 
 	          listInput.value = '';
 	          drawTags();
@@ -9119,6 +9115,37 @@ webpackJsonp([0],[
 	  }
 
 	  function filterItems(event, instantly) {
+	    if (type === 'line' && searchLink) {
+	      if (event.keyCode === 13 || event.type === 'paste') {
+	        var val = listInput.value.split(',');
+
+	        if (val.length > 1) {
+	          if (timeSearch) {
+	            clearTimeout(timeSearch);
+	          }
+
+	          val = val.map(function (i) {
+	            return i.trim();
+	          });
+
+	          (0, _fetchApi.fetchData)(searchLink, { search: val }).then(function (res) {
+	            if (res.data && Array.isArray(res.data)) {
+	              res.data.forEach(function (v) {
+	                list.value[v] = true;
+	              });
+	            }
+
+	            listInput.value = '';
+	            drawTags();
+	          }).catch(function (err) {
+	            throw new Error(err);
+	          });
+
+	          return;
+	        }
+	      }
+	    }
+
 	    if (timeSearch) {
 	      clearTimeout(timeSearch);
 	    }
@@ -9195,6 +9222,16 @@ webpackJsonp([0],[
 
 	    if (!isInit) {
 	      list.triggerEvent('change');
+	    }
+
+	    var tags = listValue.querySelectorAll('.js-checklist-tag');
+	    var lastTag = tags[tags.length - 1];
+	    var width = listValue.getBoundingClientRect().right - lastTag.getBoundingClientRect().right - 5;
+
+	    if (width > 150) {
+	      listInput.style.width = width + 'px';
+	    } else {
+	      listInput.style.width = '';
 	    }
 	  }
 
@@ -10301,7 +10338,7 @@ webpackJsonp([0],[
 	  var formLoading = popupBody.querySelector('.js-form-loading');
 	  var formInputs = popupBody.querySelectorAll('.js-form-inputs');
 
-	  '{country},{cost},{campaign_id},{trafficsource_id},{ip_id},{offer_id}'.split(',').forEach(function (tag) {
+	  '{campaign_id},{trafficsource_id},{trafficsource_name},{lander_id},{device_brand},{device_model},{device_type},{browser},{browser_version},{os},{os_version},{country},{isp},{useragent},{ip},{click_id},{visit_id},{browser_language},{referrer_domain}'.split(',').forEach(function (tag) {
 	    var span = document.createElement('span');
 	    span.className = 'js-form-tag';
 	    span.textContent = tag;
@@ -11547,20 +11584,19 @@ webpackJsonp([0],[
 	  if (params.is_tree) {
 	    tr.level = response.level;
 	    tr.filter = [];
-
 	    (response.filter || []).forEach(function (el) {
 	      tr.filter.push(el);
 	    });
 
 	    tr.filter.push({ field: response.field, value: record[response.field] });
 	    tr.thisFilter = { field: response.field, value: record[response.field] };
+	  }
 
-	    for (var l in activeItems) {
-	      if (activeItems[l][0] === response.field) {
-	        tr.classList.add('js-' + activeItems[l][1] + '-row');
-	        tr.dataset.id = record[activeItems[l][0]];
-	        tr.dataset.row = activeItems[l][1];
-	      }
+	  for (var l in activeItems) {
+	    if (activeItems[l][0] === response.field) {
+	      tr.classList.add('js-' + activeItems[l][1] + '-row');
+	      tr.dataset.id = record[activeItems[l][0]];
+	      tr.dataset.row = activeItems[l][1];
 	    }
 	  }
 
@@ -12604,6 +12640,10 @@ webpackJsonp([0],[
 
 	    div.appendChild(table);
 
+	    var stat = document.querySelector('.js-stat');
+	    var cohortSize = stat.querySelector('.js-stat-cohort-size');
+	    cohortSize.updateValue(data.interval);
+
 	    if ((typeof sum === 'undefined' ? 'undefined' : _typeof(sum)) === 'object' && (typeof values === 'undefined' ? 'undefined' : _typeof(values)) === 'object') {
 
 	      var columnsCount = 0;
@@ -13155,6 +13195,10 @@ webpackJsonp([0],[
 
 	    div.appendChild(table);
 
+	    var stat = document.querySelector('.js-stat');
+	    var cohortSize = stat.querySelector('.js-stat-cohort-size');
+	    cohortSize.updateValue(data.interval);
+
 	    if ((typeof sum === 'undefined' ? 'undefined' : _typeof(sum)) === 'object' && (typeof values === 'undefined' ? 'undefined' : _typeof(values)) === 'object') {
 
 	      var columnsCount = data.col;
@@ -13228,7 +13272,7 @@ webpackJsonp([0],[
 	              medianOne += count;
 	              medianTwo += count2;
 
-	              _td = createNode('td', null, count + ' / ' + count2);
+	              _td = createNode('td', null, count.toFixed(2) + ' / ' + count2.toFixed(2));
 	              tr.appendChild(_td);
 
 	              var val = values[k][_i];
@@ -13278,10 +13322,14 @@ webpackJsonp([0],[
 	      var td = createNode('td', ['is-left', 'is-bold'], 'Median');
 	      trMedian.appendChild(td);
 
+	      medianOne = Math.round(medianOne, -2);
+	      medianTwo = Math.round(medianTwo, -2);
 	      td = createNode('td', ['is-bold'], medianOne + ' / ' + medianTwo);
 	      trMedian.appendChild(td);
 
 	      for (var _j = 0; _j < columnsCount; _j++) {
+	        tdMedian[_j] = Math.ceil(tdMedian[_j] * 100) / 100;
+	        tdMedian2[_j] = Math.ceil(tdMedian2[_j] * 100) / 100;
 	        td = createNode('td', ['is-bold'], tdMedian[_j] + ' / ' + tdMedian2[_j]);
 	        trMedian.appendChild(td);
 	      }
