@@ -78,7 +78,7 @@ webpackJsonp([0],[
 
 	window._version = '0.5.19';
 
-	var __svg__ = { filename: "/assets/svg/1497554536872.icons.svg" };
+	var __svg__ = { filename: "/assets/svg/1497638340619.icons.svg" };
 	__svg__.filename = __svg__.filename;
 	(0, _svgxhr2.default)(__svg__);
 
@@ -7293,7 +7293,7 @@ webpackJsonp([0],[
 	          updatePath({
 	            field: 'offer_update',
 	            value: ev.target.value.trim(),
-	            position: position
+	            position: index
 	          });
 	        });
 	      } else {
@@ -9225,11 +9225,15 @@ webpackJsonp([0],[
 	    }
 
 	    var tags = listValue.querySelectorAll('.js-checklist-tag');
-	    var lastTag = tags[tags.length - 1];
-	    var width = listValue.getBoundingClientRect().right - lastTag.getBoundingClientRect().right - 5;
+	    if (tags.length) {
+	      var lastTag = tags[tags.length - 1];
+	      var width = listValue.getBoundingClientRect().right - lastTag.getBoundingClientRect().right - 5;
 
-	    if (width > 150) {
-	      listInput.style.width = width + 'px';
+	      if (width > 150) {
+	        listInput.style.width = width + 'px';
+	      } else {
+	        listInput.style.width = '';
+	      }
 	    } else {
 	      listInput.style.width = '';
 	    }
