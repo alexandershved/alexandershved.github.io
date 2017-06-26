@@ -78,7 +78,7 @@ webpackJsonp([0],[
 
 	window._version = '0.5.19';
 
-	var __svg__ = { filename: "/assets/svg/1497638340619.icons.svg" };
+	var __svg__ = { filename: "/assets/svg/1498497621086.icons.svg" };
 	__svg__.filename = __svg__.filename;
 	(0, _svgxhr2.default)(__svg__);
 
@@ -4078,8 +4078,9 @@ webpackJsonp([0],[
 	      if (list.value) {
 	        list.value = null;
 	        list.title = null;
-	        isUpdate = true;
 	      }
+
+	      isUpdate = true;
 
 	      if (placeholder) {
 	        listValue.textContent = placeholder;
