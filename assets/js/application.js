@@ -78,7 +78,7 @@ webpackJsonp([0],[
 
 	window._version = '0.5.19';
 
-	var __svg__ = { filename: "/assets/svg/1498497621086.icons.svg" };
+	var __svg__ = { filename: "/assets/svg/1499106445625.icons.svg" };
 	__svg__.filename = __svg__.filename;
 	(0, _svgxhr2.default)(__svg__);
 
@@ -4046,7 +4046,7 @@ webpackJsonp([0],[
 	    params.filters_stock.forEach(function (filter, i) {
 	      if (filter.field !== list.field) {
 	        data.filter_items = data.filter_items || [];
-	        data.filter_items[filter];
+	        data.filter_items.push(filter);
 	      }
 	    });
 
