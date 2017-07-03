@@ -78,7 +78,7 @@ webpackJsonp([0],[
 
 	window._version = '0.5.19';
 
-	var __svg__ = { filename: "/assets/svg/1499106445625.icons.svg" };
+	var __svg__ = { filename: "/assets/svg/1499107370484.icons.svg" };
 	__svg__.filename = __svg__.filename;
 	(0, _svgxhr2.default)(__svg__);
 
@@ -11598,7 +11598,7 @@ webpackJsonp([0],[
 	  }
 
 	  for (var l in activeItems) {
-	    if (activeItems[l][0] === response.field) {
+	    if (response.field.indexOf(activeItems[l][0]) !== -1) {
 	      tr.classList.add('js-' + activeItems[l][1] + '-row');
 	      tr.dataset.id = record[activeItems[l][0]];
 	      tr.dataset.row = activeItems[l][1];
